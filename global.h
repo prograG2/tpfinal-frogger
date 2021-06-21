@@ -20,3 +20,5 @@ typedef struct
     char objeto : 5;
     char piso : 2;
 }celda_t;
+
+enum eventos{SALIR = 0, ARRIBA, ABAJO, IZDA, DCHA, ENTER, BORRAR, ESC, REFRESH};

@@ -3,47 +3,46 @@
   @brief    +Descripcion del archivo+
   @author   +Nombre del autor (ej: Salvador Allende)+
  ******************************************************************************/
-
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+//https://stackoverflow.com/questions/3536153/c-dynamically-growing-array
+#ifndef _LISTA_DINAMICA_H_
+#define _LISTA_DINAMICA_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-
+#include <stdlib.h>
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-#define FIN_TABLA 0xFF
 
 
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef struct state_diagram_edge STATE;
-
-struct state_diagram_edge
-
-{
-	char  evento;
-	STATE *proximo_estado;
-	void (*p_rut_accion)(void);
-};
+typedef struct {
+  int *array;
+  unsigned long used;
+  unsigned long size;
+} Array;
 
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
+// +ej: extern unsigned int anio_actual;+
+
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-STATE *FSM_GetInitState(void);
-STATE* fsm(STATE *p_tabla_estado,BYTE evento_actual);
+void initArray(Array *a, unsigned long initialSize);
+void insertArray(Array *a, int element);
+
+void freeArray(Array *a);
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1
