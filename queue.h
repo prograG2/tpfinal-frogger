@@ -3,31 +3,25 @@
   @brief    +Descripcion del archivo+
   @author   +Nombre del autor (ej: Salvador Allende)+
  ******************************************************************************/
-
-#ifndef _GAME_DATA_H_
-#define _GAME_DATA_H_
+//https://stackoverflow.com/questions/3536153/c-dynamically-growing-array
+#ifndef _QUEUE_H_
+#define _QUEUE_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-
+#include <stdlib.h>
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-
+#define TIPO char
 
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-typedef struct
-{
-    char rana : 1;
-    char objeto : 5;
-    char piso : 2;
-}celda_t;
 
 
 /*******************************************************************************
@@ -40,17 +34,13 @@ typedef struct
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-void inicializar();
-void resetVidas();
-void decrementarVidas();
-int getVidas();
-void setNombre();
-const char* getNombre();
-void setPuntos();
-unsigned long getPuntos();
+void queue_insert(TIPO);
+int queue_empty();
+TIPO queue_next();
+
 
 
 /*******************************************************************************
  ******************************************************************************/
 
-#endif
+#endif // _TEMPLATE_H_
