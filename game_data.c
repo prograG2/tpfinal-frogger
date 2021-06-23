@@ -1,7 +1,7 @@
 /***************************************************************************//**
-  @file     +Nombre del archivo (ej: template.c)+
-  @brief    +Descripcion del archivo+
-  @author   +Nombre del autor (ej: Salvador Allende)+
+	@file     +Nombre del archivo (ej: template.c)+
+	@brief    +Descripcion del archivo+
+	@author   +Nombre del autor (ej: Salvador Allende)+
  ******************************************************************************/
 
 /*******************************************************************************
@@ -20,11 +20,23 @@
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-static struct{
-    const char* nombre;
-    int vidas;
-    unsigned long puntos;
+
+//Estructura con datos del juego.
+static struct
+{
+	const char* nombre; //Viene con terminador???
+	int vidas;
+	unsigned long puntos;
+	char dificultad;
 } datos;
+
+//Estructura de una celda del mapa.
+typedef struct
+{
+    char rana : 1;
+    char objeto : 5;
+    char piso : 2;
+} celda_t;
 
 
 /*******************************************************************************
@@ -51,12 +63,14 @@ static struct{
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
+
+//Mapa del juego
 static celda_t mapa[ALTO][ANCHO];
 
 
 /*******************************************************************************
  *******************************************************************************
-                        GLOBAL FUNCTION DEFINITIONS
+												GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
@@ -64,7 +78,7 @@ static celda_t mapa[ALTO][ANCHO];
 
 /*******************************************************************************
  *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
+												LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
