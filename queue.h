@@ -10,7 +10,9 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
+
 #include <stdlib.h>
+#include "fsm.h"
 
 
 /*******************************************************************************
@@ -22,7 +24,7 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef unsigned char TIPO
+
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -35,9 +37,9 @@ typedef unsigned char TIPO
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-void queue_insert(TIPO);
+void queue_insert(event_t);
 int queue_empty();
-TIPO queue_next();
+event_t queue_next();
 
 
 

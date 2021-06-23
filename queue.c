@@ -22,7 +22,7 @@
  ******************************************************************************/
 typedef struct nodeT
 {
-    TIPO data;
+    event_t data;
     struct nodeT *next;
 }node_t;
 
@@ -62,7 +62,7 @@ static node_t *front = NULL, *back = NULL;
  *******************************************************************************
  ******************************************************************************/
 
-void queue_insert(TIPO nuevo)
+void queue_insert(event_t nuevo)
 {
     node_t *temp = (node_t*)malloc(sizeof(node_t));
 
@@ -85,13 +85,13 @@ int queue_empty()
   return front == NULL;
 }
 
-TIPO queue_next()
+event_t queue_next()
 {
   if (front == NULL){
     return -1;
   }
   else{
-    TIPO r;
+    event_t r;
     if(back == NULL) r = front->data;
     else r = back->data;
     delete();
@@ -111,7 +111,7 @@ TIPO queue_next()
 static void delete()
 {
   if(front != NULL){
-    TIPO valor = front->data;
+    event_t valor = front->data;
     node_t *temp = front;
     front = front->next;
     free(temp);
