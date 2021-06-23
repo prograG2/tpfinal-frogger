@@ -24,28 +24,11 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef struct
-{
-    char rana : 1;
-    char objeto : 5;
-    char piso : 2;
-}celda_t;
 
-
-static struct
-{
-	const char* nombre;
-	int vidas;
-	unsigned long puntos;
-	char dificultad;
-} datos;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
-
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -58,6 +41,22 @@ void setNombre();
 const char* getNombre();
 void setPuntos();
 unsigned long getPuntos();
+
+const char* game_data_getNombre(void);
+int game_data_getVidas(void);
+unsigned long game_data_getPuntos(void);
+char game_data_getDificultad(void);
+
+int game_data_setNombre(const char* nombre);
+int game_data_setVidas_full(void);
+int game_data_setVidas_dec(void);
+int game_data_setVidas_clear(void);
+int game_data_setPuntos_inc(void);
+int game_data_setPuntos_clear(void);
+int game_data_setDificultad_canIPlayDaddy(void);
+int game_data_setDificultad_dontHurtMe(void);
+int game_data_setDificultad_bringThemAll(void);
+int game_data_setDificultad_iAmDeathIncarnate(void);
 
 
 /*******************************************************************************
