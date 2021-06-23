@@ -53,10 +53,10 @@ int game_data_setVidas_dec(void);
 int game_data_setVidas_clear(void);
 int game_data_setPuntos_inc(void);
 int game_data_setPuntos_clear(void);
-int game_data_setDificultad_canIPlayDaddy(void);
-int game_data_setDificultad_dontHurtMe(void);
-int game_data_setDificultad_bringThemAll(void);
-int game_data_setDificultad_iAmDeathIncarnate(void);
+int game_data_setDificultad_easy(void);
+int game_data_setDificultad_normal(void);
+int game_data_setDificultad_hard(void);
+int game_data_setDificultad_expert(void);
 
 
 /*******************************************************************************
