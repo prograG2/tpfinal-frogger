@@ -143,7 +143,7 @@ STATE viendo_ranking[]=
 STATE poniendo_nombre[]=
 {
 	{ESC, menu_seleccionando_jugar, salir_al_menu},
-	{ENTER, jugando, guardar_nombre},
+	{LISTO, jugando, guardar_nombre},
 	{FIN_TABLA, poniendo_nombre, do_nothing}
 };
 
@@ -155,6 +155,11 @@ STATE jugando[]=
 	{DCHA, jugando, mover_dcha},
 	{ENTER, pausa_seleccionando_continuar, pausar},
 	{REFRESH, jugando, refresh},
+	{CHOCAR, jugando, perder_vida_choque},
+	{AGUA, jugando, perder_vida_agua},
+	{TIMEOUT, jugando, perder_vida_timeout},
+	{GAME_OVER, game_over_seleccionando_reiniciar, game_over},
+	{META, jugando, llegar}, //Se asume que está libre
 	{FIN_TABLA, jugando, do_nothing}
 };
 
@@ -180,6 +185,22 @@ STATE pausa_seleccionando_salir[]=
   	{ARRIBA, pausa_seleccionando_reiniciar, pausa_arriba},
 	{ABAJO, pausa_seleccionando_continuar, pausa_abajo},
   	{FIN_TABLA, pausa_seleccionando_salir, do_nothing}
+};
+
+STATE game_over_seleccionando_reiniciar[]=
+{
+	{ENTER, jugando, reiniciar_juego},
+  	{ARRIBA, game_over_seleccionando_salir, game_over_arriba},
+	{ABAJO, game_over_seleccionando_salir, game_over_abajo},
+	{FIN_TABLA, pausa_seleccionando_reiniciar, do_nothing}
+};
+
+STATE game_over_seleccionando_salir[]=
+{
+	{ENTER, menu_seleccionando_jugar, salir_al_menu},
+  	{ARRIBA, game_over_seleccionando_reiniciar, game_over_arriba},
+	{ABAJO, game_over_seleccionando_reiniciar, game_over_abajo},
+	{FIN_TABLA, pausa_seleccionando_salir, do_nothing}
 };
 
 
@@ -234,3 +255,93 @@ static void do_nothing(void)
 
 }
 
+static void menu_abajo(void){
+	menu_bajar_opcion();
+}
+
+static void menu_arriba(void){
+	menu_subir_opcion();
+}
+
+static void dificultad_enter(void){
+	game_data_aumentarDificultad();
+}
+
+static void menu_ranking_enter(void){
+	mostrar_ranking();
+}
+
+static void ranking_enter(void){
+	mostrar_menu();
+}
+
+static void jugar_enter(void){
+	solicitar_nombre();
+}
+
+static void guardar_nombre(void){
+	game_data_newGame();
+	inicializar_juego(); //display
+	//cambiar_musica
+}
+
+static void mover_adelante(void){
+	//ruido_de_salto
+}
+
+static void mover_atras(void){
+	
+}
+
+static void mover_izda(void){
+	
+}
+
+static void mover_dcha(void){
+	
+}
+
+static void pausar(void){
+	//bajar_volumen
+}
+
+static void salir_al_menu(void){
+
+}
+
+static void refresh(void){
+
+}
+
+static void perder_vida_choque(void){
+	//ruido1
+}
+
+static void perder_vida_agua(void){
+	//ruido2
+}
+
+static void perder_vida_timeout(void){
+	//sin ruido?
+}
+
+static void game_over(void){
+	//cambiar_musica
+}
+
+static void game_over_arriba(){
+
+}
+
+static void game_over_abajo(void){
+
+}
+
+static void llegar(void){
+	//poner la rana (grafico)
+	//pase de nivel?
+}
+
+static void respawn(void){
+
+}

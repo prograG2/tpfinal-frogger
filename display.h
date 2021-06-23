@@ -35,7 +35,9 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-
+void menu_bajar_opcion();
+void menu_subir_opcion();
+void solicitar_nombre();
 /**
  * @brief TODO: completar descripcion
  * @param param1 Descripcion parametro 1

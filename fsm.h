@@ -26,7 +26,7 @@
  * @brief Eventos posibles.
  * 
  */
-enum eventos{SALIR = 0, ARRIBA, ABAJO, IZDA, DCHA, ENTER, BORRAR, ESC, REFRESH};
+enum eventos{SALIR = 0, ARRIBA, ABAJO, IZDA, DCHA, ENTER, BORRAR, ESC, LISTO, REFRESH};
 
 typedef unsigned char event_t;
 

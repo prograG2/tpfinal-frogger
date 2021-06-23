@@ -36,10 +36,11 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-
+int queue_init();
 void queue_insert(event_t);
 int queue_empty();
 event_t queue_next();
+int queue_destroy();
 
 
 

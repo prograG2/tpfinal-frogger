@@ -16,7 +16,8 @@
 #include "queue.h"
 #include "termlib.h"
 
-STATE* p2CurrentState = NULL;	
+STATE* p2CurrentState = NULL;
+unsigned char getEvent();
 
 int main (void)
 {
@@ -29,6 +30,9 @@ int main (void)
 	//Inicializo la FSM con el estado inicial
 	p2CurrentState = fsm_getInitState();
 
+	if(queue_init() || game_data_setDificultad_easy())
+		return 1;
+
 	//Adquiero eventos y corro la FSM
 	while((evento = getEvent()))
 	{
@@ -38,3 +42,7 @@ int main (void)
 	return 0;
 }
 
+unsigned char getEvent(){
+	while(queue_empty());
+	return queue_next();
+}

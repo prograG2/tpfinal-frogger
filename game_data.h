@@ -17,7 +17,7 @@
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-
+#define NAME_MAX 20
 
 
 /*******************************************************************************
@@ -57,6 +57,7 @@ int game_data_setDificultad_easy(void);
 int game_data_setDificultad_normal(void);
 int game_data_setDificultad_hard(void);
 int game_data_setDificultad_expert(void);
+int game_data_aumentarDificultad(void);
 
 
 /*******************************************************************************

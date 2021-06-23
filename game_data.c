@@ -24,7 +24,7 @@
 //Estructura con datos del juego.
 static struct
 {
-	const char* nombre; //Viene con terminador???
+	char nombre[NAME_MAX]; //Viene con terminador???
 	int vidas;
 	unsigned long puntos;
 	char dificultad;
@@ -37,7 +37,6 @@ typedef struct
     char objeto : 5;
     char piso : 2;
 } celda_t;
-
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
