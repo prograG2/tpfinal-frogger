@@ -15,7 +15,6 @@
 #include "fsm.h"
 #include "queue.h"
 #include "termlib.h"
-#include "events.h" 
 
 STATE* p2CurrentState = NULL;	
 
