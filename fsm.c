@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 #include "fsm.h"
+#include <stdio.h>
 
 
 /*******************************************************************************
@@ -33,29 +34,40 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
+
+/**
+ * @brief Rutina que hace nada.
+ * 
+ */
 static void do_nothing(void);
+
 static void menu_arriba (void);
 static void menu_abajo (void);
+
 static void jugar_enter(void);
 static void dificultad_enter(void);
 static void menu_ranking_enter(void);
 static void ranking_enter(void);
+static void salir_enter(void);
+
 static void letra_anterior(void);
 static void letra_siguiente(void);
 static void borrar_letra(void);
 static void siguiente_letra(void);
 static void guardar_nombre(void);
+
 static void refresh(void);
+
 static void mover_adelante(void);
 static void mover_atras(void);
 static void mover_izda(void);
 static void mover_dcha(void);
+
 static void pausar(void);
 static void continuar(void);
 static void reiniciar(void);
 static void pausa_arriba(void);
 static void pausa_abajo(void);
-static void do_nothing(void);
 static void salir_al_menu(void);
 
 
@@ -67,9 +79,30 @@ static void salir_al_menu(void);
 
 
 /*******************************************************************************
+ * FORWARD DECLARATION FOR STATEs
+ ******************************************************************************/
+
+extern STATE menu_seleccionando_jugar[];
+extern STATE menu_seleccionando_dificultad[];
+extern STATE menu_seleccionando_ranking[];
+extern STATE menu_seleccionando_salir[];
+
+extern STATE viendo_ranking[];
+
+extern STATE poniendo_nombre[];
+
+extern STATE jugando[];
+
+extern STATE pausa_seleccionando_continuar[];
+extern STATE pausa_seleccionando_reiniciar[];
+extern STATE pausa_seleccionando_salir[];
+
+
+/*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
-static STATE menu_seleccionando_jugar[]=
+
+STATE menu_seleccionando_jugar[]=
 {
   	{ENTER, poniendo_nombre, jugar_enter},
   	{ARRIBA, menu_seleccionando_salir, menu_arriba},
@@ -77,7 +110,7 @@ static STATE menu_seleccionando_jugar[]=
   	{FIN_TABLA, menu_seleccionando_jugar, do_nothing}
 };
 
-static STATE menu_seleccionando_dificultad[]=
+STATE menu_seleccionando_dificultad[]=
 {
   	{ENTER, menu_seleccionando_dificultad, dificultad_enter},
   	{ARRIBA, menu_seleccionando_jugar, menu_arriba},
@@ -85,7 +118,7 @@ static STATE menu_seleccionando_dificultad[]=
   	{FIN_TABLA, menu_seleccionando_dificultad, do_nothing}
 };
 
-static STATE menu_seleccionando_ranking[]=
+STATE menu_seleccionando_ranking[]=
 {
   	{ENTER, viendo_ranking, menu_ranking_enter},
   	{ARRIBA, menu_seleccionando_dificultad, menu_arriba},
@@ -93,62 +126,61 @@ static STATE menu_seleccionando_ranking[]=
   	{FIN_TABLA, menu_seleccionando_ranking,do_nothing}
 };
 
-static STATE menu_seleccionando_salir[]=
+STATE menu_seleccionando_salir[]=
 {
-  	{ENTER, menu_seleccionando_salir, salir},
+  	{ENTER, menu_seleccionando_salir, salir_enter},
   	{ARRIBA, menu_seleccionando_ranking, menu_arriba},
 	{ABAJO, menu_seleccionando_jugar, menu_abajo},
   	{FIN_TABLA, menu_seleccionando_salir, do_nothing}
 };
 
-static STATE viendo_ranking[]=
+STATE viendo_ranking[]=
 {
 	{ENTER, menu_seleccionando_ranking, ranking_enter},
 	{FIN_TABLA, viendo_ranking, do_nothing}
 };
 
-static STATE poniendo_nombre[]=
+STATE poniendo_nombre[]=
 {
 	{ESC, menu_seleccionando_jugar, salir_al_menu},
 	{ENTER, jugando, guardar_nombre},
 	{FIN_TABLA, poniendo_nombre, do_nothing}
 };
 
-static STATE jugando[]=
+STATE jugando[]=
 {
 	{ARRIBA, jugando, mover_adelante},
 	{ABAJO, jugando, mover_atras},
 	{IZDA, jugando, mover_izda},
 	{DCHA, jugando, mover_dcha},
 	{ENTER, pausa_seleccionando_continuar, pausar},
-	{REFRESCAR, jugando, refresh},
+	{REFRESH, jugando, refresh},
 	{FIN_TABLA, jugando, do_nothing}
 };
 
-static STATE pausa_seleccionando_continuar[]=
+STATE pausa_seleccionando_continuar[]=
 {
   	{ENTER, jugando, continuar},
   	{ARRIBA, menu_seleccionando_salir, pausa_arriba},
-	{ABAJO, estado_menu_reinicar, pausa_abajo},
+	{ABAJO, pausa_seleccionando_reiniciar, pausa_abajo},
   	{FIN_TABLA, pausa_seleccionando_continuar, do_nothing}
 };
 
-static STATE pausa_seleccionando_reiniciar[]=
+STATE pausa_seleccionando_reiniciar[]=
 {
   	{ENTER, jugando, reiniciar},
-  	{ARRIBA, estado_menu_continuar, pausa_arriba},
+  	{ARRIBA, pausa_seleccionando_continuar, pausa_arriba},
 	{ABAJO, menu_seleccionando_salir, pausa_abajo},
   	{FIN_TABLA, pausa_seleccionando_reiniciar, do_nothing}
 };
 
-static STATE pausa_seleccionando_salir[]=
+STATE pausa_seleccionando_salir[]=
 {
   	{ENTER, menu_seleccionando_jugar, salir_al_menu},
-  	{ARRIBA, estado_menu_reiniciar, pausa_arriba},
-	{ABAJO, estado_menu_continuar, pausa_abajo},
+  	{ARRIBA, pausa_seleccionando_reiniciar, pausa_arriba},
+	{ABAJO, pausa_seleccionando_continuar, pausa_abajo},
   	{FIN_TABLA, pausa_seleccionando_salir, do_nothing}
 };
-// +ej: static int temperaturas_actuales[4];+
 
 
 /*******************************************************************************
@@ -156,16 +188,38 @@ static STATE pausa_seleccionando_salir[]=
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-STATE* fsm(STATE *p_tabla_estado, char evento_actual)
+
+STATE* fsm_getInitState(void)
+{
+ 	return (menu_seleccionando_jugar);
+}
+
+STATE* fsm_getCurrentState(void)
+{
+	return p2CurrentState;
+}
+
+STATE* fsm(STATE *p_tabla_estado, event_t evento_actual)
 {
 
-   while (p_tabla_estado -> evento != evento_actual && p_tabla_estado -> evento != FIN_TABLA)
-      ++p_tabla_estado;
-   (*p_tabla_estado -> p_rut_accion) ();          /*rutina de accion corresondiente*/
-   p_tabla_estado=p_tabla_estado -> proximo_estado;   /*siguiente estado*/
+	/*
+	Mientras el evento actual no coincida con uno "interesante", y mientras no se haya recorrido
+	todo el estado...
+	*/
+	while ((p_tabla_estado -> evento != evento_actual) && (p_tabla_estado -> evento != FIN_TABLA))
+	{
+		//Verifico con la siguiente posibilidad dentro del mismo estado.
+		++p_tabla_estado;
+	}
+      
+	//Ejecuta la rutina correspondiente
+	(*p_tabla_estado -> p_rut_accion) ();    
 
-   return(p_tabla_estado);
+	//Pasa al siguiente estado
+	p_tabla_estado = p_tabla_estado -> proximo_estado;   
 
+	//Devuelve puntero a nuevo estado
+	return(p_tabla_estado);
 }
 
 
@@ -175,6 +229,8 @@ STATE* fsm(STATE *p_tabla_estado, char evento_actual)
  *******************************************************************************
  ******************************************************************************/
 
+static void do_nothing(void)
+{
 
+}
 
- 
