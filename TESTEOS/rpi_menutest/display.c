@@ -4,11 +4,13 @@
 #include "bitmap.c"
 #include "mensajes.c"
 #include "disdrv.h"
+#include <time.h>
 #include <pthread.h>
 
 pthread_mutex_t lock;
 
 Matriz disp_matriz;
+#define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.1
 
 int iniciarDisplay(){
     if (pthread_mutex_init(&lock, NULL) != 0)
@@ -35,6 +37,17 @@ void escribirMensajeDisplay(mensaje_t* msj){
         disp_matriz[(msj->posicion)+i] = (msj->renglon)[i];
     actualizarDisplay();
     pthread_mutex_unlock(&lock);
+}
+
+void mostrarTexto(char* txt, int pos){
+    mensaje_t msj = mensaje(txt, pos);
+    while(renglonBool(msj.renglon)){
+        clock_t meta = clock() + SLEEP_CLOCKS;
+        while(clock() < meta);
+        moverMensaje(&msj, NO_REPETIR);
+        escribirMensajeDisplay(&msj);
+    }
+
 }
 
 #endif

@@ -14,19 +14,9 @@ int iniciarJoystick(){
 }
 
 int8_t modulo(int8_t x){
-    if (x==-128) return 127; //excepción: caso en el cual |-128| = -128
+    if (x==-128) return 127; //excepción: caso en el cual -(-128) = -128
     return x >= 0 ? x : -x;
 }
-
-/*
-int movimiento(jcoord_t crd){
-    if(crd.y >= 30 && (modulo(crd.y) > modulo(crd.x))) return ARRIBA;
-    if(crd.y <= -30 && (modulo(crd.y) > modulo(crd.x))) return IZDA;
-    if(crd.x >= 30 && (modulo(crd.y) < modulo(crd.x))) return ABAJO;
-    if(crd.x <= -30 && (modulo(crd.y) < modulo(crd.x))) return DCHA;
-    return NO_MOVER;
-}
-*/
 
 int leerJoystick(){
     joy_update();

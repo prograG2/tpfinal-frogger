@@ -13,9 +13,11 @@
 #define INDEX_ESPACIO 26
 #define CANT_SIMBOLOS 27
 #define L_MAX 64
+#define NO_REPETIR 0
+#define REPETIR 1
 typedef uint16_t Renglon[TAM_RENGLON];
 
-const int longitudes[] = {3,3,3,3,3,3,3,3,1,3,3,3,5,4,3,3,3,3,3,3,3,3,5,3,3,3,3}; //sin contar Ñ (+ espacio)
+const int longitudes[] = {3,3,3,3,3,3,3,3,1,3,3,3,5,4,3,3,3,3,3,3,3,3,5,3,3,3,3}; //sin contar Ñ (+ espacio + numeros)
 
 const int char_index[][TAM_RENGLON] = {{0x4000, 0xA000, 0xE000, 0xA000, 0xA000}, //A
                             {0xC000, 0xA000, 0xC000, 0xA000, 0xC000},
@@ -50,6 +52,7 @@ typedef struct Mensaje{
     int posicion;
     int index;
     int index_inicio;
+    int j_inicio;
     int longitud;
     int mover;
     Renglon renglon;
@@ -187,21 +190,25 @@ mensaje_t mensaje(char* msj, int pos){
     copiarRenglon(mensaje.reserva, mensaje.reserva_inicio);
     mensaje.index = i;
     mensaje.index_inicio = i;
+    mensaje.j_inicio = j;
     mensaje.longitud = longitud;
     mensaje.mover = mover;
 
     return mensaje;
 }
 
-void moverMensaje(mensaje_t* msj){
-    if(!(msj->mover)) return;
+void moverMensaje(mensaje_t* msj, int repetir){
+    if(msj->mover == NO_MOVER_TEXTO) return;
     renglonDobleShiftIzq(msj->renglon, msj->reserva, 1);
 
     if(!renglonBool(msj->reserva)){ //si la reserva queda vacía, dejo un espacio y relleno la reserva con letras nuevas
         int j=1;
         int resto = CANT_COLUMNAS;
         for(;; msj->index++){
-            if(msj->index == msj->longitud) msj->index = 0; //si termino la palabra vuelvo a empezar desde el principio
+            if(msj->index == msj->longitud){ //si termino la palabra
+                if(repetir) msj->index = 0; // vuelvo a empezar desde el principio
+                else break; //o bien, dejo de mostrar mensaje
+            }
             char c = msj->msj[msj->index] ? msj->msj[msj->index] : ' ';
 
             int espacios = c == ' ' ? longitudes[INDEX_ESPACIO] : longitudes[c-'A'];                
