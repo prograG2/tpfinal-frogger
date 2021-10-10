@@ -15,11 +15,14 @@
 #define L_MAX 64
 #define NO_REPETIR 0
 #define REPETIR 1
+#define CERO_INDEX 27
+#define FULL_INDEX 37
+
 typedef uint16_t Renglon[TAM_RENGLON];
 
-const int longitudes[] = {3,3,3,3,3,3,3,3,1,3,3,3,5,4,3,3,3,3,3,3,3,3,5,3,3,3,3}; //sin contar Ñ (+ espacio + numeros)
+int longitudes[] = {3,3,3,3,3,3,3,3,1,3,3,3,5,4,3,3,3,3,3,3,3,3,5,3,3,3,3,3,3,3,3,3,3,3,3,3,3,5}; //sin contar Ñ (+ espacio + numeros + FULL)
 
-const int char_index[][TAM_RENGLON] = {{0x4000, 0xA000, 0xE000, 0xA000, 0xA000}, //A
+Renglon char_index[] = {{0x4000, 0xA000, 0xE000, 0xA000, 0xA000}, //A
                             {0xC000, 0xA000, 0xC000, 0xA000, 0xC000},
                             {0x4000, 0xA000, 0x8000, 0xA000, 0x4000},
                             {0xC000, 0xA000, 0xA000, 0xA000, 0xC000},
@@ -45,7 +48,18 @@ const int char_index[][TAM_RENGLON] = {{0x4000, 0xA000, 0xE000, 0xA000, 0xA000},
                             {0xA000, 0xA000, 0x4000, 0xA000, 0xA000},
                             {0xA000, 0xA000, 0x4000, 0x4000, 0x4000},
                             {0xE000, 0x2000, 0x4000, 0x8000, 0xE000}, //Z
-                            {0x0000, 0x0000, 0x0000, 0x0000, 0x0000}}; //espacio
+                            {0x0000, 0x0000, 0x0000, 0x0000, 0x0000}, //espacio
+                            {0x4000, 0xA000, 0xA000, 0xA000, 0x4000}, //0
+                            {0x4000, 0xC000, 0x4000, 0x4000, 0xE000},
+                            {0x4000, 0xA000, 0x2000, 0x4000, 0xE000},
+                            {0xC000, 0x2000, 0x4000, 0x2000, 0xC000},
+                            {0xA000, 0xA000, 0xE000, 0x2000, 0x2000},
+                            {0xE000, 0x8000, 0xC000, 0x2000, 0xC000},
+                            {0x4000, 0x8000, 0xC000, 0xA000, 0x8000},
+                            {0xE000, 0x2000, 0x2000, 0x4000, 0x4000},
+                            {0x4000, 0xA000, 0x4000, 0xA000, 0x4000},
+                            {0x4000, 0xA000, 0x6000, 0x2000, 0x4000}, //9
+                            {0xF800, 0xF800, 0xF800, 0xF800, 0xF800}}; //TODO
 
 typedef struct Mensaje{
     char msj[L_MAX];
@@ -81,13 +95,6 @@ void printRenglonDoble(Renglon r1, Renglon r2){
     putchar('\n');
 }
 
-void CharARenglon(char c, Renglon r){
-    if(!c) c = ' ';
-    int indice = c == ' ' ? INDEX_ESPACIO : c - 'A';
-    for(int i=0; i<TAM_RENGLON; i++)
-        r[i] = char_index[indice][i];
-}
-
 void borrarRenglon(Renglon r){
     for (int i=0; i<TAM_RENGLON; i++)
         r[i] = 0;
@@ -108,9 +115,14 @@ void renglonOr(Renglon r, Renglon s){
         r[i] |= s[i];
 }
 
-void renglonNot(Renglon r, int j){
+void renglonAnd(Renglon r, Renglon s){
     for (int i=0; i<TAM_RENGLON; i++)
-        r[i] = ~r[i] & ((uint16_t)(0b11111111111111110000000000000000 >> j));
+        r[i] &= s[i];
+}
+
+void renglonNot(Renglon r){
+    for (int i=0; i<TAM_RENGLON; i++)
+        r[i] = ~r[i];
 }
 
 void renglonDobleShiftDer(Renglon r1, Renglon r2, unsigned int s){
@@ -139,6 +151,20 @@ int renglonBool(Renglon r){
     for (int i=0; i<TAM_RENGLON; i++)
         if(r[i]) return 1;
     return 0;
+}
+
+void CharARenglon(char c, Renglon r){
+    int indice;
+    if(c == ' ' || !c){
+        indice = INDEX_ESPACIO;
+    }
+    else if('0' <= c && c <= '9'){
+        indice = c - '0' + INDEX_ESPACIO;
+    }
+    else {
+        indice = c - 'A';
+    }    
+    copiarRenglon(char_index[indice], r);
 }
 
 mensaje_t mensaje(char* msj, int pos){
@@ -198,7 +224,13 @@ mensaje_t mensaje(char* msj, int pos){
 }
 
 void moverMensaje(mensaje_t* msj, int repetir){
-    if(msj->mover == NO_MOVER_TEXTO) return;
+    if(msj->mover == NO_MOVER_TEXTO){
+        if (repetir) return;
+        else{
+            borrarRenglon(msj->renglon);
+            return;
+        }
+    }
     renglonDobleShiftIzq(msj->renglon, msj->reserva, 1);
 
     if(!renglonBool(msj->reserva)){ //si la reserva queda vacía, dejo un espacio y relleno la reserva con letras nuevas

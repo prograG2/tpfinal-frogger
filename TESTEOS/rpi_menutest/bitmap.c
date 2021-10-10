@@ -17,6 +17,11 @@ void printMatriz(Matriz a){
     putchar('\n');
 }
 
+void limpiarMatriz(Matriz a){
+    for(int i=0; i<CANT_FILAS; i++)
+        a[i] = 0;
+}
+
 void matrizAnd(Matriz a, Matriz b){
     for(int i=0; i<CANT_FILAS; i++)
         a[i] &= b[i];

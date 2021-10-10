@@ -6,6 +6,7 @@
 #include "display.c"
 #include <time.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.1
 
@@ -43,7 +44,7 @@ void *thread_display(void* p){
         clock_t meta = clock() + SLEEP_CLOCKS;
         while(clock() < meta);
         moverMensaje((menu->opciones)+(menu->opcion_actual), REPETIR);
-        escribirMensajeDisplay((menu->opciones)+(menu->opcion_actual));
+        escribirRenglonDisplay(((menu->opciones)[menu->opcion_actual]).renglon, ((menu->opciones)[menu->opcion_actual]).posicion);
     }
 }
 

@@ -31,10 +31,17 @@ void actualizarDisplay(){
     disp_update();
 }
 
-void escribirMensajeDisplay(mensaje_t* msj){
+void escribirRenglonDisplay(Renglon r, int pos){
     pthread_mutex_lock(&lock);
     for(int i=0; i<TAM_RENGLON; i++)
-        disp_matriz[(msj->posicion)+i] = (msj->renglon)[i];
+        disp_matriz[pos+i] = r[i];
+    actualizarDisplay();
+    pthread_mutex_unlock(&lock);
+}
+
+void limpiarDisplay(){
+    pthread_mutex_lock(&lock);
+    limpiarMatriz(disp_matriz);
     actualizarDisplay();
     pthread_mutex_unlock(&lock);
 }
@@ -45,7 +52,7 @@ void mostrarTexto(char* txt, int pos){
         clock_t meta = clock() + SLEEP_CLOCKS;
         while(clock() < meta);
         moverMensaje(&msj, NO_REPETIR);
-        escribirMensajeDisplay(&msj);
+        escribirRenglonDisplay(msj.renglon, pos);
     }
 
 }
