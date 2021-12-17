@@ -28,6 +28,7 @@ void *thread_display_menu(){
     return NULL;
 }
 
+//cambiar los accesos a "jugador.algo" por algún "get_jugador", que lo dé game_pc.h
 void *thread_tiempo(){
     clock_t ref = clock();
     while((p2CurrentState == jugando) && (jugador.tiempo < jugador.tiempo_limite)){

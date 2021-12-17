@@ -24,11 +24,13 @@
 	#include "display_rpi.h"
 	#include "menu_rpi.h"
 	#include "threads_rpi.h"
+    #include "joystick.h"
 	Renglon nombreDisp;
 #endif
 
 
 int index, j;
+char nombre[50];
 
 
 /*******************************************************************************
@@ -62,6 +64,9 @@ void pausar(void);
 void continuar(void);
 void reiniciar_juego(void);
 void salir_al_menu(void);
+
+void subir_nivel(void);
+void siguiente_nivel(void);
 
 void game_over(void);
 
@@ -107,7 +112,7 @@ STATE poniendo_nombre[]=
 	{ESC, en_menu_ppal, pasar_a_menu_ppal},
 	{ENTER, jugando, iniciar_juego},
 	{ARRIBA, poniendo_nombre, subir_letra},
-	{ABAJO, poniendo_mombre, bajar_letra},
+	{ABAJO, poniendo_nombre, bajar_letra},
 	{DCHA, poniendo_nombre, siguiente_letra},
 	{FIN_TABLA, poniendo_nombre, agregar_letra}
 };
@@ -211,13 +216,26 @@ STATE* fsm_getInitState(void)
 	srand(time(NULL));
 	if(!queue_init())
 		return 1;
-	al_init();
-    al_install_keyboard();
-	al_register_event_source(al_queue, al_get_keyboard_event_source());
 
+    iniciarPlataforma();
+
+    #if PLATAFORMA == PC
+		al_init();
+        al_install_keyboard();
+        al_register_event_source(al_queue, al_get_keyboard_event_source());
+	#else
+		
+	#endif
+	
+    iniciarDisplay();
+    iniciarMenu();
+    iniciarJoystick();
+
+    //"algo genérico del menu, para ambas plataformas"
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIR};
 	setMenu(menu, 4);
 	setOpcion(0);
+
  	return (en_menu_ppal);
 }
 
@@ -261,6 +279,10 @@ void subir_letra(void){
 }
 
 void bajar_letra(void){
+
+    if(get_jugador_name())
+    set_jugador_name(*string, )
+
 	if(++jugador.nombre[index] > 'Z')
 		jugador.nombre[index] = 'A';
 	#if PLATAFORMA == PC
@@ -277,9 +299,9 @@ void agregar_letra(void){
 	char letra[2];
 	letra[0] = (char) last_key;
 	letra[1] = '\0';
-	strcat(jugador.nombre, letra);
+	strcat(jugador.nombre, letra);      //cambiar por agregar caracteres al string que vive acá (en fsm.c)
 	index++;
-	mostrarTexto(jugador.nombre, ALTO/2);
+	mostrarTexto(jugador.nombre, ALTO/2);   //cambiar por algún get del nombre
 }
 
 void siguiente_letra(void){
@@ -324,8 +346,11 @@ void siguiente_nivel(){
 
 
 void iniciar_juego(void){
-	jugador.puntos = 0;
-	jugador.max_puntos = 0;
+	jugador.puntos = 0;     //cambiar por algo tipo set
+	jugador.max_puntos = 0; //cambiar por algo tipo set
+
+    //mandar el string con el nombre que vive en fsm.c al jugador.nombre
+
 	FILE* pFile;
     char linea[100];
     pFile = fopen ("ranking.txt" , "r");
@@ -435,16 +460,6 @@ void game_over(void){
 	}
 	int menu[2] = {REINICIAR, SALIR};
 	setMenu(menu, 2);
-	setOpcion(0);
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
-}
-
-void pausar(void){
-	pthread_join(ttiempo, NULL);
-	pthread_join(tautos, NULL);
-	pthread_join(tdisplayjuego, NULL);
-	int menu[3] = {CONTINUAR, REINICIAR, SALIR};
-	setMenu(menu, 3);
 	setOpcion(0);
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }

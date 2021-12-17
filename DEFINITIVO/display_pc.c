@@ -10,6 +10,8 @@ int iniciarDisplay(){
 	must_init(font, "font");
     must_init(al_init_primitives_addon(), "primitives");
     al_register_event_source(al_queue, al_get_display_event_source(disp));
+    al_init_image_addon();
+    
 }
 
 void actualizarDisplay(){

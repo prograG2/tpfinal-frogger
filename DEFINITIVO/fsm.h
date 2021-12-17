@@ -81,6 +81,8 @@ extern STATE en_pausa_esperando_opcion[];
 extern STATE en_game_over[];
 extern STATE en_game_over_esperando_opcion[];
 
+extern STATE pasando_de_nivel[];
+
 
 /*******************************************************************************
  ******************************************************************************/

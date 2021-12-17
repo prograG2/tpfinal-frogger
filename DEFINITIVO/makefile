@@ -21,4 +21,6 @@ threads_pc.o: threads_pc.c threads_pc.h queue.o display_pc.o global.h menu_pc.o 
 
 menu_pc.o: menu_pc.c menu_pc.h
 	gcc -Wall -g -c menu_pc.c
+
+
 	

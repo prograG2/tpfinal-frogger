@@ -121,3 +121,8 @@ void llegada(){
 	
 
 }
+
+void inicializarJugador()
+{
+    
+}

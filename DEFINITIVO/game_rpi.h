@@ -38,5 +38,6 @@ void perderVidaChoque();
 void perderVidaAgua();
 void perderVidaTimeout();
 void llegada();
+void inicializarJugador();
 
 #endif
