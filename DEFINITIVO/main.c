@@ -9,40 +9,47 @@
  * 
  */
 
-#include <stdlib.h>
-
 #include "global.h"
 #include "fsm.h"
 #include "queue.h"
-#include "termlib.h"
 
-STATE* p2CurrentState = NULL;
-unsigned char getEvent();
+event_t getEvent();
+extern STATE* p2CurrentState;
 
 int main (void)
 {
-	//Limpio pantalla
-	clrscr();
-
-	//Variable de eventos
     event_t evento;
+	p2CurrentState = fsm_getInitState(); //al inicializarse la fsm, se inicializa todo lo demás
 
-	//Inicializo la FSM con el estado inicial
-	p2CurrentState = fsm_getInitState();
-
-	if(queue_init() || game_data_setDificultad_easy())
-		return 1;
-
-	//Adquiero eventos y corro la FSM
-	while((evento = getEvent()))
-	{
+	while(evento = getEvent())
 		p2CurrentState = fsm(p2CurrentState, evento);
-	}
 
 	return 0;
 }
-
-unsigned char getEvent(){
+#if PLATAFORMA == PC
+event_t getEvent(){
+	ALLEGRO_EVENT ret_event;
+	while(queue_empty()){
+		if(al_get_next_event(al_queue, &ret_event))
+			switch(ret_event.keyboard.keycode){
+				case ALLEGRO_KEY_UP: return ARRIBA;
+				case ALLEGRO_KEY_DOWN: return ABAJO;
+				case ALLEGRO_KEY_LEFT: return IZDA;
+				case ALLEGRO_KEY_RIGHT: return DCHA;
+				case ALLEGRO_KEY_ENTER: return ENTER;
+				case ALLEGRO_KEY_BACKSPACE: return BORRAR;
+				case ALLEGRO_KEY_ESCAPE: return ESC;
+				default:
+					last_key = ret_event.keyboard.keycode;
+					return last_key;
+			}
+	}
+	return queue_next();
+}
+#else
+event_t getEvent(){
 	while(queue_empty());
 	return queue_next();
 }
+#endif
+

@@ -10,7 +10,7 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-
+#include "global.h"
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -26,9 +26,6 @@
  * @brief Eventos posibles.
  * 
  */
-enum eventos{SALIR = 0, ARRIBA, ABAJO, IZDA, DCHA, ENTER, BORRAR, ESC, LISTO, REFRESH};
-
-typedef unsigned char event_t;
 
 typedef struct state_diagram_edge STATE;
 
@@ -49,7 +46,7 @@ struct state_diagram_edge
  ******************************************************************************/
 
 //Puntero al estado actual, presente en main.c
-extern STATE* p2CurrentState;
+STATE* p2CurrentState;
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -63,13 +60,6 @@ extern STATE* p2CurrentState;
 STATE* fsm_getInitState(void);
 
 /**
- * @brief Devuelve el estado actual de la FSM.
- * 
- * @return STATE* Puntero al estado actual.
- */
-STATE* fsm_getCurrentState(void);
-
-/**
  * @brief Intérprete de la FSM. Se encarga de hacer correr la FSM a partir de un estado y evento dados.
  * 
  * @param p_tabla_estado Estado actual.
@@ -77,6 +67,19 @@ STATE* fsm_getCurrentState(void);
  * @return STATE* Puntero al siguiente estado.
  */
 STATE* fsm(STATE *p_tabla_estado, event_t evento_actual);
+
+extern STATE en_menu_ppal[];
+extern STATE menu_ppal_esperando_opcion[];
+extern STATE en_dificultad[];
+
+
+extern STATE viendo_ranking[];
+extern STATE poniendo_nombre[];
+extern STATE jugando[];
+extern STATE en_pausa[];
+extern STATE en_pausa_esperando_opcion[];
+extern STATE en_game_over[];
+extern STATE en_game_over_esperando_opcion[];
 
 
 /*******************************************************************************

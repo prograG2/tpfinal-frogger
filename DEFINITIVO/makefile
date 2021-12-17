@@ -1,47 +1,24 @@
-# makefile general del proyecto.
+main: main.o fsm.o queue.o threads_pc.o
+	gcc -Wall -g main.o fsm.o queue.o threads_pc.o -o main -lallegro -lallegro_font -lallegro_primitives -lpthread
 
-# Organizativo
-CC := gcc
-OPTIONS := -Wall 
-# -g para debuggear, -O2 para optimizar
-OBJS = main.o game_data.o fsm.o queue.o display.o timer.o termlib.o
+main.o: main.c fsm.h queue.h global.h
+	gcc -Wall -g -c main.c
 
+fsm.o: fsm.c fsm.h queue.h global.h rutinas_pc.o
+	gcc -Wall -g -c fsm.c
 
-# Ejecutables
-frogger: ${OBJS}
-	${CC} ${OPTIONS} ${OBJS} -o frogger
+queue.o: queue.c queue.h global.h
+	gcc -Wall -g -c queue.c
 
-# VM: ${OBJS}
-#	${CC} ${OPTIONS} ${OBJS} -o froggerVM -D PLATAFORMA=0
+rutinas_pc.o: rutinas_pc.c fsm.o threads_pc.o queue.o menu_pc.o
+	gcc -Wall -g -c rutinas_pc.c -lallegro -lallegro_font -lallegro_primitives
 
-# RPI: ${OBJS}
-#	${CC} ${OPTIONS} {OBJS} -o froggerRPI -D PLATAFORMA=1
+display_pc.o: display_pc.c display_pc.h queue.c global.h
+	gcc -Wall -g -c display_pc.c -lallegro -lallegro_font -lallegro_primitives
 
+threads_pc.o: threads_pc.c threads_pc.h queue.o display_pc.o global.h menu_pc.o gamedata.h fsm.o
+	gcc -Wall -g -c threads_pc.c -lallegro -lallegro_font -lallegro_primitives -lpthread
 
-# Objetos
-main.o: main.c global.h fsm.h queue.h termlib.h
-	${CC} ${OPTIONS} -c main.c
-
-game_data.o: game_data.c game_data.h global.h
-	${CC} ${OPTIONS} -c game_data.c
-
-fsm.o: fsm.c fsm.h
-	${CC} ${OPTIONS} -c fsm.c
-
-queue.o: queue.c queue.h fsm.h
-	${CC} ${OPTIONS} -c queue.c
-
-display.o: display.c display.h
-	${CC} ${OPTIONS} -c display.c
-
-timer.o: timer.c timer.h
-	${CC} ${OPTIONS} -c timer.c
-
-termlib.o: termlib.c termlib.h
-	${CC} ${OPTIONS} -c termlib.c
-
-
-
-# Limpia objetos
-clean:
-	rm *.o
+menu_pc.o: menu_pc.c menu_pc.h
+	gcc -Wall -g -c menu_pc.c
+	

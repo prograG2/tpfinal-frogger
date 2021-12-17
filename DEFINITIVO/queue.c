@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 #include "queue.h"
+#include "global.h"
 
 
 /*******************************************************************************
@@ -61,6 +62,15 @@ static node_t *front = NULL, *back = NULL;
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
+int queue_init(){
+  #if PLATAFORMA == PC
+  al_queue = al_create_event_queue();
+  al_register_event_source(al_queue, al_get_keyboard_event_source());
+  return al_queue;
+  #endif
+  return 1;
+}
+
 
 void queue_insert(event_t nuevo)
 {
