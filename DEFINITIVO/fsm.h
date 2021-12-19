@@ -10,7 +10,13 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
+<<<<<<< HEAD
 #include "global.h"
+=======
+
+
+#include "queue.h"
+>>>>>>> rpi funcionando
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -57,7 +63,11 @@ STATE* p2CurrentState;
  * 
  * @return STATE* Puntero al estado inicial.
  */
+<<<<<<< HEAD
 STATE* fsm_getInitState(void);
+=======
+int inicializarFsm(void);
+>>>>>>> rpi funcionando
 
 /**
  * @brief Intérprete de la FSM. Se encarga de hacer correr la FSM a partir de un estado y evento dados.
@@ -66,7 +76,21 @@ STATE* fsm_getInitState(void);
  * @param evento_actual Evento recibido.
  * @return STATE* Puntero al siguiente estado.
  */
-STATE* fsm(STATE *p_tabla_estado, event_t evento_actual);
+void fsm(event_t evento_actual);
+
+extern STATE en_menu_ppal[];
+extern STATE menu_ppal_esperando_opcion[];
+extern STATE en_dificultad[];
+extern STATE viendo_ranking[];
+extern STATE poniendo_nombre[];
+
+extern STATE jugando[];
+extern STATE pasando_de_nivel[];
+extern STATE en_pausa[];
+extern STATE en_pausa_esperando_opcion[];
+extern STATE en_game_over[];
+extern STATE en_game_over_esperando_opcion[];
+
 
 extern STATE en_menu_ppal[];
 extern STATE menu_ppal_esperando_opcion[];

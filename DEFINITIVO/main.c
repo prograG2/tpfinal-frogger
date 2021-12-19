@@ -12,13 +12,19 @@
 #include "global.h"
 #include "fsm.h"
 #include "queue.h"
+<<<<<<< HEAD
 
 event_t getEvent();
+=======
+#include <stdio.h>
+
+>>>>>>> rpi funcionando
 extern STATE* p2CurrentState;
 
 int main (void)
 {
     event_t evento;
+<<<<<<< HEAD
 	p2CurrentState = fsm_getInitState(); //al inicializarse la fsm, se inicializa todo lo demás
 
 	while(evento = getEvent())
@@ -52,4 +58,19 @@ event_t getEvent(){
 	return queue_next();
 }
 #endif
+=======
+	if(inicializarFsm()) //al inicializarse la fsm, se inicializa todo lo demás
+		return 1;
+	
+	while((evento = queue_next())){
+		if(evento != NADA)
+			fsm(evento);
+	}
+
+	printf("%s\n", "Saliendo...");
+
+	return 0;
+}
+
+>>>>>>> rpi funcionando
 

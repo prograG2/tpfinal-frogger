@@ -1,9 +1,22 @@
 #include "display_rpi.h"
+<<<<<<< HEAD
+=======
+#include "disdrv.h"
+#include <pthread.h>
+#include "global.h"
+
+pthread_mutex_t lock;
+
+Matriz disp_matriz;
+>>>>>>> rpi funcionando
 
 int iniciarDisplay(){
     if (pthread_mutex_init(&lock, NULL) != 0)
     {
+<<<<<<< HEAD
         printf("\n mutex init failed\n");
+=======
+>>>>>>> rpi funcionando
         return 1;
     }
     disp_init();       //inicializa el display

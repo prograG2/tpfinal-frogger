@@ -1,6 +1,7 @@
 #ifndef DISPLAY_RPI
 #define DISPLAY_RPI
 
+<<<<<<< HEAD
 #include "bitmap_rpi.h"
 #include "mensajes_rpi.h"
 #include "disdrv.h"
@@ -11,6 +12,10 @@
 pthread_mutex_t lock;
 
 Matriz disp_matriz;
+=======
+#include "mensajes_rpi.h"
+#include "bitmap_rpi.h"
+>>>>>>> rpi funcionando
 
 int iniciarDisplay();
 

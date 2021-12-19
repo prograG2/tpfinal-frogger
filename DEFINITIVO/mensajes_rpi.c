@@ -1,4 +1,55 @@
 #include "mensajes_rpi.h"
+<<<<<<< HEAD
+=======
+#include "bitmap_rpi.h"
+#include <stdio.h>
+
+#define INDEX_ESPACIO 26
+#define INDEX_CERO 27
+#define INDEX_FULL 37
+#define CANT_SIMBOLOS 38
+
+int longitudes[] = {3,3,3,3,3,3,3,3,1,3,3,3,5,4,3,3,3,3,3,3,3,3,5,3,3,3,3,3,3,3,3,3,3,3,3,3,3,5}; //sin contar Ñ (+ espacio + numeros + FULL)
+
+Renglon char_index[] = {{0x4000, 0xA000, 0xE000, 0xA000, 0xA000}, //A
+                            {0xC000, 0xA000, 0xC000, 0xA000, 0xC000},
+                            {0x4000, 0xA000, 0x8000, 0xA000, 0x4000},
+                            {0xC000, 0xA000, 0xA000, 0xA000, 0xC000},
+                            {0xE000, 0x8000, 0xC000, 0x8000, 0xE000},
+                            {0xE000, 0x8000, 0xC000, 0x8000, 0x8000},
+                            {0x6000, 0x8000, 0xA000, 0xA000, 0x6000},
+                            {0xA000, 0xA000, 0xE000, 0xA000, 0xA000},
+                            {0x8000, 0x8000, 0x8000, 0x8000, 0x8000},
+                            {0x2000, 0x2000, 0xA000, 0xA000, 0x4000},
+                            {0xA000, 0xA000, 0xC000, 0xA000, 0xA000},
+                            {0x8000, 0x8000, 0x8000, 0x8000, 0xE000},
+                            {0x8800, 0xD800, 0xA800, 0xA800, 0x8800},
+                            {0x9000, 0xD000, 0xB000, 0x9000, 0x9000},
+                            {0x4000, 0xA000, 0xA000, 0xA000, 0x4000},
+                            {0xC000, 0xA000, 0xA000, 0xC000, 0x8000},
+                            {0x4000, 0xA000, 0xA000, 0xA000, 0x6000},
+                            {0xC000, 0xA000, 0xC000, 0xA000, 0xA000},
+                            {0x6000, 0x8000, 0x4000, 0x2000, 0xC000},
+                            {0xE000, 0x4000, 0x4000, 0x4000, 0x4000},
+                            {0xA000, 0xA000, 0xA000, 0xA000, 0x4000},
+                            {0xA000, 0xA000, 0xA000, 0x4000, 0x4000},
+                            {0x8800, 0xA800, 0xA800, 0x5000, 0x5000},
+                            {0xA000, 0xA000, 0x4000, 0xA000, 0xA000},
+                            {0xA000, 0xA000, 0x4000, 0x4000, 0x4000},
+                            {0xE000, 0x2000, 0x4000, 0x8000, 0xE000}, //Z
+                            {0x0000, 0x0000, 0x0000, 0x0000, 0x0000}, //espacio
+                            {0x4000, 0xA000, 0xA000, 0xA000, 0x4000}, //0
+                            {0x4000, 0xC000, 0x4000, 0x4000, 0xE000},
+                            {0x4000, 0xA000, 0x2000, 0x4000, 0xE000},
+                            {0xC000, 0x2000, 0x4000, 0x2000, 0xC000},
+                            {0xA000, 0xA000, 0xE000, 0x2000, 0x2000},
+                            {0xE000, 0x8000, 0xC000, 0x2000, 0xC000},
+                            {0x4000, 0x8000, 0xC000, 0xA000, 0xC000},
+                            {0xE000, 0x2000, 0x2000, 0x4000, 0x4000},
+                            {0x4000, 0xA000, 0x4000, 0xA000, 0x4000},
+                            {0x4000, 0xA000, 0x6000, 0x2000, 0x4000}, //9
+                            {0xF800, 0xF800, 0xF800, 0xF800, 0xF800}}; //TODO (FULL)
+>>>>>>> rpi funcionando
 
 void printRenglon(Renglon r){
     for(int i=0; i<TAM_RENGLON; i++, putchar('\n'))
@@ -84,7 +135,11 @@ void CharARenglon(char c, Renglon r){
         indice = INDEX_ESPACIO;
     }
     else if('0' <= c && c <= '9'){
+<<<<<<< HEAD
         indice = c - '0' + INDEX_ESPACIO;
+=======
+        indice = c - '0' + INDEX_CERO;
+>>>>>>> rpi funcionando
     }
     else {
         indice = c - 'A';
@@ -92,14 +147,22 @@ void CharARenglon(char c, Renglon r){
     copiarRenglon(char_index[indice], r);
 }
 
+<<<<<<< HEAD
 void uintARenglon(unsigned int n, Renglon r){
     Renglon renglon_aux;
     int j=0, resto = CANT_COLUMNAS;
     unsigned int div = 1000000000;
+=======
+void uintARenglon(uint16_t n, Renglon r){
+    Renglon renglon_aux;
+    int j=0, resto = CANT_COLUMNAS;
+    uint16_t div = 10000;
+>>>>>>> rpi funcionando
     while(n%div == n){
         div /= 10;
     }
     while(n){
+<<<<<<< HEAD
         unsigned int aux = n%div;
         n = (n-aux)/div;
         resto = CANT_COLUMNAS - j - longitudes[CERO_INDEX+n];
@@ -109,6 +172,17 @@ void uintARenglon(unsigned int n, Renglon r){
         renglonShiftDer(renglon_aux, j);
         renglonOr(r, renglon_aux);
         j +=  longitudes[CERO_INDEX+n] + 1;
+=======
+        uint16_t aux = n%div;
+        n = (n-aux)/div;
+        resto = CANT_COLUMNAS - j - longitudes[INDEX_CERO+n];
+        if(resto < 0)
+            break;
+        copiarRenglon(char_index[INDEX_CERO+n], renglon_aux);
+        renglonShiftDer(renglon_aux, j);
+        renglonOr(r, renglon_aux);
+        j +=  longitudes[INDEX_CERO+n] + 1;
+>>>>>>> rpi funcionando
         n = aux;
         div /= 10;
     }
@@ -118,11 +192,19 @@ void reemplazarLetra(Renglon r, char c, int j){
     Renglon full, letra;
     CharARenglon(c, letra);
     renglonShiftDer(letra, j);
+<<<<<<< HEAD
     copiarRenglon(char_index[FULL_INDEX], full);
     renglonShiftDer(full, j);
     renglonNot(full);
     renglonAnd(r, full);
     RenglonOr(r, letra);
+=======
+    copiarRenglon(char_index[INDEX_FULL], full);
+    renglonShiftDer(full, j);
+    renglonNot(full);
+    renglonAnd(r, full);
+    renglonOr(r, letra);
+>>>>>>> rpi funcionando
 }
 
 mensaje_t mensaje(char* msj, int pos){
@@ -130,6 +212,7 @@ mensaje_t mensaje(char* msj, int pos){
     mensaje.posicion = pos;
     int i=0;
     char c;
+<<<<<<< HEAD
     while(c = msj[i]){
         if(c >= 'a' && c <= 'z') c -= ('a'-'A');
         if (!(c >= 'A' && c <= 'Z')) break;
@@ -137,19 +220,48 @@ mensaje_t mensaje(char* msj, int pos){
         i++;
     }
     mensaje.msj[i] = '\0';
+=======
+    while((c = msj[i]) && c != '\n'){
+        mensaje.msj[i] = c;
+        i++;
+    }
+    mensaje.msj[i] = ' ';
+    mensaje.msj[i+1] = '\0';
+>>>>>>> rpi funcionando
 
     int j = 0; //a partir de donde voy a escribir la proxima vez
     int resto = CANT_COLUMNAS; //cuantos espacios me quedarían si escribo la próxima letra
     int mover = NO_MOVER_TEXTO; //si debo o no mover el mensaje despues (se activa cuando termino de escribir en renglon y quedan letras aún)
+<<<<<<< HEAD
     int longitud = i+1;
 
     for(i=0; i<(longitud-1); i++){ //rellena el mensaje por primera vez
         char c = msj[i] ? msj[i] : ' '; //el caracter que debo escribir (si es el terminador escribo espacio)
+=======
+    int longitud = i+2;
+
+    for(i=0; i<(longitud-1); i++){ //rellena el mensaje por primera vez
+        char c = msj[i]; //el caracter que debo escribir
+>>>>>>> rpi funcionando
 
         Renglon letra;
         CharARenglon(c, letra); //letra contiene la letra provisoria pasada a renglón
 
+<<<<<<< HEAD
         int espacios = c == ' ' ? longitudes[INDEX_ESPACIO] : longitudes[c-'A']; //calculo los espacios horizontales que ocupará la letra
+=======
+        int index;
+        if(c == ' ')
+            index = INDEX_ESPACIO;
+        else if('0' <= c && c <= '9')
+            index = INDEX_CERO + c - '0';
+        else if('A' <= c && c <= 'Z')
+            index = c - 'A';
+        else
+            index = INDEX_FULL;
+
+        int espacios = longitudes[index];
+>>>>>>> rpi funcionando
         resto = (CANT_COLUMNAS-j) - espacios; //lo que me quedaría libre si escribo
 
         if(resto < 0){
@@ -200,9 +312,26 @@ void moverMensaje(mensaje_t* msj, int repetir){
                     break;
                 }
             }
+<<<<<<< HEAD
             char c = msj->msj[msj->index] ? msj->msj[msj->index] : ' ';
 
             int espacios = c == ' ' ? longitudes[INDEX_ESPACIO] : longitudes[c-'A'];                
+=======
+            char c = msj->msj[msj->index];
+
+            int index;
+            if(c == ' ')
+                index = INDEX_ESPACIO;
+            else if('0' <= c && c <= '9')
+                index = INDEX_CERO + c - '0';
+            else if('A' <= c && c <= 'Z')
+                index = c - 'A';
+            else
+                index = INDEX_FULL;
+
+            int espacios = longitudes[index];
+
+>>>>>>> rpi funcionando
             resto = (CANT_COLUMNAS-j) - espacios; //lo que me quedaría libre
             if(resto < 0) break;
 
@@ -215,4 +344,18 @@ void moverMensaje(mensaje_t* msj, int repetir){
             renglonOr(msj->reserva, letra);
         }
     }
+<<<<<<< HEAD
+=======
+}
+
+int getLongitud(char c){
+    if(c == ' ')
+        return longitudes[INDEX_ESPACIO];
+    else if('0' <= c && c <= '9')
+        return longitudes[INDEX_CERO + c - '0'];
+    else if('A' <= c && c <= 'Z')
+        return longitudes[c - 'A'];
+    else
+        return longitudes[INDEX_FULL];
+>>>>>>> rpi funcionando
 }

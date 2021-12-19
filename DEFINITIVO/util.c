@@ -1,4 +1,8 @@
 #include "util.h"
+<<<<<<< HEAD
+=======
+#include <string.h>
+>>>>>>> rpi funcionando
 
 void ulltoa(uint64_t num, char* str)
 {
@@ -21,5 +25,8 @@ void ulltoa(uint64_t num, char* str)
         str[i] = str[j];
         str[j] = ch;
     }
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> rpi funcionando
 }

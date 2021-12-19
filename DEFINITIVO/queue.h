@@ -7,14 +7,19 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
+#include "global.h"
+
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+<<<<<<< HEAD
 #include <stdlib.h>
 #include "global.h"
 
 
+=======
+>>>>>>> rpi funcionando
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -45,6 +50,7 @@ void queue_insert(event_t);
 int queue_empty();
 event_t queue_next();
 int queue_destroy();
+
 
 
 

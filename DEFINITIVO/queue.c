@@ -9,7 +9,12 @@
  ******************************************************************************/
 
 #include "queue.h"
+<<<<<<< HEAD
 #include "global.h"
+=======
+#include <stdlib.h>
+#include <stdio.h>
+>>>>>>> rpi funcionando
 
 
 /*******************************************************************************
@@ -41,7 +46,7 @@ typedef struct nodeT
  ******************************************************************************/
 
 static void delete();
-
+static void printQueue();
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -77,16 +82,31 @@ void queue_insert(event_t nuevo)
     node_t *temp = (node_t*)malloc(sizeof(node_t));
 
     temp->data = nuevo;
+    printf("%d\n", nuevo);
+    /*
+    printf("\nAntes de poner: ");
+    printQueue();
+    */
 
     if (front ==  NULL)
     {
-      front = back = temp;
+      front = temp;
+      front->next = NULL;
+    }
+    else if(back == NULL){
+      back = temp;
+      front->next = back;
+      back->next = NULL;
     }
     else
     {
-        back->next = temp;
-        back = back->next;
-    }    
+      back->next = temp;
+      back = back->next;
+    }
+    /*
+    printf("\nTras poner: ");
+    printQueue();
+    */
 }
 
 
@@ -97,14 +117,28 @@ int queue_empty()
 
 event_t queue_next()
 {
+  #if PLATAFORMA == PC
+    ALLEGRO_EVENT ret_event;
+		if(al_get_next_event(al_queue, &ret_event))
+			last_key = ret_event.keyboard.keycode;
+			return last_key;
+	#endif
+
   if (front == NULL){
-    return -1;
+    return NADA;
   }
   else{
-    event_t r;
-    if(back == NULL) r = front->data;
-    else r = back->data;
+    event_t r = front->data;
+    /*
+    printf("Antes de retirar: ");
+    printQueue();
+    */
     delete();
+    /*
+    printf("Tras retirar: ");
+    printQueue();
+    */
+    printf("%d\n", r);
     return r;
   }
 }
@@ -121,13 +155,21 @@ event_t queue_next()
 static void delete()
 {
   if(front != NULL){
-    event_t valor = front->data;
     node_t *temp = front;
     front = front->next;
     free(temp);
-    return valor;
+    if(front == NULL){
+      back = NULL;
+    }
   }
-  else return -1;
+}
+
+static void printQueue(){
+  node_t *temp = front;
+  while(temp != back){
+    printf("%d, ", temp->data);
+    temp = temp->next;
+  }
 }
 
  

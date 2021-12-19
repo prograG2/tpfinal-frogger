@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 #include "bitmap.h"
+=======
+#include "bitmap_rpi.h"
+
+#include <stdio.h>
+>>>>>>> rpi funcionando
 
 void printMatriz(Matriz a){
     for(int i=0; i<CANT_FILAS; i++, putchar('\n'))
@@ -13,6 +19,14 @@ void limpiarMatriz(Matriz a){
         a[i] = 0;
 }
 
+<<<<<<< HEAD
+=======
+void copiarMatriz(Matriz destino, Matriz desde){
+    for(int i=0; i<CANT_FILAS; i++)
+        destino[i] = desde[i];
+}
+
+>>>>>>> rpi funcionando
 void matrizAnd(Matriz a, Matriz b){
     for(int i=0; i<CANT_FILAS; i++)
         a[i] &= b[i];

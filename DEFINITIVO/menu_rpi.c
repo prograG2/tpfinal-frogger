@@ -1,7 +1,25 @@
 #include "menu_rpi.h"
+<<<<<<< HEAD
 
 void setMenu(int* a, unsigned int size){
     menu.menu_actual = realloc(menu.prev = menu.menu_actual, size*sizeof(int));
+=======
+#include "mensajes_rpi.h"
+#include "display_rpi.h"
+#include <stdlib.h>
+
+struct{
+mensaje_t textos[9];
+int *menu_actual;
+int opcion_actual;
+int max_opciones;
+} menu;
+
+static void cambiarAOpcionActual();
+
+void setMenu(int* a, unsigned int size){
+    menu.menu_actual = realloc(menu.menu_actual, size*sizeof(int));
+>>>>>>> rpi funcionando
     int i;
     for(i=0; i<size; i++){
         menu.menu_actual[i] = a[i];
@@ -14,6 +32,13 @@ void setOpcion(int opc){
     cambiarAOpcionActual();
 }
 
+<<<<<<< HEAD
+=======
+int getOpcion(){
+    return menu.opcion_actual;
+}
+
+>>>>>>> rpi funcionando
 void subirOpcion(){
     if(--menu.opcion_actual < 0)
         menu.opcion_actual = menu.max_opciones - 1;
@@ -51,5 +76,8 @@ void moverOpcionActual(){
 
 void destruirMenu(){
     free(menu.menu_actual);
+<<<<<<< HEAD
     free(menu.prev);
+=======
+>>>>>>> rpi funcionando
 }

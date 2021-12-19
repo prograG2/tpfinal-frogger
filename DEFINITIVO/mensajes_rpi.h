@@ -1,13 +1,17 @@
 #ifndef MENSAJES_RPI
 #define MENSAJES_RPI
 
+<<<<<<< HEAD
 #include "bitmap_rpi.h"
+=======
+>>>>>>> rpi funcionando
 #include "global.h"
 #include <stdint.h>
 
 #define MOVER_TEXTO 1
 #define NO_MOVER_TEXTO 0
 #define TAM_RENGLON 5
+<<<<<<< HEAD
 #define INDEX_ESPACIO 26
 #define CANT_SIMBOLOS 27
 #define NO_REPETIR 0
@@ -58,6 +62,13 @@ Renglon char_index[] = {{0x4000, 0xA000, 0xE000, 0xA000, 0xA000}, //A
                             {0x4000, 0xA000, 0x6000, 0x2000, 0x4000}, //9
                             {0xF800, 0xF800, 0xF800, 0xF800, 0xF800}}; //TODO (FULL)
 
+=======
+#define NO_REPETIR 0
+#define REPETIR 1
+
+typedef uint16_t Renglon[TAM_RENGLON];
+
+>>>>>>> rpi funcionando
 typedef struct Mensaje{
     char msj[L_MAX];
     int posicion;
@@ -98,7 +109,11 @@ int renglonBool(Renglon r);
 
 void CharARenglon(char c, Renglon r);
 
+<<<<<<< HEAD
 void uintARenglon(unsigned int n, Renglon r); //copia un número a renglon hasta que se acabe el número o el renglon (lo 1 q ocurra)
+=======
+void uintARenglon(uint16_t n, Renglon r); //copia un número a renglon hasta que se acabe el número o el renglon (lo 1 q ocurra)
+>>>>>>> rpi funcionando
 
 void reemplazarLetra(Renglon r, char c, int j);
 
@@ -106,4 +121,9 @@ mensaje_t mensaje(char* msj, int pos);
 
 void moverMensaje(mensaje_t* msj, int repetir);
 
+<<<<<<< HEAD
+=======
+int getLongitud(char a);
+
+>>>>>>> rpi funcionando
 #endif

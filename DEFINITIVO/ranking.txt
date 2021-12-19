@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 PEDRO 2348723
+=======
+PEDRO 123456789
+>>>>>>> rpi funcionando
 JUAN 405243
 PABLO 2435
