@@ -18,14 +18,14 @@
 
 #if PLATAFORMA == PC
 	#include "nombre_pc.h"
-	#include "game_pc.h"
-	#include "display_pc.h"
-	#include "menu_pc.h"
+    #include "game_pc.h"
+    #include "display_pc.h"
+    #include "menu_pc.h"
 #else
 	#include "nombre_rpi.h"
-	#include "game_rpi.h"
-	#include "display_rpi.h"
-	#include "menu_rpi.h"
+    #include "game_rpi.h"
+    #include "display_rpi.h"
+    #include "menu_rpi.h"
     #include "joystick.h"
 #endif
 

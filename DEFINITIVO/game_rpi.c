@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define POS_AUTOS 4
+
 struct{
     char nombre[L_MAX];
     int dificultad;

@@ -35,7 +35,7 @@ void escribirRenglonDisplay(Renglon r, int pos){
 
 void escribirMatrizDisplay(Matriz m){
     pthread_mutex_lock(&lock);
-    for(int i=0; i<CANT_FILAS; i++)
+    for(int i=0; i<ALTO; i++)
         disp_matriz[i] = m[i];
     actualizarDisplay();
     pthread_mutex_unlock(&lock);

@@ -18,7 +18,6 @@
     #define ALTO 640
     #define ANCHO 480
     #define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.04
-    #define NO_POS -1
     #define POS_MSJ1 100
     #define POS_MSJ2 200
 
@@ -26,12 +25,10 @@
     #define ALTO 16
     #define ANCHO 16
     #define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.5
-    #define NO_POS -1
     #define POS_MSJ1 2
     #define POS_MSJ2 9
-    #define POS_AUTOS 4
-    #define CANT_FILAS 16
-    #define CANT_COLUMNAS 16
+    //#define CANT_FILAS 16
+    //#define CANT_COLUMNAS 16
 
 #elif
     #error "Plataforma no identificada"
