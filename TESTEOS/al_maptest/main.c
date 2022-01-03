@@ -46,11 +46,17 @@
 #define CELL_START_X    (CELL_TOPLEFT_X + CELL_W * (COLS / 2 ))
 #define CELL_START_Y    (CELL_TOPLEFT_Y + CELL_H * (ROWS - 1))
 
+#define FROG_OFFSET_X   (CELL_W / 2 - FROG_W/2)
+#define FROG_OFFSET_Y   (CELL_H / 2 - FROG_H/2)
+#define CELL_START_FROG_X   (CELL_START_X + FROG_OFFSET_X)
+#define CELL_START_FROG_Y   (CELL_START_Y + FROG_OFFSET_Y)
+
 //Bordes para la rana en el mapa
-#define FROG_MAX_X  (CELL_TOPLEFT_X + CELL_W * (COLS - 1))
-#define FROG_MAX_Y  (CELL_TOPLEFT_Y + CELL_H * (ROWS - 1))
-#define FROG_MIN_X  CELL_TOPLEFT_X
-#define FROG_MIN_Y  CELL_TOPLEFT_Y
+#define FROG_MAX_X  ((CELL_TOPLEFT_X + CELL_W * (COLS - 1)) + (FROG_OFFSET_X))
+#define FROG_MAX_Y  ((CELL_TOPLEFT_Y + CELL_H * (ROWS - 1)) + (FROG_OFFSET_Y))
+#define FROG_MIN_X  (CELL_TOPLEFT_X + FROG_OFFSET_X)
+#define FROG_MIN_Y  (CELL_TOPLEFT_Y + FROG_OFFSET_Y)
+
 
 #define FROG_W  30
 #define FROG_H  30
@@ -64,9 +70,12 @@
 #define MAX_CARS    10
 
 
-#define MAX_LOGS    3
+#define MAX_LOGS    2
 #define LOG_W   (3 * CELL_W)
 #define LOG_H   45
+
+#define LOG_OFFSET_X    0
+#define LOG_OFFSET_Y    7
 
 
 enum DIRECTIONS {UP, RIGHT, LEFT, DOWN};
@@ -206,7 +215,6 @@ void frog_draw(void);
 void logs_init(void);
 void logs_update(void);
 void logs_draw(void);
-bool logs_collide(int i, int x, int y, int w, int h);
 
 /**
  * @brief Devuelve un randon entre dos numeros dados
@@ -232,6 +240,35 @@ int get_rand_between(int low, int high);
  * @return false No colisión
  */
 bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2);
+
+/**
+ * @brief Detecta si un rectángulo está dentro de otro
+ * 
+ * @param ax1 topleft corner de big (x)
+ * @param ay1 topleft corner de big (y)
+ * @param ax2 bottomright corner de big (x)
+ * @param ay2 bottomright corner de big (y)
+ * @param bx1 topleft corner de small (x)
+ * @param by1 topleft corner de small (y)
+ * @param bx2 bottomright corner de small (x)
+ * @param by2 bottomright corner de small (y)
+ * @return true Está dentro
+ * @return false Está fuera
+ */
+bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2);
+
+/**
+ * @brief Detecta si un rectángulo está dentro de un tronco
+ * 
+ * @param i Número de log
+ * @param x topleft corner x
+ * @param y topleft corner y
+ * @param w Ancho
+ * @param h Alto
+ * @return true Está dentro
+ * @return false Está fuera
+ */
+bool inside_log(int i, int x, int y, int w, int h);
 
 
 
@@ -353,7 +390,7 @@ int main(void)
             al_draw_bitmap(sprites.background_game, 0, 0, 0);
 
             //al_draw_bitmap(sprites.frog[0], CELL_TOPLEFT_X, CELL_TOPLEFT_Y, NO_FLAGS);
-            al_draw_filled_rectangle(CELL_TOPLEFT_X + 20, CELL_TOPLEFT_Y +20, CELL_TOPLEFT_X+40, CELL_TOPLEFT_Y+40, al_map_rgb(255, 0, 0));
+            // al_draw_filled_rectangle(CELL_TOPLEFT_X + 20, CELL_TOPLEFT_Y +20, CELL_TOPLEFT_X+40, CELL_TOPLEFT_Y+40, al_map_rgb(255, 0, 0));
 
             
             logs_draw();
@@ -365,7 +402,7 @@ int main(void)
             al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 30, 0, "X: %d Y: %d", logs[1].x, logs[1].y);
             al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 40, 0, "X: %d Y: %d", logs[2].x, logs[2].y);
 			//dibuja un rectángulo relleno de 10x10, color rojo
-			al_draw_filled_rectangle(frog.x+25, frog.y+25, frog.x + 35, frog.y + 35, al_map_rgb(255, 0, 0));
+			//al_draw_filled_rectangle(frog.x, frog.y, frog.x + 35, frog.y + 35, al_map_rgb(255, 0, 0));
 
 			//carga los cambios anteriores para verlos
             /*sin este comando, todo lo anterior NO se visualiza en pantalla*/
@@ -469,8 +506,8 @@ void keyboard_update(ALLEGRO_EVENT* event)
 
 void frog_init(void)
 {
-    frog.x = CELL_START_X;
-    frog.y = CELL_START_Y;
+    frog.x = CELL_START_FROG_X;
+    frog.y = CELL_START_FROG_Y;
     frog.moving = false;
     frog.facing = UP;
     frog.steps = 0;
@@ -521,14 +558,6 @@ void frog_update(void)
         if(frog.facing == DOWN)
             frog.y += STEP_FRACTION_SIZE;
 
-        if(frog.x < FROG_MIN_X)
-            frog.x = FROG_MIN_X;
-        if(frog.x > FROG_MAX_X)
-            frog.x = FROG_MAX_X;
-        if(frog.y < FROG_MIN_Y)
-            frog.y = FROG_MIN_Y;
-        if(frog.y > FROG_MAX_Y)
-            frog.y = FROG_MAX_Y;
 
         if(++frog.steps == STEP_RATIO)
         {
@@ -545,13 +574,24 @@ void frog_update(void)
         if(!logs[i].on_screen)
             continue;
         
-        if(logs_collide(i, frog.x, frog.y, frog.x + FROG_W, frog.y + FROG_H))
+        if(inside_log(i, frog.x, frog.y, FROG_W, FROG_H))
         {
             //printf("COLLIDE CON %d", i);
+            frog.surface = LOG;
             frog.x += logs[i].dx;
             break;
         }
     }
+
+    if(frog.x < FROG_MIN_X)
+        frog.x = FROG_MIN_X;
+    if(frog.x > FROG_MAX_X)
+        frog.x = FROG_MAX_X;
+    if(frog.y < FROG_MIN_Y)
+        frog.y = FROG_MIN_Y;
+    if(frog.y > FROG_MAX_Y)
+        frog.y = FROG_MAX_Y;
+
 
 }
 
@@ -587,10 +627,11 @@ void frog_draw(void)
 
     }
 
-    center_x = frog.x + CELL_W / 2 - FROG_W/2;
-    center_y = frog.y + CELL_H / 2 - FROG_H/2;
+    //center_x = frog.x + CELL_W / 2 - FROG_W/2;
+    //center_y = frog.y + CELL_H / 2 - FROG_H/2;
 
-    al_draw_bitmap(tempbitmap, center_x, center_y, NO_FLAGS);
+    al_draw_bitmap(tempbitmap, frog.x, frog.y, NO_FLAGS);
+    al_draw_rectangle(frog.x, frog.y, frog.x + FROG_W, frog.y + FROG_W, al_map_rgb(100, 100, 100), 1);
 
 }
 
@@ -600,7 +641,7 @@ void logs_init(void)
 
     for(i = 0; i < MAX_LOGS; i++)
     {
-        logs[i].y = CELL_TOPLEFT_Y + 2 * CELL_H;
+        logs[i].y = CELL_TOPLEFT_Y + 2 * CELL_H + LOG_OFFSET_Y;
         logs[i].dx = 2;
         logs[i].on_screen = false;
     }
@@ -610,7 +651,7 @@ void logs_init(void)
 void logs_update(void)
 {
     int i;
-    int random_val = get_rand_between(1, 3);
+    int random_val = get_rand_between(1, 20);
 
     for(i = 0; i < MAX_LOGS; i++)
     {
@@ -618,7 +659,7 @@ void logs_update(void)
         {   
             if(i > 0)
             {
-                if(logs[i-1].x >= random_val * CELL_W )
+                if(logs[i-1].x >= 4 * CELL_W )
                 {
                     logs[i].x = (-1)*LOG_W ;
                     logs[i].on_screen = true;
@@ -627,7 +668,7 @@ void logs_update(void)
 
             if(i == 0)
             {
-                if(!logs[MAX_LOGS-1].on_screen || (logs[MAX_LOGS-1].x >= random_val * CELL_W ))
+                if(!logs[MAX_LOGS-1].on_screen || (logs[MAX_LOGS-1].x >= 4 * CELL_W ))
                 {
                     logs[i].x = (-1)*LOG_W ;
                     logs[i].on_screen = true;
@@ -655,17 +696,15 @@ void logs_draw(void)
     {
         if(logs[i].on_screen)
         {
-            center_y = logs[i].y + CELL_H / 2 - LOG_H / 2;
-            al_draw_bitmap(sprites.log, logs[i].x, center_y, NO_FLAGS);
+            //center_y = logs[i].y + CELL_H / 2 - LOG_H / 2;
+            al_draw_bitmap(sprites.log, logs[i].x, logs[i].y, NO_FLAGS);
+
+            al_draw_rectangle(logs[i].x, logs[i].y, logs[i].x + LOG_W, logs[i].y + LOG_H, al_map_rgb(100, 100, 100), 1);
         }
             
     }
 }
 
-bool logs_collide(int i, int x, int y, int w, int h)
-{
-    return collide(x, y, x + w, y + h, logs[i].x, logs[i].y, logs[i].x + LOG_W, logs[i].y + LOG_H);
-}
 
 int get_rand_between(int low, int high)
 {
@@ -673,11 +712,31 @@ int get_rand_between(int low, int high)
 }
 
 bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
-{
-    if(ax1 > bx2) return false;
-    if(ax2 < bx1) return false;
-    if(ay1 > by2) return false;
-    if(ay2 < by1) return false;
+{   
+    if (ax1 < bx2 &&
+        ax2 > bx1 &&
+        ay1 < by2 &&
+        ay2 > by1)
+        
+        return true;
 
-    return true;
+    return false;
+}
+
+bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
+{
+    if( bx1 > ax1   &&
+        by1 > ay1   &&
+        bx2 < ax2   &&
+        by2 < ay2)
+
+        return true;
+
+    return false;
+}
+
+bool inside_log(int i, int x, int y, int w, int h)
+{
+    return(inside(  logs[i].x, logs[i].y, logs[i].x + LOG_W, logs[i].y + LOG_H,
+                    x, y, x + w, y + h));
 }
