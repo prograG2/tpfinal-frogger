@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <time.h>
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
@@ -23,7 +24,7 @@
 
 #define TRUE 1
 #define FALSE 0
-#define FPS 60
+#define FPS 60  
 #define NO_FLAGS 0
 
 #define ROWS    9
@@ -70,7 +71,8 @@
 #define MAX_CARS    10
 
 
-#define MAX_LOGS    2
+#define MAX_LOGS    4
+#define MAX_LOGS_ON_SCREEN  3
 #define LOG_W   (3 * CELL_W)
 #define LOG_H   45
 
@@ -83,6 +85,8 @@ enum SURFACES   {CHILL, ROADWAY, WATER, TURTLE, LOG};
 
 
 unsigned char key[ALLEGRO_KEY_MAX];
+
+int random_val;
 
 
 typedef struct 
@@ -270,12 +274,26 @@ bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int b
  */
 bool inside_log(int i, int x, int y, int w, int h);
 
+/**
+ * @brief Toma un log y lo spawnea
+ * 
+ * @param i Número de log
+ */
+void spawn_log(int i);
+
+/**
+ * @brief Genera número random, sin srand y compañía
+ * 
+ * @return int Número random
+ */
+int get_rand(void);
+
 
 
 
 int main(void)
 {
-    srand(getpid());
+    srand(time(NULL));
 
     //init allegro
     must_init(al_init(), "allegro");
@@ -398,9 +416,13 @@ int main(void)
 
 			//escribe text con fuente "font", color, desde las coordenadas (0,0)
 			al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 0, 0, "X: %d Y: %d", frog.x, frog.y);
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 20, 0, "X: %d Y: %d", logs[0].x, logs[0].y);
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 30, 0, "X: %d Y: %d", logs[1].x, logs[1].y);
-            al_draw_textf(font, al_map_rgb(255, 255, 255), 0, 40, 0, "X: %d Y: %d", logs[2].x, logs[2].y);
+
+            int i, space;
+            for(i = 0, space = 20; i < MAX_LOGS; i++, space += 10)
+            {
+                al_draw_textf(font, al_map_rgb(255, 255, 255), 0, space, 0, "N°:%d X:%d Y:%d", i, logs[i].x, logs[i].y);
+            }
+
 			//dibuja un rectángulo relleno de 10x10, color rojo
 			//al_draw_filled_rectangle(frog.x, frog.y, frog.x + 35, frog.y + 35, al_map_rgb(255, 0, 0));
 
@@ -598,7 +620,6 @@ void frog_update(void)
 void frog_draw(void)
 {
 
-    int center_x, center_y;
     ALLEGRO_BITMAP* tempbitmap;
 
     if(frog.moving)
@@ -627,8 +648,6 @@ void frog_draw(void)
 
     }
 
-    //center_x = frog.x + CELL_W / 2 - FROG_W/2;
-    //center_y = frog.y + CELL_H / 2 - FROG_H/2;
 
     al_draw_bitmap(tempbitmap, frog.x, frog.y, NO_FLAGS);
     al_draw_rectangle(frog.x, frog.y, frog.x + FROG_W, frog.y + FROG_W, al_map_rgb(100, 100, 100), 1);
@@ -642,7 +661,7 @@ void logs_init(void)
     for(i = 0; i < MAX_LOGS; i++)
     {
         logs[i].y = CELL_TOPLEFT_Y + 2 * CELL_H + LOG_OFFSET_Y;
-        logs[i].dx = 2;
+        logs[i].dx = 5;
         logs[i].on_screen = false;
     }
 
@@ -651,52 +670,62 @@ void logs_init(void)
 void logs_update(void)
 {
     int i;
-    int random_val = get_rand_between(1, 20);
+    int cont_logs_on_screen;
+    static int last_log_on_screen;
+    //int random_val;
+    //random_val = get_rand_between(1,4) * CELL_W;
+    //random_val = (rand() % 4 + 1);
 
-    for(i = 0; i < MAX_LOGS; i++)
+    for(i = 0, cont_logs_on_screen = 0; i < MAX_LOGS; i++)
     {
-        if(!logs[i].on_screen)
-        {   
-            if(i > 0)
-            {
-                if(logs[i-1].x >= 4 * CELL_W )
-                {
-                    logs[i].x = (-1)*LOG_W ;
-                    logs[i].on_screen = true;
-                }
-            }
-
-            if(i == 0)
-            {
-                if(!logs[MAX_LOGS-1].on_screen || (logs[MAX_LOGS-1].x >= 4 * CELL_W ))
-                {
-                    logs[i].x = (-1)*LOG_W ;
-                    logs[i].on_screen = true;
-                }
-            }
-            
-        }
-
         if(logs[i].on_screen)
         {
             logs[i].x += logs[i].dx;
 
             if(logs[i].x >= al_get_bitmap_width(sprites.background_game))
                 logs[i].on_screen = false;
+
+            cont_logs_on_screen++;
+        }
+            
+    }
+
+    //Solo la primera vez
+    if(!cont_logs_on_screen)
+    {
+        spawn_log(0);
+        last_log_on_screen = 0;
+    }
+
+    else if(cont_logs_on_screen < MAX_LOGS_ON_SCREEN)
+    {
+      
+        if(logs[last_log_on_screen].x > CELL_W * 2)
+        {
+            if(last_log_on_screen == MAX_LOGS - 1)
+            {
+                spawn_log(last_log_on_screen = 0);
+            }
+
+            else
+            {
+                spawn_log(++last_log_on_screen);
+            }
         }
         
     }
+    
+    cont_logs_on_screen = 0;
 }
 
 void logs_draw(void)
 {
-    int i, center_y;
+    int i;
 
     for(i = 0; i < MAX_LOGS; i++)
     {
         if(logs[i].on_screen)
         {
-            //center_y = logs[i].y + CELL_H / 2 - LOG_H / 2;
             al_draw_bitmap(sprites.log, logs[i].x, logs[i].y, NO_FLAGS);
 
             al_draw_rectangle(logs[i].x, logs[i].y, logs[i].x + LOG_W, logs[i].y + LOG_H, al_map_rgb(100, 100, 100), 1);
@@ -739,4 +768,16 @@ bool inside_log(int i, int x, int y, int w, int h)
 {
     return(inside(  logs[i].x, logs[i].y, logs[i].x + LOG_W, logs[i].y + LOG_H,
                     x, y, x + w, y + h));
+}
+
+void spawn_log(int i)
+{
+    logs[i].x = (-1)*LOG_W ;
+    logs[i].on_screen = true;
+}
+
+int get_rand(void)
+{
+
+    return 0;
 }
