@@ -71,8 +71,8 @@
 #define MAX_CARS    10
 
 
-#define MAX_LOGS    4
-#define MAX_LOGS_ON_SCREEN  3
+#define MAX_LOGS    15
+#define MAX_LOGS_ON_SCREEN  6
 #define LOG_W   (3 * CELL_W)
 #define LOG_H   45
 
@@ -144,10 +144,20 @@ typedef struct
     int x;
     int y;
     int dx;
+    unsigned char route;
     bool on_screen;
 
 } log_t;
 log_t logs[MAX_LOGS];
+
+/*
+typedef struct
+{
+    
+
+} route_t;
+route_t route[6];
+*/
 
 
 
@@ -657,12 +667,25 @@ void frog_draw(void)
 void logs_init(void)
 {
     int i;
+    srand(time(NULL));
+    random_val = (rand() % 4 + 2);
 
     for(i = 0; i < MAX_LOGS; i++)
     {
-        logs[i].y = CELL_TOPLEFT_Y + 2 * CELL_H + LOG_OFFSET_Y;
-        logs[i].dx = 5;
+        logs[i].route = (rand() % 3 + 1);
+
+        if(logs[i].route == 2)
+        {
+            logs[i].dx = -3;
+        }
+        else
+        {
+            logs[i].dx = 3;
+        }
+
         logs[i].on_screen = false;
+        
+        logs[i].y = CELL_TOPLEFT_Y + logs[i].route * CELL_H + LOG_OFFSET_Y;   
     }
 
 }
@@ -672,9 +695,11 @@ void logs_update(void)
     int i;
     int cont_logs_on_screen;
     static int last_log_on_screen;
-    //int random_val;
+    int random_val;
     //random_val = get_rand_between(1,4) * CELL_W;
-    //random_val = (rand() % 4 + 1);
+    srand(time(NULL));
+    random_val = (rand() % 2 + 1);
+    
 
     for(i = 0, cont_logs_on_screen = 0; i < MAX_LOGS; i++)
     {
@@ -682,8 +707,17 @@ void logs_update(void)
         {
             logs[i].x += logs[i].dx;
 
-            if(logs[i].x >= al_get_bitmap_width(sprites.background_game))
-                logs[i].on_screen = false;
+            if(logs[i].route == 2)
+            {
+                if(logs[i].x <= (-1)*LOG_W)
+                    logs[i].on_screen = false;
+            }
+            else
+            {
+                if(logs[i].x >= al_get_bitmap_width(sprites.background_game))
+                    logs[i].on_screen = false;
+            }
+            
 
             cont_logs_on_screen++;
         }
@@ -700,8 +734,9 @@ void logs_update(void)
     else if(cont_logs_on_screen < MAX_LOGS_ON_SCREEN)
     {
       
-        if(logs[last_log_on_screen].x > CELL_W * 2)
+        if(logs[last_log_on_screen].x > CELL_W * random_val)
         {
+
             if(last_log_on_screen == MAX_LOGS - 1)
             {
                 spawn_log(last_log_on_screen = 0);
@@ -772,7 +807,15 @@ bool inside_log(int i, int x, int y, int w, int h)
 
 void spawn_log(int i)
 {
-    logs[i].x = (-1)*LOG_W ;
+    if(logs[i].route == 2)
+    {
+        logs[i].x = al_get_bitmap_width(sprites.background_game);
+    }
+    else
+    {
+        logs[i].x = (-1)*LOG_W ;
+    }
+    
     logs[i].on_screen = true;
 }
 
