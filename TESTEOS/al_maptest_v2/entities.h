@@ -24,12 +24,9 @@
  ******************************************************************************/
 
 #define MAX_LIVES   3
-
 #define MAX_CARS    10
-
 #define MAX_LOGS    10
-#define MAX_LOGS_ON_SCREEN  5
-#define LOGS_BASE_SPEED     1
+#define CARS_TYPES  1
 
 
 /*******************************************************************************
@@ -50,70 +47,22 @@
  ******************************************************************************/
 
 /**
- * @brief Inicializa la rana
+ * @brief Inicializa las entidades
  * 
  */
-void frog_init(void);
+void entities_init(void);
 
 /**
- * @brief Actualiza posicionamiento de la rana
+ * @brief Actualiza las entidades
  * 
  */
-void frog_update(void);
+void entities_update(void);
 
 /**
- * @brief Dibuja la rana
+ * @brief Dibuja las entidades
  * 
  */
-void frog_draw(void);
-
-/**
- * @brief Inicializa troncos
- * 
- */
-void logs_init(void);
-
-/**
- * @brief Actualiza troncos
- * 
- */
-void logs_update(void);
-
-/**
- * @brief Dibuja troncos
- * 
- */
-void logs_draw(void);
-
-/**
- * @brief Devuelve coordenada x topleft de rana
- * 
- * @return int Coordenada x
- */
-int frog_get_x(void);
-
-/**
- * @brief Devuelve coordenada y topleft de rana
- * 
- * @return int Coordenada y
- */
-int frog_get_y(void);
-
-/**
- * @brief Devuelve coordenada x topleft del tronco i
- * 
- * @param i Número de tronco
- * @return int Coordenada x
- */
-int log_get_x(int i);
-
-/**
- * @brief Devuelve coordenada y topleft del tronco i
- * 
- * @param i Número de tronco
- * @return int Coordenada y
- */
-int log_get_y(int i);
+void entities_draw(void);
 
 
 

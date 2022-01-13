@@ -67,8 +67,7 @@
 
 int get_rand_between(int low, int high)
 {
-    //srand(time(NULL));
-    return ((rand() % (high - low + 1)) + low) ;
+    return (rand()%((high+1)-low) + low);
 }
 
 bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
@@ -94,6 +93,17 @@ bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int b
 
     return false;
 }
+
+int map_int(int source, int min_in, int max_in, int min_out, int max_out)
+{
+    //int slope = (max_out - max_in) / (min_out - min_in);
+
+    //int output = min_out + (slope * (source - min_in));
+
+    int output = (source - min_in) * (max_out - min_out) / (max_in - min_in) + min_out;
+
+    return(output);
+}   
 
 
 /*******************************************************************************

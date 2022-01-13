@@ -69,10 +69,16 @@
 
 
 //Troncos
-#define LOG_W   (4 * CELL_W)
-#define LOG_H   40
+#define LOG_W   		(4 * CELL_W)
+#define LOG_H   		40
 #define LOG_OFFSET_X    0
 #define LOG_OFFSET_Y    (CELL_H/2 - LOG_H/2)
+
+//Autos
+#define CAR_W   		(4 * CELL_W)
+#define CAR_H   		40
+#define CAR_OFFSET_X    0
+#define CAR_OFFSET_Y    (CELL_H/2 - LOG_H/2)
 
 
 /*******************************************************************************
@@ -95,8 +101,6 @@ enum SURFACES
 	TURTLE,
 	LOG
 };
-
-
 
 
 /*******************************************************************************
@@ -150,6 +154,21 @@ bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int 
  * @return false Está fuera
  */
 bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2);
+
+
+/**
+ * @brief Toma un valor comprendido dentro de un rango (in) y lo devuelve (mapea) a otro rango (out)
+ * 
+ * @source https://stackoverflow.com/questions/5731863/mapping-a-numeric-range-onto-another
+ * 
+ * @param source Valor a mapear
+ * @param min_in Limite inferior del rango de entrada
+ * @param max_in Límite superior del rango de entrada
+ * @param min_out Límite inferior del rango de salida
+ * @param max_out Límite superior del rango de salida
+ * @return int Valor mapeado
+ */
+int map_int(int source, int min_in, int max_in, int min_out, int max_out);
 
 
 /*******************************************************************************

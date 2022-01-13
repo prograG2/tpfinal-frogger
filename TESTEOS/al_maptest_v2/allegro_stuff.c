@@ -274,6 +274,7 @@ bool allegro_is_event_queue_empty(void)
 	return(al_is_event_queue_empty(allegro_vars.queue));
 }
 
+
 /*******************************************************************************
  *******************************************************************************
 						LOCAL FUNCTION DEFINITIONS
@@ -303,6 +304,14 @@ static void sprites_init(void)
 	sprites.background = al_load_bitmap("sprite_background.png");
 
 	sprites.log = al_load_bitmap("sprite_log.png");
+
+	/*
+	int i;
+	for(i = 0; i < CARS_TYPES; i++)
+		sprites.car[i] = al_load_bitmap("sprite_car_0.png");
+	*/
+	sprites.car[0] = al_load_bitmap("sprite_car_0.png");
+
 }
 
 static void sprites_deinit(void)
@@ -319,6 +328,9 @@ static void sprites_deinit(void)
 	al_destroy_bitmap(sprites.background);
 
 	al_destroy_bitmap(sprites.log);
+
+	for(i = 0; i < CARS_TYPES; i++)
+		al_destroy_bitmap(sprites.car[i]);
 	
 }
 

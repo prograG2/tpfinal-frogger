@@ -73,9 +73,17 @@ static ALLEGRO_EVENT_TYPE event;
 int main(void)
 {
     srand(time(NULL));
+
+    /*
+    while(1)
+    {
+        printf("%d~", get_rand_between(8,12));
+        for(int i = 0; i < 10000000; i++);
+    }
+    */
+    
     allegro_inits();
-    frog_init();
-    logs_init();
+    entities_init();
 
     while(1)    
     {
@@ -85,8 +93,7 @@ int main(void)
         {
             case ALLEGRO_EVENT_TIMER:
                 
-                frog_update();
-                logs_update();
+                entities_update();
                 
                 //si es 'escape', avisa para cerrar la ventana
                 if(keyboard_check_key(ALLEGRO_KEY_ESCAPE))
@@ -131,18 +138,8 @@ int main(void)
             //sprite de fondo
             allegro_draw_background();
 
-            logs_draw();
-            frog_draw();
-
-            //coordenadas rana
-            al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, 0, 0, "X: %d Y: %d", frog_get_x(), frog_get_y());
-
-            //coordenadas troncos
-            int i, space;
-            for(i = 0, space = 20; i < MAX_LOGS; i++, space += 10)
-            {
-                al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "N°:%d X:%d Y:%d", i, log_get_x(i), log_get_y(i));
-            }
+            //entidades
+            entities_draw();
 
             //carga los cambios anteriores para verlos
 			al_flip_display();

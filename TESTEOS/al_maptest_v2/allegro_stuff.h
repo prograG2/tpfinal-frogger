@@ -23,6 +23,8 @@
 
 #include <stdio.h>
 
+#include "entities.h"
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -53,6 +55,8 @@ typedef struct
     ALLEGRO_BITMAP* background;
 
     ALLEGRO_BITMAP* log;
+
+    ALLEGRO_BITMAP* car[CARS_TYPES];
 
     /*
     ALLEGRO_BITMAP* ship;
@@ -202,6 +206,7 @@ void allegro_draw_background(void);
  * @return false No vacía
  */
 bool allegro_is_event_queue_empty(void);
+
 
 
 /*******************************************************************************
