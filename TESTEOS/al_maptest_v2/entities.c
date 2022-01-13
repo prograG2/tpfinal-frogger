@@ -490,7 +490,7 @@ static void logs_update(void)
         }
 
 		//si el tronco esta usado...
-		else
+		else if(log[i].used)
 		{
 			//desplaza
 			log[i].x += log[i].dx;
