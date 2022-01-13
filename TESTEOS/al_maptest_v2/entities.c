@@ -221,9 +221,9 @@ void entities_update()
 
 void entities_draw()
 {
-	frog_draw();
 	logs_draw();
 	cars_draw();
+	frog_draw();
 }
 
 /*******************************************************************************
