@@ -24,7 +24,7 @@
 #include <stdio.h>
 
 #include "entities.h"
-
+#include "geometry.h"
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -57,6 +57,11 @@ typedef struct
     ALLEGRO_BITMAP* log;
 
     ALLEGRO_BITMAP* car[CARS_TYPES];
+
+    ALLEGRO_BITMAP* turtle_uncut;
+    ALLEGRO_BITMAP* turtle[TURTLE_FRAMES];
+
+    ALLEGRO_BITMAP* fly;
 
     /*
     ALLEGRO_BITMAP* ship;

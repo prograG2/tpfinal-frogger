@@ -26,5 +26,5 @@ geometry.o: geometry.c
 clean:
 	rm *.o
 
-run: 
+run: frogger
 	./frogger

@@ -35,7 +35,12 @@
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: unsigned int anio_actual;+
+//filas para troncos
+const unsigned int lanes_logs[LANES_LOG_TOTAL] = {2,4,5};
+//filas para tortugas
+const unsigned int lanes_turtles[LANES_TURTLE_TOTAL] = {3,6};
+//filas para autos
+const unsigned int lanes_cars[LANES_CAR_TOTAL] = {8,9,10,11,12};
 
 
 /*******************************************************************************
@@ -49,7 +54,34 @@
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
+//coordenadas topleft de cada frame del sprite de la rana
+static const pair_xy_t pair_xy_frog_sprites_frames[FROG_FRAMES] = 
+    {
+        {16,16},
+        {79,15},
+        {16,79},
+        {65,79},
+        {14,141},
+        {76,141},
+        {16,204},
+        {79,190}
+    };
+
+//coordenadas topleft de cada frame del sprite de la tortuga
+static const pair_xy_t pair_xy_turtle_sprites_frames[TURTLE_FRAMES] = 
+    {
+        {2,0},
+        {51,0},
+        {99,0},
+        {146,0},
+        {194,0},
+        {242,0},
+        {289,0},
+        {337,0},
+        {389,8},
+        {426,8},
+        {460,11}
+    };
 
 
 /*******************************************************************************
@@ -104,6 +136,17 @@ int map_int(int source, int min_in, int max_in, int min_out, int max_out)
 
     return(output);
 }   
+
+pair_xy_t geometry_get_pair_xy_frog_frame(int frame)
+{
+    return(pair_xy_frog_sprites_frames[frame]);
+}
+
+pair_xy_t geometry_get_pair_xy_turtle_frame(int frame)
+{
+    return(pair_xy_turtle_sprites_frames[frame]);
+}
+
 
 
 /*******************************************************************************

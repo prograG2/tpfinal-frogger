@@ -22,23 +22,33 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define LOGS_LOWEST_LANE		2	//referenciado a 0
-#define LOGS_HIGHEST_LANE		6	//referenciado a 0
-#define LOGS_LANES				(LOGS_HIGHEST_LANE - LOGS_LOWEST_LANE + 1)
 #define LOGS_SPAWN_MIN			1
 #define LOGS_SPAWN_MAX			2
 #define LOGS_SPAWN_FRAMES		60
 #define LOGS_BASE_SPEED			2
 #define LOGS_MAX_USED			4
 
-#define CARS_LOWEST_LANE		8	//referenciado a 0
-#define CARS_HIGHEST_LANE		13	//referenciado a 0
-#define CARS_LANES				(CARS_HIGHEST_LANE - CARS_LOWEST_LANE + 1)
 #define CARS_SPAWN_MIN			1
 #define CARS_SPAWN_MAX			2
 #define CARS_SPAWN_FRAMES		60
 #define CARS_BASE_SPEED			2
 #define CARS_MAX_USED			4	
+
+#define TURTLES_MIN_PER_PACK	2
+#define	TURTLES_MAX_PER_PACK	3
+#define TURTLES_SPAWN_FRAMES	60
+#define TURTLES_SPAWN_MIN		1
+#define TURTLES_SPAWN_MAX		2
+#define TURTLES_MAX_USED		3	
+#define TURTLES_BASE_SPEED		2
+#define TURTLES_FRAME_TIMEOUT	10	//cuanto "tiempo" dura un frame dibujado antes de pasar al siguiente
+#define	TURTLES_SURFACE_TIMEOUT	250	//cuanto dura sobra el agua
+#define TURTLES_WATER_TIMEOUT	200	//cuanto dura bajo el agua
+
+#define FLY_SPAWN_FRAMES_MIN	300	//mínimo tiempo para respawnear mosca
+#define	FLY_SPAWN_FRAMES_MAX	600	//maximo tiempo para respawnear mosca
+#define FLY_DESPAWN_FRAMES_MIN	600	//mínimo tiempo para sacar mosca
+#define	FLY_DESPAWN_FRAMES_MAX	900	//maximo tiempo para sacar mosca
 
 
 /*******************************************************************************
@@ -77,6 +87,34 @@ typedef struct
 
 } log_t;
 
+typedef struct
+{
+	int x;							//coordenada x
+	int y;							//coordenada y
+	int lane;						//carril
+	int dx;							//velocidad
+	bool used;						//flag de usada o no
+	unsigned char turtles_in_pack;	//cantidad de tortugas en el paquete
+	unsigned char frame;			//contador que indica en qué frame de la animación se está (de 1 a TURTLES_FRAMES)
+	int wide;						//ancho del paquete, proporcional a turtles_in_pack y a TURTLES_SIDE
+	long timer;						//contador interno para cambiar de frame
+	unsigned char state;			//estado (enum TURTLE_STATES) 
+} turtle_pack_t;
+
+typedef struct
+{
+	int x;
+	int y;
+	unsigned char goal;				//punto de llegada, entre 1 y MAX_GOALS
+	bool used;						//flag de usada o no
+	int timer;						//timer interno, para spawneo y despawneo
+} fly_t;
+
+enum TURTLE_STATES
+{
+	SURFACE,
+	WATER
+};
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
@@ -141,7 +179,46 @@ static void cars_update(void);
  * @brief Dibuja autos
  * 
  */
-static void cars_draw();
+static void cars_draw(void);
+
+/**
+ * @brief Inicializacion de tortugas
+ * 
+ */
+static void turtles_init(void);
+
+/**
+ * @brief Actualizacion de tortugas
+ * 
+ */
+static void turtles_update(void);
+
+/**
+ * @brief Dibujo de tortugas
+ * 
+ */
+static void turtles_draw(void);
+
+/**
+ * @brief Inicializacion de mosca
+ * 
+ */
+static void fly_init(void);
+
+/**
+ * @brief Actualizacion de mosca
+ * 
+ */
+static void fly_update(void);
+
+/**
+ * @brief Dibujo de mosca
+ * 
+ */
+static void fly_draw(void);
+
+
+
 
 /**
  * @brief Detecta si un rectángulo está dentro de un tronco
@@ -181,11 +258,20 @@ static void fix_frog_pos(void);
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
+//Rana
 static frog_t frog;
+
+//Array de troncos
 static log_t log[MAX_LOGS];
 
 //Array de autos
 static car_t car[MAX_CARS];
+
+//Array de paquetes de tortugas
+static turtle_pack_t turtle_pack[MAX_TURTLE_PACKS];
+
+//Mosca
+static fly_t fly;
 
 //Contador de frames ejecutados
 static long frames;
@@ -204,6 +290,8 @@ void entities_init(void)
 	frog_init();
 	logs_init();
 	cars_init();
+	turtles_init();
+	fly_init();
 }
 
 void entities_update()
@@ -215,6 +303,8 @@ void entities_update()
 	frog_update();
 	logs_update();
 	cars_update();
+	turtles_update();
+	fly_update();
 
 	
 }
@@ -223,6 +313,10 @@ void entities_draw()
 {
 	logs_draw();
 	cars_draw();
+	turtles_draw();
+	fly_draw();
+
+	//"frog siempre a lo ultimo, para que se vea"
 	frog_draw();
 }
 
@@ -239,12 +333,14 @@ static void frog_init(void)
 	frog.moving = false;
 	frog.facing = UP;
 	frog.steps = 0;
-	frog.surface = CHILL;
+	//frog.surface = CHILL;
 	frog.lives = MAX_LIVES;
 }
 
 static void frog_update(void)
 {
+	int i;
+
 	if(!frog.moving)
 	{
 		if(keyboard_check_key(ALLEGRO_KEY_LEFT) == KEY_JUST_PRESSED)
@@ -295,9 +391,7 @@ static void frog_update(void)
 		}
 	}
 
-	//if colision, y otros.
-
-	int i;
+	//colision con troncos
 	for(i = 0; i < MAX_LOGS; i++)
 	{
 		if(!log[i].used)
@@ -306,12 +400,34 @@ static void frog_update(void)
 		if(inside_log(i, frog.x, frog.y, FROG_W, FROG_H))
 		{
 			//printf("COLLIDE CON %d", i);
-			frog.surface = LOG;
+			//frog.surface = LOG;
 			frog.x += log[i].dx;
 			break;
 		}
 	}
 
+	//colision con turtle_packs
+	for(i = 0; i < MAX_TURTLE_PACKS; i++)
+	{
+		if(!turtle_pack[i].used)
+			continue;
+		
+		if(inside(	turtle_pack[i].x,
+					turtle_pack[i].y,
+					turtle_pack[i].x + turtle_pack[i].wide,
+					turtle_pack[i].y + TURTLE_SIDE,
+					frog.x,
+					frog.y,
+					frog.x + FROG_W,
+					frog.y + FROG_H))
+		{
+			frog.x += turtle_pack[i].dx;
+			break;
+		}
+	}
+
+
+	//revision de limites
 	if(frog.x < FROG_MIN_X)
 		frog.x = FROG_MIN_X;
 	if(frog.x > FROG_MAX_X)
@@ -369,33 +485,8 @@ static void frog_draw(void)
 static void logs_init(void)
 {
 	int i;
-
 	for(i = 0; i < MAX_LOGS; i++)
-	{
-		//printf("%d~", get_rand_between(2, 6));
-		log[i].lane = get_rand_between(2, 6);
-
-		switch (log[i].lane)
-		{
-			case 3:
-			case 5:
-			case 7:
-				log[i].dx = LOGS_BASE_SPEED;
-				break;
-			
-			case 2:
-			case 4:
-			case 6:
-				log[i].dx = -LOGS_BASE_SPEED;
-				break;	
-			
-			default:
-				break;
-		}
-
 		log[i].used = false;
-		log[i].y = CELL_TOPLEFT_Y + log[i].lane * CELL_H + LOG_OFFSET_Y;   
-	}
 
 }
 
@@ -406,7 +497,7 @@ static void logs_update(void)
 
 	int i, used;
 
-	//cuento cuantos autos usados hay
+	//cuento cuantos troncos usados hay
 	for(i = 0, used = 0; i < MAX_LOGS; i++)
 		used += log[i].used;
 
@@ -417,19 +508,20 @@ static void logs_update(void)
         {
 
 			//Asigno carril.
-			log[i].lane = get_rand_between(LOGS_LOWEST_LANE, LOGS_HIGHEST_LANE);  
-
+			log[i].lane = lanes_logs[get_rand_between(0, LANES_LOG_TOTAL-1)];
+			
 			//Coordenada 'y' en funcion del carril	
-			log[i].y = CELL_H * log[i].lane + CAR_OFFSET_Y;	
+			log[i].y = CELL_H * log[i].lane + LOG_OFFSET_Y;	
 
-			//Velocidad mayor en rutas mas alejadas
-			log[i].dx = LOGS_HIGHEST_LANE - log[i].lane;	
+			//Velocidad
+			log[i].dx = lanes_logs[LANES_LOG_TOTAL-1] - log[i].lane + 1;
+			//log[i].dx = map_int(log[i].lane, 0, lanes_logs[LANES_LOG_TOTAL-1], 1, 3);
 
 			//en pares...
 			if(!(log[i].lane % 2))
 			{
 				//coordenada de inicio
-				log[i].x = -CAR_W;
+				log[i].x = -LOG_W;
 			}
 
 			//en impares...
@@ -446,10 +538,10 @@ static void logs_update(void)
 			bool check;		//para confirmar asignacion de lane
 			for(p = 0, check = true; p < MAX_LOGS; p++)
 			{
-				//si no es el mismo auto, y ese otro esta usado, y coinciden en lane...
+				//si no es el mismo tronco, y ese otro esta usado, y coinciden en lane...
 				if(p != i && log[p].used && log[p].lane == log[i].lane)
 				{
-					//si colisiona con algun otro auto...
+					//si colisiona con algun otro tronco...
 					if	(collide(
 									log[i].x,
 									log[i].y,
@@ -485,8 +577,6 @@ static void logs_update(void)
 				
 			}
 
-            
-
         }
 
 		//si el tronco esta usado...
@@ -496,7 +586,7 @@ static void logs_update(void)
 			log[i].x += log[i].dx;
 
 			//chequea si llego a los limites
-			if((log[i].dx > 0 && log[i].x >= DISPLAY_W) || (log[i].dx < 0 && log[i].x <= -CAR_W))
+			if((log[i].dx > 0 && log[i].x >= DISPLAY_W) || (log[i].dx < 0 && log[i].x <= -LOG_W))
 				log[i].used = false;
 
 			//printf("~log%d lane%d dx%d~\n", i, log[i].lane, log[i].dx);
@@ -505,74 +595,6 @@ static void logs_update(void)
 
     }
 
-	/*
-	int i;
-	int cont_logs_used;
-	static int last_log_used;
-
-	int random_val = get_rand_between(1,2);
-	
-	for(i = 0, cont_logs_used = 0; i < MAX_LOGS; i++)
-	{
-		if(log[i].used)
-		{
-			cont_logs_used++;
-
-			log[i].x += log[i].dx;
-
-			if(log[i].dx < 0)
-			{
-				if(log[i].x <= (-1)*LOG_W)
-				{
-					cont_logs_used--;
-					log[i].used = false;
-				}
-					
-			}
-
-			else if(log[i].dx > 0)
-			{
-				if(log[i].x >= DISPLAY_W)
-				{
-					cont_logs_used--;
-					log[i].used = false;
-				}
-					
-			}
-			
-			
-		}
-			
-	}
-
-	//Solo la primera vez
-	if(!cont_logs_used)
-	{
-		spawn_log(0);
-		last_log_used = 0;
-	}
-
-	else if(cont_logs_used < MAX_LOGS_USED)
-	{
-	  
-		if(log[last_log_used].x > CELL_W * random_val)
-		{
-
-			if(last_log_used == MAX_LOGS - 1)
-			{
-				spawn_log(last_log_used = 0);
-			}
-
-			else
-			{
-				spawn_log(++last_log_used);
-			}
-		}
-		
-	}
-	
-	cont_logs_used = 0;
-	*/
 }
 
 static void logs_draw(void)
@@ -614,10 +636,6 @@ static void cars_update(void)
 	//se busca spawnear entre CARS_SPAWN_MIN y CARS_SPAWN_MAX autos cada CARS_SPAWN_FRAMES frames
 	int new_quota = ((frames % CARS_SPAWN_FRAMES) ? 0 : get_rand_between(CARS_SPAWN_MIN, CARS_SPAWN_MAX));
 
-	//info de autos en una lane
-	//unsigned char lanes_info[CARS_LANES];
-	//memset(lanes_info, 0, CARS_LANES);
-
 	int i, used;
 
 	//cuento cuantos autos usados hay
@@ -630,13 +648,13 @@ static void cars_update(void)
         if(!car[i].used && new_quota > 0 && used <= CARS_MAX_USED)	//Lugar libre?
         {
 			//Asigno carril.
-			car[i].lane = get_rand_between(CARS_LOWEST_LANE, CARS_HIGHEST_LANE);  
+			car[i].lane = lanes_cars[get_rand_between(0, LANES_CAR_TOTAL-1)];
 
 			//Coordenada 'y' en funcion del carril	
 			car[i].y = CELL_H * car[i].lane + CAR_OFFSET_Y;	
 
 			//Velocidad mayor en rutas mas alejadas
-			car[i].dx = CARS_HIGHEST_LANE - car[i].lane;	
+			car[i].dx = lanes_cars[LANES_CAR_TOTAL-1] - car[i].lane + 1;	
 
 			//en pares...
 			if(!(car[i].lane % 2))
@@ -740,6 +758,268 @@ static void cars_draw()
 	{
 		al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "N°:%d X:%d Y:%d", i, car[i].x, car[i].y);
 	}
+}
+
+static void turtles_init(void)
+{
+	int i;
+	for(i = 0; i < MAX_TURTLE_PACKS; i++)
+	{
+		turtle_pack[i].used = false;
+	}
+}
+
+static void turtles_update(void)
+{
+	int new_quota = ((frames % TURTLES_SPAWN_FRAMES) ? 0 : get_rand_between(TURTLES_SPAWN_MIN, TURTLES_SPAWN_MAX));
+
+	int i, used;
+
+	//cuento cuantos packs usados hay
+	for(i = 0, used = 0; i < MAX_TURTLE_PACKS; i++)
+		used += turtle_pack[i].used;
+
+    for(i = 0; i < MAX_TURTLE_PACKS; i++)
+    {
+        //Spawneo de turtle_packs
+        if(!turtle_pack[i].used && new_quota > 0 && used <= TURTLES_MAX_USED)       //Lugar libre?
+        {
+
+			//defino tortugas en el pack
+			turtle_pack[i].turtles_in_pack = get_rand_between(TURTLES_MIN_PER_PACK, TURTLES_MAX_PER_PACK);
+
+			//calculo ancho del pack
+			turtle_pack[i].wide = TURTLE_SIDE * turtle_pack[i].turtles_in_pack;
+
+			//Asigno carril.
+			turtle_pack[i].lane = lanes_turtles[get_rand_between(0, LANES_TURTLE_TOTAL-1)];
+			
+			//Coordenada 'y' en funcion del carril	
+			turtle_pack[i].y = CELL_H * turtle_pack[i].lane;	
+
+			//Velocidad
+			//turtle_pack[i].dx = lanes_turtles[LANES_TURTLE_TOTAL- turtle_pack[i].lane + 1];
+			turtle_pack[i].dx = TURTLES_BASE_SPEED;
+
+			//en pares...
+			if(!(turtle_pack[i].lane % 2))
+			{
+				//coordenada de inicio
+				turtle_pack[i].x = -turtle_pack[i].wide;
+			}
+
+			//en impares...
+			else
+			{
+				//coordenada de inicio
+				turtle_pack[i].x = DISPLAY_W;
+
+				//hacia el otro lado
+				turtle_pack[i].dx *= (-1);
+			}
+
+			int p;	
+			bool check;		//para confirmar asignacion de lane
+			for(p = 0, check = true; p < MAX_TURTLE_PACKS; p++)
+			{
+				//si no es el mismo pack, y ese otro esta usado, y coinciden en lane...
+				if(p != i && turtle_pack[p].used && turtle_pack[p].lane == turtle_pack[i].lane)
+				{
+					//si colisiona con algun otro pack...
+					if	(collide(
+									turtle_pack[i].x,
+									turtle_pack[i].y,
+									turtle_pack[i].x + turtle_pack[i].wide,
+									turtle_pack[i].y + TURTLE_SIDE,
+									turtle_pack[p].x,
+									turtle_pack[p].y,
+									turtle_pack[p].x + turtle_pack[p].wide,
+									turtle_pack[p].y + TURTLE_SIDE
+								)
+						)
+					{
+						//no spawnea
+						check = false;
+						break;
+					}
+				}
+
+			}
+
+			//si se puede spawnear...
+			if(check)
+			{
+				//Pasa a usado   
+				turtle_pack[i].used = true;		
+
+				//se inicializa el contador de frames
+				turtle_pack[i].frame = 0;			
+				//se inicializa el timer para cambiar de frame
+				turtle_pack[i].timer = 0;
+				//fuera del agua
+				turtle_pack[i].state = SURFACE;
+
+				new_quota--;
+			}
+
+			//si no se puede spawnear...
+			else
+			{
+				
+			}
+
+        }
+
+		//si el tronco esta usado...
+		else if(turtle_pack[i].used)
+		{
+			//desplaza
+			turtle_pack[i].x += turtle_pack[i].dx;
+
+			//aumenta timer interno
+			turtle_pack[i].timer++;
+
+			//pasa de frame
+			if(!(turtle_pack[i].timer % TURTLES_FRAME_TIMEOUT))
+				turtle_pack[i].frame++;
+			
+			//si esta fuera...
+			if(turtle_pack[i].state == SURFACE)
+			{
+				if(turtle_pack[i].frame == 6)
+					turtle_pack[i].frame = 0;
+
+				//pasa a agua
+				if(!(turtle_pack[i].timer % TURTLES_SURFACE_TIMEOUT))
+				{
+					turtle_pack[i].state = WATER;
+					turtle_pack[i].frame = 7;
+				}
+			}
+
+			//si esta bajo agua...
+			else if(turtle_pack[i].state == WATER)
+			{
+				if(turtle_pack[i].frame == 11)
+					turtle_pack[i].frame = 10;
+
+				//pasa a fuera
+				if(!(turtle_pack[i].timer % TURTLES_WATER_TIMEOUT))
+				{
+					turtle_pack[i].state = SURFACE;
+					turtle_pack[i].frame = 0;
+				}
+			}
+						
+
+			//chequea si llego a los limites
+			if((turtle_pack[i].dx > 0 && turtle_pack[i].x >= DISPLAY_W) || (turtle_pack[i].dx < 0 && turtle_pack[i].x <= -turtle_pack[i].wide))
+				turtle_pack[i].used = false;
+
+			//printf("~turtle_pack%d lane%d dx%d~\n", i, turtle_pack[i].lane, turtle_pack[i].dx);
+
+		}
+
+    }
+
+}
+
+static void turtles_draw(void)
+{
+	int i, j, flag;
+	for(i = 0; i < MAX_TURTLE_PACKS; i++)
+    {
+        if(turtle_pack[i].used)
+		{
+			for(j = 0; j < turtle_pack[i].turtles_in_pack; j++)
+			{
+				if(turtle_pack[i].dx < 0)
+					flag = ALLEGRO_FLIP_HORIZONTAL;	
+				else
+					flag = 0;
+					
+				al_draw_bitmap(sprites.turtle[turtle_pack[i].frame], turtle_pack[i].x + TURTLE_SIDE * j, turtle_pack[i].y, flag);
+			}
+
+			//Dibujo hitbox
+			al_draw_rectangle(turtle_pack[i].x, turtle_pack[i].y, turtle_pack[i].x + turtle_pack[i].wide, turtle_pack[i].y + TURTLE_SIDE, al_map_rgb(100, 100, 100), 1);
+		}
+			   
+		
+    }
+
+	//coordenadas
+	int space;
+	for(i = 0, space = 350; i < MAX_TURTLE_PACKS; i++, space += 10)
+	{
+		al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "N°:%d X:%d Y:%d", i, turtle_pack[i].x, turtle_pack[i].y);
+	}
+}
+
+static void fly_init(void)
+{
+	fly.used = false;
+	fly.y = CELL_H + FLY_OFFSET_XY;
+}
+
+static void fly_update(void)
+{
+	//inicializado en 0 por ser static
+	static int timeout;
+
+	if(!fly.used)
+	{
+		//si no esta inicializado, inicializo timeout para spawneo
+		if(!timeout)
+			timeout = get_rand_between(FLY_SPAWN_FRAMES_MIN, FLY_SPAWN_FRAMES_MAX);
+		
+		if(!(frames % timeout))
+		{
+			//se elije uno de los puntos de llegada
+			fly.goal = get_rand_between(0, MAX_GOALS-1);
+
+			//calculo de coordenada x segun el punto elegido
+			fly.x = CELL_W + (fly.goal * 2 * CELL_W) + FLY_OFFSET_XY;
+
+			//marcado como usado
+			fly.used = true;
+
+			//recalculo timeout para el despawneo
+			timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
+		}
+
+	}
+
+	else
+	{
+		//si se puede despawnear
+		if(!(frames % timeout))
+		{
+			//mosca no usada
+			fly.used = false;
+			
+			//desinicializo timeout
+			timeout = 0;
+		}
+	}
+
+}
+
+static void fly_draw(void)
+{
+	if(fly.used)
+	{
+		//spirte
+		al_draw_bitmap(sprites.fly, fly.x, fly.y, 0);
+
+		//hitbox
+		al_draw_rectangle(fly.x, fly.y, fly.x + FLY_SIDE, fly.y + FLY_SIDE, al_map_rgb(100,100,100), 1);
+	}
+
+	//coordenadas
+	int space = 500;
+	al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "Mosca ~ X:%d Y:%d", fly.x, fly.y);
+	
 }
 
 static bool inside_log(int i, int x, int y, int w, int h)

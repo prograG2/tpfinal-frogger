@@ -73,11 +73,11 @@ static ALLEGRO_EVENT_TYPE event;
 int main(void)
 {
     srand(time(NULL));
-
+ 
     /*
     while(1)
     {
-        printf("%d~", get_rand_between(8,12));
+        printf("%d~", lanes_logs[get_rand_between(0, LANES_LOG_TOTAL-1)]);
         for(int i = 0; i < 10000000; i++);
     }
     */

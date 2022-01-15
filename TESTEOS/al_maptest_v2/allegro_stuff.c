@@ -65,13 +65,15 @@ sprites_t sprites;
 /**
  * @brief Copia parte de un spritesheet y lo devuelve como un nuevo bitmap
  * 
+ * @param source_bmp Puntero al bitmap original
  * @param x top left 'x' coord
  * @param y top left 'y' coord
  * @param w wide
  * @param h heigth
+ * @param source_bmp
  * @return ALLEGRO_BITMAP* 
  */
-static ALLEGRO_BITMAP* sprite_cut(int x, int y, int w, int h);
+static ALLEGRO_BITMAP* sprite_cut(ALLEGRO_BITMAP* source_bmp, int x, int y, int w, int h);
 
 /**
  * @brief Inicializa los sprites a usar
@@ -281,36 +283,82 @@ bool allegro_is_event_queue_empty(void)
  *******************************************************************************
  ******************************************************************************/
 
-static ALLEGRO_BITMAP* sprite_cut(int x, int y, int w, int h)
+static ALLEGRO_BITMAP* sprite_cut(ALLEGRO_BITMAP* source_bmp, int x, int y, int w, int h)
 {
-	ALLEGRO_BITMAP* sprite = al_create_sub_bitmap(sprites.frog_uncut, x, y, w, h);
+	ALLEGRO_BITMAP* sprite = al_create_sub_bitmap(source_bmp, x, y, w, h);
 	must_init(sprite, "sprite cut");
 	return sprite;
 }
 
 static void sprites_init(void)
 {
+	int i;
+	pair_xy_t temp_xy;
+	int temp_w, temp_h;
+
+	//de la rana completo
 	sprites.frog_uncut = al_load_bitmap("sprite_frog.png");
 
-	sprites.frog[0] = sprite_cut(16, 16, SPRITE_SIZE_FROG_STATIC_W, SPRITE_SIZE_FROG_STATIC_H);
-	sprites.frog[1] = sprite_cut(79, 15, SPRITE_SIZE_FROG_DYNAMIC_SHORT, SPRITE_SIZE_FROG_DYNAMIC_LONG);
-	sprites.frog[2] = sprite_cut(16, 79, SPRITE_SIZE_FROG_STATIC_W, SPRITE_SIZE_FROG_STATIC_H);
-	sprites.frog[3] = sprite_cut(65, 79, SPRITE_SIZE_FROG_DYNAMIC_LONG, SPRITE_SIZE_FROG_DYNAMIC_SHORT);
-	sprites.frog[4] = sprite_cut(14, 141, SPRITE_SIZE_FROG_STATIC_W, SPRITE_SIZE_FROG_STATIC_H);
-	sprites.frog[5] = sprite_cut(76, 141, SPRITE_SIZE_FROG_DYNAMIC_LONG, SPRITE_SIZE_FROG_DYNAMIC_SHORT);
-	sprites.frog[6] = sprite_cut(16, 204, SPRITE_SIZE_FROG_STATIC_W, SPRITE_SIZE_FROG_STATIC_H);
-	sprites.frog[7] = sprite_cut(79, 190, SPRITE_SIZE_FROG_DYNAMIC_SHORT, SPRITE_SIZE_FROG_DYNAMIC_LONG);
+	//se particiona el de la rana en sus 8 partes
+	for(i = 0; i < FROG_FRAMES; i++)
+	{
+		temp_xy = geometry_get_pair_xy_frog_frame(i);
 
+		if(!(i%2))	//los sprites pares
+		{
+			temp_w = SPRITE_SIZE_FROG_STATIC_W;
+			temp_h = SPRITE_SIZE_FROG_STATIC_H;
+		}
+		else if (i == 1 || i == 7)
+		{
+			temp_w = SPRITE_SIZE_FROG_DYNAMIC_SHORT;
+			temp_h = SPRITE_SIZE_FROG_DYNAMIC_LONG;
+		}
+		else
+		{
+			temp_w = SPRITE_SIZE_FROG_DYNAMIC_LONG;
+			temp_h = SPRITE_SIZE_FROG_DYNAMIC_SHORT;
+		}
+
+		sprites.frog[i] = sprite_cut(sprites.frog_uncut, temp_xy.x, temp_xy.y, temp_w, temp_h);
+	}
+
+	//el del fondo
 	sprites.background = al_load_bitmap("sprite_background.png");
 
+	//el de los troncos
 	sprites.log = al_load_bitmap("sprite_log.png");
 
 	/*
-	int i;
 	for(i = 0; i < CARS_TYPES; i++)
 		sprites.car[i] = al_load_bitmap("sprite_car_0.png");
 	*/
+	//de los autos
 	sprites.car[0] = al_load_bitmap("sprite_car_0.png");
+
+	//el de las tortugas sin recortar
+	sprites.turtle_uncut = al_load_bitmap("sprite_turtles.png");
+
+	//se recortan los de la tortuga en sus 11 partes
+	for(i = 0; i < TURTLE_FRAMES; i++)
+	{
+		temp_xy = geometry_get_pair_xy_turtle_frame(i);
+		int temp_side;
+
+		if(i <= 7)
+			temp_side = TURTLE_FRAME_ZERO_TO_SEVEN_SIDE;
+		else if(i <= 9)
+			temp_side = TURTLE_FRAME_EIGTH_TO_NINE_SIDE;
+		else
+			temp_side = TURTLE_FRAME_TEN_SIDE;
+
+		sprites.turtle[i] = sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, temp_side, temp_side);
+	}
+
+
+	//el de la mosca
+	sprites.fly = al_load_bitmap("sprite_fly.png");
+
 
 }
 
@@ -320,10 +368,8 @@ static void sprites_deinit(void)
 
 	al_destroy_bitmap(sprites.frog_uncut);
 
-	for(i = 0; i < 8; i++)
-	{
+	for(i = 0; i < FROG_FRAMES; i++)
 		al_destroy_bitmap(sprites.frog[i]);
-	}
 
 	al_destroy_bitmap(sprites.background);
 
@@ -331,6 +377,13 @@ static void sprites_deinit(void)
 
 	for(i = 0; i < CARS_TYPES; i++)
 		al_destroy_bitmap(sprites.car[i]);
+
+	al_destroy_bitmap(sprites.turtle_uncut);
+
+	for(i = 0; i < TURTLE_FRAMES; i++)
+		al_destroy_bitmap(sprites.turtle[i]);
+
+	al_destroy_bitmap(sprites.fly);
 	
 }
 

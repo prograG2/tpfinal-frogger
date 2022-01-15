@@ -31,6 +31,16 @@
 #define CELL_H  46
 #define CELL_W  46
 
+#define	MAX_GOALS			5			//cantidad de puntos de llegada
+
+#define MAX_LANES			(ROWS - 1)	//-1 por la primera que es para HUD
+
+#define LANES_CAR_TOTAL		5
+
+#define LANES_LOG_TOTAL		3
+
+#define LANES_TURTLE_TOTAL	2
+
 //Coordenadas de la celda topleft (en su vértice topleft)
 #define CELL_TOPLEFT_X  0 
 #define CELL_TOPLEFT_Y  0
@@ -51,6 +61,7 @@
 #define CELL_START_FROG_Y   (CELL_START_Y + FROG_OFFSET_Y)
 
 //Para los sprites de la rana
+#define FROG_FRAMES						8
 #define SPRITE_SIZE_FROG_STATIC_H       FROG_H
 #define SPRITE_SIZE_FROG_STATIC_W       FROG_W
 #define SPRITE_SIZE_FROG_DYNAMIC_LONG   46
@@ -80,10 +91,32 @@
 #define CAR_OFFSET_X    0
 #define CAR_OFFSET_Y    (CELL_H/2 - LOG_H/2)
 
+//Tortugas
+#define TURTLE_FRAMES							11	//11 frames distintos tiene la animación completa
+#define	TURTLE_SIDE								CELL_W
+#define TURTLE_FRAME_ZERO_TO_SEVEN_SIDE			TURTLE_SIDE
+#define TURTLE_FRAME_ZERO_TO_SEVEN_OFFSET_XY	(CELL_W/2 - TURTLE_FRAME_ZERO_TO_SEVEN_SIDE/2)
+#define	TURTLE_FRAME_EIGTH_TO_NINE_SIDE			30
+#define TURTLE_FRAME_EIGTH_TO_NINE_OFFSET_XY	(CELL_W/2 - TURTLE_FRAME_EIGTH_TO_NINE_SIDE/2)
+#define TURTLE_FRAME_TEN_SIDE					20
+#define TURTLE_FRAME_TEN_OFFSET_XY				(CELL_W/2 - TURTLE_SIDE_TEN/2)
+
+//Moscas
+#define	FLY_SIDE				30
+#define	FLY_OFFSET_XY			(CELL_W/2 - FLY_SIDE/2)
+
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+
+typedef struct
+{
+	int x;
+	int y;
+
+} pair_xy_t;
 
 enum DIRECTIONS
 {
@@ -93,6 +126,7 @@ enum DIRECTIONS
 	DOWN
 };
 
+/*
 enum SURFACES
 {
 	CHILL,
@@ -101,13 +135,19 @@ enum SURFACES
 	TURTLE,
 	LOG
 };
+*/
 
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: extern unsigned int anio_actual;+
+//filas para troncos
+extern const unsigned int lanes_logs[];
+//filas para tortugas
+extern const unsigned int lanes_turtles[];
+//filas para autos
+extern const unsigned int lanes_cars[];
 
 
 /*******************************************************************************
@@ -169,6 +209,23 @@ bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int b
  * @return int Valor mapeado
  */
 int map_int(int source, int min_in, int max_in, int min_out, int max_out);
+
+/**
+ * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de la rana
+ * 
+ * @param frame Numero de frame (0 a FROG_FRAMES)
+ * @return pair_xy_t Par de coordenadas
+ */
+pair_xy_t geometry_get_pair_xy_frog_frame(int frame);
+
+/**
+ * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de la tortuga
+ * 
+ * @param frame Numero de frame (0 a TURTLE_FRAMES)
+ * @return pair_xy_t Par de coordenadas
+ */
+pair_xy_t geometry_get_pair_xy_turtle_frame(int frame);
+
 
 
 /*******************************************************************************
