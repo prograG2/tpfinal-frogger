@@ -2,11 +2,11 @@ CC := gcc
 OPTIONS := -Wall
 NOLINK := -c
 OBJS = main.o allegro_stuff.o entities.o geometry.o
-#ALLEGRO_LINKS = $(pkg-config allegro-5 allegro_font-5 allegro_primitives-5 allegro_image-5 --libs --cflags)
+ALLEGRO_LINKS = `pkg-config --libs --cflags allegro-5 allegro_font-5 allegro_primitives-5 allegro_image-5 allegro_audio-5 allegro_acodec-5`
 
 #Linkeo de los objetos
 frogger: ${OBJS}
-	${CC} ${OPTIONS} ${OBJS} -o frogger `pkg-config --libs allegro-5 allegro_font-5 allegro_primitives-5 allegro_image-5`
+	${CC} ${OPTIONS} ${OBJS} -o frogger ${ALLEGRO_LINKS}
 
 #Creación de los objetos
 main.o: main.c allegro_stuff.h entities.h geometry.h

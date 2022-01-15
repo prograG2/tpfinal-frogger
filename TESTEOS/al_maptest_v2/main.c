@@ -98,6 +98,10 @@ int main(void)
                 //si es 'escape', avisa para cerrar la ventana
                 if(keyboard_check_key(ALLEGRO_KEY_ESCAPE))
                     allegro_set_var_done(true);
+                
+                //play~pausa de musica de fondo
+                if(keyboard_check_key(ALLEGRO_KEY_P))
+                    allegro_sound_toggle_background_status();
 
                 //avisa que hay que renderizar
                 allegro_set_var_redraw(true);
@@ -120,7 +124,7 @@ int main(void)
         //si hay que cerrar el programa
         if(allegro_get_var_done())
         {
-            printf("\ncerrado\n");
+            printf("\n~~cerrado~~\n\n");
 
             //sale del while
 			break;  

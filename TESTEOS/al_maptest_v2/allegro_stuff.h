@@ -21,6 +21,9 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+
 #include <stdio.h>
 
 #include "entities.h"
@@ -78,6 +81,13 @@ typedef struct
     */
 } sprites_t;
 
+typedef struct
+{
+    ALLEGRO_AUDIO_STREAM* background;
+    ALLEGRO_SAMPLE* jump;
+
+} audios_t;
+
 /*
 typedef struct
 {
@@ -93,6 +103,7 @@ typedef struct
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
+//estructura con punteros a sprites
 extern sprites_t sprites;
 
 
@@ -212,6 +223,42 @@ void allegro_draw_background(void);
  */
 bool allegro_is_event_queue_empty(void);
 
+/**
+ * @brief Cambia el estado de reproduccion de la musica de fondo
+ * 
+ */
+void allegro_sound_toggle_background_status(void);
+
+/**
+ * @brief Pone en play o pausa la musica de fondo
+ * 
+ * @param state true==play, false==pause
+ */
+void allegro_sound_set_background_status(bool state);
+
+/**
+ * @brief Devuelve el estado de la musica de fondo
+ * 
+ * @return true Play
+ * @return false Pause
+ */
+bool allegro_sound_get_background_status(void);
+
+/**
+ * @brief Reproduce sonido de salto de la rana
+ * 
+ */
+void allegro_sound_play_frog_jump(void);
+
+/**
+ * @brief Dibuja un contorno rectangular
+ * 
+ * @param x Topleft x
+ * @param y Topleft y
+ * @param w Ancho
+ * @param h Largo
+ */
+void allegro_draw_hitbox(int x, int y, int w, int h);
 
 
 /*******************************************************************************

@@ -55,6 +55,7 @@ typedef struct
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
+//estructura con punteros a sprites
 sprites_t sprites;
 
 
@@ -93,6 +94,18 @@ static void sprites_deinit(void);
  */
 static void keyboard_init(void);
 
+/**
+ * @brief Inicializa audios
+ * 
+ */
+static void audio_init(void);
+
+/**
+ * @brief Desinicializa audios
+ * 
+ */
+static void audio_deinit(void);
+
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -107,7 +120,11 @@ static void keyboard_init(void);
 //variables principales de allegro
 static allegro_t allegro_vars;
 
+//arreglo para registrar el estado de cada tecla
 static unsigned char key[ALLEGRO_KEY_MAX];
+
+//variable con los sonidos/musicas del juego
+static audios_t audios;
 
 
 /*******************************************************************************
@@ -210,6 +227,13 @@ void allegro_inits(void)
 	//inicializa teclado
 	keyboard_init();
 
+	//audio
+	must_init(al_install_audio(), "audio");
+	must_init(al_init_acodec_addon(), "audio codecs");
+	must_init(al_reserve_samples(16), "reserve samples");
+
+	audio_init();
+
 	//inicializa timer
 	al_start_timer(allegro_vars.timer);
 
@@ -218,6 +242,7 @@ void allegro_inits(void)
 void allegro_deinits(void)
 {
 	sprites_deinit();
+	audio_deinit();
 	al_destroy_font(allegro_vars.font);
 	al_destroy_display(allegro_vars.disp);
 	al_destroy_timer(allegro_vars.timer);
@@ -276,6 +301,36 @@ bool allegro_is_event_queue_empty(void)
 	return(al_is_event_queue_empty(allegro_vars.queue));
 }
 
+void allegro_sound_toggle_background_status(void)
+{
+	al_set_audio_stream_playing(audios.background, !al_get_audio_stream_playing(audios.background)); 
+}
+
+void allegro_sound_set_background_status(bool state)
+{
+	al_set_audio_stream_playing(audios.background, state);
+}
+
+bool allegro_sound_get_background_status(void)
+{
+	return(al_get_audio_stream_playing(audios.background));
+}
+
+void allegro_sound_play_frog_jump(void)
+{
+	al_play_sample(audios.jump, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_draw_hitbox(int x, int y, int w, int h)
+{
+	al_draw_rectangle(	x,
+						y,
+						x + w,
+						y + h,
+						al_map_rgb(100, 100, 100),
+						1);		//grosor
+}
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -297,7 +352,7 @@ static void sprites_init(void)
 	int temp_w, temp_h;
 
 	//de la rana completo
-	sprites.frog_uncut = al_load_bitmap("sprite_frog.png");
+	sprites.frog_uncut = al_load_bitmap("media/sprites/sprite_frog.png");
 
 	//se particiona el de la rana en sus 8 partes
 	for(i = 0; i < FROG_FRAMES; i++)
@@ -324,20 +379,20 @@ static void sprites_init(void)
 	}
 
 	//el del fondo
-	sprites.background = al_load_bitmap("sprite_background.png");
+	sprites.background = al_load_bitmap("media/sprites/sprite_background.png");
 
 	//el de los troncos
-	sprites.log = al_load_bitmap("sprite_log.png");
+	sprites.log = al_load_bitmap("media/sprites/sprite_log.png");
 
 	/*
 	for(i = 0; i < CARS_TYPES; i++)
 		sprites.car[i] = al_load_bitmap("sprite_car_0.png");
 	*/
 	//de los autos
-	sprites.car[0] = al_load_bitmap("sprite_car_0.png");
+	sprites.car[0] = al_load_bitmap("media/sprites/sprite_car_0.png");
 
 	//el de las tortugas sin recortar
-	sprites.turtle_uncut = al_load_bitmap("sprite_turtles.png");
+	sprites.turtle_uncut = al_load_bitmap("media/sprites/sprite_turtles.png");
 
 	//se recortan los de la tortuga en sus 11 partes
 	for(i = 0; i < TURTLE_FRAMES; i++)
@@ -357,7 +412,7 @@ static void sprites_init(void)
 
 
 	//el de la mosca
-	sprites.fly = al_load_bitmap("sprite_fly.png");
+	sprites.fly = al_load_bitmap("media/sprites/sprite_fly.png");
 
 
 }
@@ -390,6 +445,32 @@ static void sprites_deinit(void)
 static void keyboard_init(void)
 {
 	memset(key, 0, ALLEGRO_KEY_MAX);
+}
+
+static void audio_init(void)
+{
+	//audio_stream de fondo (background) || se reproduce al inicializarlo
+	audios.background = al_load_audio_stream("media/sounds/frogger-arcade-stage-theme-extended.opus", 2, 2048);
+	must_init(audios.background, "background stream");
+	al_set_audio_stream_playmode(audios.background, ALLEGRO_PLAYMODE_LOOP);
+	al_set_audio_stream_gain(audios.background, 0.1);	//ganancia
+	al_attach_audio_stream_to_mixer(audios.background, al_get_default_mixer());	//"para que suene"
+	al_set_audio_stream_playing(audios.background, false);		//pausa
+	//al_set_audio_stream_playing(audios.background, true);		/play
+
+	//efecto de sonido
+	audios.jump = al_load_sample("media/sounds/jump_0.wav");
+	must_init(audios.jump, "jump sample");
+	//al_play_sample(audios.jump, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);	//play
+
+}
+
+static void audio_deinit(void)
+{
+	al_destroy_audio_stream(audios.background);
+
+	al_destroy_sample(audios.jump);
+
 }
 
  

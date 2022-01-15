@@ -218,8 +218,6 @@ static void fly_update(void);
 static void fly_draw(void);
 
 
-
-
 /**
  * @brief Detecta si un rectángulo está dentro de un tronco
  * 
@@ -367,6 +365,11 @@ static void frog_update(void)
 			frog.moving = true;
 			keyboard_set_key(ALLEGRO_KEY_DOWN);
 		}
+
+		if(frog.moving)
+		{
+			allegro_sound_play_frog_jump();
+		}
 	}
 
 	else if (frog.moving)
@@ -471,14 +474,13 @@ static void frog_draw(void)
 
 	}
 
-
 	al_draw_bitmap(tempbitmap, frog.x, frog.y, 0);
 
 	//hitbox
-	al_draw_rectangle(frog.x, frog.y, frog.x + FROG_W, frog.y + FROG_W, al_map_rgb(100, 100, 100), 1);
+	allegro_draw_hitbox(frog.x, frog.y, FROG_W, FROG_H);
 
 	//coordenadas rana
-            al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, 0, 0, "X: %d Y: %d", frog.x, frog.y);
+    al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, 0, 0, "X: %d Y: %d", frog.x, frog.y);
 
 }
 
@@ -608,7 +610,7 @@ static void logs_draw(void)
 			al_draw_bitmap(sprites.log, log[i].x, log[i].y, 0);
 
 			//hitbox
-			al_draw_rectangle(log[i].x, log[i].y, log[i].x + LOG_W, log[i].y + LOG_H, al_map_rgb(100, 100, 100), 1);
+			allegro_draw_hitbox(log[i].x, log[i].y, LOG_W, LOG_H);
 		}
 			
 	}
@@ -747,6 +749,7 @@ static void cars_draw()
 
 			//Dibujo hitbox
 			al_draw_rectangle(car[i].x, car[i].y, car[i].x + CAR_W, car[i].y + CAR_H, al_map_rgb(100, 100, 100), 1);
+			allegro_draw_hitbox(car[i].x, car[i].y, CAR_W, CAR_H);
 		}
 			   
 		
@@ -942,7 +945,7 @@ static void turtles_draw(void)
 			}
 
 			//Dibujo hitbox
-			al_draw_rectangle(turtle_pack[i].x, turtle_pack[i].y, turtle_pack[i].x + turtle_pack[i].wide, turtle_pack[i].y + TURTLE_SIDE, al_map_rgb(100, 100, 100), 1);
+			allegro_draw_hitbox(turtle_pack[i].x, turtle_pack[i].y, turtle_pack[i].wide, TURTLE_SIDE);
 		}
 			   
 		
@@ -1013,7 +1016,7 @@ static void fly_draw(void)
 		al_draw_bitmap(sprites.fly, fly.x, fly.y, 0);
 
 		//hitbox
-		al_draw_rectangle(fly.x, fly.y, fly.x + FLY_SIDE, fly.y + FLY_SIDE, al_map_rgb(100,100,100), 1);
+		allegro_draw_hitbox(fly.x, fly.y, FLY_SIDE, FLY_SIDE);
 	}
 
 	//coordenadas
@@ -1107,5 +1110,4 @@ static void fix_frog_pos(void)
 		break;
 	}
 }
-
  
