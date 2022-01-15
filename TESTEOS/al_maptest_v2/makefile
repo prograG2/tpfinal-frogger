@@ -1,3 +1,7 @@
+#'make' para compilar todo
+#'make run' para compilar todo y ejecutar
+#'make clean' para borrar todos los objetos
+
 CC := gcc
 OPTIONS := -Wall
 NOLINK := -c
@@ -20,8 +24,6 @@ entities.o: entities.c allegro_stuff.h geometry.h
 
 geometry.o: geometry.c
 	${CC} ${OPTIONS} ${NOLINK} geometry.c  
-
-###
 
 clean:
 	rm *.o
