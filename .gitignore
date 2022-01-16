@@ -1,3 +1,6 @@
+*.nf
+.json
+
 # Prerequisites
 *.d
 
