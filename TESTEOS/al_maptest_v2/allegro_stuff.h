@@ -66,6 +66,11 @@ typedef struct
 
     ALLEGRO_BITMAP* fly;
 
+    ALLEGRO_BITMAP* menu_uncut;
+    ALLEGRO_BITMAP* menu[4];
+
+    ALLEGRO_BITMAP* menu_background;
+
     /*
     ALLEGRO_BITMAP* ship;
     ALLEGRO_BITMAP* ship_shot[2];

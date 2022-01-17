@@ -50,7 +50,6 @@
 #define FLY_DESPAWN_FRAMES_MIN	600	//mínimo tiempo para sacar mosca
 #define	FLY_DESPAWN_FRAMES_MAX	900	//maximo tiempo para sacar mosca
 
-
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
@@ -114,6 +113,27 @@ enum TURTLE_STATES
 {
 	SURFACE,
 	WATER
+};
+
+typedef struct
+{
+	unsigned char state;
+	unsigned char window;
+
+} menu_t;
+
+enum MENU_STATES
+{
+	START,
+	OPCION_0,
+	OPCION_1,
+	OPCION_2
+};
+enum MENU_WINDOWS
+{
+	HOME,
+	DIFFICULTY,
+	RANKING
 };
 
 /*******************************************************************************
@@ -217,6 +237,24 @@ static void fly_update(void);
  */
 static void fly_draw(void);
 
+/**
+ * @brief Inicializa el menu
+ * 
+ */
+static void menu_init(void);
+
+/**
+ * @brief Actualiza el menu
+ * 
+ */
+static void menu_update(void);
+
+/**
+ * @brief Dibuja lelas menu
+ * 
+ */
+static void menu_draw(void);
+
 
 /**
  * @brief Detecta si un rectángulo está dentro de un tronco
@@ -271,6 +309,9 @@ static turtle_pack_t turtle_pack[MAX_TURTLE_PACKS];
 //Mosca
 static fly_t fly;
 
+//Menu
+static menu_t menu;
+
 //Contador de frames ejecutados
 static long frames;
 
@@ -317,6 +358,78 @@ void entities_draw()
 	//"frog siempre a lo ultimo, para que se vea"
 	frog_draw();
 }
+
+
+static void menu_init(void)
+{
+	frames = 0;
+
+	menu.window == HOME;
+	menu.state == START;
+}
+
+static void menu_update()
+{
+	frames++;
+
+	srand(time(NULL));
+
+	switch (menu.state)
+	{
+	case START:
+		if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_0;
+			keyboard_set_key(ALLEGRO_KEY_DOWN);
+		}
+		break;
+
+	case OPCION_0:
+		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
+		{
+			menu.state = START;
+			keyboard_set_key(ALLEGRO_KEY_UP);
+		}  
+		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_1;
+			keyboard_set_key(ALLEGRO_KEY_DOWN);
+		}
+		break;
+	case OPCION_1:
+		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_0;
+			keyboard_set_key(ALLEGRO_KEY_UP);
+		}  
+		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_2;
+			keyboard_set_key(ALLEGRO_KEY_DOWN);
+		}
+		break;
+	case OPCION_2:
+		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_1;
+			keyboard_set_key(ALLEGRO_KEY_UP);
+		}  
+	default:
+		break;
+	}
+	
+}
+
+static void menu_draw()
+{
+	ALLEGRO_BITMAP* tempbitmap;
+
+	tempbitmap = sprites.menu[menu.state];
+
+	al_draw_bitmap(tempbitmap, 100, 100 + menu.state*100  , 0);
+
+}
+
 
 /*******************************************************************************
  *******************************************************************************

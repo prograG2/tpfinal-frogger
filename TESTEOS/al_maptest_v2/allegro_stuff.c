@@ -414,6 +414,17 @@ static void sprites_init(void)
 	//el de la mosca
 	sprites.fly = al_load_bitmap("media/sprites/sprite_fly.png");
 
+	//el menu completo
+	sprites.menu_uncut = al_load_bitmap("media/sprites/sprite_menu.png");
+
+	//el menu dividido //AGREGAR sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, temp_side, temp_side);
+	sprites.menu[0] = al_load_bitmap("media/sprites/sprite_menu.png");
+	sprites.menu[1] = al_load_bitmap("media/sprites/sprite_menu.png");
+	sprites.menu[2] = al_load_bitmap("media/sprites/sprite_menu.png");
+	sprites.menu[3] = al_load_bitmap("media/sprites/sprite_menu.png");
+
+	//el fonde del menu
+	sprites.menu_background = al_load_bitmap("media/sprites/sprite_menu_background.png");
 
 }
 
