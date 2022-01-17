@@ -1,12 +1,12 @@
 /**
  * @file geometry.c
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-01-10
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 /*******************************************************************************
@@ -14,9 +14,9 @@
  ******************************************************************************/
 
 #include "geometry.h"
-#include <stdio.h>      
-#include <stdlib.h>     
-#include <time.h> 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 
 /*******************************************************************************
@@ -55,7 +55,7 @@ const unsigned int lanes_cars[LANES_CAR_TOTAL] = {8,9,10,11,12};
  ******************************************************************************/
 
 //coordenadas topleft de cada frame del sprite de la rana
-static const pair_xy_t pair_xy_frog_sprites_frames[FROG_FRAMES] = 
+static const pair_xy_t pair_xy_frog_sprites_frames[FROG_FRAMES] =
     {
         {16,16},
         {79,15},
@@ -68,7 +68,7 @@ static const pair_xy_t pair_xy_frog_sprites_frames[FROG_FRAMES] =
     };
 
 //coordenadas topleft de cada frame del sprite de la tortuga
-static const pair_xy_t pair_xy_turtle_sprites_frames[TURTLE_FRAMES] = 
+static const pair_xy_t pair_xy_turtle_sprites_frames[TURTLE_FRAMES] =
     {
         {2,0},
         {51,0},
@@ -103,12 +103,12 @@ int get_rand_between(int low, int high)
 }
 
 bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
-{   
+{
     if (ax1 < bx2 &&
         ax2 > bx1 &&
         ay1 < by2 &&
         ay2 > by1)
-        
+
         return true;
 
     return false;
@@ -135,7 +135,7 @@ int map_int(int source, int min_in, int max_in, int min_out, int max_out)
     int output = (source - min_in) * (max_out - min_out) / (max_in - min_in) + min_out;
 
     return(output);
-}   
+}
 
 pair_xy_t geometry_get_pair_xy_frog_frame(int frame)
 {
@@ -157,4 +157,3 @@ pair_xy_t geometry_get_pair_xy_turtle_frame(int frame)
 
 
 
- 

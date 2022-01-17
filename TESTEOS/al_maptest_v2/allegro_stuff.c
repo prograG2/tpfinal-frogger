@@ -1,12 +1,12 @@
 /**
  * @file allegro_stuff.c
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-01-10
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 /*******************************************************************************
@@ -40,15 +40,15 @@ typedef struct
 
 	//fuente builtin
 	ALLEGRO_FONT* font;
-	
+
 	//variable evento
-	ALLEGRO_EVENT event;	
+	ALLEGRO_EVENT event;
 
 	//flag para salir el programa
 	bool done;
 	//flag para renderizar
 	bool redraw;
-	
+
 } allegro_t;
 
 /*******************************************************************************
@@ -65,44 +65,44 @@ sprites_t sprites;
 
 /**
  * @brief Copia parte de un spritesheet y lo devuelve como un nuevo bitmap
- * 
+ *
  * @param source_bmp Puntero al bitmap original
  * @param x top left 'x' coord
  * @param y top left 'y' coord
  * @param w wide
  * @param h heigth
  * @param source_bmp
- * @return ALLEGRO_BITMAP* 
+ * @return ALLEGRO_BITMAP*
  */
 static ALLEGRO_BITMAP* sprite_cut(ALLEGRO_BITMAP* source_bmp, int x, int y, int w, int h);
 
 /**
  * @brief Inicializa los sprites a usar
- * 
+ *
  */
 static void sprites_init(void);
 
 /**
  * @brief Destruye los sprites a usar
- * 
+ *
  */
 static void sprites_deinit(void);
 
 /**
  * @brief Inicializa variable de tecla
- * 
+ *
  */
 static void keyboard_init(void);
 
 /**
  * @brief Inicializa audios
- * 
+ *
  */
 static void audio_init(void);
 
 /**
  * @brief Desinicializa audios
- * 
+ *
  */
 static void audio_deinit(void);
 
@@ -148,7 +148,7 @@ void keyboard_update(void)
 	switch(event.type)
 	{
 		case ALLEGRO_EVENT_KEY_CHAR:
-			
+
 			if(!event.keyboard.repeat)
 				key[event.keyboard.keycode] = KEY_JUST_PRESSED;
 			else
@@ -164,7 +164,7 @@ void keyboard_update(void)
 		default:
 			break;
 	}
-	
+
 }
 
 unsigned char keyboard_check_key(unsigned char allegro_key_code)
@@ -205,7 +205,7 @@ void allegro_inits(void)
 	must_init(allegro_vars.disp, "display");
 	al_set_window_position (allegro_vars.disp, 200, 0);
 	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
-	
+
 	//para usar la fuente builtin
 	allegro_vars.font = al_create_builtin_font();
 	must_init(allegro_vars.font, "font");
@@ -217,12 +217,12 @@ void allegro_inits(void)
 	al_register_event_source(allegro_vars.queue, al_get_keyboard_event_source());
 	al_register_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
 	al_register_event_source(allegro_vars.queue, al_get_timer_event_source(allegro_vars.timer));
-	al_register_event_source(allegro_vars.queue, al_get_mouse_event_source());  
+	al_register_event_source(allegro_vars.queue, al_get_mouse_event_source());
 
 	//flag para salir el programa
-	allegro_vars.done = false;	
-	//flag para renderizar	
-	allegro_vars.redraw = true;		
+	allegro_vars.done = false;
+	//flag para renderizar
+	allegro_vars.redraw = true;
 
 	//inicializa teclado
 	keyboard_init();
@@ -252,7 +252,7 @@ void allegro_deinits(void)
 ALLEGRO_EVENT_TYPE allegro_wait_for_event(void)
 {
 	al_wait_for_event(allegro_vars.queue, &allegro_vars.event);
-	
+
 	return(allegro_vars.event.type);
 }
 
@@ -303,7 +303,7 @@ bool allegro_is_event_queue_empty(void)
 
 void allegro_sound_toggle_background_status(void)
 {
-	al_set_audio_stream_playing(audios.background, !al_get_audio_stream_playing(audios.background)); 
+	al_set_audio_stream_playing(audios.background, !al_get_audio_stream_playing(audios.background));
 }
 
 void allegro_sound_set_background_status(bool state)
@@ -425,6 +425,8 @@ static void sprites_init(void)
 
 	//el fonde del menu
 	sprites.menu_background = al_load_bitmap("media/sprites/sprite_menu_background.png");
+	//corazon
+	sprites.heart = al_load_bitmap("media/sprites/minecraft_heart.png");
 
 }
 
@@ -450,7 +452,9 @@ static void sprites_deinit(void)
 		al_destroy_bitmap(sprites.turtle[i]);
 
 	al_destroy_bitmap(sprites.fly);
-	
+
+	al_destroy_bitmap(sprites.heart);
+
 }
 
 static void keyboard_init(void)
@@ -464,7 +468,7 @@ static void audio_init(void)
 	audios.background = al_load_audio_stream("media/sounds/frogger-arcade-stage-theme-extended.opus", 2, 2048);
 	must_init(audios.background, "background stream");
 	al_set_audio_stream_playmode(audios.background, ALLEGRO_PLAYMODE_LOOP);
-	al_set_audio_stream_gain(audios.background, 0.1);	//ganancia
+	al_set_audio_stream_gain(audios.background, 0.5);	//ganancia
 	al_attach_audio_stream_to_mixer(audios.background, al_get_default_mixer());	//"para que suene"
 	al_set_audio_stream_playing(audios.background, false);		//pausa
 	//al_set_audio_stream_playing(audios.background, true);		/play
@@ -484,4 +488,3 @@ static void audio_deinit(void)
 
 }
 
- 

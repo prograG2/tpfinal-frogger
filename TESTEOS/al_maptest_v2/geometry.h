@@ -106,6 +106,12 @@
 #define	FLY_OFFSET_XY			(CELL_W/2 - FLY_SIDE/2)
 
 
+#define SPRITE_SIZE_HEART	20	//cuadrado
+
+#define CHAR_H	8 //al_create_builtin_font() crea caracteres de 8x8 pixeles. CREO.
+#define CHAR_W	8
+
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS

@@ -24,6 +24,7 @@
  ******************************************************************************/
 
 #define MAX_LIVES           3
+
 #define MAX_CARS            10
 #define MAX_LOGS            10
 #define CARS_TYPES          1

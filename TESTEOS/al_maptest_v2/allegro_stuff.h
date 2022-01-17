@@ -70,6 +70,7 @@ typedef struct
     ALLEGRO_BITMAP* menu[4];
 
     ALLEGRO_BITMAP* menu_background;
+    ALLEGRO_BITMAP* heart;
 
     /*
     ALLEGRO_BITMAP* ship;
