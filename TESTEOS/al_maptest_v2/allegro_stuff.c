@@ -21,6 +21,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
+#define FONT_HEIGHT	20
 
 
 /*******************************************************************************
@@ -40,6 +41,8 @@ typedef struct
 
 	//fuente builtin
 	ALLEGRO_FONT* font;
+	int font_h;			//altura de un caracter
+	int font_w;			//ancho de un caracter
 
 	//variable evento
 	ALLEGRO_EVENT event;
@@ -183,7 +186,9 @@ void allegro_inits(void)
 	must_init(al_install_keyboard(), "keyboard");
 	must_init(al_install_mouse(), "mouse");
 	must_init(al_init_image_addon(), "image");
-
+	must_init(al_init_font_addon(), "font addon");
+	must_init(al_init_ttf_addon(), "ttf addon");
+   
 	//timer que actualiza cada 1/60 segundos (60fps)
 	allegro_vars.timer = al_create_timer(1.0 / FPS);
 	must_init(allegro_vars.timer, "timer");
@@ -207,8 +212,12 @@ void allegro_inits(void)
 	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
 
 	//para usar la fuente builtin
-	allegro_vars.font = al_create_builtin_font();
+	//allegro_vars.font = al_create_builtin_font();
+	//allegro_vars.font = al_load_font("media/RobotoRegular.ttf", 20, 0);
+	allegro_vars.font = al_load_font("media/fonts/ProFontWindows.ttf", FONT_HEIGHT, 0);
 	must_init(allegro_vars.font, "font");
+	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
+	allegro_vars.font_w = al_get_text_width(allegro_vars.font, "a");
 
 	//para dibujar figuras primitivas (círculos, rectángulos, líneas, rellenos o no, etc.)
 	must_init(al_init_primitives_addon(), "primitives");
@@ -284,6 +293,16 @@ void allegro_set_var_redraw(bool state)
 ALLEGRO_FONT* allegro_get_var_font(void)
 {
 	return(allegro_vars.font);
+}
+
+int allegro_get_var_font_h(void)
+{
+	return(allegro_vars.font_h);
+}
+
+int allegro_get_var_font_w(void)
+{
+	return(allegro_vars.font_w);
 }
 
 void allegro_clear_display(void)

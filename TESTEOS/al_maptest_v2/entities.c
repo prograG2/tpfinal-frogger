@@ -58,13 +58,18 @@
 
 typedef struct
 {
-	unsigned int score;
-	unsigned int runs;
+	unsigned int lives;			
+	unsigned int score;		
+
+	struct
+	{
+		unsigned int number;		//numero de run actual
+		unsigned int time_left;		//
+	} run;
+
 	long frames;
-	unsigned int timer_min;
-	unsigned int timer_sec;
+	unsigned int timer_in_sec;
 	long timer_ref;				//referencia temporal del inicio del programa
-	unsigned int lives;
 
 } game_data_t;
 
@@ -505,6 +510,8 @@ static void game_data_update(void)
 
 static void hud_draw(void)
 {
+	int char_h = allegro_get_var_font_h();
+	int char_w = allegro_get_var_font_w();
 
 	//Dibuja la puntuacion en pantalla.
     al_draw_textf(
@@ -512,25 +519,26 @@ static void hud_draw(void)
         al_map_rgb(0, 0, 0),        //Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
         1, 1,                       //Arriba a la izquierda.
         0,
-        "%06d",                    //6 cifras (por ahi es mucho).
+        "Score: %06d",                    //6 cifras (por ahi es mucho).
         game_data.score);
 
 	//Dibuja el numero de vuelta.
     al_draw_textf(
         allegro_get_var_font(),
         al_map_rgb(0, 0, 0),
-        1, CHAR_H + 2,              //Para que quede abaj de la puntuacion en pantalla.
+        1, char_h + 2,              //Para que quede abaj de la puntuacion en pantalla.
         0,
-        "%02d",                    //2 cifras. No me acuerdo si esta bien asi.
+        "Runs: %02d",                    //2 cifras. No me acuerdo si esta bien asi.
         game_data.runs);
 
-/*
+
 	//Dibuja vidas.
     for(int i = 0; i < game_data.lives; i++)         //No se si la rana tiene 'frog.lives' pero aca va el equivalente.
         al_draw_bitmap(
             sprites.heart,
-            DISPLAY_W - (1 + (i * (SPRITE_SIZE_HEART + 1))), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
+            DISPLAY_W - SPRITE_SIZE_HEART * (game_data.lives - i), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
             0);
+			
     if(game_data.lives < 0)
         al_draw_text(
             allegro_get_var_font(),
@@ -544,7 +552,7 @@ static void hud_draw(void)
     al_draw_textf(	
         allegro_get_var_font(),
         al_map_rgb(0, 0, 0),
-        5 * CHAR_W, CHAR_H + 2,         //Para que quede abajo de las vidas.
+        5 * char_w, char_h + 2,         //Para que quede abajo de las vidas.
         0,
         "%02d",
         game_data.timer_min);
@@ -552,18 +560,18 @@ static void hud_draw(void)
     al_draw_text(
         allegro_get_var_font(),
         al_map_rgb(0, 0, 0),
-        3 * CHAR_W, CHAR_H + 2,
+        3 * char_w, char_h + 2,
         0,
         ":");
     //Segundos.
     al_draw_textf(
         allegro_get_var_font(),
         al_map_rgb(0, 0, 0),
-        2 * CHAR_W, CHAR_H + 2,
+        2 * char_w, char_h + 2,
         0,
         "%02d",
         game_data.timer_sec);
-		*/
+		
 }
 
 static void frog_init(void)

@@ -85,6 +85,8 @@ int main(void)
     allegro_inits();
     entities_init();
 
+    printf("\nfont height %d ~~ font width %d\n", allegro_get_var_font_h(), allegro_get_var_font_w());
+
     while(1)    
     {
         event = allegro_wait_for_event();

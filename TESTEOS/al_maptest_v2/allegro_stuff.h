@@ -18,6 +18,7 @@
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 
@@ -208,6 +209,20 @@ void allegro_set_var_redraw(bool state);
  * @return ALLEGRO_FONT 
  */
 ALLEGRO_FONT* allegro_get_var_font(void);
+
+/**
+ * @brief Devuelve el alto de un caracter de la funete usada
+ * 
+ * @return int alto
+ */
+int allegro_get_var_font_h(void);
+
+/**
+ * @brief Devuelve ancho de un caracter de la fuente usada
+ * 
+ * @return int ancho
+ */
+int allegro_get_var_font_w(void);
 
 /**
  * @brief Pone negro el display
