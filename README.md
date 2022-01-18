@@ -31,7 +31,7 @@
 <h3 align="center">Frogger</h3>
 
   <p align="center">
-    Trabajo Práctico Final de 22.07 - Programación I, curso de 2do año de Ingeniería Electrónica del Instituto Tecnológico Buenos Aires (<a href="https://github.com/github_username/repo_name">VITBA</a>).
+    Trabajo Práctico Final de 22.07 - Programación I, curso de 2do año de Ingeniería Electrónica del Instituto Tecnológico Buenos Aires (<a href="https://github.com/github_username/repo_name">ITBA</a>).
     <br />
     <a href="https://github.com/prograG2/tpfinal-frogger"><strong>Explore the docs »</strong></a>
     <br />
