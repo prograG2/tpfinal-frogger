@@ -25,13 +25,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/prograG2/tpfinal-frogger">
-    <img src="images/logo.jpeg" alt="Logo" width="80" height="80">
+    <img src="images/logo.jpeg" alt="Logo" width="120" height="120">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Frogger</h3>
 
   <p align="center">
-    project_description
+    Trabajo Práctico Final de 22.07 - Programación I, curso de 2do año de Ingeniería Electrónica del Instituto Tecnológico Buenos Aires (ITBA).
     <br />
     <a href="https://github.com/prograG2/tpfinal-frogger"><strong>Explore the docs »</strong></a>
     <br />
@@ -73,7 +73,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+<p align="center">
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
+</p>
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
 
@@ -83,15 +85,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-* [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-
+* [Allegro](https://liballeg.org/)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -150,25 +144,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
     - [] Nested Feature
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- LICENSE -->
