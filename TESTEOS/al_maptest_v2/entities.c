@@ -16,13 +16,14 @@
 #include "entities.h"
 #include "allegro_stuff.h"
 #include "geometry.h"
+#include "game_data.h" 
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-//#define DEBUG_ENTITIES
+//#define DEBUG_ENTITIES_TEXT
 
 #define LOGS_SPAWN_MIN			1
 #define LOGS_SPAWN_MAX			2
@@ -55,24 +56,6 @@
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
-
-typedef struct
-{
-	unsigned int lives;			
-	unsigned int score;		
-
-	struct
-	{
-		unsigned int number;		//numero de run actual
-		unsigned int time_left;		//
-	} run;
-
-	long frames;
-	unsigned int timer_in_sec;
-	long timer_ref;				//referencia temporal del inicio del programa
-
-} game_data_t;
-
 
 typedef struct
 {
@@ -125,7 +108,6 @@ typedef struct
 	int y;
 	unsigned char goal;				//punto de llegada, entre 1 y MAX_GOALS
 	bool used;						//flag de usada o no
-	int timer;						//timer interno, para spawneo y despawneo
 } fly_t;
 
 enum TURTLE_STATES
@@ -166,25 +148,6 @@ enum MENU_WINDOWS
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
-
-/**
- * @brief Inicializa datos del juego
- *
- */
-static void game_data_init(void);
-
-/**
- * @brief Actualiza datos del juego (timers)
- *
- */
-static void game_data_update(void);
-
-/**
- * @brief Dibuja el HUD
- *
- */
-static void hud_draw(void);
-
 
 /**
  * @brief Inicializa la rana
@@ -333,9 +296,6 @@ static void fix_frog_pos(void);
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-//Datos del juego
-static game_data_t game_data;
-
 //Rana
 static frog_t frog;
 
@@ -356,6 +316,8 @@ static menu_t menu;
 
 //Contador de frames ejecutados
 static long frames;
+static long game_frames;
+
 
 
 /*******************************************************************************
@@ -366,9 +328,6 @@ static long frames;
 
 void entities_init(void)
 {
-
-	game_data_init();
-
 	frog_init();
 	logs_init();
 	cars_init();
@@ -378,22 +337,17 @@ void entities_init(void)
 
 void entities_update()
 {
-
-	game_data_update();
+	game_frames = game_data_get_frames();
 
 	frog_update();
 	logs_update();
 	cars_update();
 	turtles_update();
 	fly_update();
-
-
 }
 
 void entities_draw()
 {
-	hud_draw();
-
 	logs_draw();
 	cars_draw();
 	turtles_draw();
@@ -481,98 +435,9 @@ static void menu_draw()
  *******************************************************************************
  ******************************************************************************/
 
-static void game_data_init(void)
-{
-	game_data.frames = 0;
-	game_data.lives = MAX_LIVES;
-	game_data.runs = 0;
-	game_data.score = 0;
-	game_data.timer_min = 0;
-	game_data.timer_sec = 0;
-	game_data.timer_ref = time(NULL);
-}
-
-static void game_data_update(void)
-{
-	unsigned int timer_dif = time(NULL) - game_data.timer_ref;
-
-	game_data.frames++;
-
-	if(timer_dif < 60)
-		game_data.timer_sec++;
-	else
-	{
-		game_data.timer_sec = 0;
-		game_data.timer_min++;
-	}
-
-}
-
-static void hud_draw(void)
-{
-	int char_h = allegro_get_var_font_h();
-	int char_w = allegro_get_var_font_w();
-
-	//Dibuja la puntuacion en pantalla.
-    al_draw_textf(
-        allegro_get_var_font(),
-        al_map_rgb(0, 0, 0),        //Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
-        1, 1,                       //Arriba a la izquierda.
-        0,
-        "Score: %06d",                    //6 cifras (por ahi es mucho).
-        game_data.score);
-
-	//Dibuja el numero de vuelta.
-    al_draw_textf(
-        allegro_get_var_font(),
-        al_map_rgb(0, 0, 0),
-        1, char_h + 2,              //Para que quede abaj de la puntuacion en pantalla.
-        0,
-        "Runs: %02d",                    //2 cifras. No me acuerdo si esta bien asi.
-        game_data.runs);
 
 
-	//Dibuja vidas.
-    for(int i = 0; i < game_data.lives; i++)         //No se si la rana tiene 'frog.lives' pero aca va el equivalente.
-        al_draw_bitmap(
-            sprites.heart,
-            DISPLAY_W - SPRITE_SIZE_HEART * (game_data.lives - i), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
-            0);
-			
-    if(game_data.lives < 0)
-        al_draw_text(
-            allegro_get_var_font(),
-            al_map_rgb(255, 255, 51),       //Amarillo, es el color que mas se ditingue en general.
-            DISPLAY_W / 2, DISPLAY_H / 2,
-            ALLEGRO_ALIGN_CENTER,           //Para que se dibuje en el medio.
-            "G A M E  O V E R");
 
-	//Dibuja el timer.
-    //Minutos.
-    al_draw_textf(	
-        allegro_get_var_font(),
-        al_map_rgb(0, 0, 0),
-        5 * char_w, char_h + 2,         //Para que quede abajo de las vidas.
-        0,
-        "%02d",
-        game_data.timer_min);
-    //:
-    al_draw_text(
-        allegro_get_var_font(),
-        al_map_rgb(0, 0, 0),
-        3 * char_w, char_h + 2,
-        0,
-        ":");
-    //Segundos.
-    al_draw_textf(
-        allegro_get_var_font(),
-        al_map_rgb(0, 0, 0),
-        2 * char_w, char_h + 2,
-        0,
-        "%02d",
-        game_data.timer_sec);
-		
-}
 
 static void frog_init(void)
 {
@@ -595,25 +460,21 @@ static void frog_update(void)
 		{
 			frog.facing = LEFT;
 			frog.moving = true;
-			keyboard_set_key(ALLEGRO_KEY_LEFT);
 		}
 		else if(keyboard_check_key(ALLEGRO_KEY_RIGHT) == KEY_JUST_PRESSED)
 		{
 			frog.facing = RIGHT;
 			frog.moving = true;
-			keyboard_set_key(ALLEGRO_KEY_RIGHT);
 		}
 		else if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
 		{
 			frog.facing = UP;
 			frog.moving = true;
-			keyboard_set_key(ALLEGRO_KEY_UP);
 		}
 		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
 		{
 			frog.facing = DOWN;
 			frog.moving = true;
-			keyboard_set_key(ALLEGRO_KEY_DOWN);
 		}
 
 		if(frog.moving)
@@ -696,7 +557,7 @@ static void frog_update(void)
 static void frog_draw(void)
 {
 
-	ALLEGRO_BITMAP* tempbitmap;
+	ALLEGRO_BITMAP* tempbitmap = NULL;
 
 	if(frog.moving)
 	{
@@ -726,7 +587,7 @@ static void frog_draw(void)
 
 	al_draw_bitmap(tempbitmap, frog.x, frog.y, 0);
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 	//hitbox
 	allegro_draw_hitbox(frog.x, frog.y, FROG_W, FROG_H);
 	//coordenadas rana
@@ -746,7 +607,7 @@ static void logs_init(void)
 static void logs_update(void)
 {
 	//se busca spawnear entre LOGS_SPAWN_MIN y LOGS_SPAWN_MAX autos cada LOGS_SPAWN_FRAMES frames
-	int new_quota = ((game_data.frames % LOGS_SPAWN_FRAMES) ? 0 : get_rand_between(LOGS_SPAWN_MIN, LOGS_SPAWN_MAX));
+	int new_quota = ((game_frames % LOGS_SPAWN_FRAMES) ? 0 : get_rand_between(LOGS_SPAWN_MIN, LOGS_SPAWN_MAX));
 
 	int i, used;
 
@@ -860,7 +721,7 @@ static void logs_draw(void)
 		{
 			al_draw_bitmap(sprites.log, log[i].x, log[i].y, 0);
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 			//hitbox
 			allegro_draw_hitbox(log[i].x, log[i].y, LOG_W, LOG_H);
 #endif
@@ -868,7 +729,7 @@ static void logs_draw(void)
 
 	}
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 	//coordenadas
 	int space;
 	for(i = 0, space = 20; i < MAX_LOGS; i++, space += 10)
@@ -891,7 +752,7 @@ static void cars_init(void)
 static void cars_update(void)
 {
 	//se busca spawnear entre CARS_SPAWN_MIN y CARS_SPAWN_MAX autos cada CARS_SPAWN_FRAMES frames
-	int new_quota = ((game_data.frames % CARS_SPAWN_FRAMES) ? 0 : get_rand_between(CARS_SPAWN_MIN, CARS_SPAWN_MAX));
+	int new_quota = ((game_frames % CARS_SPAWN_FRAMES) ? 0 : get_rand_between(CARS_SPAWN_MIN, CARS_SPAWN_MAX));
 
 	int i, used;
 
@@ -1002,7 +863,7 @@ static void cars_draw()
 			//Dibujo los autos en sus carriles.
 			al_draw_bitmap(sprites.car[0], car[i].x, car[i].y, 0);
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 			//Dibujo hitbox
 			al_draw_rectangle(car[i].x, car[i].y, car[i].x + CAR_W, car[i].y + CAR_H, al_map_rgb(100, 100, 100), 1);
 			allegro_draw_hitbox(car[i].x, car[i].y, CAR_W, CAR_H);
@@ -1012,7 +873,7 @@ static void cars_draw()
 
     }
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 	//coordenadas
 	int space;
 	for(i = 0, space = 200; i < MAX_CARS; i++, space += 10)
@@ -1033,7 +894,7 @@ static void turtles_init(void)
 
 static void turtles_update(void)
 {
-	int new_quota = ((game_data.frames % TURTLES_SPAWN_FRAMES) ? 0 : get_rand_between(TURTLES_SPAWN_MIN, TURTLES_SPAWN_MAX));
+	int new_quota = ((game_frames % TURTLES_SPAWN_FRAMES) ? 0 : get_rand_between(TURTLES_SPAWN_MIN, TURTLES_SPAWN_MAX));
 
 	int i, used;
 
@@ -1203,7 +1064,7 @@ static void turtles_draw(void)
 				al_draw_bitmap(sprites.turtle[turtle_pack[i].frame], turtle_pack[i].x + TURTLE_SIDE * j, turtle_pack[i].y, flag);
 			}
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 			//Dibujo hitbox
 			allegro_draw_hitbox(turtle_pack[i].x, turtle_pack[i].y, turtle_pack[i].wide, TURTLE_SIDE);
 #endif
@@ -1212,7 +1073,7 @@ static void turtles_draw(void)
 
     }
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 	//coordenadas
 	int space;
 	for(i = 0, space = 350; i < MAX_TURTLE_PACKS; i++, space += 10)
@@ -1239,7 +1100,7 @@ static void fly_update(void)
 		if(!timeout)
 			timeout = get_rand_between(FLY_SPAWN_FRAMES_MIN, FLY_SPAWN_FRAMES_MAX);
 
-		if(!(game_data.frames % timeout))
+		if(!(game_frames % timeout))
 		{
 			//se elije uno de los puntos de llegada
 			fly.goal = get_rand_between(0, MAX_GOALS-1);
@@ -1259,7 +1120,7 @@ static void fly_update(void)
 	else
 	{
 		//si se puede despawnear
-		if(!(game_data.frames % timeout))
+		if(!(game_frames % timeout))
 		{
 			//mosca no usada
 			fly.used = false;
@@ -1279,7 +1140,7 @@ static void fly_draw(void)
 		al_draw_bitmap(sprites.fly, fly.x, fly.y, 0);
 	}
 
-#ifdef DEBUG_ENTITIES	
+#ifdef DEBUG_ENTITIES_TEXT	
 
 	//hitbox
 	allegro_draw_hitbox(fly.x, fly.y, FLY_SIDE, FLY_SIDE);

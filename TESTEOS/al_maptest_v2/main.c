@@ -22,12 +22,14 @@
 #include "allegro_stuff.h"
 #include "entities.h"
 #include "geometry.h"
+#include "game_data.h"
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
+#define CHECK_KEY(key) (keyboard_check_key(key) == KEY_JUST_PRESSED)
 
 
 /*******************************************************************************
@@ -83,9 +85,10 @@ int main(void)
     */
     
     allegro_inits();
+    game_data_init();
     entities_init();
 
-    printf("\nfont height %d ~~ font width %d\n", allegro_get_var_font_h(), allegro_get_var_font_w());
+    //printf("\nfont height %d ~~ font width %d\n", allegro_get_var_font_h(), allegro_get_var_font_w());
 
     while(1)    
     {
@@ -95,15 +98,19 @@ int main(void)
         {
             case ALLEGRO_EVENT_TIMER:
                 
+                game_data_update();
                 entities_update();
                 
                 //si es 'escape', avisa para cerrar la ventana
-                if(keyboard_check_key(ALLEGRO_KEY_ESCAPE))
+                if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
                     allegro_set_var_done(true);
                 
                 //play~pausa de musica de fondo
-                if(keyboard_check_key(ALLEGRO_KEY_P))
+                if(CHECK_KEY(ALLEGRO_KEY_P))
                     allegro_sound_toggle_background_status();
+
+				if(CHECK_KEY(ALLEGRO_KEY_T))
+					game_data_subtract_live();
 
                 //avisa que hay que renderizar
                 allegro_set_var_redraw(true);
@@ -146,6 +153,9 @@ int main(void)
 
             //entidades
             entities_draw();
+
+            //data
+            game_data_draw();
 
             //carga los cambios anteriores para verlos
 			al_flip_display();

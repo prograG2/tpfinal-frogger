@@ -154,8 +154,6 @@ void keyboard_update(void)
 
 			if(!event.keyboard.repeat)
 				key[event.keyboard.keycode] = KEY_JUST_PRESSED;
-			else
-				key[event.keyboard.keycode] = KEY_PRESSED;
 
 			break;
 
@@ -172,7 +170,12 @@ void keyboard_update(void)
 
 unsigned char keyboard_check_key(unsigned char allegro_key_code)
 {
-	return(key[allegro_key_code]);
+	unsigned char state = key[allegro_key_code];
+
+	if(state == KEY_JUST_PRESSED)
+		key[allegro_key_code] = KEY_PRESSED;
+
+	return(state);
 }
 
 void keyboard_set_key(unsigned char allegro_key_code)
