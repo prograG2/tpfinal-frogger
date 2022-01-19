@@ -41,6 +41,8 @@ const unsigned int lanes_logs[LANES_LOG_TOTAL] = {2,4,5};
 const unsigned int lanes_turtles[LANES_TURTLE_TOTAL] = {3,6};
 //filas para autos
 const unsigned int lanes_cars[LANES_CAR_TOTAL] = {8,9,10,11,12};
+//columnas para los puntos de llegada (referenciadas a 0)
+const unsigned int goal_cols[MAX_GOALS] = {1,4,7,10,13};
 
 
 /*******************************************************************************
@@ -114,6 +116,11 @@ bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int 
     return false;
 }
 
+bool collide_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
+{
+	return(collide(ax, ay, ax + aw, ay + ah, bx, by, bx + bw, by + bh));
+}
+
 bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
 {
     if( bx1 > ax1   &&
@@ -124,6 +131,21 @@ bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int b
         return true;
 
     return false;
+}
+
+bool inside_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
+{
+	return(inside(ax, ay, ax + aw, ay + ah, bx, by, bx + bw, by + bh));
+}
+
+bool inside_shot_scaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh, float scale)
+{
+	if(scale < 0.0 || scale > 1.0)
+		return false;
+
+	float diff = (bw * (1.0 - scale));
+
+	return(inside(ax, ay, ax + aw, ay + ah, bx + diff, by, bx + bw - diff, by + bh));
 }
 
 int map_int(int source, int min_in, int max_in, int min_out, int max_out)
@@ -145,6 +167,24 @@ pair_xy_t geometry_get_pair_xy_frog_frame(int frame)
 pair_xy_t geometry_get_pair_xy_turtle_frame(int frame)
 {
     return(pair_xy_turtle_sprites_frames[frame]);
+}
+
+bool match_uint(unsigned int val, const unsigned int *array)
+{
+	if(array == NULL)
+	{
+		printf("PUNTERO INVALIDO ~ funcion: match_uint ~ val=%d", val);
+		exit(EXIT_FAILURE);
+	}
+	
+	int i;
+	for(i = 0; array[i] != '\0'; i++)
+	{
+		if(val == array[i])
+			return true;;
+	}
+
+	return false;
 }
 
 

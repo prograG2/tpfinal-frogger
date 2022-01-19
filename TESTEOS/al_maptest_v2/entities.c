@@ -25,6 +25,9 @@
 
 //#define DEBUG_ENTITIES_TEXT
 
+//Factor que determina cuando considerar que un bloque esta dentro de otro (ver 'inside_short_scaled')
+#define INSERTION_FACTOR		(double)0.75
+
 #define LOGS_SPAWN_MIN			1
 #define LOGS_SPAWN_MAX			2
 #define LOGS_SPAWN_FRAMES		60
@@ -64,7 +67,7 @@ typedef struct
 	int moving;
 	int facing;
 	int steps;
-	unsigned char surface;
+	unsigned char state;
 
 } frog_t;
 
@@ -106,14 +109,13 @@ typedef struct
 {
 	int x;
 	int y;
-	unsigned char goal;				//punto de llegada, entre 1 y MAX_GOALS
 	bool used;						//flag de usada o no
 } fly_t;
 
 enum TURTLE_STATES
 {
-	SURFACE,
-	WATER
+	TURTLE_STATE_SURFACE,
+	TURTLE_STATE_WATER
 };
 
 typedef struct
@@ -135,6 +137,19 @@ enum MENU_WINDOWS
 	HOME,
 	DIFFICULTY,
 	RANKING
+};
+
+enum FROG_STATES
+{
+	FROG_STATE_ROAD,
+	FROG_STATE_WATER,
+	FROG_STATE_LOG,
+	FROG_STATE_TURTLE,
+	FROG_STATE_GOAL,
+	FROG_STATE_GOAL_FLY,		//meta con mosca
+	FROG_STATE_CRASH_CAR,
+	FROG_STATE_CRASH_WALL,
+	FROG_STATE_BOUNCING_WALL	//rebota contra algun borde
 };
 
 
@@ -256,27 +271,6 @@ static void menu_update(void);
  * 
  */
 static void menu_draw(void);
-
-
-/**
- * @brief Detecta si un rectángulo está dentro de un tronco
- *
- * @param i Número de log
- * @param x topleft corner x
- * @param y topleft corner y
- * @param w Ancho
- * @param h Alto
- * @return true Está dentro
- * @return false Está fuera
- */
-static bool inside_log(int i, int x, int y, int w, int h);
-
-/**
- * @brief Toma un log y lo spawnea
- *
- * @param i Número de log
- */
-static void spawn_log(int i);
 
 /**
  * @brief Alinea y centra la posición de la rana con las celdas del mapa, por desvios sobre troncos.
@@ -446,13 +440,13 @@ static void frog_init(void)
 	frog.moving = false;
 	frog.facing = UP;
 	frog.steps = 0;
-	//frog.surface = CHILL;
-	//frog.lives = MAX_LIVES;
+	frog.state = FROG_STATE_ROAD;
 }
 
 static void frog_update(void)
 {
 	int i;
+	unsigned int x_no_offset = frog.x - FROG_OFFSET_X, y_no_offset = frog.y - FROG_OFFSET_Y;
 
 	if(!frog.moving)
 	{
@@ -479,7 +473,7 @@ static void frog_update(void)
 
 		if(frog.moving)
 		{
-			allegro_sound_play_frog_jump();
+			allegro_sound_play_effect_jump();
 		}
 	}
 
@@ -495,7 +489,6 @@ static void frog_update(void)
 		else if(frog.facing == DOWN)
 			frog.y += STEP_FRACTION_SIZE;
 
-
 		if(++frog.steps == STEP_RATIO)
 		{
 			frog.steps = 0;
@@ -505,52 +498,160 @@ static void frog_update(void)
 		}
 	}
 
-	//colision con troncos
+	
+
+	//donde esta parada
+	if(!frog.moving)
+	{
+		//en alguna fila de descanso o de autos
+		if(y_no_offset >= CELL_H * (lanes_cars[0] - 1) && y_no_offset <= DISPLAY_H - CELL_H)
+			frog.state = FROG_STATE_ROAD;
+
+		//en alguna fila de agua. Luego se actualiza si es sobre tronco o turtle
+		else if(y_no_offset >= CELL_H * 2 && y_no_offset < CELL_H * (lanes_cars[0] - 1))
+			frog.state = FROG_STATE_WATER;
+
+		//choque contra alguno de los muros superiores
+		//con 'match_uint' se sabe si la columna de la frog es alguna de la de los puntos de llegada
+		//entonces, con '!match_uint' sabemos si esta en alguna columna de muros
+		else if (y_no_offset < CELL_H * 2 && !match_uint(x_no_offset / CELL_W, goal_cols))
+			frog.state = FROG_STATE_CRASH_WALL;
+
+		//llego bien a algun goal. Luego se actualiza si fue con fly.
+		else
+			frog.state = FROG_STATE_GOAL;
+			
+		/*---*/
+
+		//colision con autos
+		for(i = 0; i < MAX_CARS; i++)
+		{
+			if(!car[i].used)
+				continue;
+			
+			if(collide_short(	car[i].x,
+								car[i].y,
+								CAR_W,
+								CAR_H,
+								frog.x,
+								frog.y,
+								FROG_W,
+								FROG_H))
+			{
+				frog.state = FROG_STATE_CRASH_CAR;
+				break;	//no puede chocar con 2 autos a la vez
+			}
+		}
+
+		//colision con fly
+		if(fly.used)
+		{
+			if(collide_short(	fly.x,
+								fly.y,
+								FLY_SIDE,
+								FLY_SIDE,
+								frog.x,
+								frog.y,
+								FROG_W,
+								FROG_H))
+			{
+				frog.state = FROG_STATE_GOAL_FLY;
+				fly.used = false;
+			}
+		}
+	}
+	
+	
+
+	//esta en algun tronco?
 	for(i = 0; i < MAX_LOGS; i++)
 	{
 		if(!log[i].used)
 			continue;
 
-		if(inside_log(i, frog.x, frog.y, FROG_W, FROG_H))
+		if(inside_shot_scaled(	log[i].x,
+								log[i].y,
+								LOG_W,
+								LOG_H,
+								frog.x,
+								frog.y,
+								FROG_W,
+								FROG_H,
+								INSERTION_FACTOR))
 		{
-			//printf("COLLIDE CON %d", i);
-			//frog.surface = LOG;
 			frog.x += log[i].dx;
-			break;
+			frog.state = FROG_STATE_LOG;
+			break;		//no puede estar en 2 troncos a la vez
 		}
 	}
 
-	//colision con turtle_packs
+	//esta en algun turtle_pack?
 	for(i = 0; i < MAX_TURTLE_PACKS; i++)
 	{
-		if(!turtle_pack[i].used)
+		if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
 			continue;
 
-		if(inside(	turtle_pack[i].x,
-					turtle_pack[i].y,
-					turtle_pack[i].x + turtle_pack[i].wide,
-					turtle_pack[i].y + TURTLE_SIDE,
-					frog.x,
-					frog.y,
-					frog.x + FROG_W,
-					frog.y + FROG_H))
+		if(inside_shot_scaled(	turtle_pack[i].x,
+								turtle_pack[i].y,
+								turtle_pack[i].wide,
+								TURTLE_SIDE,
+								frog.x,
+								frog.y,
+								FROG_W,
+								FROG_H,
+								INSERTION_FACTOR))
 		{
 			frog.x += turtle_pack[i].dx;
-			break;
+			frog.state = FROG_STATE_TURTLE;
+			break;		//no puede estar en 2 troncos a la vez
 		}
 	}
 
-
+	
 	//revision de limites
 	if(frog.x < FROG_MIN_X)
 		frog.x = FROG_MIN_X;
-	if(frog.x > FROG_MAX_X)
+	else if(frog.x > FROG_MAX_X)
 		frog.x = FROG_MAX_X;
-	if(frog.y < FROG_MIN_Y)
+	else if(frog.y < FROG_MIN_Y)
 		frog.y = FROG_MIN_Y;
-	if(frog.y > FROG_MAX_Y)
+	else if(frog.y > FROG_MAX_Y)
 		frog.y = FROG_MAX_Y;
 
+	switch (frog.state)
+	{
+		case FROG_STATE_WATER:
+
+			break;
+		
+		case FROG_STATE_CRASH_CAR:
+
+			break;
+		
+		case FROG_STATE_CRASH_WALL:
+			game_data_subtract_live();
+			allegro_sound_play_effect_jump();
+			frog_init();
+			game_data_add_score(500);
+
+			break;
+		
+		case FROG_STATE_GOAL:
+
+			break;
+		
+		case FROG_STATE_GOAL_FLY:
+
+			break;
+		
+		default:
+			break;
+	}
+
+#ifdef DEBUG_ENTITIES_TEXT
+	if(!(game_frames % 10))
+		printf("state: %d ~~ y_no_offset: %d\n", frog.state, y_no_offset);
+#endif
 
 }
 
@@ -980,7 +1081,7 @@ static void turtles_update(void)
 				//se inicializa el timer para cambiar de frame
 				turtle_pack[i].timer = 0;
 				//fuera del agua
-				turtle_pack[i].state = SURFACE;
+				turtle_pack[i].state = TURTLE_STATE_SURFACE;
 
 				new_quota--;
 			}
@@ -1007,7 +1108,7 @@ static void turtles_update(void)
 				turtle_pack[i].frame++;
 
 			//si esta fuera...
-			if(turtle_pack[i].state == SURFACE)
+			if(turtle_pack[i].state == TURTLE_STATE_SURFACE)
 			{
 				if(turtle_pack[i].frame == 6)
 					turtle_pack[i].frame = 0;
@@ -1015,13 +1116,13 @@ static void turtles_update(void)
 				//pasa a agua
 				if(!(turtle_pack[i].timer % TURTLES_SURFACE_TIMEOUT))
 				{
-					turtle_pack[i].state = WATER;
+					turtle_pack[i].state = TURTLE_STATE_WATER;
 					turtle_pack[i].frame = 7;
 				}
 			}
 
 			//si esta bajo agua...
-			else if(turtle_pack[i].state == WATER)
+			else if(turtle_pack[i].state == TURTLE_STATE_WATER)
 			{
 				if(turtle_pack[i].frame == 11)
 					turtle_pack[i].frame = 10;
@@ -1029,7 +1130,7 @@ static void turtles_update(void)
 				//pasa a fuera
 				if(!(turtle_pack[i].timer % TURTLES_WATER_TIMEOUT))
 				{
-					turtle_pack[i].state = SURFACE;
+					turtle_pack[i].state = TURTLE_STATE_SURFACE;
 					turtle_pack[i].frame = 0;
 				}
 			}
@@ -1102,11 +1203,8 @@ static void fly_update(void)
 
 		if(!(game_frames % timeout))
 		{
-			//se elije uno de los puntos de llegada
-			fly.goal = get_rand_between(0, MAX_GOALS-1);
-
-			//calculo de coordenada x segun el punto elegido
-			fly.x = CELL_W + (fly.goal * 2 * CELL_W) + FLY_OFFSET_XY;
+			//calculo de coordenada x para alguno de los puntos de llegada
+			fly.x = CELL_W * goal_cols[get_rand_between(0, MAX_GOALS - 1)] + FLY_OFFSET_XY;
 
 			//marcado como usado
 			fly.used = true;
@@ -1149,28 +1247,6 @@ static void fly_draw(void)
 	int space = 500;
 	al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "Mosca ~ X:%d Y:%d", fly.x, fly.y);
 #endif
-}
-
-static bool inside_log(int i, int x, int y, int w, int h)
-{
-	return(inside(  log[i].x, log[i].y, log[i].x + LOG_W, log[i].y + LOG_H,
-					x, y, x + w, y + h));
-}
-
-static void spawn_log(int i)
-{
-
-	if(log[i].dx < 0)
-	{
-		log[i].x = DISPLAY_W;
-	}
-
-	else if(log[i].dx > 0)
-	{
-		log[i].x = (-1)*LOG_W ;
-	}
-
-    log[i].used = true;
 }
 
 static void fix_frog_pos(void)

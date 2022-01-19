@@ -145,13 +145,14 @@ enum SURFACES
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-//filas para troncos
-extern const unsigned int lanes_logs[];
-//filas para tortugas
-extern const unsigned int lanes_turtles[];
-//filas para autos
-extern const unsigned int lanes_cars[];
-
+//filas para troncos (referenciadas a 0
+extern const unsigned int lanes_logs[LANES_LOG_TOTAL];
+//filas para tortugas (referenciadas a 0
+extern const unsigned int lanes_turtles[LANES_TURTLE_TOTAL];
+//filas para autos (referenciadas a 0
+extern const unsigned int lanes_cars[LANES_CAR_TOTAL];
+//columnas para los puntos de llegada (referenciadas a 0)
+extern const unsigned int goal_cols[MAX_GOALS];
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -183,6 +184,22 @@ int get_rand_between(int low, int high);
 bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2);
 
 /**
+ * @brief Similar a 'collide', pero pide ancho y alto en vez de segundas coordenadas
+ * 
+ * @param ax topleft corner x de a
+ * @param ay topleft corner y de a
+ * @param aw ancho de a
+ * @param ah alto de a
+ * @param bx topleft corner x de b
+ * @param by topleft corner y de b
+ * @param bw ancho de b
+ * @param bh alto de b
+ * @return true Colision
+ * @return false No colision
+ */
+bool collide_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh);
+
+/**
  * @brief Detecta si un rectángulo está dentro de otro
  * 
  * @param ax1 topleft corner de big (x)
@@ -198,6 +215,38 @@ bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int 
  */
 bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2);
 
+/**
+ * @brief Similar a 'inside', pero pide ancho y alto en vez de segundas coordenadas
+ * 
+ * @param ax topleft corner x de big
+ * @param ay topleft corner y de big
+ * @param aw ancho de big
+ * @param ah alto de big
+ * @param bx topleft corner x de big
+ * @param by topleft corner y de big
+ * @param bw ancho de big
+ * @param bh alto de big
+ * @return true Esta dentro
+ * @return false Esta fuera
+ */
+bool inside_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh);
+
+/**
+ * @brief Similar a 'inside_short', pero permite setear cuan dentro debe estar una box dentro de la otra para tomarla como tal
+ * 
+ * @param ax topleft corner x de big
+ * @param ay topleft corner y de big
+ * @param aw ancho de big
+ * @param ah alto de big
+ * @param bx topleft corner x de big
+ * @param by topleft corner y de big
+ * @param bw ancho de big
+ * @param bh alto de big
+ * @param scale Factor de insercion. Entre 0.0 (nada metido) y 1.0 (completamente metido). Otro valor devuelve false
+ * @return true 
+ * @return false 
+ */
+bool inside_shot_scaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh, float scale);
 
 /**
  * @brief Toma un valor comprendido dentro de un rango (in) y lo devuelve (mapea) a otro rango (out)
@@ -228,6 +277,16 @@ pair_xy_t geometry_get_pair_xy_frog_frame(int frame);
  * @return pair_xy_t Par de coordenadas
  */
 pair_xy_t geometry_get_pair_xy_turtle_frame(int frame);
+
+/**
+ * @brief Verifica si un numero coincide con alguno de un array dado (uints)
+ * 
+ * @param val Numero a verificar
+ * @param array Array de numeros
+ * @return true Existe
+ * @return false No existe
+ */
+bool match_uint(unsigned int val, const unsigned int *array);
 
 
 
