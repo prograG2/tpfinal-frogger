@@ -141,7 +141,8 @@ int game_data_get_score(void)
 
 void game_data_add_score(int add)
 {
-	data.score += add;
+	if(add > 0)
+		data.score += add;
 }
 
 int game_data_get_run_number(void)
@@ -202,13 +203,30 @@ static void data_update(void)
 static void hud_draw(void)
 {
 	//Dibuja la puntuacion en pantalla.
+
+	int i;
+	static score_display;
+
+	//Graduacion del score a mostrar para que vaya incrementando de apoco
+	if(score_display != data.score)
+	{	
+		int shifter;
+
+		for(i = 2, shifter = 0; i > 0; i--)
+		{
+			shifter = 1 << i;
+			if(score_display <= (data.score - shifter))
+				score_display += shifter;
+		}
+	}
+
 	al_draw_textf(
 		allegro_get_var_font(),
 		al_map_rgb(0, 0, 0),        //Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
 		1, 1,                       //Arriba a la izquierda.
 		0,
 		"Score: %06d",                    //6 cifras (por ahi es mucho).
-		data.score);
+		score_display);
 
 	//Dibuja el numero de vuelta.
 	al_draw_textf(

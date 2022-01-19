@@ -83,7 +83,7 @@ int game_data_get_score(void);
 /**
  * @brief Agrega un valor al score actual
  * 
- * @param add Valor a agregar
+ * @param add Valor a agregar. Si es negativo, no agrega.
  */
 void game_data_add_score(int add);
 
