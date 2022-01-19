@@ -388,6 +388,11 @@ void allegro_draw_background(void)
 	al_draw_bitmap(sprites.background, 0, 0, 0);
 }
 
+void allegro_draw_menu_background(void)
+{
+	al_draw_bitmap(sprites.menu_background, 0, 0, 0);
+}
+
 bool allegro_is_event_queue_empty(void)
 {
 	return(al_is_event_queue_empty(allegro_vars.queue));
@@ -614,11 +619,11 @@ static void sprites_init(void)
 	//el menu completo
 	sprites.menu_uncut = al_load_bitmap("media/sprites/sprite_menu.png");
 
-	//el menu dividido //AGREGAR sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, temp_side, temp_side);
-	sprites.menu[0] = al_load_bitmap("media/sprites/sprite_menu.png");
-	sprites.menu[1] = al_load_bitmap("media/sprites/sprite_menu.png");
-	sprites.menu[2] = al_load_bitmap("media/sprites/sprite_menu.png");
-	sprites.menu[3] = al_load_bitmap("media/sprites/sprite_menu.png");
+	//el menu dividido 
+	sprites.menu[0] = sprite_cut(sprites.menu_uncut, 45, 175, 600, 75);
+	sprites.menu[1] = sprite_cut(sprites.menu_uncut, 45, 275, 600, 75);
+	sprites.menu[2] = sprite_cut(sprites.menu_uncut, 45, 375, 600, 75);
+	sprites.menu[3] = sprite_cut(sprites.menu_uncut, 45, 475, 600, 75);
 
 	//el fonde del menu
 	sprites.menu_background = al_load_bitmap("media/sprites/sprite_menu_background.png");

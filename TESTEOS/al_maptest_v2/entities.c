@@ -254,23 +254,6 @@ static void fly_update(void);
  */
 static void fly_draw(void);
 
-/**
- * @brief Inicializa el menu
- * 
- */
-static void menu_init(void);
-
-/**
- * @brief Actualiza el menu
- * 
- */
-static void menu_update(void);
-
-/**
- * @brief Dibuja lelas menu
- * 
- */
-static void menu_draw(void);
 
 /**
  * @brief Alinea y centra la posición de la rana con las celdas del mapa, por desvios sobre troncos.
@@ -352,15 +335,15 @@ void entities_draw()
 }
 
 
-static void menu_init(void)
+void menu_init(void)
 {
 	frames = 0;
 
-	menu.window == HOME;
-	menu.state == START;
+	menu.window = HOME;
+	menu.state = START;
 }
 
-static void menu_update()
+void menu_update()
 {
 	frames++;
 
@@ -412,13 +395,13 @@ static void menu_update()
 	
 }
 
-static void menu_draw()
+void menu_draw()
 {
 	ALLEGRO_BITMAP* tempbitmap;
 
 	tempbitmap = sprites.menu[menu.state];
 
-	al_draw_bitmap(tempbitmap, 100, 100 + menu.state*100  , 0);
+	al_draw_bitmap(tempbitmap, 45, 175 + menu.state*100  , 0);
 
 }
 

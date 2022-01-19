@@ -219,6 +219,12 @@ void allegro_clear_display(void);
 void allegro_draw_background(void);
 
 /**
+ * @brief Dibuja la imagen de fondo
+ * 
+ */
+void allegro_draw_menu_background(void);
+
+/**
  * @brief Informa si al cola de eventos está vacía o no
  * 
  * @return true Vacía
