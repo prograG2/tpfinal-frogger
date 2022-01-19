@@ -24,6 +24,8 @@
 #include "geometry.h"
 #include "game_data.h"
 
+#include "algif.h"
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -88,8 +90,6 @@ int main(void)
     game_data_init();
     entities_init();
 
-    //printf("\nfont height %d ~~ font width %d\n", allegro_get_var_font_h(), allegro_get_var_font_w());
-
     while(1)    
     {
         event = allegro_wait_for_event();
@@ -103,14 +103,13 @@ int main(void)
                 
                 //si es 'escape', avisa para cerrar la ventana
                 if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
-                    allegro_set_var_done(true);
-                
-                //play~pausa de musica de fondo
-                if(CHECK_KEY(ALLEGRO_KEY_P))
-                    allegro_sound_toggle_background_status();
+                    allegro_set_var_done(true);     
 
 				if(CHECK_KEY(ALLEGRO_KEY_T))
 					game_data_subtract_live();
+
+				if(CHECK_KEY(ALLEGRO_KEY_Y))
+					game_data_add_score(100);
 
                 //avisa que hay que renderizar
                 allegro_set_var_redraw(true);
@@ -156,7 +155,7 @@ int main(void)
 
             //data
             game_data_draw();
-
+	
             //carga los cambios anteriores para verlos
 			al_flip_display();
 

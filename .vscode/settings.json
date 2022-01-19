@@ -1,11 +1,14 @@
 {
     "files.associations": {
-        "stdint.h": "c",
-        "cstdlib": "c",
-        "allegro_stuff.h": "c",
-        "geometry.h": "c",
-        "entities.h": "c",
-        "time.h": "c",
-        "allegro_acodec.h": "c"
-    }
+		"stdint.h": "c",
+		"cstdlib": "c",
+		"allegro_stuff.h": "c",
+		"geometry.h": "c",
+		"entities.h": "c",
+		"time.h": "c",
+		"allegro_acodec.h": "c",
+		"algif.h": "c",
+		"algorithm": "c",
+		"random": "c"
+	}
 }
