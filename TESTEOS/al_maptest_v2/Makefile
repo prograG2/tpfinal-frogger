@@ -12,7 +12,7 @@ CC := gcc
 CFLAGS := -Wall -Wno-unknown-pragmas -O2
 
 # Objetos
-OBJS := main.o allegro_stuff.o entities.o geometry.o game_data.o
+OBJS := main.o allegro_stuff.o entities.o geometry.o game_data.o menu.o
 
 # Ejecutable
 EXEC := frogger
@@ -49,6 +49,9 @@ geometry.o: geometry.c
 	$(CC) $(CFLAGS) -c $<
 
 game_data.o: game_data.c geometry.h allegro_stuff.h
+	$(CC) $(CFLAGS) -c $<
+
+menu.o: menu.c allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
 # Otras reglas
