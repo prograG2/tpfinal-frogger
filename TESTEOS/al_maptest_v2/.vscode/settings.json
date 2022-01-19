@@ -3,6 +3,7 @@
         "entities.h": "c",
         "geometry.h": "c",
         "game_data.h": "c",
-        "allegro_stuff.h": "c"
+        "allegro_stuff.h": "c",
+        "menu.h": "c"
     }
 }

@@ -64,24 +64,6 @@ void entities_update(void);
  */
 void entities_draw(void);
 
-/**
- * @brief Inicializa el menu
- * 
- */
-void menu_init(void);
-
-/**
- * @brief Actualiza el menu
- * 
- */
-void menu_update(void);
-
-/**
- * @brief Dibuja lelas menu
- * 
- */
-void menu_draw(void);
-
 /*******************************************************************************
  ******************************************************************************/
 

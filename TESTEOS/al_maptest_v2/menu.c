@@ -14,7 +14,8 @@
  ******************************************************************************/
 
 #include "menu.h"
-
+#include "allegro_stuff.h"
+#include "geometry.h"
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -25,7 +26,26 @@
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+typedef struct
+{
+	unsigned char state;
+	unsigned char window;
 
+} menu_t;
+
+enum MENU_STATES
+{
+	START,
+	OPCION_0,
+	OPCION_1,
+	OPCION_2
+};
+enum MENU_WINDOWS
+{
+	HOME,
+	DIFFICULTY,
+	RANKING
+};
 
 
 /*******************************************************************************
@@ -53,7 +73,8 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static int temperaturas_actuales[4];+
+///Menu
+static menu_t menu;
 
 
 /*******************************************************************************
@@ -62,6 +83,69 @@
  *******************************************************************************
  ******************************************************************************/
 
+void menu_init(void)
+{
+	menu.window = HOME;
+	menu.state = START;
+}
+
+void menu_update()
+{
+	switch (menu.state)
+	{
+	case START:
+		if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_0;
+			keyboard_set_key(ALLEGRO_KEY_DOWN);
+		}
+		break;
+
+	case OPCION_0:
+		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
+		{
+			menu.state = START;
+			keyboard_set_key(ALLEGRO_KEY_UP);
+		}  
+		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_1;
+			keyboard_set_key(ALLEGRO_KEY_DOWN);
+		}
+		break;
+	case OPCION_1:
+		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_0;
+			keyboard_set_key(ALLEGRO_KEY_UP);
+		}  
+		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_2;
+			keyboard_set_key(ALLEGRO_KEY_DOWN);
+		}
+		break;
+	case OPCION_2:
+		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
+		{
+			menu.state = OPCION_1;
+			keyboard_set_key(ALLEGRO_KEY_UP);
+		}  
+	default:
+		break;
+	}
+	
+}
+
+void menu_draw()
+{
+	ALLEGRO_BITMAP* tempbitmap;
+
+	tempbitmap = sprites.menu[menu.state];
+
+	al_draw_bitmap(tempbitmap, 45, 175 + menu.state*100  , 0);
+
+}
 
 
 /*******************************************************************************

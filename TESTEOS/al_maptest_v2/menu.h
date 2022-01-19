@@ -42,12 +42,22 @@
  ******************************************************************************/
 
 /**
- * @brief TODO: completar descripcion
- * @param param1 Descripcion parametro 1
- * @param param2 Descripcion parametro 2
- * @return Descripcion valor que devuelve
-*/
-// +ej: char lcd_goto (int fil, int col);+
+ * @brief Inicializa el menu
+ * 
+ */
+void menu_init(void);
+
+/**
+ * @brief Actualiza el menu
+ * 
+ */
+void menu_update(void);
+
+/**
+ * @brief Dibuja lelas menu
+ * 
+ */
+void menu_draw(void);
 
 
 /*******************************************************************************

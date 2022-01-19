@@ -619,7 +619,7 @@ static void sprites_init(void)
 	//el menu completo
 	sprites.menu_uncut = al_load_bitmap("media/sprites/sprite_menu.png");
 
-	//el menu dividido 
+	//el menu dividido //AGREGAR sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, temp_side, temp_side);
 	sprites.menu[0] = sprite_cut(sprites.menu_uncut, 45, 175, 600, 75);
 	sprites.menu[1] = sprite_cut(sprites.menu_uncut, 45, 275, 600, 75);
 	sprites.menu[2] = sprite_cut(sprites.menu_uncut, 45, 375, 600, 75);
@@ -656,6 +656,13 @@ static void sprites_deinit(void)
 	al_destroy_bitmap(sprites.fly);
 
 	al_destroy_bitmap(sprites.heart);
+
+	al_destroy_bitmap(sprites.menu_uncut);
+
+	for(i = 0; i < 4; i++)
+		al_destroy_bitmap(sprites.menu[i]);
+
+	al_destroy_bitmap(sprites.menu_background);
 
 }
 
@@ -721,6 +728,8 @@ static bool init_audio_stream(const char *file, float gain)
 	ALLEGRO_AUDIO_STREAM** pt = &sounds.stream;
 	unsigned char* state = &sounds.stream_state;
 
+	char path[PATH_ARRAY_SIZE] = PATH_SOUND_STREAMS;
+
 	//analisis de reproduccion y carga de stream "para que no explote todo"
 	switch (*state)
 	{
@@ -736,7 +745,6 @@ static bool init_audio_stream(const char *file, float gain)
 	
 		case SOUND_STREAM_STATE_NO_INIT:
 			//armado del path del archivo
-			char path[PATH_ARRAY_SIZE] = PATH_SOUND_STREAMS;
 			strcat(path, file);
 			strcat(path, EXTENSION_SOUND_STREAM);
 

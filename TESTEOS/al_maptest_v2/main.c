@@ -23,6 +23,7 @@
 #include "entities.h"
 #include "geometry.h"
 #include "game_data.h"
+#include "menu.h"
 
 #include "algif.h"
 
@@ -87,8 +88,9 @@ int main(void)
     */
     
     allegro_inits();
-    game_data_init();
-    entities_init();
+    //game_data_init();
+    //entities_init();
+    menu_init();
 
     while(1)    
     {
@@ -98,19 +100,22 @@ int main(void)
         {
             case ALLEGRO_EVENT_TIMER:
                 
-                game_data_update();
-                entities_update();
+                //game_data_update();
+                //entities_update();
+                menu_update();
                 
                 //si es 'escape', avisa para cerrar la ventana
                 if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
                     allegro_set_var_done(true);     
-
-				if(CHECK_KEY(ALLEGRO_KEY_T))
+                /*
+                if(CHECK_KEY(ALLEGRO_KEY_T))
 					game_data_subtract_live();
 
 				if(CHECK_KEY(ALLEGRO_KEY_Y))
 					game_data_add_score(100);
 
+                */
+				
                 //avisa que hay que renderizar
                 allegro_set_var_redraw(true);
 
@@ -147,14 +152,22 @@ int main(void)
             //pone todo en negro
 			allegro_clear_display();
 
+            /*
             //sprite de fondo
             allegro_draw_background();
 
-            //menu
+            //entidades
             entities_draw();
 
             //data
             game_data_draw();
+            */
+
+            //sprite de fondo
+            allegro_draw_menu_background();
+
+            //menu
+            menu_draw();
 	
             //carga los cambios anteriores para verlos
 			al_flip_display();
