@@ -150,7 +150,7 @@ int main(void)
             //sprite de fondo
             allegro_draw_background();
 
-            //entidades
+            //menu
             entities_draw();
 
             //data

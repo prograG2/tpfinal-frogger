@@ -24,8 +24,8 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define DISPLAY_W   2000//690
-#define DISPLAY_H   2000//644
+#define DISPLAY_W   690
+#define DISPLAY_H   644
 #define ROWS    14
 #define COLS    15
 #define CELL_H  46
