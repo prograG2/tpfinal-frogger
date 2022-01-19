@@ -15,13 +15,33 @@
 
 #include "allegro_stuff.h"
 #include "geometry.h"
+#include <string.h>
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
+//Altura de la fuente
 #define FONT_HEIGHT	20
+
+//Nombres de los stream files
+#define SOUND_STREAM_FILE_CREDITS 	"credits_theme"
+#define SOUND_STREAM_FILE_MAIN		"main_menu_theme"
+#define SOUND_STREAM_FILE_PAUSE		"pause_menu_theme"
+#define SOUND_STREAM_FILE_PLAYING	"playing_theme"
+#define SOUND_STREAM_FILE_RICK		"rick"
+
+//Extensiones
+#define EXTENSION_SOUND_SAMPLE		".wav"
+#define EXTENSION_SOUND_STREAM		".opus"
+
+//Local paths
+#define PATH_SOUND_STREAMS			"media/sounds/streams/"
+#define PATH_SOUND_SAMPLES			"media/sounds/samples/"
+
+//Tamaño de array temporal para formar un path completo
+#define PATH_ARRAY_SIZE				60
 
 
 /*******************************************************************************
@@ -53,6 +73,33 @@ typedef struct
 	bool redraw;
 
 } allegro_t;
+
+typedef struct
+{
+	ALLEGRO_AUDIO_STREAM* stream;
+	unsigned char stream_state;
+    
+	struct
+	{
+		ALLEGRO_SAMPLE* jump;
+		ALLEGRO_SAMPLE* crash;
+		ALLEGRO_SAMPLE* goal;
+		ALLEGRO_SAMPLE* low_time;
+		ALLEGRO_SAMPLE* click;
+		ALLEGRO_SAMPLE* bonus;
+		ALLEGRO_SAMPLE* run_completed;
+		ALLEGRO_SAMPLE* drowned;
+	} samples;
+
+} sounds_t;
+
+enum SOUND_STREAM_STATES
+{
+	SOUND_STREAM_STATE_NO_INIT,
+	SOUND_STREAM_STATE_INIT,
+	SOUND_STREAM_STATE_PAUSE,
+	SOUND_STREAM_STATE_PLAY
+};
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
@@ -109,6 +156,26 @@ static void audio_init(void);
  */
 static void audio_deinit(void);
 
+/**
+ * @brief Inicialzia el stream (musica)
+ * 
+ * @param file Nombre del archivo (sin extension, sin path)
+ * @param gain Ganancia (1.0 no afecta)
+ * @return true Inicializacion correcta
+ * @return false Error en la inicializacion
+ */
+static bool init_audio_stream(const char *file, float gain);
+
+/**
+ * @brief Inicializa un sample (efecto)
+ * 
+ * @param sample Sample a inicializar
+ * @param file Nombre del archivo (sin extension, sin path)
+ * @return true Inicializacion correcta
+ * @return false Error en la inicializacion
+ */
+static bool init_sample(ALLEGRO_SAMPLE** sample, const char* file);
+
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -127,8 +194,10 @@ static allegro_t allegro_vars;
 static unsigned char key[ALLEGRO_KEY_MAX];
 
 //variable con los sonidos/musicas del juego
-static audios_t audios;
+static sounds_t sounds;
 
+//nombre del ultimo stream inicializado
+static char last_init_stream[30];
 
 /*******************************************************************************
  *******************************************************************************
@@ -138,10 +207,11 @@ static audios_t audios;
 
 void must_init(bool test, const char *description)
 {
-	if(test) return;
-
-	printf("~no se pudo inicializar %s~\n", description);
-	exit(1);
+	if(!test)
+	{
+		printf("~no se pudo inicializar %s~\n", description);
+		exit(EXIT_FAILURE);
+	}
 }
 
 void keyboard_update(void)
@@ -323,25 +393,130 @@ bool allegro_is_event_queue_empty(void)
 	return(al_is_event_queue_empty(allegro_vars.queue));
 }
 
-void allegro_sound_toggle_background_status(void)
+#pragma region allegro_sound
+
+#pragma region allegro_sound_set_stream
+void allegro_sound_set_stream_credits(void)
 {
-	al_set_audio_stream_playing(audios.background, !al_get_audio_stream_playing(audios.background));
+	must_init(init_audio_stream(SOUND_STREAM_FILE_CREDITS, 1.0),
+			"credtis stream");
 }
 
-void allegro_sound_set_background_status(bool state)
+void allegro_sound_set_stream_main_menu(void)
 {
-	al_set_audio_stream_playing(audios.background, state);
+	must_init(init_audio_stream(SOUND_STREAM_FILE_MAIN, 1.0),
+			"main_menu stream");
 }
 
-bool allegro_sound_get_background_status(void)
+void allegro_sound_set_stream_pause_menu(void)
 {
-	return(al_get_audio_stream_playing(audios.background));
+	must_init(init_audio_stream(SOUND_STREAM_FILE_PAUSE, 1.0),
+			"pause_menu stream");
 }
 
-void allegro_sound_play_frog_jump(void)
+void allegro_sound_set_stream_playing(void)
 {
-	al_play_sample(audios.jump, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	must_init(init_audio_stream(SOUND_STREAM_FILE_PLAYING, 1.0),
+			"playing stream");
 }
+
+void allegro_sound_set_stream_rick(void)
+{
+	must_init(init_audio_stream(SOUND_STREAM_FILE_RICK, 1.0),
+			"rick stream");
+}
+
+#pragma endregion allegro_sound_set_stream
+
+#pragma region allegro_sound_control
+void allegro_sound_toggle_stream(void)
+{
+	if(sounds.stream_state != SOUND_STREAM_STATE_NO_INIT)
+	{
+		bool state = al_get_audio_stream_playing(sounds.stream);
+
+		must_init(al_set_audio_stream_playing(sounds.stream, !state),
+					"set to toggle stream");
+					
+		if(!state)
+			sounds.stream_state = SOUND_STREAM_STATE_PAUSE;
+		else
+			sounds.stream_state = SOUND_STREAM_STATE_PLAY;
+	}
+}
+
+void allegro_sound_play_stream(void)
+{
+	if(sounds.stream_state != SOUND_STREAM_STATE_NO_INIT)
+	{
+		al_set_audio_stream_playing(sounds.stream, true);
+		sounds.stream_state = SOUND_STREAM_STATE_PLAY;
+	}
+}
+
+void allegro_sound_pause_stream(void)
+{
+	if(sounds.stream_state != SOUND_STREAM_STATE_NO_INIT)
+	{
+		al_set_audio_stream_playing(sounds.stream, false);
+		sounds.stream_state = SOUND_STREAM_STATE_PAUSE;
+	}
+}
+
+void allegro_sound_restart_stream(void)
+{
+	if(sounds.stream_state != SOUND_STREAM_STATE_NO_INIT)
+	{
+		init_audio_stream(last_init_stream, 1.0);
+	}
+}
+
+#pragma endregion allegro_sound_control
+
+#pragma region allegro_sound_play_sample
+void allegro_sound_play_effect_bonus(void)
+{
+	al_play_sample(sounds.samples.bonus, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_click(void)
+{
+	al_play_sample(sounds.samples.click, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_crash(void)
+{
+	al_play_sample(sounds.samples.crash, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_drowned(void)
+{
+	al_play_sample(sounds.samples.drowned, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_goal(void)
+{
+	al_play_sample(sounds.samples.goal, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_jump(void)
+{
+	al_play_sample(sounds.samples.jump, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_low_time(void)
+{
+	al_play_sample(sounds.samples.low_time, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_run_completed(void)
+{
+	al_play_sample(sounds.samples.run_completed, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+#pragma endregion allegro_sound_play_sample
+
+#pragma endregion allegro_sound
 
 void allegro_draw_hitbox(int x, int y, int w, int h)
 {
@@ -486,27 +661,124 @@ static void keyboard_init(void)
 
 static void audio_init(void)
 {
-	//audio_stream de fondo (background) || se reproduce al inicializarlo
-	audios.background = al_load_audio_stream("media/sounds/frogger-arcade-stage-theme-extended.opus", 2, 2048);
-	must_init(audios.background, "background stream");
-	al_set_audio_stream_playmode(audios.background, ALLEGRO_PLAYMODE_LOOP);
-	al_set_audio_stream_gain(audios.background, 0.5);	//ganancia
-	al_attach_audio_stream_to_mixer(audios.background, al_get_default_mixer());	//"para que suene"
-	al_set_audio_stream_playing(audios.background, false);		//pausa
-	//al_set_audio_stream_playing(audios.background, true);		/play
+	//streams
+	sounds.stream_state = SOUND_STREAM_STATE_NO_INIT;
 
-	//efecto de sonido
-	audios.jump = al_load_sample("media/sounds/jump_0.wav");
-	must_init(audios.jump, "jump sample");
-	//al_play_sample(audios.jump, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);	//play
+	//efectos de sonido
+	must_init(init_sample(&sounds.samples.bonus, "bonus_alert"),
+				"effect_bonus sample");
+
+	must_init(init_sample(&sounds.samples.click, "click"),
+				"effect_click sample");
+	
+	must_init(init_sample(&sounds.samples.crash, "crash"),
+				"effect_crash sample");
+
+	must_init(init_sample(&sounds.samples.drowned, "fall_in_water"),
+				"effect_drowned sample");
+
+	must_init(init_sample(&sounds.samples.goal, "goal_reached"),
+				"effect_goal sample");
+	
+	must_init(init_sample(&sounds.samples.jump, "jump_original"),
+				"effect_jump sample");
+
+	must_init(init_sample(&sounds.samples.low_time, "low_time"),
+				"effect_low_time sample");
+	
+	must_init(init_sample(&sounds.samples.run_completed, "run_completed"),
+				"effect_run_completed sample");
 
 }
 
 static void audio_deinit(void)
 {
-	al_destroy_audio_stream(audios.background);
+	if(sounds.stream_state != SOUND_STREAM_STATE_NO_INIT)
+		al_destroy_audio_stream(sounds.stream);
 
-	al_destroy_sample(audios.jump);
+	al_destroy_sample(sounds.samples.bonus);
+	al_destroy_sample(sounds.samples.click);
+	al_destroy_sample(sounds.samples.crash);
+	al_destroy_sample(sounds.samples.drowned);
+	al_destroy_sample(sounds.samples.goal);
+	al_destroy_sample(sounds.samples.jump);
+	al_destroy_sample(sounds.samples.low_time);
+	al_destroy_sample(sounds.samples.run_completed);
 
+}
+
+static bool init_audio_stream(const char *file, float gain)
+{
+	if(file == NULL)
+		return false;
+
+
+	ALLEGRO_AUDIO_STREAM** pt = &sounds.stream;
+	unsigned char* state = &sounds.stream_state;
+
+	//analisis de reproduccion y carga de stream "para que no explote todo"
+	switch (*state)
+	{
+		case SOUND_STREAM_STATE_PLAY:
+			//pausa
+			al_set_audio_stream_playing(*pt, false);
+
+		case SOUND_STREAM_STATE_PAUSE:
+			//desacople del mixer
+			al_detach_audio_stream(*pt);
+			//destruccion
+			al_destroy_audio_stream(*pt);
+	
+		case SOUND_STREAM_STATE_NO_INIT:
+			//armado del path del archivo
+			char path[PATH_ARRAY_SIZE] = PATH_SOUND_STREAMS;
+			strcat(path, file);
+			strcat(path, EXTENSION_SOUND_STREAM);
+
+			//carga del stream
+			*pt = al_load_audio_stream(path, 2, 2048);
+			if(*pt == NULL)
+				return false;
+
+			//modo de reproduccion
+			al_set_audio_stream_playmode(*pt, ALLEGRO_PLAYMODE_LOOP);
+
+			//ganancia
+			al_set_audio_stream_gain(*pt, gain);
+
+			//pausa
+			al_set_audio_stream_playing(*pt, false);
+
+			//"para que suene" (acople al mixer)
+			al_attach_audio_stream_to_mixer(sounds.stream, al_get_default_mixer());
+
+			//actualiza el nombre del ultimo stream inicializado
+			strcpy(last_init_stream, file);
+				
+			*state = SOUND_STREAM_STATE_PAUSE;
+			break;
+		
+		default:
+			break;
+	}
+
+	return true;
+}
+
+static bool init_sample(ALLEGRO_SAMPLE** sample, const char* file)
+{
+	if(file == NULL)
+		return false;
+
+	char path[PATH_ARRAY_SIZE] = PATH_SOUND_SAMPLES;
+	strcat(path, file);
+	strcat(path, EXTENSION_SOUND_SAMPLE);
+
+	*sample = al_load_sample(path);
+
+	if(*sample == NULL)
+		return false;
+
+	return true;
 }
 

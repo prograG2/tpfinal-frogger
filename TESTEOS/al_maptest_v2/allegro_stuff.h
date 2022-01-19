@@ -69,8 +69,8 @@ typedef struct
 
     ALLEGRO_BITMAP* menu_uncut;
     ALLEGRO_BITMAP* menu[4];
-
     ALLEGRO_BITMAP* menu_background;
+	
     ALLEGRO_BITMAP* heart;
 
     /*
@@ -88,23 +88,6 @@ typedef struct
     */
 } sprites_t;
 
-typedef struct
-{
-    ALLEGRO_AUDIO_STREAM* background;
-    ALLEGRO_SAMPLE* jump;
-
-} audios_t;
-
-/*
-typedef struct
-{
-    unsigned char type;
-    unsigned char state;
-} keys_t;
-*/
-
-
-
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -112,7 +95,6 @@ typedef struct
 
 //estructura con punteros a sprites
 extern sprites_t sprites;
-
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -244,32 +226,120 @@ void allegro_draw_background(void);
  */
 bool allegro_is_event_queue_empty(void);
 
+#pragma region allegro_sound
+
+#pragma region allegro_sound_set_stream
 /**
- * @brief Cambia el estado de reproduccion de la musica de fondo
+ * @brief Selecciona musica de creditos. Comienza pausada.
  * 
  */
-void allegro_sound_toggle_background_status(void);
+void allegro_sound_set_stream_credits(void);
 
 /**
- * @brief Pone en play o pausa la musica de fondo
+ * @brief Selecciona musica de menu. Comienza pausada.
  * 
- * @param state true==play, false==pause
  */
-void allegro_sound_set_background_status(bool state);
+void allegro_sound_set_stream_main_menu(void);
 
 /**
- * @brief Devuelve el estado de la musica de fondo
+ * @brief Selecciona musica de pausa. Comienza pausada.
  * 
- * @return true Play
- * @return false Pause
  */
-bool allegro_sound_get_background_status(void);
+void allegro_sound_set_stream_pause_menu(void);
 
 /**
- * @brief Reproduce sonido de salto de la rana
+ * @brief Selecciona musica de jugando. Comienza pausada.
  * 
  */
-void allegro_sound_play_frog_jump(void);
+void allegro_sound_set_stream_playing(void);
+
+/**
+ * @brief 
+ * 
+ */
+void allegro_sound_set_stream_rick(void);
+
+#pragma endregion allegro_sound_set_stream
+
+#pragma region allegro_sound_control
+/**
+ * @brief Cambia estado de reproduccion de la musica actual, si hay alguna seleccionada.
+ * 
+ */
+void allegro_sound_toggle_stream(void);
+
+/**
+ * @brief Reproduce la musica actual, si hay alguna seleccionada.
+ * 
+ */
+void allegro_sound_play_stream(void);
+
+/**
+ * @brief Pausa la musica actual, si hay alguna seleccionada.
+ * 
+ */
+void allegro_sound_pause_stream(void);
+
+/**
+ * @brief Reinicia la musica actual, si hay alguna seleccionada.
+ * 
+ */
+void allegro_sound_restart_stream(void);
+
+#pragma endregion allegro_sound_control
+
+#pragma region allegro_sound_play_sample
+/**
+ * @brief Reproduce efecto de bonus
+ * 
+ */
+void allegro_sound_play_effect_bonus(void);
+
+/**
+ * @brief Reproduce efecto de click (seleccion de menu//aceptar//etc.)
+ * 
+ */
+void allegro_sound_play_effect_click(void);
+
+/**
+ * @brief Reproduce efecto de choque
+ * 
+ */
+void allegro_sound_play_effect_crash(void);
+
+/**
+ * @brief Reproduce efecto de ahogado (toco agua)
+ * 
+ */
+void allegro_sound_play_effect_drowned(void);
+
+/**
+ * @brief Reproduce efecto de 'llego a la meta'
+ * 
+ */
+void allegro_sound_play_effect_goal(void);
+
+/**
+ * @brief Reproduce efecto de salto
+ * 
+ */
+void allegro_sound_play_effect_jump(void);
+
+/**
+ * @brief Reproduce efecto de 'queda poco tiempo'
+ * 
+ */
+void allegro_sound_play_effect_low_time(void);
+
+/**
+ * @brief Reproduce efecto de 'run completada' (llego 5 veces a la meta)
+ * 
+ */
+void allegro_sound_play_effect_run_completed(void);
+
+#pragma endregion allegro_sound_play_sample
+
+#pragma endregion allegro_sound
 
 /**
  * @brief Dibuja un contorno rectangular
