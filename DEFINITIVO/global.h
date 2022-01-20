@@ -27,8 +27,8 @@
     #define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.5
     #define POS_MSJ1 2
     #define POS_MSJ2 9
-    //#define CANT_FILAS 16
-    //#define CANT_COLUMNAS 16
+    #define CANT_FILAS 16
+    #define CANT_COLUMNAS 16
 
 #elif
     #error "Plataforma no identificada"

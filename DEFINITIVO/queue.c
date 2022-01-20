@@ -78,7 +78,7 @@ void queue_insert(event_t nuevo)
     node_t *temp = (node_t*)malloc(sizeof(node_t));
 
     temp->data = nuevo;
-    printf("%d\n", nuevo);
+    //printf("%d\n", nuevo); //si se quita esto la queue funciona mal
     /*
     printf("\nAntes de poner: ");
     printQueue();
@@ -134,7 +134,7 @@ event_t queue_next()
     printf("Tras retirar: ");
     printQueue();
     */
-    printf("%d\n", r);
+    printf("%d\n", r); //para ver el evento que sigue
     return r;
   }
 }

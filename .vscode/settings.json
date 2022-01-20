@@ -9,6 +9,7 @@
 		"allegro_acodec.h": "c",
 		"algif.h": "c",
 		"algorithm": "c",
-		"random": "c"
+		"random": "c",
+		"mensajes_rpi.h": "c"
 	}
 }

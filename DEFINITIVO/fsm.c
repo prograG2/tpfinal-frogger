@@ -117,7 +117,7 @@ STATE poniendo_nombre[]=
 	{ARRIBA, poniendo_nombre, subirLetra},
 	{ABAJO, poniendo_nombre, bajarLetra},
 	{DCHA, poniendo_nombre, siguienteLetra},
-	{FIN_TABLA, poniendo_nombre, agregarLetra}
+	{FIN_TABLA, poniendo_nombre, agregarLetra} //Si no coincide el evento con ninguna de las teclas previas, se toam como si se apretase una letra
 };
 
 STATE jugando[]=
@@ -244,7 +244,7 @@ void *thread_autos(){
 	while(clock() < meta);
 	refrescarJugador();
 	refrescarAutos();
-	printf("agua: %d", getAgua());
+	//printf("agua: %d", getAgua());
 	}
 	return NULL;
 }
@@ -266,7 +266,7 @@ void *thread_display_ranking(){
 	int puesto = 1;
 	char msj[100];
 	
-	while(fgets(linea, 100, pFile) != NULL){
+	while(fgets(linea, 100, pFile) != NULL){ //pasar a modulo externo puntos, nombre y ranking
 		limpiarDisplay();
 		char* pch = strtok(linea," ");
 		ulltoa(puesto, msj);
@@ -274,10 +274,10 @@ void *thread_display_ranking(){
 		strcat(msj, pch);
 		clock_t meta = clock() + SLEEP_CLOCKS;
 		while(clock() < meta);
-		printf("%s\n", msj);
+		//printf("%s\n", msj);
 		mostrarTexto(msj, POS_MSJ1);
 		pch = strtok(NULL, " ");
-		printf("%s\n", pch);
+		//printf("%s\n", pch);
 		mostrarTexto(pch, POS_MSJ2);
 	}
 	fclose (pFile);
@@ -474,13 +474,13 @@ void game_over(void){
 				ulltoa(jugador_puntos, nueva_puntuacion);
 				strcat(aux, " ");
 				strcat(aux, nueva_puntuacion);
-				fprintf(pFile2, "%s", aux);
+				//fprintf(pFile2, "%s", aux);
 				ubicado = 1;
 			}
 			if(strcmp(nueva_linea, getNombre()) != 0){ //miro si NO es el nombre que ya puse
 				strcat(nueva_linea, " ");
 				strcat(nueva_linea, pch); //concateno los puntos
-				fprintf(pFile2, "%s", nueva_linea);
+				//fprintf(pFile2, "%s", nueva_linea);
 			}
 		}
 		fclose (pFile1);

@@ -23,11 +23,12 @@ int main (void)
 		return 1;
 	
 	while((evento = queue_next())){
-		if(evento != NADA)
+		if(evento != NADA){
 			fsm(evento);
+		}
 	}
 
-	printf("%s\n", "Saliendo...");
+	//printf("%s\n", "Saliendo...");
 
 	return 0;
 }

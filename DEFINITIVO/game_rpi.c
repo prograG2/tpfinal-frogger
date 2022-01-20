@@ -195,9 +195,9 @@ void moverAdelante(){
 		respawn();
 		}
 		else{
-			printf("Agregando rana\n");
+			//printf("Agregando rana\n");
 			jugador.ranas |= jugador.jugador_1 | jugador.jugador_2;
-			printf("%d\n", jugador.ranas);
+			//printf("%d\n", jugador.ranas);
 			if(jugador.ranas == 0b1111111111111111){
             	queue_insert(META);
 			}
