@@ -88,9 +88,9 @@ int main(void)
     */
     
     allegro_inits();
-    //game_data_init();
-    //entities_init();
-    menu_init();
+    game_data_init();
+    entities_init();
+    //menu_init();
 
     while(1)    
     {
@@ -100,9 +100,9 @@ int main(void)
         {
             case ALLEGRO_EVENT_TIMER:
                 
-                //game_data_update();
-                //entities_update();
-                menu_update();
+                game_data_update();
+                entities_update();
+                //menu_update();
                 
                 //si es 'escape', avisa para cerrar la ventana
                 if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
@@ -152,7 +152,7 @@ int main(void)
             //pone todo en negro
 			allegro_clear_display();
 
-            /*
+            
             //sprite de fondo
             allegro_draw_background();
 
@@ -161,13 +161,14 @@ int main(void)
 
             //data
             game_data_draw();
-            */
-
+            
+			/*
             //sprite de fondo
             allegro_draw_menu_background();
 
             //menu
             menu_draw();
+			*/
 	
             //carga los cambios anteriores para verlos
 			al_flip_display();

@@ -42,14 +42,16 @@
 
 #define TURTLES_MIN_PER_PACK	2
 #define	TURTLES_MAX_PER_PACK	3
-#define TURTLES_SPAWN_FRAMES	60
-#define TURTLES_SPAWN_MIN		1
-#define TURTLES_SPAWN_MAX		2
-#define TURTLES_MAX_USED		3
-#define TURTLES_BASE_SPEED		2
+#define TURTLES_SPAWN_FRAMES	60	//cada cuantos frames spawnean
+#define TURTLES_SPAWN_MIN		1	//minimas a spawnear de una
+#define TURTLES_SPAWN_MAX		2	//maximas a spawnear de una
+#define TURTLES_MAX_USED		3	//maximas en pantalla
+#define TURTLES_BASE_SPEED		2	
 #define TURTLES_FRAME_TIMEOUT	10	//cuanto "tiempo" dura un frame dibujado antes de pasar al siguiente
-#define	TURTLES_SURFACE_TIMEOUT	250	//cuanto dura sobra el agua
-#define TURTLES_WATER_TIMEOUT	200	//cuanto dura bajo el agua
+#define TURTLES_SURFACE_FRAMES_MIN		200	//minimo "tiempo" en superficie
+#define TURTLES_SURFACE_FRAMES_MAX		500	//maximo "tiempo"mes en superficie
+#define TURTLES_WATER_FRAMES_MIN		50	//minimo "tiempo" bajo el agua
+#define TURTLES_WATER_FRAMES_MAX		150 //maximo "tiempo" bajo el agua
 
 #define FLY_SPAWN_FRAMES_MIN	300	//mínimo tiempo para respawnear mosca
 #define	FLY_SPAWN_FRAMES_MAX	600	//maximo tiempo para respawnear mosca
@@ -101,7 +103,6 @@ typedef struct
 	unsigned char turtles_in_pack;	//cantidad de tortugas en el paquete
 	unsigned char frame;			//contador que indica en qué frame de la animación se está (de 1 a TURTLES_FRAMES)
 	int wide;						//ancho del paquete, proporcional a turtles_in_pack y a TURTLES_SIDE
-	long timer;						//contador interno para cambiar de frame
 	unsigned char state;			//estado (enum TURTLE_STATES)
 } turtle_pack_t;
 
@@ -269,7 +270,6 @@ static turtle_pack_t turtle_pack[MAX_TURTLE_PACKS];
 static fly_t fly;
 
 //Contador de frames ejecutados
-static long frames;
 static long game_frames;
 
 
@@ -511,26 +511,36 @@ static void frog_update(void)
 	switch (frog.state)
 	{
 		case FROG_STATE_WATER:
-
+			game_data_subtract_live();
+			allegro_sound_play_effect_drowned();
+			frog_init();
 			break;
 		
 		case FROG_STATE_CRASH_CAR:
+			game_data_subtract_live();
+			allegro_sound_play_effect_crash();
+			frog_init();
 
 			break;
 		
 		case FROG_STATE_CRASH_WALL:
 			game_data_subtract_live();
-			allegro_sound_play_effect_jump();
+			allegro_sound_play_effect_crash();
 			frog_init();
-			game_data_add_score(500);
 
 			break;
 		
 		case FROG_STATE_GOAL:
-
+			game_data_add_score(SCORE_PER_GOAL);
+			allegro_sound_play_effect_goal();
+			frog_init();
+			
 			break;
 		
 		case FROG_STATE_GOAL_FLY:
+			game_data_add_score(SCORE_PER_GOAL_FLY);
+			allegro_sound_play_effect_bonus();
+			frog_init();
 
 			break;
 		
@@ -619,8 +629,9 @@ static void logs_update(void)
 			log[i].y = CELL_H * log[i].lane + LOG_OFFSET_Y;
 
 			//Velocidad
-			log[i].dx = lanes_logs[LANES_LOG_TOTAL-1] - log[i].lane + 1;
+			//log[i].dx = lanes_logs[LANES_LOG_TOTAL-1] - log[i].lane + 1;
 			//log[i].dx = map_int(log[i].lane, 0, lanes_logs[LANES_LOG_TOTAL-1], 1, 3);
+			log[i].dx = LOGS_BASE_SPEED;
 
 			//en pares...
 			if(!(log[i].lane % 2))
@@ -887,16 +898,18 @@ static void turtles_update(void)
 {
 	int new_quota = ((game_frames % TURTLES_SPAWN_FRAMES) ? 0 : get_rand_between(TURTLES_SPAWN_MIN, TURTLES_SPAWN_MAX));
 
-	int i, used;
+	int i;
 
-	//cuento cuantos packs usados hay
-	for(i = 0, used = 0; i < MAX_TURTLE_PACKS; i++)
-		used += turtle_pack[i].used;
+	//packs usados
+	static int used;
+
+	//inicializado en 0 por ser static
+	static int timeout;			//timeout para sumergir/emerger
 
     for(i = 0; i < MAX_TURTLE_PACKS; i++)
     {
         //Spawneo de turtle_packs
-        if(!turtle_pack[i].used && new_quota > 0 && used <= TURTLES_MAX_USED)       //Lugar libre?
+        if(!turtle_pack[i].used && new_quota > 0 && used < TURTLES_MAX_USED)       //Lugar libre?
         {
 
 			//defino tortugas en el pack
@@ -965,11 +978,10 @@ static void turtles_update(void)
 			{
 				//Pasa a usado
 				turtle_pack[i].used = true;
+				used++;
 
 				//se inicializa el contador de frames
 				turtle_pack[i].frame = 0;
-				//se inicializa el timer para cambiar de frame
-				turtle_pack[i].timer = 0;
 				//fuera del agua
 				turtle_pack[i].state = TURTLE_STATE_SURFACE;
 
@@ -984,51 +996,61 @@ static void turtles_update(void)
 
         }
 
-		//si el tronco esta usado...
+		//si el pack esta usado...
 		else if(turtle_pack[i].used)
 		{
 			//desplaza
 			turtle_pack[i].x += turtle_pack[i].dx;
 
-			//aumenta timer interno
-			turtle_pack[i].timer++;
-
 			//pasa de frame
-			if(!(turtle_pack[i].timer % TURTLES_FRAME_TIMEOUT))
+			if(!(game_frames % TURTLES_FRAME_TIMEOUT))
 				turtle_pack[i].frame++;
 
 			//si esta fuera...
 			if(turtle_pack[i].state == TURTLE_STATE_SURFACE)
 			{
+				//si no esta inicializado, inicializo timeout
+				if(!timeout)
+					timeout = get_rand_between(TURTLES_SURFACE_FRAMES_MIN, TURTLES_SURFACE_FRAMES_MAX);
+
 				if(turtle_pack[i].frame == 6)
 					turtle_pack[i].frame = 0;
 
 				//pasa a agua
-				if(!(turtle_pack[i].timer % TURTLES_SURFACE_TIMEOUT))
+				if(!(game_frames % timeout))
 				{
 					turtle_pack[i].state = TURTLE_STATE_WATER;
 					turtle_pack[i].frame = 7;
+					timeout = 0;
 				}
 			}
 
 			//si esta bajo agua...
 			else if(turtle_pack[i].state == TURTLE_STATE_WATER)
 			{
+				//si no esta inicializado, inicializo timeout
+				if(!timeout)
+					timeout = get_rand_between(TURTLES_WATER_FRAMES_MIN, TURTLES_WATER_FRAMES_MAX);
+
 				if(turtle_pack[i].frame == 11)
 					turtle_pack[i].frame = 10;
 
 				//pasa a fuera
-				if(!(turtle_pack[i].timer % TURTLES_WATER_TIMEOUT))
+				if(!(game_frames % timeout))
 				{
 					turtle_pack[i].state = TURTLE_STATE_SURFACE;
 					turtle_pack[i].frame = 0;
+					timeout = 0;
 				}
 			}
 
 
 			//chequea si llego a los limites
 			if((turtle_pack[i].dx > 0 && turtle_pack[i].x >= DISPLAY_W) || (turtle_pack[i].dx < 0 && turtle_pack[i].x <= -turtle_pack[i].wide))
+			{
 				turtle_pack[i].used = false;
+				used--;
+			}				
 
 			//printf("~turtle_pack%d lane%d dx%d~\n", i, turtle_pack[i].lane, turtle_pack[i].dx);
 
@@ -1099,14 +1121,18 @@ static void fly_update(void)
 			//marcado como usado
 			fly.used = true;
 
-			//recalculo timeout para el despawneo
-			timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
+			//desinicializo el timeout
+			timeout = 0;
 		}
 
 	}
 
 	else
 	{
+		//timeout para despawneo
+		if(!timeout)
+			timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
+
 		//si se puede despawnear
 		if(!(game_frames % timeout))
 		{
