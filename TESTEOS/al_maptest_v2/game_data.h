@@ -24,6 +24,10 @@
 
 #define MAX_LIVES           3
 
+#define SCORE_PER_GOAL		500		//puntaje por llegar a la meta
+#define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
+#define SCORE_PER_RUN		1000	//puntaje por completar una run
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS

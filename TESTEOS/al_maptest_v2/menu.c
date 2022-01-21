@@ -97,7 +97,6 @@ void menu_update()
 		if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
 		{
 			menu.state = OPCION_0;
-			keyboard_set_key(ALLEGRO_KEY_DOWN);
 		}
 		break;
 
@@ -105,19 +104,16 @@ void menu_update()
 		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
 		{
 			menu.state = START;
-			keyboard_set_key(ALLEGRO_KEY_UP);
 		}  
 		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
 		{
 			menu.state = OPCION_1;
-			keyboard_set_key(ALLEGRO_KEY_DOWN);
 		}
 		break;
 	case OPCION_1:
 		if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
 		{
 			menu.state = OPCION_0;
-			keyboard_set_key(ALLEGRO_KEY_UP);
 		}  
 		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
 		{
