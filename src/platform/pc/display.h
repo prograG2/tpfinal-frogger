@@ -1,5 +1,5 @@
-#ifndef DISPLAY_PC
-#define DISPLAY_PC
+#ifndef DISPLAY
+#define DISPLAY
 
 #include <pthread.h>
 #include "global.h"
@@ -8,20 +8,14 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 
-
 pthread_mutex_t lock;
-
-int iniciarDisplay();
-
-void actualizarDisplay();
-
-void limpiarDisplay();
-
-void mostrarTexto(char* txt, int pos);
 
 ALLEGRO_DISPLAY* disp;
 ALLEGRO_FONT* font;
 
-
+int iniciarDisplay();
+void actualizarDisplay();
+void limpiarDisplay();
+void mostrarTexto(char* txt, int pos);
 
 #endif
