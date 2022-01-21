@@ -1,4 +1,4 @@
-#include "nombre_pc.h"
+#include "nombre.h"
 
 void nuevoNombre(){
     index = 0;
