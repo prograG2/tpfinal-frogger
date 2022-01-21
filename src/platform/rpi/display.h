@@ -1,8 +1,8 @@
-#ifndef DISPLAY_RPI
-#define DISPLAY_RPI
+#ifndef DISPLAY
+#define DISPLAY
 
-#include "mensajes_rpi.h"
-#include "bitmap_rpi.h"
+#include "mensajes.h"
+#include "bitmap.h"
 
 int iniciarDisplay();
 
