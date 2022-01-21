@@ -1,5 +1,5 @@
-#ifndef GAME_PC
-#define GAME_PC
+#ifndef GAME
+#define GAME
 
 #include "queue.h"
 #include "global.h"
@@ -43,7 +43,5 @@ void perderVidaAgua();
 void perderVidaTimeout();
 void llegar();
 void subirNivel();
-
-
 
 #endif
