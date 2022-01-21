@@ -64,11 +64,6 @@ static node_t *front = NULL, *back = NULL;
  *******************************************************************************
  ******************************************************************************/
 int queue_init(){
-  #if PLATAFORMA == PC
-  al_queue = al_create_event_queue();
-  al_register_event_source(al_queue, al_get_keyboard_event_source());
-  return al_queue;
-  #endif
   return 1;
 }
 
@@ -79,10 +74,7 @@ void queue_insert(event_t nuevo)
 
     temp->data = nuevo;
     //printf("%d\n", nuevo); //si se quita esto la queue funciona mal
-    /*
-    printf("\nAntes de poner: ");
-    printQueue();
-    */
+    //printQueue();
 
     if (front ==  NULL)
     {
@@ -99,10 +91,7 @@ void queue_insert(event_t nuevo)
       back->next = temp;
       back = back->next;
     }
-    /*
-    printf("\nTras poner: ");
-    printQueue();
-    */
+    //printQueue();
 }
 
 
@@ -113,31 +102,13 @@ int queue_empty()
 
 event_t queue_next()
 {
-  #if PLATAFORMA == PC
-    ALLEGRO_EVENT ret_event;
-		if(al_get_next_event(al_queue, &ret_event))
-      int key = ret_event.keyboard.keycode;
-      if(key != last_key){
-			  last_key = key;
-        return key;
-      }
-			return NADA;
-	#endif
-
   if (front == NULL){
     return NADA;
   }
   else{
     event_t r = front->data;
-    /*
-    printf("Antes de retirar: ");
-    printQueue();
-    */
     delete();
-    /*
-    printf("Tras retirar: ");
-    printQueue();
-    */
+    //printQueue();
     printf("%d\n", r); //para ver el evento que sigue
     return r;
   }
