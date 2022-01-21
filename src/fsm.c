@@ -17,16 +17,17 @@
 #include "util.h"
 
 #if PLATAFORMA == PC
-	#include "nombre_pc.h"
-    #include "game_pc.h"
-    #include "display_pc.h"
-    #include "menu_pc.h"
+	#include "/platform/pc/nombre.h"
+    #include "/platform/pc/game.h"
+    #include "/platform/pc/display.h"
+    #include "/platform/pc/menu.h"
+    #include "/platform/pc/input.h" //FALTA IMPLEMENTAR
 #else
-	#include "nombre_rpi.h"
-    #include "game_rpi.h"
-    #include "display_rpi.h"
-    #include "menu_rpi.h"
-    #include "input_rpi.h"
+	#include "/platform/rpi/nombre.h"
+    #include "/platform/rpi/game.h"
+    #include "/platform/rpi/display.h"
+    #include "/platform/rpi/menu.h"
+    #include "/platform/rpi/input.h"
 #endif
 
 pthread_t tjoystick, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiempo;
