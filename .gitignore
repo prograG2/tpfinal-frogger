@@ -2,6 +2,16 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=c,visualstudiocode,git
 
+### Customs ###
+# Algo del neofetch
+.nf
+
+# Directorio de objetos
+obj
+
+# Directorio de ejecutables
+bin
+
 ### C ###
 # Prerequisites
 *.d
@@ -93,6 +103,3 @@ dkms.conf
 # Support for Project snippet scope
 
 # End of https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,git
-
-# Customs
-.nf
