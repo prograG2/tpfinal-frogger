@@ -2,6 +2,7 @@
 #include "disdrv.h"
 #include <pthread.h>
 #include "global.h"
+#include <string.h>
 
 pthread_mutex_t lock;
 
@@ -56,5 +57,17 @@ void mostrarTexto(char* txt, int pos){
         moverMensaje(&msj, NO_REPETIR);
         escribirRenglonDisplay(msj.renglon, pos);
     }
+}
+
+void fijarTexto(char* txt, int pos){
+    mensaje_t msj = mensaje(txt, pos);
+    escribirRenglonDisplay(msj.renglon, POS_MSJ1);
+}
+
+void mostrarPosicion(char* posicion, char* nombre, char* puntos){
+    limpiarDisplay();
+    fijarTexto(posicion, POS_MSJ1);
+    mostrarTexto(nombre, POS_MSJ2);
+    mostrarTexto(puntos, POS_MSJ2);
 }
 

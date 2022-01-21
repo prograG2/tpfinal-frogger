@@ -1,5 +1,5 @@
-frogger_rpi: main.o bitmap_rpi.o disdrv.o display_rpi.o fsm.o game_rpi.o joydrv.o joystick.o mensajes_rpi.o menu_rpi.o nombre_rpi.o queue.o util.o
-	gcc -Wall -g main.o bitmap_rpi.o disdrv.o display_rpi.o fsm.o game_rpi.o joydrv.o joystick.o mensajes_rpi.o menu_rpi.o nombre_rpi.o queue.o util.o -o frogger_rpi -lpthread
+frogger_rpi: main.o bitmap_rpi.o disdrv.o display_rpi.o fsm.o game_rpi.o joydrv.o input_rpi.o mensajes_rpi.o menu_rpi.o nombre_rpi.o queue.o util.o
+	gcc -Wall -g main.o bitmap_rpi.o disdrv.o display_rpi.o fsm.o game_rpi.o joydrv.o input_rpi.o mensajes_rpi.o menu_rpi.o nombre_rpi.o queue.o util.o -o frogger_rpi -lpthread
 
 main.o: main.c fsm.h queue.h global.h
 	gcc -Wall -g -c main.c
@@ -10,14 +10,14 @@ bitmap_rpi.o: bitmap_rpi.c bitmap_rpi.h
 display_rpi.o: display_rpi.c display_rpi.h bitmap_rpi.h mensajes_rpi.h global.h
 	gcc -Wall -g -c display_rpi.c -lpthread
 
-fsm.o: fsm.c fsm.h queue.h util.h global.h nombre_rpi.h game_rpi.h display_rpi.h menu_rpi.h joystick.h
+fsm.o: fsm.c fsm.h queue.h util.h global.h nombre_rpi.h game_rpi.h display_rpi.h menu_rpi.h input_rpi.h
 	gcc -Wall -g -c fsm.c -lpthread
 
 game_rpi.o: game_rpi.c game_rpi.h queue.h bitmap_rpi.h global.h display_rpi.h
 	gcc -Wall -g -c game_rpi.c
 
-joystick.o: joystick.c joystick.h joydrv.h global.h
-	gcc -Wall -g -c joystick.c
+input_rpi.o: input_rpi.c input_rpi.h joydrv.h global.h
+	gcc -Wall -g -c input_rpi.c
 
 mensajes_rpi.o: mensajes_rpi.c mensajes_rpi.h bitmap_rpi.h global.h
 	gcc -Wall -g -c mensajes_rpi.c

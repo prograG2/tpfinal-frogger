@@ -22,6 +22,7 @@ struct{
     uint16_t jugador_1;
     uint16_t jugador_2;
     uint16_t tiempo_bits;
+	uint32_t carril[5];
     uint64_t puntos;
     uint64_t max_puntos;
     clock_t tiempo_inicial;
@@ -51,6 +52,15 @@ void decrementarVida(){
 	jugador.vidas--;
 }
 
+int refresco_autos = 0;
+
+void refrescar(){
+	refrescarJugador();
+	if(refresco_autos)
+		refrescarAutos();
+	refresco_autos = ~refresco_autos;
+}
+
 void refrescarJugador(){
 	uint16_t tmp = jugador.jugador_1;
 	jugador.jugador_1 = jugador.jugador_2;
@@ -59,24 +69,24 @@ void refrescarJugador(){
 
 void refrescarAutos(){
 	int i;
-    for(i=POS_AUTOS; i<POS_AUTOS+10; i+=2){
-        uint16_t carril = jugador.mapa[i] << 1;
+	for(i=0; i<5; i++){
+		jugador.carril[i] << 1;
         if(jugador.agua){
-            if(!(carril & 0b11111111) && !(rand() % 10))
-                carril |= 0b11;
-            else if(!(carril & 0b1111111111) && !(rand() % 20))
-                carril |= 0b1111;
+            if(!(jugador.carril[i] & 0b11111111) && !(rand() % 10))
+                jugador.carril[i] |= 0b11;
+            else if(!(jugador.carril[i] & 0b1111111111) && !(rand() % 20))
+                jugador.carril[i] |= 0b1111;
         }
         else{
-            if(!(carril & 0b111111) && !(rand() % 10))
-            carril |= 0b11;
-            else if(!(carril & 0b11111111) && !(rand() % 20))
-                carril |= 0b1111;
+            if(!(jugador.carril[i] & 0b111111) && !(rand() % 10))
+            jugador.carril[i] |= 0b11;
+            else if(!(jugador.carril[i] & 0b11111111) && !(rand() % 20))
+                jugador.carril[i] |= 0b1111;
         }
-        jugador.mapa[i] = carril;
-        jugador.mapa[i+1] = carril;
-        
-    }
+		uint16_t medio_carril = jugador.carril[i] >> 16;
+        jugador.mapa[POS_AUTOS+2*i] = medio_carril;
+        jugador.mapa[POS_AUTOS+2*i+1] = medio_carril;
+	}
 
 }
 
@@ -90,6 +100,11 @@ void setTiempoLimite(clock_t limite){
 
 void setTiempo(clock_t tiempo){
 	jugador.tiempo = tiempo;
+	if(jugador.tiempo > acc){
+		acc += frac;
+		jugador.tiempo_bits >>= 1;
+	}
+
 }
 
 void setDificultad(int dificultad){
@@ -143,47 +158,49 @@ void reiniciarNivel(){
 }
 
 void respawn(){
-    jugador.jugador_1 = 0b0000000010000000;
-    jugador.jugador_2 = 0b0000000100000000;
 	if(jugador.agua){
 		jugador.mapa[2] = jugador.ranas;
 		jugador.mapa[3] = jugador.ranas;
 	}
 	else{
+    	jugador.jugador_1 = 0b0000000010000000;
+    	jugador.jugador_2 = 0b0000000100000000;
 		jugador.mapa[2] = 0;
 		jugador.mapa[3] = 0;
 	}
 	jugador.posicion_sur = CANT_FILAS-1;
 	jugador.posicion_oeste = 7;
     int i, j;
-    for(i=POS_AUTOS; i<POS_AUTOS+10; i+=2){
-        uint16_t carril = 0;
+
+	for(i=0; i<5; i++){
+		jugador.carril[i] = 0;
+		int max = 2*CANT_COLUMNAS;
 		for(j=0; j<CANT_COLUMNAS;){
 			if(rand() & 1){
 				if(jugador.agua){
 					if(!(rand()%2)){
-						carril |= 0b111111 << j;
+						jugador.carril[i] |= 0b111111 << j;
 						j += 8;
 					}
 				}
 				else if(!(rand()%10)){
-					carril |= 0b11 << j;
+					jugador.carril[i] |= 0b11 << j;
 					j += 4;
 				}
 				else if(!(rand()%20)){
-					carril |= 0b1111 << j;
+					jugador.carril[i] |= 0b1111 << j;
 					j += 6;
 				}
 			}
 			else{
 				j += 2; //dejo 2 espacios
 			}
+			if (jugador.agua)
+				jugador.carril[i] = ~jugador.carril[i];
+			jugador.mapa[POS_AUTOS+2*i] = jugador.carril[i];
+			jugador.mapa[POS_AUTOS+2*i+1] = jugador.carril[i];
 		}
-		if (jugador.agua)
-			carril = ~carril;
-		jugador.mapa[i] = carril;
-		jugador.mapa[i+1] = carril;
-    }
+	}
 }
 
 void moverAdelante(){

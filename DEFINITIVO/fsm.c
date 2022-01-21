@@ -26,7 +26,7 @@
     #include "game_rpi.h"
     #include "display_rpi.h"
     #include "menu_rpi.h"
-    #include "joystick.h"
+    #include "input_rpi.h"
 #endif
 
 pthread_t tjoystick, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiempo;
@@ -34,7 +34,7 @@ pthread_t tjoystick, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiem
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
-void *thread_joystick();
+void *thread_input();
 
 void *thread_display_menu();
 
@@ -203,11 +203,11 @@ void fsm(event_t evento_actual)
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-void *thread_joystick(){
+void *thread_input(){
     while(p2CurrentState){
-	    event_t joystick = leerJoystick();
-	    if(joystick != NO_MOVER){ //Si hay movimiento de joystick
-		    queue_insert(joystick);
+	    event_t entrada = leerEntradas();
+	    if(entrada != NADA){
+		    queue_insert(entrada);
 		}
     }
 	return NULL;
@@ -229,7 +229,7 @@ void *thread_tiempo(){
     clock_t ref = clock();
     while((p2CurrentState == jugando) && (tiempo < limite)){
         tiempo = inicio + clock() - ref;
-		setTiempo(tiempo); //setear la interfaz tambien
+		setTiempo(tiempo);
     }
     queue_insert(TIMEOUT);
 	return NULL;
@@ -239,11 +239,7 @@ void *thread_autos(){
 	while(p2CurrentState == jugando){
 	clock_t meta = clock() + REFRESH_JUGADOR_CLOCKS;
 	while(clock() < meta);
-	refrescarJugador();
-	meta = clock() + REFRESH_JUGADOR_CLOCKS;
-	while(clock() < meta);
-	refrescarJugador();
-	refrescarAutos();
+	refrescar();
 	//printf("agua: %d", getAgua());
 	}
 	return NULL;
@@ -263,22 +259,16 @@ void *thread_display_ranking(){
 		perror ("mostrarRanking(): Error opening file");
 		return NULL;
 	}
-	int puesto = 1;
-	char msj[100];
+	int puesto_int = 1;
+	char puesto[2], *nombre, *puntos;
 	
-	while(fgets(linea, 100, pFile) != NULL){ //pasar a modulo externo puntos, nombre y ranking
-		limpiarDisplay();
+	while(fgets(linea, 100, pFile) != NULL){
 		char* pch = strtok(linea," ");
-		ulltoa(puesto, msj);
-		strcat(msj, " ");
-		strcat(msj, pch);
-		clock_t meta = clock() + SLEEP_CLOCKS;
-		while(clock() < meta);
-		//printf("%s\n", msj);
-		mostrarTexto(msj, POS_MSJ1);
+		nombre = pch;
+		ulltoa(puesto_int, puesto);
 		pch = strtok(NULL, " ");
-		//printf("%s\n", pch);
-		mostrarTexto(pch, POS_MSJ2);
+		puntos = pch;
+		mostrarPosicion(puesto, nombre, puntos);
 	}
 	fclose (pFile);
 	queue_insert(ENTER);
@@ -299,21 +289,19 @@ int inicializarFsm(void)
 
     #if PLATAFORMA == PC
 		al_init();
-        al_install_keyboard();
-        al_register_event_source(al_queue, al_get_keyboard_event_source());
 	#else
-		
 	#endif
 	
     iniciarDisplay();
     iniciarMenu();
-    iniciarJoystick();
+    iniciarEntradas();
+	iniciarSonido();
 
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
 	setMenu(menu, 4);
 	setOpcion(0);
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
-	pthread_create(&tjoystick, NULL, thread_joystick, NULL);
+	pthread_create(&tjoystick, NULL, thread_input, NULL);
 	return 0;
 }
 

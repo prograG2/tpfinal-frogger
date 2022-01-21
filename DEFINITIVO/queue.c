@@ -116,8 +116,12 @@ event_t queue_next()
   #if PLATAFORMA == PC
     ALLEGRO_EVENT ret_event;
 		if(al_get_next_event(al_queue, &ret_event))
-			last_key = ret_event.keyboard.keycode;
-			return last_key;
+      int key = ret_event.keyboard.keycode;
+      if(key != last_key){
+			  last_key = key;
+        return key;
+      }
+			return NADA;
 	#endif
 
   if (front == NULL){

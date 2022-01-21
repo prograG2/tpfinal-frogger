@@ -10,6 +10,7 @@
 		"algif.h": "c",
 		"algorithm": "c",
 		"random": "c",
-		"mensajes_rpi.h": "c"
+		"mensajes_rpi.h": "c",
+		"display_pc.h": "c"
 	}
 }

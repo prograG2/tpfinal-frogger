@@ -1,8 +1,8 @@
-#include "joystick.h"
+#include "input_rpi.h"
 
 int prev = NO_MOVER;
 
-int iniciarJoystick(){
+int iniciarEntradas(){
     joy_init();
     return 0;
 }
@@ -12,7 +12,7 @@ static int8_t modulo(int8_t x){
     return x >= 0 ? x : -x;
 }
 
-event_t leerJoystick(){
+event_t leerEntradas(){
     joy_update();
     int act = joy_get_switch();
     if(act == J_PRESS){

@@ -16,6 +16,8 @@ void limpiarDisplay();
 
 void mostrarTexto(char* txt, int pos);
 
+void fijarTexto(char* txt, int pos);
 
+void mostrarPosicion(char* posicion, char* nombre, char* puntos);
 
 #endif
