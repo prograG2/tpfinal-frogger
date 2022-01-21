@@ -1,5 +1,4 @@
-#include "bitmap_rpi.h"
-
+#include "bitmap.h"
 #include <stdio.h>
 
 void printMatriz(Matriz a){
