@@ -16,11 +16,6 @@
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-#if PLATAFORMA == PC
-  #include <allegro5/allegro5.h>
-  ALLEGRO_EVENT_QUEUE* al_queue;
-  int last_key;
-#endif
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
