@@ -1,5 +1,5 @@
-#ifndef NOMBRE_H
-#define NOMBRE_H
+#ifndef NOMBRE
+#define NOMBRE
 
 void nuevoNombre();
 void subirLetra();
