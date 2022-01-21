@@ -1,5 +1,5 @@
-#ifndef MENSAJES_RPI
-#define MENSAJES_RPI
+#ifndef MENSAJES
+#define MENSAJES
 
 #include "global.h"
 #include <stdint.h>
