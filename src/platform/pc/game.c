@@ -1,4 +1,4 @@
-#include "game_pc.h"
+#include "game.h"
 
 struct{
     char nombre[L_MAX];
