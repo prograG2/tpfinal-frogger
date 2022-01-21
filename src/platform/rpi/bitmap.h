@@ -1,5 +1,5 @@
-#ifndef BITMAP_RPI
-#define BITMAP_RPI
+#ifndef BITMAP
+#define BITMAP
 
 #include "global.h"
 #include <stdint.h>
