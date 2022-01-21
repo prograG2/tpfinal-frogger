@@ -1,5 +1,5 @@
-#ifndef INPUT_RPI
-#define INPUT_RPI
+#ifndef INPUT
+#define INPUT
 
 #include <stdint.h>
 #include "joydrv.h"
