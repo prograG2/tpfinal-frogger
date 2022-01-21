@@ -1,4 +1,4 @@
-#include "input_rpi.h"
+#include "input.h"
 
 int prev = NO_MOVER;
 
