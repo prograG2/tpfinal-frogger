@@ -10,9 +10,12 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-
+# Correr make con VERBOSE=1 para habiltiar los ecos
+ifndef VERBOSE
 # Evita ecos de make en consola
 MAKEFLAGS += --silent
+endif
+
 
 # Directorio root
 MAKE_DIR			:= $(PWD)
