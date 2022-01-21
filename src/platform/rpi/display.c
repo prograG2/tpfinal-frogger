@@ -1,4 +1,4 @@
-#include "display_rpi.h"
+#include "display.h"
 #include "disdrv.h"
 #include <pthread.h>
 #include "global.h"
