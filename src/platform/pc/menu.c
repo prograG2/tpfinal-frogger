@@ -1,4 +1,4 @@
-#include "menu_pc.h"
+#include "menu.h"
 
 void setMenu(int* a, unsigned int size){
     menu.menu_actual = realloc(menu.prev = menu.menu_actual, size*sizeof(int));
