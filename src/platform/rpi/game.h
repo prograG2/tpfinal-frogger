@@ -1,5 +1,5 @@
-#ifndef GAME_RPI
-#define GAME_RPI
+#ifndef GAME
+#define GAME
 
 #include <stdint.h>
 #include <time.h>
