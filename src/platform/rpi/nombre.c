@@ -1,6 +1,6 @@
-#include "nombre_rpi.h"
-#include "mensajes_rpi.h"
-#include "display_rpi.h"
+#include "nombre.h"
+#include "mensajes.h"
+#include "display.h"
 //#include <stdio.h> //quitar!
 
 Renglon nombreDisp;
