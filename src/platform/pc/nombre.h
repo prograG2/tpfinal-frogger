@@ -1,5 +1,5 @@
-#ifndef NOMBRE_PC
-#define NOMBRE_PC
+#ifndef NOMBRE
+#define NOMBRE
 
 #include "global.h"
 #include "queue.h"
