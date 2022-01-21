@@ -1,5 +1,5 @@
-#include "mensajes_rpi.h"
-#include "bitmap_rpi.h"
+#include "mensajes.h"
+#include "bitmap.h"
 #include <stdio.h>
 
 #define INDEX_ESPACIO 26
