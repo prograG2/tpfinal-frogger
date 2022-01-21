@@ -1,4 +1,4 @@
-#include "display_pc.h"
+#include "display.h"
 
 int iniciarDisplay(){
     al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
