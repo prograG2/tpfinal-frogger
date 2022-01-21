@@ -1,9 +1,9 @@
-#include "game_rpi.h"
+#include "game.h"
 
 #include "queue.h"
-#include "bitmap_rpi.h"
+#include "bitmap.h"
 #include "global.h"
-#include "display_rpi.h"
+#include "display.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
