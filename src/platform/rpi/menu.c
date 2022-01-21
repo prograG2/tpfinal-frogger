@@ -1,6 +1,6 @@
-#include "menu_rpi.h"
-#include "mensajes_rpi.h"
-#include "display_rpi.h"
+#include "menu.h"
+#include "mensajes.h"
+#include "display.h"
 #include <stdlib.h>
 
 struct{
