@@ -1,5 +1,5 @@
-#ifndef MENU_RPI
-#define MENU_RPI
+#ifndef MENU
+#define MENU
 
 void setMenu(int* a, unsigned int size);
 
