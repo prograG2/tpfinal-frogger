@@ -1,8 +1,8 @@
-#ifndef MENU_PC
-#define MENU_PC
+#ifndef MENU
+#define MENU
 
 #include "queue.h"
-#include "display_pc.h"
+#include "display.h"
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
