@@ -1,6 +1,5 @@
 # Makefile principal del proyecto	\
-	-Crea objetos principales		\
-	-Linkea con los objetos de plataforma	\
+	-Linkea todos lo objetos con librerias correspondientes	\
 											\
 	'make pc' compila y linkea para PC		\
 	'make rpi' compila y linkea para RPI	
@@ -25,26 +24,13 @@ BIN_DIR    			:= $(MAKE_DIR)/bin
 DOC_DIR	    		:= $(MAKE_DIR)/doc
 LIB_DIR 			:= $(MAKE_DIR)/lib
 OBJ_DIR   			:= $(MAKE_DIR)/obj
-OBJ_PLATFORM_DIR	:= $(OBJ_DIR)/platform
-OBJ_PC_DIR			:= $(OBJ_PLATFORM_DIR)/pc
-OBJ_RPI_DIR			:= $(OBJ_PLATFORM_DIR)/rpi
 SRC_DIR   			:= $(MAKE_DIR)/src
 SRC_PC_DIR			:= $(SRC_DIR)/platform/pc
 SRC_RPI_DIR			:= $(SRC_DIR)/platform/rpi
 
 
-# Objetos principales (sin paths)
-_OBJS 			:= main.o fsm.o queue.o util.o
-# Se agregan los paths
-OBJS			:= $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))
-
-# Objetos genericos (sin paths)
-_OBJS_PLATFORM	:= display.o game.o input.o menu.o nombre.o 
-# Se agregan los paths
-OBJS_PLATFORM	:= $(patsubst %, $(OBJ_DIR)/%, $(_OBJS_PLATFORM))
-
-# Se juntan todos los objetos con paths
-OBJS			+= $(OBJS_PLATFORM)
+# Objetos con fullpath
+OBJS = $(wildcard $(OBJ_DIR)/*.o)
 
 
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,7 +64,7 @@ MK := mkdir -p
 
 
 # Se exportan algunas variables para que sean visibles por subshells de otro comandos
-export CC CFLAGS RM MK MAKE_DIR SRC_DIR OBJ_DIR OBJ_PC_DIR OBJ_RPI_DIR OBJS_PLATFORM
+export OBJ_DIR MK
 
 
 
@@ -87,6 +73,9 @@ export CC CFLAGS RM MK MAKE_DIR SRC_DIR OBJ_DIR OBJ_PC_DIR OBJ_RPI_DIR OBJS_PLAT
 
 
 # Regla principal
+all: $(BIN_DIR)/$(EXEC)
+
+
 $(BIN_DIR)/$(EXEC):
 ifdef PLATFORM
 $(BIN_DIR)/$(EXEC): $(OBJS)					
@@ -99,35 +88,15 @@ endif
 # Regla para PC
 pc:	PLATFORM = PC
 pc: dirs
-	$(MAKE) -C $(SRC_PC_DIR) -f pc.mk
+	$(MAKE) -C $(SRC_PC_DIR)
 pc: LIBS += LIBS_PC $(BIN_DIR)/$(EXEC)
 
 
 # Regla para RPI
 rpi: PLATFORM = RPI
 rpi: dirs
-	$(MAKE) -C $(SRC_RPI_DIR) -f rpi.mk
+	$(MAKE) -C $(SRC_RPI_DIR)
 rpi: LIBS += LIBS_RPI $(BIN_DIR)/$(EXEC)
-
-
-# Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-$(OBJ_DIR)/main.o: $(SRC_DIR)/main.c $(SRC_DIR)/fsm.h $(SRC_DIR)/queue.h \
-					$(SRC_DIR)/global.h
-	$(CC) $(CFLAGS) -c $<
-
-$(OBJ_DIR)/fsm.o: $(SRC_DIR)/fsm.c $(SRC_DIR)/fsm.h $(SRC_DIR)/queue.h \
-					$(SRC_DIR)/util.h $(SRC_DIR)/global.h \
-					$(patsubst %.o, %.h, $(OBJS_PLATFORM_NAMES))
-	$(CC) $(CFLAGS) -c $<
-
-$(OBJ_DIR)/queue.o: $(SRC_DIR)/queue.c $(SRC_DIR)/queue.h $(SRC_DIR)/global.h
-	$(CC) $(CFLAGS) -c $<
-
-$(OBJ_DIR)/util.o: $(SRC_DIR)/util.c $(SRC_DIR)/util.h $(SRC_DIR)/global.h
-	$(CC) $(CFLAGS) -c $<
-
-# Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -138,13 +107,18 @@ dirs:
 	$(MK) $(OBJ_DIR)	
 
 
-# Borra todos los objetos y el ejecutable creados
+# Borra objetos
 clean:
-	cd $(OBJ_DIR);			\
-	$(RM) _OBJS;			\
-	cd $(BIN_DIR);			\
-	$(RM) $(EXEC);				\
-	$(MAKE) -C $(SRC_PC_DIR) -f pc.mk clean;	\
-	$(MAKE) -C $(SRC_RPI_DIR) -f rpi.mk clean
+	$(RM) $(OBJS);							\
+	$(MAKE) -C $(SRC_DIR) clean;			\
+	$(MAKE) -C $(SRC_PC_DIR) clean;			\
+	$(MAKE) -C $(SRC_PC_DIR) clean-debug;	\
+	$(MAKE) -C $(SRC_RPI_DIR) clean;		\
+	$(MAKE) -C $(SRC_RPI_DIR) clean-debug
+
+# Borra objetos y ejecutable
+cleaner: clean
+	cd $(BIN_DIR);		\
+	$(RM) *
 	
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~	

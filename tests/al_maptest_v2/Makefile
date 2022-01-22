@@ -39,19 +39,19 @@ $(EXEC): $(OBJS)
 main.o: main.c allegro_stuff.h entities.h geometry.h game_data.h algif.h
 	$(CC) $(CFLAGS) -c $<
 
-allegro_stuff.o: allegro_stuff.c geometry.h
+allegro_stuff.o: allegro_stuff.c allegro_stuff.h geometry.h
+	$(CC) $(CFLAGS) -c $< -o ../$@
+
+entities.o: entities.c entities.h allegro_stuff.h geometry.h game_data.h
 	$(CC) $(CFLAGS) -c $<
 
-entities.o: entities.c allegro_stuff.h geometry.h game_data.h
+geometry.o: geometry.c geometry.h
 	$(CC) $(CFLAGS) -c $<
 
-geometry.o: geometry.c
+game_data.o: game_data.c game_data.h geometry.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
-game_data.o: game_data.c geometry.h allegro_stuff.h
-	$(CC) $(CFLAGS) -c $<
-
-menu.o: menu.c allegro_stuff.h
+menu.o: menu.c menu.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
 # Otras reglas
