@@ -32,8 +32,8 @@ SRC_RPI_DIR			:= $(SRC_DIR)/platform/rpi
 _OBJS = main.o queue.o fsm.o
 OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))
 
-# Plataforma a compilar. Se inicializa luego
-PLATFORM = 0
+# Plataforma a compilar. La inicializa el usuario
+PLATFORM	=
 
 
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,11 +45,11 @@ LIBS_PC		:=
 LIBS_PC		+= `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 \
 				allegro_primitives-5 allegro_image-5 allegro_audio-5 \
 				allegro_acodec-5 --libs --cflags`
-LIBS_PC 	+= -L$(LIB_DIR) libalgif.a
+LIBS_PC 	+= -Llib -lalgif
 
 # Librerias para RPI
 LIBS_RPI	:=
-LIBS_RPI	+=  -L$(LIB_DIR) librpiutils.a
+LIBS_RPI	+=  -Llib -lrpiutils
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -79,50 +79,41 @@ export OBJ_DIR
 
 
 
-$(BIN_DIR)/$(EXEC):
+# Si PLATFORM es PC o RPI...
 ifneq ( , $(filter $(PLATFORM),PC RPI))
-$(BIN_DIR)/$(EXEC): $(OBJS)
+$(BIN_DIR)/$(EXEC): build_$(PLATFORM)
+	$(MAKE) -C $(SRC_DIR)
+	$(eval OBJS += $(wildcard $(OBJ_DIR)/*_$(PLATFORM).o))
+	$(eval LIBS += $(LIBS_$(PLATFORM)))
+	echo ;
+	echo Echoing objs: $(OBJS)
+	echo ;
+	echo Echoing libs: $(LIBS)
+	echo ;
+	echo Echoing platform: $(PLATFORM)
+	echo ;
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
 else
-	@echo Elija alguna plataforma para compilar: ~make pc~ o ~make rpi~
+error_msg: 
+	echo Defina la plataforma:;		\
+	echo make PLATFORM=PC;			\
+	echo ó;							\
+	echo make PLATFORM=RPI
 endif
 
 
 # Regla para PC
-pc:
+build_PC:
 	$(MAKE) -C $(SRC_PC_DIR)
-	$(eval PLATFORM = PC)
-	$(eval LIBS += $(LIBS_PC))
-	$(eval OBJS += $(wildcard $(OBJ_DIR)/*_$(PLATFORM).o))
-	echo ;
-	echo Echoing objs: $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))$(OBJS)
-	echo ;
-	echo Echoing libs: $(LIBS)
-	echo ;
-	echo Echoing platform: $(PLATFORM)
-	echo ;
-	$(MAKE) -C $(SRC_DIR)
-pc:	$(BIN_DIR)/$(EXEC)
-
 
 # Regla para RPI
-rpi:
+build_RPI:
 	$(MAKE) -C $(SRC_RPI_DIR)
-	$(eval PLATFORM = RPI)
-	$(eval LIBS += $(LIBS_RPI))
-	$(eval OBJS += $(wildcard $(OBJ_DIR)/*_$(PLATFORM).o))
-	echo ;
-	echo Echoing objs: $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))$(OBJS)
-	echo ;
-	echo Echoing libs: $(LIBS)
-	echo ;
-	echo Echoing platform: $(PLATFORM)
-	echo ;
-	$(MAKE) -C $(SRC_DIR)
-rpi: $(BIN_DIR)/$(EXEC)
-
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Solicita ingreso de plataforma
+
 
 # Borra objetos
 clean:
@@ -133,7 +124,6 @@ clean:
 
 # Borra objetos y ejecutable
 cleaner: clean
-	cd $(BIN_DIR);		\
-	$(RM) *
+	$(RM) $(BIN_DIR)/$(EXEC)
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
