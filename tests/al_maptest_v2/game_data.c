@@ -205,7 +205,7 @@ static void hud_draw(void)
 	//Dibuja la puntuacion en pantalla.
 
 	int i;
-	static score_display;
+	static int score_display;
 
 	//Graduacion del score a mostrar para que vaya incrementando de apoco
 	if(score_display != data.score)

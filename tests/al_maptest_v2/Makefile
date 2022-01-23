@@ -21,7 +21,7 @@ EXEC := frogger
 ALLEGRO_LINKS := `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 --libs --cflags`
 
 # Otros linkeos (algif)
-EXTRA_LINKS := -lm -L. libalgif.a
+EXTRA_LINKS := -lm -L.libalgif.a
 
 # Comando para borrar archivos
 RM := rm -f
@@ -40,7 +40,7 @@ main.o: main.c allegro_stuff.h entities.h geometry.h game_data.h algif.h
 	$(CC) $(CFLAGS) -c $<
 
 allegro_stuff.o: allegro_stuff.c allegro_stuff.h geometry.h
-	$(CC) $(CFLAGS) -c $< -o ../$@
+	$(CC) $(CFLAGS) -c $<
 
 entities.o: entities.c entities.h allegro_stuff.h geometry.h game_data.h
 	$(CC) $(CFLAGS) -c $<
