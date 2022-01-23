@@ -8,76 +8,217 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+#include "fsm.h"
+
+#include "display.h"
+#include "game.h"
+#include "menu.h"
+#include "input.h"
+#include "nombre.h"
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <pthread.h>
-#include "global.h"
-#include "fsm.h"
-#include "util.h"
 
-#if PLATAFORMA == PC
-	#include "/platform/pc/nombre.h"
-    #include "/platform/pc/game.h"
-    #include "/platform/pc/display.h"
-    #include "/platform/pc/menu.h"
-    #include "/platform/pc/input.h" //FALTA IMPLEMENTAR
-#else
-	#include "/platform/rpi/nombre.h"
-    #include "/platform/rpi/game.h"
-    #include "/platform/rpi/display.h"
-    #include "/platform/rpi/menu.h"
-    #include "/platform/rpi/input.h"
-#endif
 
-pthread_t tjoystick, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiempo;
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
 
+#define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.5
+
+
+/*******************************************************************************
+ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * VARIABLES WITH GLOBAL SCOPE
+ ******************************************************************************/
+
+
+#pragma region privatePrototypes
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
-void *thread_input();
 
-void *thread_display_menu();
+/**
+ * @brief 
+ * 
+ * @return void* 
+ */
+static void *thread_input();
 
-void *thread_tiempo();
+/**
+ * @brief 
+ * 
+ * @return void* 
+ */
+static void *thread_display_menu();
 
-void *thread_autos();
+/**
+ * @brief 
+ * 
+ * @return void* 
+ */
+static void *thread_tiempo();
 
-void *thread_display_juego();
+/**
+ * @brief 
+ * 
+ * @return void* 
+ */
+static void *thread_autos();
 
-void *thread_display_ranking();
+/**
+ * @brief 
+ * 
+ * @return void* 
+ */
+static void *thread_display_juego();
+
+/**
+ * @brief 
+ * 
+ * @return void* 
+ */
+static void *thread_display_ranking();
+
 /**
  * @brief Rutina que hace nada.
  * 
  */
-void do_nothing(void);
+static void do_nothing(void);
 
+/**
+ * @brief 
+ * 
+ */
+static void menu_enter(void);
 
-void menu_enter(void);
+/**
+ * @brief 
+ * 
+ */
+static void pasar_a_menu_ppal(void);
+/**
+ * @brief 
+ * 
+ */
+static void pasar_a_nombre(void);
+/**
+ * @brief 
+ * 
+ */
+static void pasar_a_dificultad(void);
+/**
+ * @brief 
+ * 
+ */
+static void pasar_a_ranking(void);
+/**
+ * @brief 
+ * 
+ */
+static void salir_del_juego(void);
 
-void pasar_a_menu_ppal(void);
-void pasar_a_nombre(void);
-void pasar_a_dificultad(void);
-void pasar_a_ranking(void);
-void salir_del_juego(void);
+/**
+ * @brief Set the dificultad object
+ * 
+ */
+static void set_dificultad(void);
+/**
+ * @brief 
+ * 
+ */
+static void ranking_enter(void);
+/**
+ * @brief 
+ * 
+ */
+static void iniciar_juego(void);
 
-void set_dificultad(void);
-void ranking_enter(void);
-void iniciar_juego(void);
+/**
+ * @brief 
+ * 
+ */
+static void pausar(void);
+/**
+ * @brief 
+ * 
+ */
+static void continuar(void);
+/**
+ * @brief 
+ * 
+ */
+static void salir_al_menu(void);
 
-void pausar(void);
-void continuar(void);
-void salir_al_menu(void);
+/**
+ * @brief 
+ * 
+ */
+static void subir_nivel(void);
+/**
+ * @brief 
+ * 
+ */
+static void siguiente_nivel(void);
 
-void subir_nivel(void);
-void siguiente_nivel(void);
+/**
+ * @brief 
+ * 
+ */
+static void game_over(void);
 
-void game_over(void);
+/**
+ * @brief 
+ * 
+ * @param num 
+ * @param str 
+ */
+static void ulltoa(uint64_t num, char* str);
+
+#pragma endregion privatePrototypes
+
+/*******************************************************************************
+ * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
+//Puntero al estado actual
+static STATE* p2CurrentState = NULL;
+
+//threads a implementar
+static pthread_t tinput, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiempo;
+
+
+#pragma region FSM STATES
+/*******************************************************************************
+ * FSM STATES
+ ******************************************************************************/
+
+//Forward declarations de los estados
+extern STATE en_menu_ppal[];
+extern STATE menu_ppal_esperando_opcion[];
+extern STATE en_dificultad[];
+extern STATE viendo_ranking[];
+extern STATE poniendo_nombre[];
+
+extern STATE jugando[];
+extern STATE pasando_de_nivel[];
+extern STATE en_pausa[];
+extern STATE en_pausa_esperando_opcion[];
+extern STATE en_game_over[];
+extern STATE en_game_over_esperando_opcion[];
+//Forward declarations de los estados
 
 STATE en_menu_ppal[]=
 {
@@ -172,11 +313,34 @@ STATE en_game_over_esperando_opcion[]=
 	{CTE_OPCION+1, en_menu_ppal, salir_al_menu},
 	{FIN_TABLA, en_game_over_esperando_opcion, do_nothing}
 };
+#pragma endregion FSM STATES
+
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
+
+bool inicializarFsm(void)
+{
+	p2CurrentState = en_menu_ppal;
+	
+	if(!queue_init())
+		return false;
+
+    iniciarDisplay();
+    iniciarMenu();
+    iniciarEntradas();
+
+	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
+	setMenu(menu, 4);
+	setOpcion(0);
+
+	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
+	pthread_create(&tinput, NULL, thread_input, NULL);
+
+	return false;
+}
 
 void fsm(event_t evento_actual)
 {
@@ -204,7 +368,8 @@ void fsm(event_t evento_actual)
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-void *thread_input(){
+
+static void *thread_input(){
     while(p2CurrentState){
 	    event_t entrada = leerEntradas();
 	    if(entrada != NADA){
@@ -214,7 +379,7 @@ void *thread_input(){
 	return NULL;
 }
 
-void *thread_display_menu(){
+static void *thread_display_menu(){
     while((p2CurrentState == en_menu_ppal) || (p2CurrentState == en_dificultad) || (p2CurrentState == en_pausa) || (p2CurrentState == en_game_over)){
         clock_t meta = clock() + SLEEP_CLOCKS;
         while(clock() < meta);
@@ -224,7 +389,7 @@ void *thread_display_menu(){
 	return NULL;
 }
 
-void *thread_tiempo(){
+static void *thread_tiempo(){
 	clock_t tiempo = getTiempoInicial(), inicio = getTiempoInicial();
 	clock_t limite = getTiempoLimite();
     clock_t ref = clock();
@@ -236,7 +401,7 @@ void *thread_tiempo(){
 	return NULL;
 }
 
-void *thread_autos(){
+static void *thread_autos(){
 	while(p2CurrentState == jugando){
 	clock_t meta = clock() + REFRESH_JUGADOR_CLOCKS;
 	while(clock() < meta);
@@ -246,13 +411,13 @@ void *thread_autos(){
 	return NULL;
 }
 
-void *thread_display_juego(){
+static void *thread_display_juego(){
     while(p2CurrentState == jugando)
 		actualizarInterfaz();
 	return NULL;
 }
 
-void *thread_display_ranking(){
+static void *thread_display_ranking(){
 	FILE* pFile;
 	char linea[100];
 	pFile = fopen ("ranking.txt" , "r");
@@ -276,67 +441,42 @@ void *thread_display_ranking(){
 	return NULL;
 }
 
-void do_nothing(void)
+static void do_nothing(void)
 {
 
 }
 
-int inicializarFsm(void)
-{
-	p2CurrentState = en_menu_ppal;
-	srand(time(NULL));
-	if(!queue_init())
-		return 1;
 
-    #if PLATAFORMA == PC
-		al_init();
-	#else
-	#endif
-	
-    iniciarDisplay();
-    iniciarMenu();
-    iniciarEntradas();
-	iniciarSonido();
-
-	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
-	setMenu(menu, 4);
-	setOpcion(0);
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
-	pthread_create(&tjoystick, NULL, thread_input, NULL);
-	return 0;
-}
-
-
-void menu_enter(void){
+static void menu_enter(void){
 	pthread_join(tdisplaymenu, NULL);
 }
 
-void pasar_a_menu_ppal(){
+static void pasar_a_menu_ppal(){
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
 	setMenu(menu, 4);
 	setOpcion(0);
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
-void pasar_a_ranking(){
+static void pasar_a_ranking(){
 	pthread_create(&tdisplayranking, NULL, thread_display_ranking, NULL);
 }
 
-void salir_del_juego(){
+static void salir_del_juego(){
 	destruirMenu();
-	pthread_join(tjoystick, NULL);
+	pthread_join(tinput, NULL);
 	pthread_join(tdisplaymenu, NULL);
 	limpiarDisplay();
 	queue_insert(SALIR);
 }
 
-void ranking_enter(void){
+static void ranking_enter(void){
 	pthread_join(tdisplayranking, NULL);
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
 
-void subir_nivel(){
+static void subir_nivel(){
 	pthread_join(ttiempo, NULL);
 	pthread_join(tautos, NULL);
 	pthread_join(tdisplayjuego, NULL);
@@ -348,7 +488,7 @@ void subir_nivel(){
 	mostrarTexto(pasar_str, POS_MSJ1);
 }		
 
-void siguiente_nivel(){
+static void siguiente_nivel(){
 	reiniciarNivel();
 	pthread_create(&tdisplayjuego, NULL, thread_display_juego, NULL);
 	pthread_create(&tautos, NULL, thread_autos, NULL);
@@ -356,7 +496,7 @@ void siguiente_nivel(){
 }
 
 
-void iniciar_juego(void){
+static void iniciar_juego(void){
 	inicializarJuego();
 
     //mandar el string con el nombre que vive en fsm.c al jugador.nombre
@@ -382,20 +522,20 @@ void iniciar_juego(void){
 	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
 }
 
-void pasar_a_nombre(){
+static void pasar_a_nombre(){
 	nuevoNombre();
 	limpiarDisplay();
 	//mostrarTexto("INGRESE NOMBRE", POS_MSJ1);
 }
 
-void pasar_a_dificultad(){
+static void pasar_a_dificultad(){
 	int menu[3] = {FACIL, NORMAL, DIFICIL};
 	setMenu(menu, 3);
 	setOpcion(0);
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
-void set_dificultad(void){
+static void set_dificultad(void){
 	p2CurrentState = menu_ppal_esperando_opcion;
 	pthread_join(tdisplaymenu, NULL);
 	setDificultad(FACIL + getOpcion());
@@ -406,7 +546,7 @@ void set_dificultad(void){
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
-void pausar(void){
+static void pausar(void){
 	pthread_join(ttiempo, NULL);
 	pthread_join(tautos, NULL);
 	pthread_join(tdisplayjuego, NULL);
@@ -416,19 +556,19 @@ void pausar(void){
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
-void continuar(void){
+static void continuar(void){
 	pthread_join(tdisplaymenu, NULL);
 	pthread_create(&tdisplayjuego, NULL, thread_display_juego, NULL);
 	pthread_create(&tautos, NULL, thread_autos, NULL);
 	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
 }
 
-void salir_al_menu(void){
+static void salir_al_menu(void){
 	pthread_join(tdisplaymenu, NULL);
 	pasar_a_menu_ppal();
 }
 
-void game_over(void){
+static void game_over(void){
 	//cambiar_musica
 	pthread_join(ttiempo, NULL);
 	pthread_join(tautos, NULL);
@@ -482,4 +622,27 @@ void game_over(void){
 	setMenu(menu, 2);
 	setOpcion(0);
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
+}
+
+static void ulltoa(uint64_t num, char* str)
+{
+	uint64_t sum = num;
+	int i = 0;
+	int digit;
+	do
+	{
+		digit = sum % 10;
+		str[i++] = '0' + digit;
+		sum /= 10;
+	}while (sum);
+	str[i--] = '\0';
+
+    int j = 0;
+    char ch;
+    for (; i > j ; i--, j++)
+    {
+        ch = str[i];
+        str[i] = str[j];
+        str[j] = ch;
+    }
 }

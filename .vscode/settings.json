@@ -11,6 +11,16 @@
 		"algorithm": "c",
 		"random": "c",
 		"mensajes_rpi.h": "c",
-		"display_pc.h": "c"
+		"display_pc.h": "c",
+		"fsm.h": "c",
+		"input.h": "c",
+		"display.h": "c",
+		"nombre.h": "c",
+		"queue.h": "c",
+		"stdio.h": "c",
+		"util.h": "c",
+		"string.h": "c",
+		"stdlib.h": "c",
+		"joydrv.h": "c"
 	}
 }

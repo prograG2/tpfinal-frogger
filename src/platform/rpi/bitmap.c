@@ -1,5 +1,89 @@
+/**
+ * @file bitmap.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+
 #include "bitmap.h"
+
 #include <stdio.h>
+
+
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * VARIABLES WITH GLOBAL SCOPE
+ ******************************************************************************/
+
+// +ej: unsigned int anio_actual;+
+
+
+/*******************************************************************************
+ * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+/**
+ * @brief 
+ * 
+ * @param a 
+ * @param b 
+ */
+static void matrizAnd(Matriz a, Matriz b);
+
+/**
+ * @brief 
+ * 
+ * @param a 
+ * @param b 
+ */
+static void matrizOr(Matriz a, Matriz b);
+
+/**
+ * @brief 
+ * 
+ * @param a 
+ */
+static void matrizNot(Matriz a);
+
+
+/*******************************************************************************
+ * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
+
+
+/*******************************************************************************
+ * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// +ej: static int temperaturas_actuales[4];+
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        GLOBAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
 
 void printMatriz(Matriz a){
     for(int i=0; i<CANT_FILAS; i++, putchar('\n'))
@@ -19,17 +103,25 @@ void copiarMatriz(Matriz destino, Matriz desde){
         destino[i] = desde[i];
 }
 
-void matrizAnd(Matriz a, Matriz b){
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+static void matrizAnd(Matriz a, Matriz b){
     for(int i=0; i<CANT_FILAS; i++)
         a[i] &= b[i];
 }
 
-void matrizOr(Matriz a, Matriz b){
+static void matrizOr(Matriz a, Matriz b){
     for(int i=0; i<CANT_FILAS; i++)
         a[i] |= b[i];
 }
 
-void matrizNot(Matriz a){
+static void matrizNot(Matriz a){
     for(int i=0; i<CANT_FILAS; i++)
         a[i] = ~a[i];
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 #include "queue.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -41,21 +42,28 @@ typedef struct nodeT
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
+/**
+ * @brief 
+ * 
+ */
 static void delete();
+
+/**
+ * @brief 
+ * 
+ */
 static void printQueue();
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static node_t *front = NULL, *back = NULL;
-
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static int temperaturas_actuales[4];+
+static node_t *front = NULL, *back = NULL;
 
 
 /*******************************************************************************

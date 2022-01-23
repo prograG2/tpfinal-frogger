@@ -11,13 +11,22 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-
 #include "queue.h"
+
+#include <time.h>
+#include <stdbool.h>
+
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
 #define FIN_TABLA 0xFF
+
+#define CTE_OPCION 100
+
+#define JUGADOR_CLOCKS (clock_t)CLOCKS_PER_SEC*0.5
+#define REFRESH_AUTOS_CLOCKS (clock_t)CLOCKS_PER_SEC*2
+#define REFRESH_JUGADOR_CLOCKS (clock_t)CLOCKS_PER_SEC
 
 
 /*******************************************************************************
@@ -25,10 +34,9 @@
  ******************************************************************************/
 
 /**
- * @brief Eventos posibles.
+ * @brief 
  * 
  */
-
 typedef struct state_diagram_edge STATE;
 
 /**
@@ -47,8 +55,6 @@ struct state_diagram_edge
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-//Puntero al estado actual, presente en main.c
-STATE* p2CurrentState;
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -59,31 +65,22 @@ STATE* p2CurrentState;
  * 
  * @return STATE* Puntero al estado inicial.
  */
-int inicializarFsm(void);
+
+/**
+ * @brief Inicializa la FSM, notificando si tuvo exito
+ * 
+ * @return true Exito
+ * @return false Error
+ */
+bool inicializarFsm(void);
 
 /**
  * @brief Intérprete de la FSM. Se encarga de hacer correr la FSM a partir de un estado y evento dados.
  * 
  * @param p_tabla_estado Estado actual.
  * @param evento_actual Evento recibido.
- * @return STATE* Puntero al siguiente estado.
  */
 void fsm(event_t evento_actual);
-
-extern STATE en_menu_ppal[];
-extern STATE menu_ppal_esperando_opcion[];
-extern STATE en_dificultad[];
-extern STATE viendo_ranking[];
-extern STATE poniendo_nombre[];
-
-extern STATE jugando[];
-extern STATE pasando_de_nivel[];
-extern STATE en_pausa[];
-extern STATE en_pausa_esperando_opcion[];
-extern STATE en_game_over[];
-extern STATE en_game_over_esperando_opcion[];
-
-
 
 /*******************************************************************************
  ******************************************************************************/

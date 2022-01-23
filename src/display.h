@@ -1,0 +1,87 @@
+/**
+ * @file display.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
+#ifndef _DISPLAY_H_
+#define _DISPLAY_H_
+
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+
+#include <pthread.h>
+#include "queue.h"
+
+
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
+
+#define POS_MSJ1 2
+#define POS_MSJ2 9
+
+/*******************************************************************************
+ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
+ ******************************************************************************/
+
+// +ej: extern unsigned int anio_actual;+
+
+
+/*******************************************************************************
+ * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
+ ******************************************************************************/
+
+/**
+ * @brief 
+ * 
+ * @return int 
+ */
+int iniciarDisplay();
+
+/**
+ * @brief 
+ * 
+ */
+void actualizarDisplay();
+
+/**
+ * @brief 
+ * 
+ */
+void limpiarDisplay();
+
+/**
+ * @brief 
+ * 
+ * @param txt 
+ * @param pos 
+ */
+void mostrarTexto(char* txt, int pos);
+
+/**
+ * @brief 
+ * 
+ * @param posicion 
+ * @param nombre 
+ * @param puntos 
+ */
+void mostrarPosicion(char* posicion, char* nombre, char* puntos);
+
+
+/*******************************************************************************
+ ******************************************************************************/
+
+#endif // _DISPLAY_H_

@@ -1,29 +1,41 @@
-/***************************************************************************//**
-  @file     +Nombre del archivo (ej: template.h)+
-  @brief    +Descripcion del archivo+
-  @author   +Nombre del autor (ej: Salvador Allende)+
- ******************************************************************************/
-//https://stackoverflow.com/questions/3536153/c-dynamically-growing-array
-#ifndef _QUEUE_H_
-#define _QUEUE_H_
+/**
+ * @file rpiconsts.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
+#ifndef _RPICONSTS_H_
+#define _RPICONSTS_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+
+
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
+
+#define L_MAX 64
+
+#define ALTO 16
+#define ANCHO 16
+#define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.5
+#define CANT_FILAS 16
+#define CANT_COLUMNAS 16
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef int event_t;
 
-enum textos{JUGAR = 0, DIFICULTAD, RANKING, SALIRTXT, CONTINUAR, REINICIAR, FACIL, NORMAL, DIFICIL};
-enum eventos{NADA = -1, SALIR = 0, CHOCAR = 200, AGUA, TIMEOUT, GAME_OVER, META};
-enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO}; //Se respetan las definiciones de ALLEGRO ¡Chequear si se cambió la versión!
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -37,40 +49,15 @@ enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, 
  ******************************************************************************/
 
 /**
- * @brief 
- * 
- * @return int 
- */
-int queue_init();
+ * @brief TODO: completar descripcion
+ * @param param1 Descripcion parametro 1
+ * @param param2 Descripcion parametro 2
+ * @return Descripcion valor que devuelve
+*/
+// +ej: char lcd_goto (int fil, int col);+
 
-/**
- * @brief 
- * 
- */
-void queue_insert(event_t);
-
-/**
- * @brief 
- * 
- * @return int 
- */
-int queue_empty();
-
-/**
- * @brief 
- * 
- * @return event_t 
- */
-event_t queue_next();
-
-/**
- * @brief 
- * 
- * @return int 
- */
-int queue_destroy();
 
 /*******************************************************************************
  ******************************************************************************/
 
-#endif // _QUEUE_H_
+#endif // _RPICONSTS_H_

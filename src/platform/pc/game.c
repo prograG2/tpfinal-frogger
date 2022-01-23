@@ -1,114 +1,75 @@
-#include "game.h"
+/**
+ * @file game.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
-struct{
-    char nombre[L_MAX];
-    int dificultad;
-    int niv_actual;
-    int agua;
-    int x;
-    int y;
-    uint16_t vidas;
-    uint16_t ranas;
-    uint16_t tiempo_bits;
-    uint64_t puntos;
-    uint64_t max_puntos;
-    clock_t tiempo_inicial;
-    clock_t tiempo;
-    clock_t tiempo_limite;
-}jugador;
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
 
-void setNombre(char* nombre){
-	strcpy(jugador.nombre, nombre);
-}
-void setPuntos(uint64_t puntos){
-	jugador.puntos = puntos;
-}
+#include "../../game.h"
 
-void setMaxPuntos(uint64_t max){
-	jugador.max_puntos = max;
-}
 
-void setMaxVidas(){
-	jugador.vidas = 0b1111100000000000;
-}
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
 
-void decrementarVida(){
-	jugador.vidas--;
-}
 
-void refrescarJugador(){
-}
 
-void setTiempoInicial(clock_t tiempo){
-	jugador.tiempo_inicial = tiempo;
-}
+/*******************************************************************************
+ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
 
-void setTiempoLimite(clock_t limite){
-	jugador.tiempo_limite = limite;
-}
 
-void setDificultad(int dif){
-    jugador.dificultad = dif;
-}
 
-char* getNombre(){
-	return jugador.nombre;
-}
-uint64_t getPuntos(){
-	return jugador.puntos;
-}
+/*******************************************************************************
+ * VARIABLES WITH GLOBAL SCOPE
+ ******************************************************************************/
 
-uint64_t getMaxPuntos(){
-	return jugador.max_puntos;
-}
+// +ej: unsigned int anio_actual;+
 
-int getVidas(){
-	return jugador.vidas;
-}
 
-clock_t getTiempoInicial(){
-	return jugador.tiempo_inicial;
-}
+/*******************************************************************************
+ * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
+ ******************************************************************************/
 
-clock_t getTiempoLimite(clock_t limite){
-	return jugador.tiempo_limite;
-}
+// +ej: static void falta_envido (int);+
 
-void reiniciarNivel(){
-}
 
-void respawn(){
-}
+/*******************************************************************************
+ * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
 
-void moverAdelante(){
-    jugador.y -=STEP_FRACTION_SIZE;
-}
+// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
 
-void moverAtras(){
-    jugador.y += STEP_FRACTION_SIZE;
-}
 
-void moverIzda(){
-    jugador.x -= STEP_FRACTION_SIZE;
-}
+/*******************************************************************************
+ * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
 
-void moverDcha(){
-    jugador.x += STEP_FRACTION_SIZE;
-}
+// +ej: static int temperaturas_actuales[4];+
 
-void perderVidaChoque(){
-}
 
-void perderVidaAgua(){
-}
+/*******************************************************************************
+ *******************************************************************************
+                        GLOBAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
 
-void perderVidaTimeout(){
-}
 
-void llegada(){
-}
 
-void inicializarJugador()
-{
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
 
-}
+
+
+ 

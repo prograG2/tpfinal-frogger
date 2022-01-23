@@ -1,29 +1,34 @@
-/***************************************************************************//**
-  @file     +Nombre del archivo (ej: template.h)+
-  @brief    +Descripcion del archivo+
-  @author   +Nombre del autor (ej: Salvador Allende)+
- ******************************************************************************/
-//https://stackoverflow.com/questions/3536153/c-dynamically-growing-array
-#ifndef _QUEUE_H_
-#define _QUEUE_H_
+/**
+ * @file menu.h
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
+#ifndef _MENU_H_
+#define _MENU_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+
+
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
+
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef int event_t;
 
-enum textos{JUGAR = 0, DIFICULTAD, RANKING, SALIRTXT, CONTINUAR, REINICIAR, FACIL, NORMAL, DIFICIL};
-enum eventos{NADA = -1, SALIR = 0, CHOCAR = 200, AGUA, TIMEOUT, GAME_OVER, META};
-enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO}; //Se respetan las definiciones de ALLEGRO ¡Chequear si se cambió la versión!
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -39,38 +44,57 @@ enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, 
 /**
  * @brief 
  * 
+ */
+void iniciarMenu();
+
+/**
+ * @brief 
+ * 
+ */
+void destruirMenu();
+
+/**
+ * @brief Set the Menu object
+ * 
+ * @param a 
+ * @param size 
+ */
+void setMenu(int* a, unsigned int size);
+
+/**
+ * @brief Set the Opcion object
+ * 
+ * @param opc 
+ */
+void setOpcion(int opc);
+
+/**
+ * @brief Get the Opcion object
+ * 
  * @return int 
  */
-int queue_init();
+int getOpcion();
 
 /**
  * @brief 
  * 
  */
-void queue_insert(event_t);
+void subirOpcion();
 
 /**
  * @brief 
  * 
- * @return int 
  */
-int queue_empty();
+void bajarOpcion();
 
 /**
  * @brief 
  * 
- * @return event_t 
  */
-event_t queue_next();
+void moverOpcionActual();
 
-/**
- * @brief 
- * 
- * @return int 
- */
-int queue_destroy();
 
 /*******************************************************************************
  ******************************************************************************/
 
-#endif // _QUEUE_H_
+#endif // _MENU_H_

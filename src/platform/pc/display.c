@@ -1,34 +1,100 @@
-#include "display.h"
+/**
+ * @file display.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
-int iniciarDisplay(){
-    al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
-	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
-	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
-	disp = al_create_display(640, 480);
-	must_init(disp, "display");
-	font = al_create_builtin_font();
-	must_init(font, "font");
-    must_init(al_init_primitives_addon(), "primitives");
-    al_register_event_source(al_queue, al_get_display_event_source(disp));
-    al_init_image_addon();
-    
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+
+#include "../../display.h"
+
+
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * VARIABLES WITH GLOBAL SCOPE
+ ******************************************************************************/
+
+// +ej: unsigned int anio_actual;+
+
+
+/*******************************************************************************
+ * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// +ej: static void falta_envido (int);+
+
+
+/*******************************************************************************
+ * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
+
+
+/*******************************************************************************
+ * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        GLOBAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+int iniciarDisplay()
+{
+
 }
 
-void actualizarDisplay(){
-    pthread_mutex_lock(&lock);
-	al_flip_display();
-    pthread_mutex_unlock(&lock);
+void actualizarDisplay()
+{
+
 }
 
 
-void limpiarDisplay(){
-    pthread_mutex_lock(&lock);
-	al_clear_to_color(al_map_rgb(255, 255, 255));
-    pthread_mutex_unlock(&lock);
+void limpiarDisplay()
+{
+	
 }
 
-void mostrarTexto(char* txt, int pos){
-	al_draw_text(font, al_map_rgb(0,0,255), ANCHO/2, pos, ALLEGRO_ALIGN_CENTER, txt);
-    actualizarDisplay();
+void mostrarTexto(char* txt, int pos)
+{
+
 }
+
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+
+
+ 
+
+
+
+
 

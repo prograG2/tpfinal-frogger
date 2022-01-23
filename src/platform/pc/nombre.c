@@ -1,41 +1,75 @@
-#include "nombre.h"
+/**
+ * @file nombre.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
-void nuevoNombre(){
-    index = 0;
-    j = 0;
-    nombre[index] = 'A';
-    nombre[index+1] = '\0';
-}
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
 
-void subirLetra(){
-	if(--nombre[index] < 'A')
-		nombre[index] = 'Z';
-    mostrarTexto(nombre, ALTO/2);
-}
+#include "../../nombre.h"
 
-void bajarLetra(){
-    if(++nombre[index] > 'Z')
-		nombre[index] = 'A';
-    mostrarTexto(nombre, ALTO/2);
-}
 
-void siguienteLetra(){
-    if(index == L_MAX-2)
-		return;
-	index++;
-	nombre[index] = 'A';
-	nombre[index+1] = '\0';
-    mostrarTexto(nombre, ALTO/2);
-}
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
 
-void agregarLetra(){
-    if(index == L_MAX-2)
-		return;
-	char letra[2];
-	letra[0] = (char) last_key;
-	letra[1] = '\0';
-	strcat(nombre, letra);      //cambiar por agregar caracteres al string que vive acá (en fsm.c)
-	index++;
 
-    mostrarTexto(nombre, ALTO/2);
-}
+
+/*******************************************************************************
+ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * VARIABLES WITH GLOBAL SCOPE
+ ******************************************************************************/
+
+// +ej: unsigned int anio_actual;+
+
+
+/*******************************************************************************
+ * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// +ej: static void falta_envido (int);+
+
+
+/*******************************************************************************
+ * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
+
+
+/*******************************************************************************
+ * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
+ ******************************************************************************/
+
+// +ej: static int temperaturas_actuales[4];+
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        GLOBAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+
+
+ 
