@@ -4,12 +4,14 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Directorio de objetos
+OBJ_DIR := ../../../obj
 
 
 # Objetos genericos sin path
-_OBJS	:= display.o game.o input.o menu.o nombre.o 
+_OBJS	:= display_RPI.o game_RPI.o input_RPI.o menu_RPI.o nombre_RPI.o 
 # Objetos especificos sin path
-_OBJS	+= bitmap.o mensajes.o
+_OBJS	+= bitmap_RPI.o mensajes_RPI.o
 # Objetos con path
 OBJS	:= $(patsubst %,$(OBJ_DIR)/%,$(_OBJS))
 
@@ -23,6 +25,9 @@ CFLAGS := -Wall -Wno-unknown-pragmas -O2
 # Comando para borrar
 RM := rm -f
 
+# Crea directorio de objetos
+dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,51 +35,47 @@ RM := rm -f
 
 
 # Regla principal
-all: dirs $(OBJS)
+all: $(OBJS)
 
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/display.o: display.c ../../display.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/display_RPI.o: display.c ../../display.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/game.o: game.c ../../game.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/game_RPI.o: game.c ../../game.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/input.o: input.c ../../input.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/input_RPI.o: input.c ../../input.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/menu.o: menu.c ../../menu.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/menu_RPI.o: menu.c ../../menu.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/nombre.o: nombre.c ../..nombre.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/nombre_RPI.o: nombre.c ../../nombre.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/bitmap.o: bitmap.c bitmap.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/bitmap_RPI.o: bitmap.c bitmap.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/mensajes.o: mensajes.c mensajes.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/mensajes_RPI.o: mensajes.c mensajes.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 #$(OBJ_DIR)/:
-#	$(CC) $(CFLAGS) -c $<
+#	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Crea directorio de objetos, si no esta creado
-dirs:
-	$(MK) $(OBJ_DIR)
-
 # Borra objetos
-clean:
+clean: clean-debug
 	$(RM) $(OBJS)
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,7 +90,7 @@ clean:
 
 
 
-all-debug; $(_OBJS)
+all-debug: $(_OBJS)
 
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,7 +107,7 @@ input.o: input.c ../../input.h
 menu.o: menu.c ../../menu.h
 	$(CC) $(CFLAGS) -c $<
 
-nombre.o: nombre.c ../..nombre.h
+nombre.o: nombre.c ../../nombre.h
 	$(CC) $(CFLAGS) -c $<
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~

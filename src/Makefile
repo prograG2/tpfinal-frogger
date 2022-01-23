@@ -4,10 +4,12 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Directorio de objetos
+OBJ_DIR := ../obj
 
 
 # Objetos sin path
-_OBJS	:= main.o fsm.o queue.o util.o
+_OBJS	:= main.o queue.o fsm.o 
 # Objetos con path
 OBJS	:= $(patsubst %,$(OBJ_DIR)/%,$(_OBJS))
 
@@ -24,7 +26,8 @@ CFLAGS := -Wall -Wno-unknown-pragmas -O2
 # Comando para borrar
 RM := rm -f
 
-
+# Crea directorio de objetos
+dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -36,30 +39,22 @@ all: $(OBJS)
 
 # Objetos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/main.o: main.c fsm.h queue.h global.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/main.o: main.c fsm.h queue.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/fsm.o: fsm.c fsm.h queue.h util.h global.h $(DEPS_GENERIC)
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/queue.o: queue.c queue.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/queue.o: queue.c queue.h global.h
-	$(CC) $(CFLAGS) -c $<
-
-$(OBJ_DIR)/util.o: util.c util.h global.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/fsm.o: fsm.c fsm.h queue.h $(DEPS_GENERIC)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-# Crea directorio de objetos, si no esta creado
-dirs:
-	$(MK) $(OBJ_DIR)
-
 # Borra objetos
-clean:
+clean: clean-debug
 	$(RM) $(OBJS)
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -74,21 +69,18 @@ clean:
 
 
 
-all-debug; $(_OBJS)
+all-debug: $(_OBJS)
 
 
 # Objetos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-main.o: main.c fsm.h queue.h global.h
+main.o: main.c fsm.h queue.h
 	$(CC) $(CFLAGS) -c $<
 
-fsm.o: fsm.c fsm.h queue.h util.h global.h $(DEPS_GENERIC)
+fsm.o: fsm.c fsm.h queue.h $(DEPS_GENERIC)
 	$(CC) $(CFLAGS) -c $<
 
-queue.o: queue.c queue.h global.h
-	$(CC) $(CFLAGS) -c $<
-
-util.o: util.c util.h global.h
+queue.o: queue.c queue.h
 	$(CC) $(CFLAGS) -c $<
 
 # Objetos ~~~~~~~~~~~~~~~~~~~~~~~~~

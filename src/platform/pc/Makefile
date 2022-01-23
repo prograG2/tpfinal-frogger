@@ -4,10 +4,12 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Directorio de objetos
+OBJ_DIR := ../../../obj
 
 
 # Objetos genericos sin path
-_OBJS	:= display.o game.o input.o menu.o nombre.o 
+_OBJS	:= display_PC.o game_PC.o input_PC.o menu_PC.o nombre_PC.o 
 # Objetos especificos sin path
 _OBJS	+= 
 # Objetos con path
@@ -23,6 +25,9 @@ CFLAGS := -Wall -Wno-unknown-pragmas -O2
 # Comando para borrar
 RM := rm -f
 
+# Crea directorio de objetos
+dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,48 +35,44 @@ RM := rm -f
 
 
 # Regla principal
-all: dirs $(OBJS)
+all: $(OBJS)
 
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/display.o: display.c ../../display.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/display_PC.o: display.c ../../display.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/game.o: game.c ../../game.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/game_PC.o: game.c ../../game.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/input.o: input.c ../../input.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/input_PC.o: input.c ../../input.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/menu.o: menu.c ../../menu.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/nombre.o: nombre.c ../..nombre.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/allegro_stuff.o: allegro_stuff.c allegro_stuff.h
-	$(CC) $(CFLAGS) -c $<
+$(OBJ_DIR)/allegro_stuff_PC.o: allegro_stuff.c allegro_stuff.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-#$(OBJ_DIR)/:
-#	$(CC) $(CFLAGS) -c $<
+#$(OBJ_DIR)/_PC.o:
+#	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Crea directorio de objetos, si no esta creado
-dirs:
-	$(MK) $(OBJ_DIR)
-
 # Borra objetos
-clean:
+clean: clean-debug
 	$(RM) $(OBJS)
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,7 +87,7 @@ clean:
 
 
 
-all-debug; $(_OBJS)
+all-debug: $(_OBJS)
 
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -103,7 +104,7 @@ input.o: input.c ../../input.h
 menu.o: menu.c ../../menu.h
 	$(CC) $(CFLAGS) -c $<
 
-nombre.o: nombre.c ../..nombre.h
+nombre.o: nombre.c ../../nombre.h
 	$(CC) $(CFLAGS) -c $<
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~

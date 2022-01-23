@@ -2,7 +2,7 @@
 	-Linkea todos lo objetos con librerias correspondientes	\
 											\
 	'make pc' compila y linkea para PC		\
-	'make rpi' compila y linkea para RPI	
+	'make rpi' compila y linkea para RPI
 
 
 
@@ -28,9 +28,12 @@ SRC_DIR   			:= $(MAKE_DIR)/src
 SRC_PC_DIR			:= $(SRC_DIR)/platform/pc
 SRC_RPI_DIR			:= $(SRC_DIR)/platform/rpi
 
+# Objetos principales (sin path)
+_OBJS = main.o queue.o fsm.o
+OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))
 
-# Objetos con fullpath
-OBJS = $(wildcard $(OBJ_DIR)/*.o)
+# Plataforma a compilar. Se inicializa luego
+PLATFORM = 0
 
 
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,9 +65,13 @@ RM := rm -f
 # Comando para crear directorio si no existe
 MK := mkdir -p
 
+# Crea directorio de objetos y ejecutable
+dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
+dummy_obj_folder := $(shell mkdir -p $(BIN_DIR))
 
-# Se exportan algunas variables para que sean visibles por subshells de otro comandos
-export OBJ_DIR MK
+
+# Se exportan variables para que sean visibles por subshells de otros comandos
+export OBJ_DIR
 
 
 
@@ -72,13 +79,9 @@ export OBJ_DIR MK
 
 
 
-# Regla principal
-all: $(BIN_DIR)/$(EXEC)
-
-
 $(BIN_DIR)/$(EXEC):
-ifdef PLATFORM
-$(BIN_DIR)/$(EXEC): $(OBJS)					
+ifneq ( , $(filter $(PLATFORM),PC RPI))
+$(BIN_DIR)/$(EXEC): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
 else
 	@echo Elija alguna plataforma para compilar: ~make pc~ o ~make rpi~
@@ -86,39 +89,51 @@ endif
 
 
 # Regla para PC
-pc:	PLATFORM = PC
-pc: dirs
+pc:
 	$(MAKE) -C $(SRC_PC_DIR)
-pc: LIBS += LIBS_PC $(BIN_DIR)/$(EXEC)
+	$(eval PLATFORM = PC)
+	$(eval LIBS += $(LIBS_PC))
+	$(eval OBJS += $(wildcard $(OBJ_DIR)/*_$(PLATFORM).o))
+	echo ;
+	echo Echoing objs: $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))$(OBJS)
+	echo ;
+	echo Echoing libs: $(LIBS)
+	echo ;
+	echo Echoing platform: $(PLATFORM)
+	echo ;
+	$(MAKE) -C $(SRC_DIR)
+pc:	$(BIN_DIR)/$(EXEC)
 
 
 # Regla para RPI
-rpi: PLATFORM = RPI
-rpi: dirs
+rpi:
 	$(MAKE) -C $(SRC_RPI_DIR)
-rpi: LIBS += LIBS_RPI $(BIN_DIR)/$(EXEC)
+	$(eval PLATFORM = RPI)
+	$(eval LIBS += $(LIBS_RPI))
+	$(eval OBJS += $(wildcard $(OBJ_DIR)/*_$(PLATFORM).o))
+	echo ;
+	echo Echoing objs: $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))$(OBJS)
+	echo ;
+	echo Echoing libs: $(LIBS)
+	echo ;
+	echo Echoing platform: $(PLATFORM)
+	echo ;
+	$(MAKE) -C $(SRC_DIR)
+rpi: $(BIN_DIR)/$(EXEC)
 
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Crea directorios de ejecutable y objetos si no estan creados
-dirs:
-	$(MK) $(BIN_DIR);	\
-	$(MK) $(OBJ_DIR)	
-
-
 # Borra objetos
 clean:
-	$(RM) $(OBJS);							\
-	$(MAKE) -C $(SRC_DIR) clean;			\
-	$(MAKE) -C $(SRC_PC_DIR) clean;			\
-	$(MAKE) -C $(SRC_PC_DIR) clean-debug;	\
-	$(MAKE) -C $(SRC_RPI_DIR) clean;		\
-	$(MAKE) -C $(SRC_RPI_DIR) clean-debug
+	$(RM) $(OBJS)
+	$(MAKE) -C $(SRC_DIR) clean
+	$(MAKE) -C $(SRC_PC_DIR) clean
+	$(MAKE) -C $(SRC_RPI_DIR) clean
 
 # Borra objetos y ejecutable
 cleaner: clean
 	cd $(BIN_DIR);		\
 	$(RM) *
-	
-# Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~	
+
+# Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
