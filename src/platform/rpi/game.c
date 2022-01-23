@@ -111,9 +111,14 @@ void decrementarVida(){
 	jugador.vidas--;
 }
 
-int refresco_autos = 0;
+void incrementarPuntos(int pt)
+{
+	
+}
 
 void refrescar(){
+	static int refresco_autos;
+
 	refrescarJugador();
 	if(refresco_autos)
 		refrescarAutos();

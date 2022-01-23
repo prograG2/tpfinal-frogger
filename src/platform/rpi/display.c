@@ -94,6 +94,23 @@ void actualizarDisplay()
 
 }
 
+/*
+void escribirRenglonDisplay(Matriz disp, Renglon r, int pos){
+    pthread_mutex_lock(&lock);
+    for(int i=0; i<TAM_RENGLON; i++)
+        disp_matriz[pos+i] = r[i];
+    actualizarDisplay();
+    pthread_mutex_unlock(&lock);
+}
+
+void escribirMatrizDisplay(Matriz m){
+    pthread_mutex_lock(&lock);
+    for(int i=0; i<ALTO; i++)
+        disp_matriz[i] = m[i];
+    actualizarDisplay();
+    pthread_mutex_unlock(&lock);
+}
+*/
 
 void limpiarDisplay()
 {

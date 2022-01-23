@@ -62,16 +62,16 @@ static int index, j, i;
 
 /*******************************************************************************
  *******************************************************************************
-                        GLOBAL FUNCTION DEFINITIONS
+						GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
 void nuevoNombre(){
-    index = 0;
-    j = 0;
-    i = 0;
-    nombre[index] = 'A';
-    nombre[index+1] = '\0';
+	index = 0;
+	j = 0;
+	i = 0;
+	nombre[index] = 'A';
+	nombre[index+1] = '\0';
 }
 
 void subirLetra(){
@@ -96,12 +96,12 @@ void siguienteLetra(){
 	nombre[index+1] = '\0';
   int resto = (CANT_COLUMNAS-j) - 6; //Considero el peor caso para calcular el espacio
   if(resto < 0){
-    renglonShiftIzq(nombreDisp, -resto); //Me corro lo que necesito para que entre la sig letra
-    j = CANT_COLUMNAS - 6;
+	renglonShiftIzq(nombreDisp, -resto); //Me corro lo que necesito para que entre la sig letra
+	j = CANT_COLUMNAS - 6;
   }
   else  
 		j += getLongitud(nombre[index]) + 1;
-    
+	
   reemplazarLetra(nombreDisp, nombre[index], j);
   escribirRenglonDisplay(nombreDisp, POS_MSJ2);
   //printf("%d\n", ++i);
@@ -113,7 +113,7 @@ void agregarLetra(){
 
 /*******************************************************************************
  *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
+						LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 

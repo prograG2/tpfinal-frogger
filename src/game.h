@@ -189,11 +189,19 @@ void reiniciarNivel();
  */
 void decrementarVida();
 
+ 
+/**
+ * @brief 
+ * 
+ * @param pt 
+ */
+void incrementarPuntos(int pt);
+
 /**
  * @brief 
  * 
  */
-void incrementarPuntos(int);
+void refrescar();
 
 /**
  * @brief 
