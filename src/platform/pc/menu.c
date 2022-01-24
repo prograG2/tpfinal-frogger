@@ -15,6 +15,9 @@
 
 #include "../../menu.h"
 
+#include "allegro_stuff.h"
+#include "geometry.h"
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -22,9 +25,26 @@
 
 
 
+
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+
+typedef struct
+{
+	int actual_state;
+	int max_states;
+} window_t;
+
+
+typedef struct
+{
+	window_t window[MAX_MENU_WINDOWS];
+
+	int actual_window;
+
+} menu_t;
+
 
 
 
@@ -39,7 +59,23 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static void falta_envido (int);+
+/**
+ * @brief Inicializa el menu
+ * 
+ */
+static void menu_init(void);
+
+/**
+ * @brief Actualiza el menu
+ * 
+ */
+static void menu_update(void);
+
+/**
+ * @brief Dibuja lelas menu
+ * 
+ */
+static void menu_draw(void);
 
 
 /*******************************************************************************
@@ -53,7 +89,8 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static int temperaturas_actuales[4];+
+//Menu
+static menu_t menu;
 
 
 /*******************************************************************************
@@ -62,6 +99,71 @@
  *******************************************************************************
  ******************************************************************************/
 
+void iniciarMenu(void)
+{
+	menu_init();
+}
+
+void destruirMenu(void)
+{
+
+}
+
+void setMenu(int* a, unsigned int size)
+{
+	switch (a[0])
+	{
+		//menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
+		case JUGAR:
+			menu.actual_window = MENU_WINDOW_HOME;
+			
+			break;
+		
+		//menu dificultades (FACIL, NORMAL, DIFICIL)
+		case FACIL:
+			menu.actual_window = MENU_WINDOW_DIFFICULTY;
+
+			break;
+
+		//menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
+		case CONTINUAR: 
+			menu.actual_window = MENU_WINDOW_PAUSE;
+
+			break;
+		
+		default:
+			break;
+	}
+	
+}
+
+void setOpcion(int opc)
+{
+	//Seleccina uno de los botones del menu actual
+	menu.window[menu.actual_window].actual_state = opc;
+
+	menu_draw();
+}
+
+int getOpcion(void)
+{
+
+}
+
+void subirOpcion(void)
+{
+
+}
+
+void bajarOpcion(void)
+{
+
+}
+
+void moverOpcionActual(void)
+{
+	
+}
 
 
 /*******************************************************************************
@@ -70,6 +172,38 @@
  *******************************************************************************
  ******************************************************************************/
 
+static void menu_init(void)
+{
+	//menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
+	menu.window[MENU_WINDOW_HOME].max_states = 4;
 
+	//menu dificultades (FACIL, NORMAL, DIFICIL)
+	menu.window[MENU_WINDOW_DIFFICULTY].max_states = 3;
+
+	//menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
+	menu.window[MENU_WINDOW_HOME].max_states = 3;
+
+}
+
+static void menu_update()
+{
+	
+}
+
+static void menu_draw()
+{
+	ALLEGRO_BITMAP* background = NULL;
+	ALLEGRO_BITMAP* option = NULL;
+
+	background = sprites.menu[menu.actual_window].background;
+	option = sprites.menu[menu.actual_window].option[menu.window[menu.actual_window].actual_state];
+
+	al_draw_bitmap(background, 0, 0, 0);
+
+	al_draw_bitmap(option, MENU_OPTION_TOPLEFT_X,
+							MENU_OPTION_TOPLEFT_Y + (menu.window[menu.actual_window].actual_state * MENU_OPTION_DELTA_Y),
+							0);
+
+}
 
  

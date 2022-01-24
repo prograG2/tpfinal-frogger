@@ -32,6 +32,9 @@
 #define NO_REPETIR 0
 #define REPETIR 1
 
+#define POS_MSJ1 2
+#define POS_MSJ2 9
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS

@@ -4,16 +4,18 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
 # Directorio de objetos
 OBJ_DIR := ../../../obj
 
 
 # Objetos genericos sin path
-_OBJS	:= display_PC.o game_PC.o input_PC.o menu_PC.o nombre_PC.o 
+_OBJS	:= display.o game.o input.o menu.o nombre.o 
 # Objetos especificos sin path
-_OBJS	+= 
-# Objetos con path
-OBJS	:= $(patsubst %,$(OBJ_DIR)/%,$(_OBJS))
+_OBJS	+= allegro_stuff.o entities.o game_data.o geometry.o
+# Objetos con path y la ID de la plataforma
+OBJS	:= $(patsubst %.o,$(OBJ_DIR)/%_PC.o,$(_OBJS))
 
 
 # Compilador
@@ -40,16 +42,16 @@ all: $(OBJS)
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/display_PC.o: display.c ../../display.h
+$(OBJ_DIR)/display_PC.o: display.c ../../display.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/game_PC.o: game.c ../../game.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/input_PC.o: input.c ../../input.h
+$(OBJ_DIR)/input_PC.o: input.c ../../input.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h
+$(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h allegro_stuff.h geometry.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h
@@ -60,11 +62,18 @@ $(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/allegro_stuff_PC.o: allegro_stuff.c allegro_stuff.h
+
+$(OBJ_DIR)/allegro_stuff_PC.o: allegro_stuff.c allegro_stuff.h entities.h geometry.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-#$(OBJ_DIR)/_PC.o:
-#	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)/entities_PC.o: entities.c entities.h allegro_stuff.h geometry.h game_data.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/game_data_PC.o: game_data.c game_data.h allegro_stuff.h geometry.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/geometry_PC.o: geometry.c geometry.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -92,16 +101,16 @@ all-debug: $(_OBJS)
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-display.o: display.c ../../display.h
+display.o: display.c ../../display.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
 game.o: game.c ../../game.h
 	$(CC) $(CFLAGS) -c $<
 
-input.o: input.c ../../input.h
+input.o: input.c ../../input.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
-menu.o: menu.c ../../menu.h
+menu.o: menu.c ../../menu.h allegro_stuff.h geometry.h
 	$(CC) $(CFLAGS) -c $<
 
 nombre.o: nombre.c ../../nombre.h
@@ -112,11 +121,17 @@ nombre.o: nombre.c ../../nombre.h
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-allegro_stuff.o: allegro_stuff.c allegro_stuff.h
+allegro_stuff.o: allegro_stuff.c allegro_stuff.h entities.h geometry.h
 	$(CC) $(CFLAGS) -c $<
 
-#:
-#	$(CC) $(CFLAGS) -c $<
+entities.o: entities.c entities.h allegro_stuff.h geometry.h game_data.h
+	$(CC) $(CFLAGS) -c $<
+
+game_data.o: game_data.c game_data.h allegro_stuff.h geometry.h
+	$(CC) $(CFLAGS) -c $<
+
+geometry.o: geometry.c geometry.h
+	$(CC) $(CFLAGS) -c $<
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~
 

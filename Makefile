@@ -17,7 +17,7 @@ endif
 
 
 # Directorio root
-MAKE_DIR			:= $(PWD)
+MAKE_DIR			:= .
 
 # Subdirectorios
 BIN_DIR    			:= $(MAKE_DIR)/bin
@@ -110,14 +110,14 @@ build_PC:
 build_RPI:
 	$(MAKE) -C $(SRC_RPI_DIR)
 
-# Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~
+# Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~	
 
-# Solicita ingreso de plataforma
-
+run:
+	cd $(BIN_DIR);	\
+	./$(EXEC)
 
 # Borra objetos
 clean:
-	$(RM) $(OBJS)
 	$(MAKE) -C $(SRC_DIR) clean
 	$(MAKE) -C $(SRC_PC_DIR) clean
 	$(MAKE) -C $(SRC_RPI_DIR) clean

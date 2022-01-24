@@ -4,16 +4,18 @@
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
 # Directorio de objetos
 OBJ_DIR := ../../../obj
 
 
 # Objetos genericos sin path
-_OBJS	:= display_RPI.o game_RPI.o input_RPI.o menu_RPI.o nombre_RPI.o 
+_OBJS	:= display.o game.o input.o menu.o nombre.o 
 # Objetos especificos sin path
-_OBJS	+= bitmap_RPI.o mensajes_RPI.o
-# Objetos con path
-OBJS	:= $(patsubst %,$(OBJ_DIR)/%,$(_OBJS))
+_OBJS	+= bitmap.o mensajes.o
+# Objetos con path y la ID de la plataforma
+OBJS	:= $(patsubst %.o,$(OBJ_DIR)/%_RPI.o,$(_OBJS))
 
 
 # Compilador

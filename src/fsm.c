@@ -50,42 +50,42 @@
  * 
  * @return void* 
  */
-static void *thread_input();
+void* thread_input(void* ptr);
 
 /**
  * @brief 
  * 
  * @return void* 
  */
-static void *thread_display_menu();
+void* thread_display_menu(void* ptr);
 
 /**
  * @brief 
  * 
  * @return void* 
  */
-static void *thread_tiempo();
+void* thread_tiempo(void* ptr);
 
 /**
  * @brief 
  * 
  * @return void* 
  */
-static void *thread_autos();
+void* thread_autos(void* ptr);
 
 /**
  * @brief 
  * 
  * @return void* 
  */
-static void *thread_display_juego();
+void* thread_display_juego(void* ptr);
 
 /**
  * @brief 
  * 
  * @return void* 
  */
-static void *thread_display_ranking();
+void* thread_display_ranking(void* ptr);
 
 /**
  * @brief Rutina que hace nada.
@@ -197,7 +197,7 @@ static void ulltoa(uint64_t num, char* str);
 static STATE* p2CurrentState = NULL;
 
 //threads a implementar
-static pthread_t tinput, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiempo;
+pthread_t tinput, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiempo;
 
 
 #pragma region FSM STATES
@@ -338,9 +338,9 @@ bool inicializarFsm(void)
 	setOpcion(0);
 
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
-	pthread_create(&tinput, NULL, thread_input, NULL);
+	//pthread_create(&tinput, NULL, thread_input, NULL);
 
-	return false;
+	return true;
 }
 
 void fsm(event_t evento_actual)
@@ -370,27 +370,30 @@ void fsm(event_t evento_actual)
  *******************************************************************************
  ******************************************************************************/
 
-static void *thread_input(){
+void* thread_input(void* ptr){
     while(p2CurrentState){
 	    event_t entrada = leerEntradas();
 	    if(entrada != NADA){
 		    queue_insert(entrada);
 		}
     }
+
 	return NULL;
 }
 
-static void *thread_display_menu(){
+void* thread_display_menu(void* ptr){
     while((p2CurrentState == en_menu_ppal) || (p2CurrentState == en_dificultad) || (p2CurrentState == en_pausa) || (p2CurrentState == en_game_over)){
         clock_t meta = clock() + SLEEP_CLOCKS;
         while(clock() < meta);
         moverOpcionActual();
     }
 	queue_insert(CTE_OPCION+getOpcion());
+	printf("testtest");
+
 	return NULL;
 }
 
-static void *thread_tiempo(){
+void *thread_tiempo(void* ptr){
 	clock_t tiempo = getTiempoInicial(), inicio = getTiempoInicial();
 	clock_t limite = getTiempoLimite();
     clock_t ref = clock();
@@ -402,7 +405,7 @@ static void *thread_tiempo(){
 	return NULL;
 }
 
-static void *thread_autos(){
+void *thread_autos(void* ptr){
 	while(p2CurrentState == jugando){
 	clock_t meta = clock() + REFRESH_JUGADOR_CLOCKS;
 	while(clock() < meta);
@@ -412,13 +415,13 @@ static void *thread_autos(){
 	return NULL;
 }
 
-static void *thread_display_juego(){
+void *thread_display_juego(void* ptr){
     while(p2CurrentState == jugando)
 		actualizarInterfaz();
 	return NULL;
 }
 
-static void *thread_display_ranking(){
+void *thread_display_ranking(void* ptr){
 	FILE* pFile;
 	char linea[100];
 	pFile = fopen ("ranking.txt" , "r");

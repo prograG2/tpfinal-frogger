@@ -76,6 +76,8 @@ int main (void)
 	if(!inicializarFsm())
 		return 1;
 	
+	printf("\n ~~~TESTmain~~~ \n");
+
 	while((evento = queue_next()))
 	{
 		if(evento != NADA)

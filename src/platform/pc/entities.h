@@ -1,30 +1,32 @@
 /**
- * @file display.h
+ * @file entities.h
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
- * @date 2022-01-22
+ * @date 2022-01-10
  * 
  * @copyright Copyright (c) 2022
  * 
  */
 
-#ifndef _DISPLAY_H_
-#define _DISPLAY_H_
+#ifndef _ENTITIES_H_
+#define _ENTITIES_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-#include <pthread.h>
-#include "queue.h"
+#include <stdbool.h>
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_MSJ_NOMBRE, POS_MSJ_PASAR, POS_MSJ_PAUSA, POS_MSJ_NEW_HI_SCORE, POS_MSJ_GAME_OVER};
+#define MAX_CARS            10
+#define MAX_LOGS            10
+#define CARS_TYPES          1
+#define MAX_TURTLE_PACKS    4 
 
 
 /*******************************************************************************
@@ -45,51 +47,24 @@ enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief Inicializa las entidades
  * 
- * @return int 
  */
-int iniciarDisplay();
+void entities_init(void);
 
 /**
- * @brief 
+ * @brief Actualiza las entidades
  * 
  */
-void actualizarDisplay();
+void entities_update(void);
 
 /**
- * @brief 
+ * @brief Dibuja las entidades
  * 
  */
-void limpiarDisplay();
-
-/**
- * @brief 
- * 
- * @param txt 
- * @param pos 
- */
-void mostrarTexto(char* txt, int pos);
-
-/**
- * @brief 
- * 
- * @param txt 
- * @param pos 
- */
-void fijarTexto(char* txt, int pos);
-
-/**
- * @brief 
- * 
- * @param posicion 
- * @param nombre 
- * @param puntos 
- */
-void mostrarPosicion(char* posicion, char* nombre, char* puntos);
-
+void entities_draw(void);
 
 /*******************************************************************************
  ******************************************************************************/
 
-#endif // _DISPLAY_H_
+#endif // _ENTITIES_H_

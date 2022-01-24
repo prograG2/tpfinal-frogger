@@ -45,37 +45,37 @@
  * @brief 
  * 
  */
-void nuevoNombre();
+void nuevoNombre(void);
 
 /**
  * @brief 
  * 
  */
-void subirLetra();
+void subirLetra(void);
 
 /**
  * @brief 
  * 
  */
-void bajarLetra();
+void bajarLetra(void);
 
 /**
  * @brief 
  * 
  */
-void siguienteLetra();
+void siguienteLetra(void);
 
 /**
  * @brief 
  * 
  */
-void agregarLetra();
+void agregarLetra(void);
 
 /**
  * @brief 
  * 
  */
-void subirNombre();
+void subirNombre(void);
 
 /*******************************************************************************
  ******************************************************************************/

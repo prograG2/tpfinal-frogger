@@ -47,14 +47,14 @@
  * 
  * @return int 
  */
-int iniciarEntradas();
+int iniciarEntradas(void);
 
 /**
  * @brief 
  * 
  * @return event_t 
  */
-event_t leerEntradas();
+event_t leerEntradas(void);
 
 
 /*******************************************************************************

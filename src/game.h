@@ -105,63 +105,63 @@ void setTiempo(clock_t tiempo);
  * 
  * @return char* 
  */
-char* getNombre();
+char* getNombre(void);
 
 /**
  * @brief Get the Puntos object
  * 
  * @return uint64_t 
  */
-uint64_t getPuntos();
+uint64_t getPuntos(void);
 
 /**
  * @brief Get the Max Puntos object
  * 
  * @return uint64_t 
  */
-uint64_t getMaxPuntos();
+uint64_t getMaxPuntos(void);
 
 /**
  * @brief Get the Vidas object
  * 
  * @return int 
  */
-int getVidas();
+int getVidas(void);
 
 /**
  * @brief Get the Nivel object
  * 
  * @return int 
  */
-int getNivel();
+int getNivel(void);
 
 /**
  * @brief Get the Tiempo Inicial object
  * 
  * @return clock_t 
  */
-clock_t getTiempoInicial();
+clock_t getTiempoInicial(void);
 
 /**
  * @brief Get the Tiempo Limite object
  * 
  * @return clock_t 
  */
-clock_t getTiempoLimite();
+clock_t getTiempoLimite(void);
 
 /**
  * @brief Get the Dificultad object
  * 
  * @return int 
  */
-int getDificultad();
+int getDificultad(void);
 
 /**
  * @brief Get the Agua object
  * 
  * @return int 
  */
-int getAgua();
+int getAgua(void);
 
 
 
@@ -169,25 +169,25 @@ int getAgua();
  * @brief 
  * 
  */
-void inicializarJuego();
+void inicializarJuego(void);
 
 /**
  * @brief 
  * 
  */
-void inicializarNivel();
+void inicializarNivel(void);
 
 /**
  * @brief 
  * 
  */
-void reiniciarNivel();
+void reiniciarNivel(void);
 
 /**
  * @brief 
  * 
  */
-void decrementarVida();
+void decrementarVida(void);
 
  
 /**
@@ -201,91 +201,91 @@ void incrementarPuntos(int pt);
  * @brief 
  * 
  */
-void refrescar();
+void refrescar(void);
 
 /**
  * @brief 
  * 
  */
-void refrescarJugador();
+void refrescarJugador(void);
 
 /**
  * @brief 
  * 
  */
-void refrescarAutos();
+void refrescarAutos(void);
 
 /**
  * @brief 
  * 
  */
-void moverAdelante();
+void moverAdelante(void);
 
 /**
  * @brief 
  * 
  */
-void moverAtras();
+void moverAtras(void);
 
 /**
  * @brief 
  * 
  */
-void moverIzda();
+void moverIzda(void);
 
 /**
  * @brief 
  * 
  */
-void moverDcha();
+void moverDcha(void);
 
 /**
  * @brief 
  * 
  */
-void respawn();
+void respawn(void);
 
 /**
  * @brief 
  * 
  */
-void perderVidaChoque();
+void perderVidaChoque(void);
 
 /**
  * @brief 
  * 
  */
-void perderVidaAgua();
+void perderVidaAgua(void);
 
 /**
  * @brief 
  * 
  */
-void perderVidaTimeout();
+void perderVidaTimeout(void);
 
 /**
  * @brief 
  * 
  */
-void llegada();
+void llegada(void);
 
 /**
  * @brief 
  * 
  */
-void subirNivel();
+void subirNivel(void);
 
 /**
  * @brief 
  * 
  */
-void actualizarInterfaz();
+void actualizarInterfaz(void);
 
 /**
  * @brief 
  * 
  */
-void imprimirMapa();
+void imprimirMapa(void);
 
 
 /*******************************************************************************

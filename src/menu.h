@@ -16,6 +16,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+#include "queue.h"
 
 
 /*******************************************************************************
@@ -45,13 +46,13 @@
  * @brief 
  * 
  */
-void iniciarMenu();
+void iniciarMenu(void);
 
 /**
  * @brief 
  * 
  */
-void destruirMenu();
+void destruirMenu(void);
 
 /**
  * @brief Set the Menu object
@@ -73,25 +74,25 @@ void setOpcion(int opc);
  * 
  * @return int 
  */
-int getOpcion();
+int getOpcion(void);
 
 /**
  * @brief 
  * 
  */
-void subirOpcion();
+void subirOpcion(void);
 
 /**
  * @brief 
  * 
  */
-void bajarOpcion();
+void bajarOpcion(void);
 
 /**
  * @brief 
  * 
  */
-void moverOpcionActual();
+void moverOpcionActual(void);
 
 
 /*******************************************************************************

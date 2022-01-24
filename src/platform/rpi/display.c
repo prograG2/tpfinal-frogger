@@ -46,7 +46,6 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static void fijarTexto(char* txt, int pos);
 
 
 /*******************************************************************************
