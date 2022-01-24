@@ -60,7 +60,7 @@ typedef struct{
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: unsigned int anio_actual;+
+extern Matriz disp_matriz;
 
 
 /*******************************************************************************
@@ -117,7 +117,7 @@ void incrementarPuntos(int pt)
 }
 
 void refrescar(){
-	static int refresco_autos;
+	static int refresco_autos = 0;
 
 	refrescarJugador();
 	if(refresco_autos)
@@ -134,7 +134,7 @@ void refrescarJugador(){
 void refrescarAutos(){
 	int i;
 	for(i=0; i<5; i++){
-		jugador.carril[i] << 1;
+		jugador.carril[i] <<= 1;
         if(jugador.agua){
             if(!(jugador.carril[i] & 0b11111111) && !(rand() % 10))
                 jugador.carril[i] |= 0b11;
@@ -238,7 +238,6 @@ void respawn(){
 
 	for(i=0; i<5; i++){
 		jugador.carril[i] = 0;
-		int max = 2*CANT_COLUMNAS;
 		for(j=0; j<CANT_COLUMNAS;){
 			if(rand() & 1){
 				if(jugador.agua){
@@ -357,13 +356,11 @@ void inicializarJuego()
 }
 
 void actualizarInterfaz(){
-	Matriz m;
-	copiarMatriz(m, jugador.mapa);
-    m[0] = jugador.vidas;
-    m[1] = jugador.tiempo_bits;
-    m[(jugador.posicion_sur)-1] |= jugador.jugador_1;
-    m[jugador.posicion_sur] |= jugador.jugador_2;
-    escribirMatrizDisplay(m);
+    disp_matriz[0] = jugador.vidas;
+    disp_matriz[1] = jugador.tiempo_bits;
+    disp_matriz[(jugador.posicion_sur)-1] |= jugador.jugador_1;
+    disp_matriz[jugador.posicion_sur] |= jugador.jugador_2;
+    actualizarDisplay();
     
     if((jugador.jugador_1 & jugador.mapa[jugador.posicion_sur-1]) | (jugador.jugador_2 & jugador.mapa[jugador.posicion_sur]))
         queue_insert(jugador.agua? AGUA : CHOCAR);

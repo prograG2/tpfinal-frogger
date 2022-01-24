@@ -64,7 +64,7 @@ static pthread_mutex_t lock;
 
 static Matriz disp_matriz;
 
-
+static pthread_t ttexto1, ttexto2;
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
@@ -86,35 +86,19 @@ int iniciarDisplay()
 
 void actualizarDisplay()
 {
+    pthread_mutex_lock(&lock);
 	for(int i = DISP_MIN; i <= (DISP_MAX_Y); i++)
         for(int j = DISP_MIN; j <= (DISP_MAX_X) ; j++)
             disp_write((dcoord_t){j, i}, disp_matriz[i] & (0x8000 >> j));
 
     disp_update();
-
-}
-
-/*
-void escribirRenglonDisplay(Matriz disp, Renglon r, int pos){
-    pthread_mutex_lock(&lock);
-    for(int i=0; i<TAM_RENGLON; i++)
-        disp_matriz[pos+i] = r[i];
-    actualizarDisplay();
     pthread_mutex_unlock(&lock);
 }
-
-void escribirMatrizDisplay(Matriz m){
-    pthread_mutex_lock(&lock);
-    for(int i=0; i<ALTO; i++)
-        disp_matriz[i] = m[i];
-    actualizarDisplay();
-    pthread_mutex_unlock(&lock);
-}
-*/
 
 void limpiarDisplay()
 {
 	pthread_mutex_lock(&lock);
+    //si hay threads activos, detenerlos
     limpiarMatriz(disp_matriz);
     actualizarDisplay();
     pthread_mutex_unlock(&lock);
@@ -127,8 +111,15 @@ void mostrarTexto(char* txt, int pos)
         clock_t meta = clock() + SLEEP_CLOCKS;
         while(clock() < meta);
         moverMensaje(&msj, NO_REPETIR);
-        escribirRenglonDisplay(msj.renglon, pos);
+        copiarMatrizRenglon(disp_matriz, msj.renglon, msj.posicion);
+        actualizarDisplay();
     }
+}
+
+void fijarTexto(char* txt, int pos){
+    mensaje_t msj = mensaje(txt, pos);
+    copiarMatrizRenglon(disp_matriz, msj.renglon, msj.posicion);
+    actualizarDisplay();
 }
 
 void mostrarPosicion(char* posicion, char* nombre, char* puntos){
@@ -145,11 +136,6 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos){
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-
-static void fijarTexto(char* txt, int pos){
-    mensaje_t msj = mensaje(txt, pos);
-    escribirRenglonDisplay(msj.renglon, POS_MSJ1);
-}
 
 
  

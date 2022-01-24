@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #include "rpiconsts.h"
+#include "bitmap.h"
 
 #include <stdint.h>
 
@@ -150,6 +151,15 @@ void renglonDobleShiftIzq(Renglon r1, Renglon r2, unsigned int s);
  * @param r2 
  */
 void copiarRenglon(Renglon r1, Renglon r2);
+
+/**
+ * @brief 
+ * 
+ * @param m
+ * @param r 
+ * @param pos
+ */
+void copiarMatrizRenglon(Matriz m, Renglon r, int pos);
 
 /**
  * @brief 

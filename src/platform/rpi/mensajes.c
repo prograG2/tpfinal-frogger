@@ -14,7 +14,6 @@
  ******************************************************************************/
 
 #include "mensajes.h"
-#include "bitmap.h"
 
 #include <stdio.h>
 
@@ -179,6 +178,11 @@ void copiarRenglon(Renglon r1, Renglon r2){
     for (int i=0; i<TAM_RENGLON; i++){
         r2[i] = r1[i];
     }
+}
+
+void copiarMatrizRenglon(Matriz m, Renglon r, int pos){
+    for(int i=0; i<TAM_RENGLON; i++)
+        m[pos+i] = r[i];
 }
 
 int renglonBool(Renglon r){

@@ -34,7 +34,7 @@
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: unsigned int anio_actual;+
+extern Matriz disp_matriz;
 
 
 /*******************************************************************************
@@ -78,14 +78,16 @@ void subirLetra(){
 	if(--nombre[index] < 'A')
 		nombre[index] = 'Z';
   reemplazarLetra(nombreDisp, nombre[index], j);
-  escribirRenglonDisplay(nombreDisp, POS_MSJ2);
+  copiarMatrizRenglon(disp_matriz, nombreDisp, POS_MSJ2);
+  actualizarDisplay();
 }
 
 void bajarLetra(){
   if(++nombre[index] > 'Z')
 		nombre[index] = 'A';
   reemplazarLetra(nombreDisp, nombre[index], j);
-  escribirRenglonDisplay(nombreDisp, POS_MSJ2);
+  copiarMatrizRenglon(disp_matriz, nombreDisp, POS_MSJ2);
+  actualizarDisplay();
 }
 
 void siguienteLetra(){
@@ -103,7 +105,8 @@ void siguienteLetra(){
 		j += getLongitud(nombre[index]) + 1;
 	
   reemplazarLetra(nombreDisp, nombre[index], j);
-  escribirRenglonDisplay(nombreDisp, POS_MSJ2);
+  copiarMatrizRenglon(disp_matriz, nombreDisp, POS_MSJ2);
+  actualizarDisplay();
   //printf("%d\n", ++i);
 }
 

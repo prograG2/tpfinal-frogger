@@ -44,7 +44,7 @@ typedef struct
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: unsigned int anio_actual;+
+extern Matriz disp_matriz;
 
 
 /*******************************************************************************
@@ -122,7 +122,8 @@ void iniciarMenu(){
 
 void moverOpcionActual(){
     moverMensaje(&menu.textos[menu.menu_actual[menu.opcion_actual]], REPETIR);
-    escribirRenglonDisplay(menu.textos[menu.menu_actual[menu.opcion_actual]].renglon, menu.textos[menu.menu_actual[menu.opcion_actual]].posicion);
+    copiarMatrizRenglon(disp_matriz, menu.textos[menu.menu_actual[menu.opcion_actual]].renglon, menu.textos[menu.menu_actual[menu.opcion_actual]].posicion);
+    actualizarDisplay();
 }
 
 void destruirMenu(){

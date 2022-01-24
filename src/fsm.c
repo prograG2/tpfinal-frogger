@@ -332,6 +332,7 @@ bool inicializarFsm(void)
     iniciarMenu();
     iniciarEntradas();
 
+	fijarTexto("MENU", POS_MSJ_MENU);
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
 	setMenu(menu, 4);
 	setOpcion(0);
@@ -448,10 +449,12 @@ static void do_nothing(void)
 
 
 static void menu_enter(void){
+	limpiarDisplay();
 	pthread_join(tdisplaymenu, NULL);
 }
 
 static void pasar_a_menu_ppal(){
+	fijarTexto("MENU", POS_MSJ_MENU);
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
 	setMenu(menu, 4);
 	setOpcion(0);
@@ -459,6 +462,7 @@ static void pasar_a_menu_ppal(){
 }
 
 static void pasar_a_ranking(){
+	mostrarTexto("RANKING", POS_MSJ_RANKING);
 	pthread_create(&tdisplayranking, NULL, thread_display_ranking, NULL);
 }
 
@@ -485,7 +489,7 @@ static void subir_nivel(){
 	char niv_str[3];
 	ulltoa(getNivel(), niv_str);
 	strcat(pasar_str, niv_str);
-	mostrarTexto(pasar_str, POS_MSJ1);
+	mostrarTexto(pasar_str, POS_MSJ_PASAR);
 }		
 
 static void siguiente_nivel(){
@@ -525,10 +529,11 @@ static void iniciar_juego(void){
 static void pasar_a_nombre(){
 	nuevoNombre();
 	limpiarDisplay();
-	//mostrarTexto("INGRESE NOMBRE", POS_MSJ1);
+	fijarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE);
 }
 
 static void pasar_a_dificultad(){
+	fijarTexto("DIFICULTAD", POS_MSJ_DIFICULTAD);
 	int menu[3] = {FACIL, NORMAL, DIFICIL};
 	setMenu(menu, 3);
 	setOpcion(0);
@@ -550,6 +555,7 @@ static void pausar(void){
 	pthread_join(ttiempo, NULL);
 	pthread_join(tautos, NULL);
 	pthread_join(tdisplayjuego, NULL);
+	fijarTexto("PAUSA", POS_MSJ_PAUSA);
 	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
 	setMenu(menu, 3);
 	setOpcion(0);
@@ -558,6 +564,7 @@ static void pausar(void){
 
 static void continuar(void){
 	pthread_join(tdisplaymenu, NULL);
+	limpiarDisplay();
 	pthread_create(&tdisplayjuego, NULL, thread_display_juego, NULL);
 	pthread_create(&tautos, NULL, thread_autos, NULL);
 	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
@@ -565,6 +572,7 @@ static void continuar(void){
 
 static void salir_al_menu(void){
 	pthread_join(tdisplaymenu, NULL);
+	limpiarDisplay();
 	pasar_a_menu_ppal();
 }
 
@@ -575,7 +583,7 @@ static void game_over(void){
 	pthread_join(tdisplayjuego, NULL);
 	uint64_t jugador_puntos = getPuntos();
 	if(jugador_puntos > getMaxPuntos()){
-		mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ1);
+		mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ_NEW_HI_SCORE);
 		setMaxPuntos(jugador_puntos);
 
 		FILE *pFile1, *pFile2;
@@ -617,6 +625,7 @@ static void game_over(void){
 		remove("ranking.txt");
 		rename("tmp.txt", "ranking.txt");
 	}
+	mostrarTexto("FIN DEL JUEGO", POS_MSJ_GAME_OVER);
 	int menu[2] = {REINICIAR, SALIRTXT};
 	limpiarDisplay();
 	setMenu(menu, 2);
@@ -639,10 +648,10 @@ static void ulltoa(uint64_t num, char* str)
 
     int j = 0;
     char ch;
-    for (; i > j ; i--, j++)
+    while(i > j)
     {
         ch = str[i];
-        str[i] = str[j];
-        str[j] = ch;
+        str[i--] = str[j];
+        str[j++] = ch;
     }
 }
