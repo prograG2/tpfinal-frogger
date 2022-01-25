@@ -32,9 +32,6 @@ SRC_RPI_DIR			:= $(SRC_DIR)/platform/rpi
 _OBJS = main.o queue.o fsm.o
 OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))
 
-# Plataforma a compilar. La inicializa el usuario
-PLATFORM	=
-
 
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 # Librerias genericas
@@ -42,10 +39,10 @@ LIBS		:= -lpthread -lm
 
 # Librerias para PC
 LIBS_PC		:=
-LIBS_PC		+= `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 \
-				allegro_primitives-5 allegro_image-5 allegro_audio-5 \
-				allegro_acodec-5 --libs --cflags`
+LIBS_PC		+= `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 --libs --cflags`
 LIBS_PC 	+= -Llib -lalgif
+
+
 
 # Librerias para RPI
 LIBS_RPI	:=
@@ -56,22 +53,40 @@ LIBS_RPI	+=  -Llib -lrpiutils
 # Compilador
 CC := gcc
 #Flags de compilacion
-CFLAGS := -Wall -Wno-unknown-pragmas -O2
-# Nombre del ejecutable
-EXEC 			:= frogger
+CFLAGS := -Wall -Wno-unknown-pragmas
+#CFLAG_DEBUG := -g
+ifdef CFLAG_DEBUG
+CFLAGS += $(CFLAG_DEBUG)
+endif
+
 
 # Comando para borrar
 RM := rm -f
 # Comando para crear directorio si no existe
 MK := mkdir -p
 
-# Crea directorio de objetos y ejecutable
-dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
-dummy_obj_folder := $(shell mkdir -p $(BIN_DIR))
 
 
 # Se exportan variables para que sean visibles por subshells de otros comandos
-export OBJ_DIR
+export OBJ_DIR CFLAG_DEBUG
+
+
+
+# Plataforma (https://westermarck.com/thoughts/raspberry-pi-linux-32-64/)
+arch		:= ($shell uname -m)
+ifeq ($(arch), armv7l)
+PLATFORM 	= RPI
+TARGET 		= frogger_RPI
+else
+PLATFORM = PC
+TARGET 		= frogger_PC
+endif
+
+
+
+# Crea directorio de objetos y ejecutable
+dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
+dummy_obj_folder := $(shell mkdir -p $(BIN_DIR))
 
 
 
@@ -79,28 +94,25 @@ export OBJ_DIR
 
 
 
-# Si PLATFORM es PC o RPI...
-ifneq ( , $(filter $(PLATFORM),PC RPI))
-$(BIN_DIR)/$(EXEC): build_$(PLATFORM)
-	$(MAKE) -C $(SRC_DIR)
+all: $(BIN_DIR)/$(TARGET)
+
+
+$(BIN_DIR)/$(TARGET): build_MAIN build_$(PLATFORM)
 	$(eval OBJS += $(wildcard $(OBJ_DIR)/*_$(PLATFORM).o))
 	$(eval LIBS += $(LIBS_$(PLATFORM)))
-	echo ;
-	echo Echoing objs: $(OBJS)
-	echo ;
-	echo Echoing libs: $(LIBS)
-	echo ;
-	echo Echoing platform: $(PLATFORM)
-	echo ;
+	@echo ;
+	@echo Echoing objs: $(OBJS)
+	@echo ;
+	@echo Echoing libs: $(LIBS)
+	@echo ;
+	@echo Echoing platform: $(PLATFORM)
+	@echo ;
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
-else
-error_msg: 
-	echo Defina la plataforma:;		\
-	echo make PLATFORM=PC;			\
-	echo ó;							\
-	echo make PLATFORM=RPI
-endif
 
+
+# Regla para modulos principales
+build_MAIN:
+	$(MAKE) -C $(SRC_DIR)
 
 # Regla para PC
 build_PC:
@@ -110,11 +122,13 @@ build_PC:
 build_RPI:
 	$(MAKE) -C $(SRC_RPI_DIR)
 
+
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~	
 
-run:
+# Ejecuta
+run: all
 	cd $(BIN_DIR);	\
-	./$(EXEC)
+	./$(TARGET)
 
 # Borra objetos
 clean:
@@ -124,6 +138,6 @@ clean:
 
 # Borra objetos y ejecutable
 cleaner: clean
-	$(RM) $(BIN_DIR)/$(EXEC)
+	$(RM) $(BIN_DIR)/$(TARGET)
 
 # Otras reglas ~~~~~~~~~~~~~~~~~~~~~~~~

@@ -21,7 +21,10 @@ OBJS	:= $(patsubst %.o,$(OBJ_DIR)/%_PC.o,$(_OBJS))
 # Compilador
 CC := gcc
 #Flags de compilacion
-CFLAGS := -Wall -Wno-unknown-pragmas -O2
+CFLAGS := -Wall -Wno-unknown-pragmas
+ifdef CFLAG_DEBUG
+CFLAGS += $(CFLAG_DEBUG)
+endif
 
 
 # Comando para borrar
@@ -45,7 +48,7 @@ all: $(OBJS)
 $(OBJ_DIR)/display_PC.o: display.c ../../display.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/game_PC.o: game.c ../../game.h
+$(OBJ_DIR)/game_PC.o: game.c ../../game.h allegro_stuff.h entities.h game_data.h 
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/input_PC.o: input.c ../../input.h allegro_stuff.h
@@ -54,7 +57,7 @@ $(OBJ_DIR)/input_PC.o: input.c ../../input.h allegro_stuff.h
 $(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h allegro_stuff.h geometry.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h
+$(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h allegro_stuff.h game_data.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,7 +107,7 @@ all-debug: $(_OBJS)
 display.o: display.c ../../display.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
-game.o: game.c ../../game.h
+game.o: game.c ../../game.h allegro_stuff.h entities.h game_data.h 
 	$(CC) $(CFLAGS) -c $<
 
 input.o: input.c ../../input.h allegro_stuff.h
@@ -113,7 +116,7 @@ input.o: input.c ../../input.h allegro_stuff.h
 menu.o: menu.c ../../menu.h allegro_stuff.h geometry.h
 	$(CC) $(CFLAGS) -c $<
 
-nombre.o: nombre.c ../../nombre.h
+nombre.o: nombre.c ../../nombre.h allegro_stuff.h game_data.h
 	$(CC) $(CFLAGS) -c $<
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~

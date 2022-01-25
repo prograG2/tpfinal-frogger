@@ -20,7 +20,10 @@ DEPS_GENERIC = display.h game.h input.h menu.h nombre.h
 # Compilador
 CC := gcc
 #Flags de compilacion
-CFLAGS := -Wall -Wno-unknown-pragmas -O2
+CFLAGS := -Wall -Wno-unknown-pragmas
+ifdef CFLAG_DEBUG
+CFLAGS += $(CFLAG_DEBUG)
+endif
 
 
 # Comando para borrar
@@ -28,6 +31,8 @@ RM := rm -f
 
 # Crea directorio de objetos
 dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
+
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

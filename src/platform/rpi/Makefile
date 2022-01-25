@@ -21,7 +21,10 @@ OBJS	:= $(patsubst %.o,$(OBJ_DIR)/%_RPI.o,$(_OBJS))
 # Compilador
 CC := gcc
 #Flags de compilacion
-CFLAGS := -Wall -Wno-unknown-pragmas -O2
+CFLAGS := -Wall -Wno-unknown-pragmas
+ifdef CFLAG_DEBUG
+CFLAGS += $(CFLAG_DEBUG)
+endif
 
 
 # Comando para borrar
