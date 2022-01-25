@@ -142,6 +142,12 @@ void allegro_inits(void);
 void allegro_deinits(void);
 
 /**
+ * @brief Reinicializa el display de allegro
+ * 
+ */
+void allegro_reinit_display(void);
+
+/**
  * @brief Espera a que ocurra un evento y lo devuelve
  * 
  * @return ALLEGRO_EVENT_TYPE 

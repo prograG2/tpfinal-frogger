@@ -270,19 +270,12 @@ void allegro_inits(void)
 	allegro_vars.queue = al_create_event_queue();
 	must_init(allegro_vars.queue, "queue");
 
-	//opciones para el display (antialiasing)
-	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
-	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
-	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	
 
 	//Inicializa los spritesheets.
 	sprites_init();
 
-	//creación del display
-	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
-	must_init(allegro_vars.disp, "display");
-	al_set_window_position (allegro_vars.disp, 200, 0);
-	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
+	allegro_reinit_display();
 
 	//para usar la fuente builtin
 	//allegro_vars.font = al_create_builtin_font();
@@ -329,6 +322,23 @@ void allegro_deinits(void)
 	al_destroy_display(allegro_vars.disp);
 	al_destroy_timer(allegro_vars.timer);
 	al_destroy_event_queue(allegro_vars.queue);
+}
+
+void allegro_reinit_display(void)
+{
+	if(allegro_vars.disp != NULL)
+		al_destroy_display(allegro_vars.disp);
+
+	//creación del display
+	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
+	must_init(allegro_vars.disp, "display");
+	al_set_window_position (allegro_vars.disp, 200, 0);
+	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
+	//opciones para el display (antialiasing)
+	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
+	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
+	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	
 }
 
 ALLEGRO_EVENT_TYPE allegro_wait_for_event(void)

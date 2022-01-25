@@ -27,6 +27,8 @@
 
 #include "algif.h"
 
+#include <pthread.h>
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -52,7 +54,7 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static void falta_envido (int);+
+static void *thread0(void *ptr);
 
 
 /*******************************************************************************
@@ -68,6 +70,9 @@
 
 static ALLEGRO_EVENT_TYPE event;
 
+static pthread_t th0;
+
+bool flag_init = true;
 
 /*******************************************************************************
  *******************************************************************************
@@ -87,14 +92,48 @@ int main(void)
     }
     */
     
-    allegro_inits();
-    game_data_init();
-    entities_init();
+	allegro_inits();
+	game_data_init();
+	entities_init();
+	
     //menu_init();
 
-    while(1)    
-    {
+	pthread_create(&th0, NULL, thread0, NULL);
+	
+	while(!allegro_get_var_done())
+	{
+		if(!(game_data_get_frames() % 300))
+		{
+			printf("\ntesda");
+			flag_init = false;
+		}
+			
+	}
+
+    pthread_join(th0, NULL);
+
+    //se destruyen reservas de memoria de allegro
+    allegro_deinits();
+
+    return 0;
+}
+
+/*******************************************************************************
+ *******************************************************************************
+                        LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+static void *thread0(void *ptr)
+{
+	allegro_reinit_display();
+
+
+	while(1)    
+    {	
         event = allegro_wait_for_event();
+
+		
         
         switch(event)
         {
@@ -146,50 +185,30 @@ int main(void)
         //actualiza teclado
         keyboard_update();
 
-        //si se pide renderizar, y la cola de eventos esta vacía, se renderiza
-        if(allegro_get_var_redraw() && allegro_is_event_queue_empty())
-        {
-            //pone todo en negro
+		//al_lock_mutex(allegro_mutex);
+		//pthread_mutex_lock(&allegro_lock);
+		if(allegro_get_var_redraw() && allegro_is_event_queue_empty())
+		{
 			allegro_clear_display();
 
-            
-            //sprite de fondo
-            allegro_draw_background();
-
+			allegro_draw_background();
             //entidades
             entities_draw();
-
             //data
             game_data_draw();
-            
-			/*
-            //sprite de fondo
-            allegro_draw_menu_background();
-
-            //menu
-            menu_draw();
-			*/
 	
-            //carga los cambios anteriores para verlos
+
 			al_flip_display();
 
+			
             //avisa que ya se renderizó
 			allegro_set_var_redraw(false);
-        
-        }
+
+		}
+		//pthread_mutex_unlock(&allegro_lock);
+		//al_unlock_mutex(allegro_mutex);
 
     }
 
-    //se destruyen reservas de memoria de allegro
-    allegro_deinits();
-
-    return 0;
+	return NULL;
 }
-
-/*******************************************************************************
- *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
- *******************************************************************************
- ******************************************************************************/
-
-
