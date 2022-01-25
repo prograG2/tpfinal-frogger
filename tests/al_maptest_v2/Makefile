@@ -9,7 +9,7 @@
 CC := gcc
 
 # Flags de compilacion. Se desactivan warnings de pragmas, por le uso de 'region' y 'endregion' en MVSCode
-CFLAGS := -Wall -Wno-unknown-pragmas -O2
+CFLAGS := -Wall -Wno-unknown-pragmas -O2 -g
 
 # Objetos
 OBJS := main.o allegro_stuff.o entities.o geometry.o game_data.o menu.o
@@ -21,7 +21,7 @@ EXEC := frogger
 ALLEGRO_LINKS := `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 --libs --cflags`
 
 # Otros linkeos (algif)
-EXTRA_LINKS := -lm -L.libalgif.a
+EXTRA_LINKS := -lm -L.libalgif.a -lpthread
 
 # Comando para borrar archivos
 RM := rm -f
