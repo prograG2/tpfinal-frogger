@@ -117,7 +117,7 @@ event_t queue_next()
     event_t r = front->data;
     delete();
     //printQueue();
-    printf("%d\n", r); //para ver el evento que sigue
+    printf("\n%d\n", r); //para ver el evento que sigue
     return r;
   }
 }

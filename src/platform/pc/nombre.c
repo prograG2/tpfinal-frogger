@@ -15,6 +15,11 @@
 
 #include "../../nombre.h"
 
+#include "allegro_stuff.h"
+#include "game_data.h"
+
+#include <string.h>
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -64,7 +69,9 @@
 
 void nuevoNombre(void)
 {
-
+	allegro_clear_display();
+	al_clear_to_color(al_map_rgb(100,1,1));
+	al_flip_display();
 }
 
 void subirLetra(void)
@@ -84,6 +91,15 @@ void siguienteLetra(void)
 
 void agregarLetra(void)
 {
+	int i;
+	for(i = ALLEGRO_KEY_A; i <= ALLEGRO_KEY_Z; i++)
+	{
+		if(check_keyboard_copy(i))
+		{
+			game_data_add_name_letter(i + '@');
+			break;
+		}
+	}
 
 }
 

@@ -15,6 +15,11 @@
 
 #include "../../game.h"
 
+#include "../../queue.h"
+
+#include "game_data.h"
+#include "entities.h"
+#include "allegro_stuff.h"
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -92,9 +97,14 @@ void setTiempoLimite(clock_t limite)
 
 }
 
-void setDificultad(int dif)
+void setDificultad(int diff)
 {
-
+	if(diff == FACIL)
+		game_data_set_diff(DIFFICULTIES_EASY);
+	else if(diff == NORMAL)
+		game_data_set_diff(DIFFICULTIES_NORMAL);
+	else if(diff == DIFICIL)
+		game_data_set_diff(DIFFICULTIES_HARD);
 }
 
 void setTiempo(clock_t tiempo)
@@ -151,6 +161,17 @@ int getAgua(void)
 
 void inicializarJuego(void)
 {
+	game_data_init();
+	entities_init();
+
+	allegro_sound_set_stream_playing();
+	allegro_sound_play_stream();
+
+	allegro_clear_display();
+	al_draw_text(allegro_get_var_font(),
+				al_map_rgb(255,255,255),250,100,0,
+				"INICIANDO JUEGO ALLEGRO");
+	al_flip_display();
 
 }
 
@@ -177,7 +198,8 @@ void incrementarPuntos(int pt)
 
 void refrescar(void)
 {
-
+	game_data_update();
+	entities_update();
 }
 
 void refrescarJugador(void)
@@ -242,6 +264,7 @@ void subirNivel(void)
 
 void actualizarInterfaz(void)
 {
+	entities_update();
 
 }
 

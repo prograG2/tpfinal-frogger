@@ -110,7 +110,7 @@ void siguienteLetra(){
   //printf("%d\n", ++i);
 }
 
-void agregarLetra(){
+void agregarLetra(void){
 }
 
 

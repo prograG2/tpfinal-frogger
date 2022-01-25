@@ -96,17 +96,19 @@ void limpiarDisplay()
 
 void mostrarTexto(char* txt, int pos)
 {
-
+	al_draw_text(allegro_get_var_font(), al_map_rgb(100, 100, 100), 20, 20, 0, txt);
+	al_flip_display();
 }
 
 void fijarTexto(char* txt, int pos)
 {
 	al_draw_text(allegro_get_var_font(), al_map_rgb(100, 100, 100), 20, 20, 0, txt);
+	al_flip_display();
 }
 
 void mostrarPosicion(char* posicion, char* nombre, char* puntos)
 {
-
+	printf("Posicion: %s ~ Nombre: %s ~ Score: %s\n", posicion, nombre, puntos);
 }
 
 

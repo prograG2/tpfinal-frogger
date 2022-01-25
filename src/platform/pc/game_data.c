@@ -46,6 +46,10 @@ typedef struct
 	long frames;
 	int timer_in_sec;
 
+	int difficulty;
+
+	char name[MAX_NAME_CHAR];
+
 	unsigned char flag;
 
 } data_t;
@@ -168,6 +172,23 @@ long game_data_get_frames(void)
 int game_data_get_timer_in_sec(void)
 {
 	return(data.timer_in_sec);
+}
+
+void game_data_set_diff(int diff)
+{
+	data.difficulty = diff;
+	printf("\nDiff: %d\n", data.difficulty);
+}
+
+void game_data_clear_name(void)
+{
+	memset(data.name, 0, MAX_NAME_CHAR);
+}
+
+void game_data_add_name_letter(char letter)
+{
+	strncat(data.name, &letter, 1);
+	printf("\nName: %s\n", data.name);
 }
 
 

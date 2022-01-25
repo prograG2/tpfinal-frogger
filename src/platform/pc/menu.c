@@ -102,11 +102,12 @@ static menu_t menu;
 void iniciarMenu(void)
 {
 	menu_init();
+
 }
 
 void destruirMenu(void)
 {
-
+	allegro_deinits();
 }
 
 void setMenu(int* a, unsigned int size)
@@ -116,6 +117,9 @@ void setMenu(int* a, unsigned int size)
 		//menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
 		case JUGAR:
 			menu.actual_window = MENU_WINDOW_HOME;
+
+			allegro_sound_set_stream_main_menu();
+			allegro_sound_play_stream();
 			
 			break;
 		
@@ -129,11 +133,16 @@ void setMenu(int* a, unsigned int size)
 		case CONTINUAR: 
 			menu.actual_window = MENU_WINDOW_PAUSE;
 
+			allegro_sound_set_stream_pause_menu();
+			allegro_sound_play_stream();
+
 			break;
 		
 		default:
 			break;
 	}
+
+	
 	
 }
 
@@ -147,22 +156,41 @@ void setOpcion(int opc)
 
 int getOpcion(void)
 {
-
+	return(menu.window[menu.actual_window].actual_state);
 }
 
 void subirOpcion(void)
 {
+	int *actual_option = &menu.window[menu.actual_window].actual_state;
 
+	if(*actual_option)
+	{
+		(*actual_option)--;
+
+		allegro_sound_play_effect_click();
+		menu_draw();
+	}
+		
 }
 
 void bajarOpcion(void)
 {
+	int *actual_option = &menu.window[menu.actual_window].actual_state;
+	int *max_option = &menu.window[menu.actual_window].max_states;
+
+	if(*actual_option < (*max_option - 1))
+	{
+		(*actual_option)++;
+
+		allegro_sound_play_effect_click();
+		menu_draw();
+	}
 
 }
 
 void moverOpcionActual(void)
 {
-	
+
 }
 
 
@@ -181,7 +209,7 @@ static void menu_init(void)
 	menu.window[MENU_WINDOW_DIFFICULTY].max_states = 3;
 
 	//menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
-	menu.window[MENU_WINDOW_HOME].max_states = 3;
+	menu.window[MENU_WINDOW_PAUSE].max_states = 3;
 
 }
 
@@ -192,6 +220,8 @@ static void menu_update()
 
 static void menu_draw()
 {
+	allegro_clear_display();
+
 	ALLEGRO_BITMAP* background = NULL;
 	ALLEGRO_BITMAP* option = NULL;
 
@@ -203,6 +233,8 @@ static void menu_draw()
 	al_draw_bitmap(option, MENU_OPTION_TOPLEFT_X,
 							MENU_OPTION_TOPLEFT_Y + (menu.window[menu.actual_window].actual_state * MENU_OPTION_DELTA_Y),
 							0);
+
+	al_flip_display();
 
 }
 

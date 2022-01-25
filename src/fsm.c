@@ -338,7 +338,7 @@ bool inicializarFsm(void)
 	setOpcion(0);
 
 	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
-	//pthread_create(&tinput, NULL, thread_input, NULL);
+	pthread_create(&tinput, NULL, thread_input, NULL);
 
 	return true;
 }
@@ -388,7 +388,6 @@ void* thread_display_menu(void* ptr){
         moverOpcionActual();
     }
 	queue_insert(CTE_OPCION+getOpcion());
-	printf("testtest");
 
 	return NULL;
 }
@@ -435,7 +434,7 @@ void *thread_display_ranking(void* ptr){
 	while(fgets(linea, 100, pFile) != NULL){
 		char* pch = strtok(linea," ");
 		nombre = pch;
-		ulltoa(puesto_int, puesto);
+		ulltoa(puesto_int++, puesto);
 		pch = strtok(NULL, " ");
 		puntos = pch;
 		mostrarPosicion(puesto, nombre, puntos);
@@ -466,13 +465,22 @@ static void pasar_a_menu_ppal(){
 
 static void pasar_a_ranking(){
 	mostrarTexto("RANKING", POS_MSJ_RANKING);
+
+	//crea el archivo, si no lo estaba
+	FILE* pFile;
+	pFile = fopen ("ranking.txt" , "a");
+	if (pFile == NULL){
+		perror ("Error creanto archivo de ranking");
+	}
+	fclose (pFile);
+
 	pthread_create(&tdisplayranking, NULL, thread_display_ranking, NULL);
 }
 
 static void salir_del_juego(){
-	destruirMenu();
 	pthread_join(tinput, NULL);
 	pthread_join(tdisplaymenu, NULL);
+	destruirMenu();
 	limpiarDisplay();
 	queue_insert(SALIR);
 }

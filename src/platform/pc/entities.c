@@ -340,22 +340,22 @@ static void frog_update(void)
 
 	if(!frog.moving)
 	{
-		if(keyboard_check_key(ALLEGRO_KEY_LEFT) == KEY_JUST_PRESSED)
+		if(check_keyboard_copy(ALLEGRO_KEY_LEFT))
 		{
 			frog.facing = LEFT;
 			frog.moving = true;
 		}
-		else if(keyboard_check_key(ALLEGRO_KEY_RIGHT) == KEY_JUST_PRESSED)
+		else if(check_keyboard_copy(ALLEGRO_KEY_RIGHT))
 		{
 			frog.facing = RIGHT;
 			frog.moving = true;
 		}
-		else if(keyboard_check_key(ALLEGRO_KEY_UP) == KEY_JUST_PRESSED)
+		else if(check_keyboard_copy(ALLEGRO_KEY_UP))
 		{
 			frog.facing = UP;
 			frog.moving = true;
 		}
-		else if(keyboard_check_key(ALLEGRO_KEY_DOWN) == KEY_JUST_PRESSED)
+		else if(check_keyboard_copy(ALLEGRO_KEY_DOWN))
 		{
 			frog.facing = DOWN;
 			frog.moving = true;

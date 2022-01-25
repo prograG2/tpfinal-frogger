@@ -55,7 +55,7 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static ALLEGRO_EVENT event;
+static ALLEGRO_EVENT_TYPE event;
 
 
 /*******************************************************************************
@@ -71,88 +71,87 @@ int iniciarEntradas(void)
 
 event_t leerEntradas(void)
 {
-	event_t retorno;
-	bool queue_no_empty;
+	event_t retorno = NO_MOVER;
+	//bool queue_no_empty;
 
-	queue_no_empty = al_get_next_event(allegro_get_event_queue(), &event);
-	/*if(queue_no_empty)
+	event = allegro_get_next_event();
+
+	if(event)
 	{
-		allegro_set_var_event(event);
+		switch (event)
+		{
+			
+			default:
+				break;
+		}
 
-		
-		switch(event.type)
-        {
-            case ALLEGRO_EVENT_TIMER:
-                
-                //si es 'escape', avisa para cerrar la ventana
-                if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
-                    allegro_set_var_done(true);     
-                
-                if(CHECK_KEY(ALLEGRO_KEY_T))
-				{
-					allegro_sound_set_stream_main_menu();
-					allegro_sound_play_stream();
-				}
-				
-                //avisa que hay que renderizar
-                allegro_set_var_redraw(true);
-
-                break;
-
-            //se apretó la "x" de la ventana
-            case ALLEGRO_EVENT_DISPLAY_CLOSE:
-
-                allegro_set_var_done(true);
-                
-                break;
-
-            default:
-
-                break;
-
-        }
-		
-
+		//actualiza teclado
 		keyboard_update();
-		
-	}*/
 
-	allegro_set_var_event(event);
-	keyboard_update();
-		
+		if(CHECK_KEY(ALLEGRO_KEY_T))
+			allegro_sound_toggle_stream();
+			
+		if(CHECK_KEY(ALLEGRO_KEY_1))
+			allegro_sound_set_stream_credits();	
+		if(CHECK_KEY(ALLEGRO_KEY_2))
+			allegro_sound_set_stream_main_menu();
+		if(CHECK_KEY(ALLEGRO_KEY_3))
+			allegro_sound_set_stream_pause_menu();
+		if(CHECK_KEY(ALLEGRO_KEY_4))
+			allegro_sound_set_stream_playing();
+		if(CHECK_KEY(ALLEGRO_KEY_5))
+			allegro_sound_set_stream_rick();
+
 	
+		
+		//si se pide renderizar, y la cola de eventos esta vacía, se renderiza
+		/*if(allegro_get_var_redraw() && allegro_is_event_queue_empty())
+		{
+			printf("redrawing");
+			//allegro_clear_display();
 
-	if(allegro_get_var_redraw())
-	{
-		//pone todo en negro
-		allegro_clear_display();
+			//al_clear_to_color(al_map_rgb(100,100,100));
+			
+			//carga los cambios anteriores para verlos
+			al_flip_display();
 
-		//carga los cambios anteriores para verlos
-		al_flip_display();
+			//avisa que ya se renderizó
+			allegro_set_var_redraw(false);
+		
+		}*/
+		
 
-		//avisa que ya se renderizó
-		allegro_set_var_redraw(false);
+		//NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO
+
+		if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
+			retorno = ESC;
+		else if(CHECK_KEY(ALLEGRO_KEY_ENTER))
+			retorno = ENTER;
+		else if(CHECK_KEY(ALLEGRO_KEY_LEFT))
+			retorno = IZDA;
+		else if(CHECK_KEY(ALLEGRO_KEY_RIGHT))
+			retorno = DCHA;
+		else if(CHECK_KEY(ALLEGRO_KEY_UP))
+			retorno = ARRIBA;
+		else if(CHECK_KEY(ALLEGRO_KEY_DOWN))
+			retorno = ABAJO;
+		else if(CHECK_KEY(ALLEGRO_KEY_BACKSPACE))
+			retorno = BORRAR;
+
+		int i;
+		for(i = ALLEGRO_KEY_A; i <= ALLEGRO_KEY_Z; i++)
+		{
+			if(CHECK_KEY(i))
+			{
+				retorno = i;
+					save_keyboard_state();
+
+				break;
+			}
+		}
+		
 	}
-
-	//NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO
-
-	if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
-		retorno = ESC;
-	else if(CHECK_KEY(ALLEGRO_KEY_ENTER))
-		retorno = ENTER;
-	else if(CHECK_KEY(ALLEGRO_KEY_LEFT))
-		retorno = IZDA;
-	else if(CHECK_KEY(ALLEGRO_KEY_RIGHT))
-		retorno = DCHA;
-	else if(CHECK_KEY(ALLEGRO_KEY_UP))
-		retorno = ARRIBA;
-	else if(CHECK_KEY(ALLEGRO_KEY_DOWN))
-		retorno = ABAJO;
-	else if(CHECK_KEY(ALLEGRO_KEY_BACKSPACE))
-		retorno = BORRAR;
-	else
-		retorno = NO_MOVER;
-
+	
 	return retorno;
 }
 

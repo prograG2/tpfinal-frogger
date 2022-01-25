@@ -75,8 +75,6 @@ int main (void)
 
 	if(!inicializarFsm())
 		return 1;
-	
-	printf("\n ~~~TESTmain~~~ \n");
 
 	while((evento = queue_next()))
 	{
@@ -86,7 +84,7 @@ int main (void)
 		}
 	}
 
-	//printf("%s\n", "Saliendo...");
+	printf("\nSaliendo...\n");
 
 	return 0;
 }

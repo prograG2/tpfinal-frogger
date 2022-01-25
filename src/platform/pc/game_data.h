@@ -21,12 +21,20 @@
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
+#define MAX_NAME_CHAR		20
 
 #define MAX_LIVES           3
 
 #define SCORE_PER_GOAL		500		//puntaje por llegar a la meta
 #define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
 #define SCORE_PER_RUN		1000	//puntaje por completar una run
+
+enum DIFFICULTIES
+{
+	DIFFICULTIES_EASY = 1,
+	DIFFICULTIES_NORMAL,
+	DIFFICULTIES_HARD
+};
 
 
 /*******************************************************************************
@@ -125,7 +133,25 @@ long game_data_get_frames(void);
  */
 int game_data_get_timer_in_sec(void);
 
+/**
+ * @brief Setea dificultad 
+ * 
+ * @param diff enum DIFFICULTIES
+ */
+void game_data_set_diff(int diff);
 
+/**
+ * @brief Limpia el nombre del jugador
+ * 
+ */
+void game_data_clear_name(void);
+
+/**
+ * @brief Agrega una letra la nombre del jugador
+ * 
+ * @param letter Letra
+ */
+void game_data_add_name_letter(char letter);
 
 
 /*******************************************************************************
