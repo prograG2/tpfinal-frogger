@@ -37,6 +37,7 @@
 #define FPS 60
 
 #define CHECK_KEY(key) (keyboard_check_key(key) == KEY_JUST_PRESSED)
+//#define CHECK_KEY(key)	(keyboard_check_key(key))
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -107,6 +108,7 @@ typedef struct
 //estructura con punteros a sprites
 extern sprites_t sprites;
 
+
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
@@ -124,6 +126,21 @@ void must_init(bool test, const char *description);
  * 
  */
 void keyboard_update(void);
+
+/**
+ * @brief Guarda el estado del teclado en el momento de la invocacion
+ * 
+ */
+void save_keyboard_state(void);
+
+/**
+ * @brief Verifica si se presionó una tecla, consultando en la copia del teclado
+ * 
+ * @param allegro_key_code Tecla a consultar
+ * @return true 
+ * @return false 
+ */
+bool check_keyboard_copy(unsigned char allegro_key_code);
 
 /**
  * @brief Verifica el estado de una tecla
@@ -158,6 +175,13 @@ void allegro_deinits(void);
  * @return ALLEGRO_EVENT_TYPE 
  */
 ALLEGRO_EVENT_TYPE allegro_wait_for_event(void);
+
+/**
+ * @brief Devuelve el proximo evento de la cola, si es que existe. De no haber, devuele false.
+ * 
+ * @return ALLEGRO_EVENT_TYPE 
+ */
+ALLEGRO_EVENT_TYPE allegro_get_next_event(void);
 
 /**
  * @brief Devuelve el evento de allegro

@@ -32,16 +32,37 @@
 #define SOUND_STREAM_FILE_PLAYING	"playing_theme"
 #define SOUND_STREAM_FILE_RICK		"rick"
 
+//Nombres de los sprites
+#define SPRITE_HEART				"minecraft_heart"
+#define SPRITE_BACKGROUND			"sprite_background"
+#define SPRITE_CAR_0				"sprite_car_0"
+#define SPRITE_FLY					"sprite_fly"
+#define SPRITE_FROG					"sprite_frog"
+#define SPRITE_LOG					"sprite_log"
+#define SPRITE_TURTLES				"sprite_turtles"
+#define SPRITE_MENU_HOME_BACK		"sprite_menu_home_background"
+#define SPRITE_MENU_HOME			"sprite_menu_home"
+#define SPRITE_MENU_DIFF_BACK		"sprite_menu_home_background"
+#define SPRITE_MENU_DIFF			"sprite_menu_home"
+#define SPRITE_MENU_PAUSE_BACK		"sprite_menu_home_background"
+#define SPRITE_MENU_PAUSE			"sprite_menu_home"
+//#define SPRITE_MENU_DIFF_BACK		"sprite_menu_diff_background"
+//#define SPRITE_MENU_DIFF			"sprite_menu_diff"
+//#define SPRITE_MENU_PAUSE_BACK	"sprite_menu_pause_background"
+//#define SPRITE_MENU_PAUSE			"sprite_menu_pause"
+
 //Extensiones
 #define EXTENSION_SOUND_SAMPLE		".wav"
 #define EXTENSION_SOUND_STREAM		".opus"
+#define EXTENSION_SPRITES			".png"
 
 //Local paths
-#define PATH_SOUND_STREAMS			"media/sounds/streams/"
-#define PATH_SOUND_SAMPLES			"media/sounds/samples/"
+#define PATH_SOUND_STREAMS			"../res/sounds/streams/"
+#define PATH_SOUND_SAMPLES			"../res/sounds/samples/"
+#define PATH_FONTS					"../res/fonts/"
+#define PATH_SPRITES				"../res/sprites/"
+#define PATH_GIFS					"../res/gifs/"
 
-//Tamaño de array temporal para formar un path completo
-#define PATH_ARRAY_SIZE				60
 
 
 /*******************************************************************************
@@ -133,6 +154,23 @@ static ALLEGRO_BITMAP* sprite_cut(ALLEGRO_BITMAP* source_bmp, int x, int y, int 
 static void sprites_init(void);
 
 /**
+ * @brief Devuelve puntero a string con el path de un sprite dado
+ * 
+ * @param file_name Nombre el sprite, sin extension
+ * @return char* Puntero al path
+ */
+
+/**
+ * @brief Devuelve puntero a string con el path de un sprite dado.
+ * Permite destruir un string creado con la misma funcion
+ * 
+ * @param file_name Nombre del sprite, sin extension
+ * @param prev_str String previamente creado, de ser necesario.
+ * @return char* Puntero al path nuevo
+ */
+static char *make_sprite_path(char * file_name, char* prev_str);
+
+/**
  * @brief Destruye los sprites a usar
  *
  */
@@ -193,6 +231,8 @@ static allegro_t allegro_vars;
 //arreglo para registrar el estado de cada tecla
 static unsigned char key[ALLEGRO_KEY_MAX];
 
+static ALLEGRO_KEYBOARD_STATE key_state;
+
 //variable con los sonidos/musicas del juego
 static sounds_t sounds;
 
@@ -236,6 +276,16 @@ void keyboard_update(void)
 			break;
 	}
 
+}
+
+void save_keyboard_state(void)
+{
+	al_get_keyboard_state(&key_state);
+}
+
+bool check_keyboard_copy(unsigned char allegro_key_code)
+{
+	return(al_key_down(&key_state, allegro_key_code));
 }
 
 unsigned char keyboard_check_key(unsigned char allegro_key_code)
@@ -286,10 +336,11 @@ void allegro_inits(void)
 	al_set_window_position (allegro_vars.disp, 200, 0);
 	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
 
+	char string[60] = PATH_FONTS;
+	strcat(string, "ProFontWindows.ttf");
 	//para usar la fuente builtin
 	//allegro_vars.font = al_create_builtin_font();
-	//allegro_vars.font = al_load_font("media/RobotoRegular.ttf", 20, 0);
-	allegro_vars.font = al_load_font("media/fonts/ProFontWindows.ttf", FONT_HEIGHT, 0);
+	allegro_vars.font = al_load_font(string, FONT_HEIGHT, 0);
 	must_init(allegro_vars.font, "font");
 	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
 	allegro_vars.font_w = al_get_text_width(allegro_vars.font, "a");
@@ -306,7 +357,7 @@ void allegro_inits(void)
 	//flag para salir el programa
 	allegro_vars.done = false;
 	//flag para renderizar
-	allegro_vars.redraw = true;
+	allegro_vars.redraw = false;
 
 	//inicializa teclado
 	keyboard_init();
@@ -338,6 +389,16 @@ ALLEGRO_EVENT_TYPE allegro_wait_for_event(void)
 	al_wait_for_event(allegro_vars.queue, &allegro_vars.event);
 
 	return(allegro_vars.event.type);
+}
+
+ALLEGRO_EVENT_TYPE allegro_get_next_event(void)
+{
+	bool flag = al_get_next_event(allegro_vars.queue, &allegro_vars.event);
+
+	if(flag)
+		return (allegro_vars.event.type);
+	else
+		return false;
 }
 
 ALLEGRO_EVENT allegro_get_var_event(void)
@@ -415,32 +476,83 @@ void allegro_set_var_event(ALLEGRO_EVENT event)
 #pragma region allegro_sound_set_stream
 void allegro_sound_set_stream_credits(void)
 {
-	must_init(init_audio_stream(SOUND_STREAM_FILE_CREDITS, 1.0),
+	char file[] = SOUND_STREAM_FILE_CREDITS;
+
+	//si ya estaba inicializado...
+	if(strcmp(file, last_init_stream) == 0)
+	{
+		allegro_sound_pause_stream();
+	}
+	else
+	{
+		must_init(init_audio_stream(file, 1.0),
 			"credtis stream");
+	}
+	
 }
 
 void allegro_sound_set_stream_main_menu(void)
 {
-	must_init(init_audio_stream(SOUND_STREAM_FILE_MAIN, 1.0),
-			"main_menu stream");
+	char file[] = SOUND_STREAM_FILE_MAIN;
+
+	//si ya estaba inicializado...
+	if(strcmp(file, last_init_stream) == 0)
+	{
+		allegro_sound_pause_stream();
+	}
+	else
+	{
+		must_init(init_audio_stream(file, 1.0),
+			"credtis stream");
+	}
 }
 
 void allegro_sound_set_stream_pause_menu(void)
 {
-	must_init(init_audio_stream(SOUND_STREAM_FILE_PAUSE, 1.0),
-			"pause_menu stream");
+	char file[] = SOUND_STREAM_FILE_PAUSE;
+
+	//si ya estaba inicializado...
+	if(strcmp(file, last_init_stream) == 0)
+	{
+		allegro_sound_pause_stream();
+	}
+	else
+	{
+		must_init(init_audio_stream(file, 1.0),
+			"credtis stream");
+	}
 }
 
 void allegro_sound_set_stream_playing(void)
 {
-	must_init(init_audio_stream(SOUND_STREAM_FILE_PLAYING, 1.0),
-			"playing stream");
+	char file[] = SOUND_STREAM_FILE_PLAYING;
+
+	//si ya estaba inicializado...
+	if(strcmp(file, last_init_stream) == 0)
+	{
+		allegro_sound_pause_stream();
+	}
+	else
+	{
+		must_init(init_audio_stream(file, 1.0),
+			"credtis stream");
+	}
 }
 
 void allegro_sound_set_stream_rick(void)
 {
-	must_init(init_audio_stream(SOUND_STREAM_FILE_RICK, 1.0),
-			"rick stream");
+	char file[] = SOUND_STREAM_FILE_RICK;
+
+	//si ya estaba inicializado...
+	if(strcmp(file, last_init_stream) == 0)
+	{
+		allegro_sound_pause_stream();
+	}
+	else
+	{
+		must_init(init_audio_stream(file, 1.0),
+			"credtis stream");
+	}
 }
 
 #pragma endregion allegro_sound_set_stream
@@ -565,8 +677,11 @@ static void sprites_init(void)
 	pair_xy_t temp_xy;
 	int temp_w, temp_h;
 
+	char *path = NULL;
+
 	//de la rana completo
-	sprites.frog_uncut = al_load_bitmap("media/sprites/sprite_frog.png");
+	path = make_sprite_path(SPRITE_FROG, NULL);
+	sprites.frog_uncut = al_load_bitmap(path);
 
 
 	//se particiona el de la rana en sus 8 partes
@@ -594,20 +709,24 @@ static void sprites_init(void)
 	}
 
 	//el del fondo
-	sprites.background = al_load_bitmap("media/sprites/sprite_background.png");
+	path = make_sprite_path(SPRITE_BACKGROUND, path);
+	sprites.background = al_load_bitmap(path);
 
 	//el de los troncos
-	sprites.log = al_load_bitmap("media/sprites/sprite_log.png");
+	path = make_sprite_path(SPRITE_LOG, path);
+	sprites.log = al_load_bitmap(path);
 
 	/*
 	for(i = 0; i < CARS_TYPES; i++)
 		sprites.car[i] = al_load_bitmap("sprite_car_0.png");
 	*/
 	//de los autos
-	sprites.car[0] = al_load_bitmap("media/sprites/sprite_car_0.png");
+	path = make_sprite_path(SPRITE_CAR_0, path);
+	sprites.car[0] = al_load_bitmap(path);
 
 	//el de las tortugas sin recortar
-	sprites.turtle_uncut = al_load_bitmap("media/sprites/sprite_turtles.png");
+	path = make_sprite_path(SPRITE_TURTLES, path);
+	sprites.turtle_uncut = al_load_bitmap(path);
 
 	//se recortan los de la tortuga en sus 11 partes
 	for(i = 0; i < TURTLE_FRAMES; i++)
@@ -626,21 +745,22 @@ static void sprites_init(void)
 	}
 
 	//el de la mosca
-	sprites.fly = al_load_bitmap("media/sprites/sprite_fly.png");
+	path = make_sprite_path(SPRITE_FLY, path);
+	sprites.fly = al_load_bitmap(path);
 
 	//corazon
-	sprites.heart = al_load_bitmap("media/sprites/minecraft_heart.png");
+	path = make_sprite_path(SPRITE_HEART, path);
+	sprites.heart = al_load_bitmap(path);
 
 	
 
-	
+	//fondo de menu		
+	path = make_sprite_path(SPRITE_MENU_HOME_BACK, path);											
+	sprites.menu[MENU_WINDOW_HOME].background = al_load_bitmap(path);
 
-#pragma region sprites_menu
-	//fondo de menu															//sprite_menu_home_background.png
-	sprites.menu[MENU_WINDOW_HOME].background = al_load_bitmap("media/sprites/sprite_menu_background.png");
 	//botones con highlight, sin recortar
-	sprites.menu[MENU_WINDOW_HOME].uncut = al_load_bitmap("media/sprites/sprite_menu.png");
-															//sprite_menu_home.png	
+	path = make_sprite_path(SPRITE_MENU_HOME, path);
+	sprites.menu[MENU_WINDOW_HOME].uncut = al_load_bitmap(path);	
 	
 	//se recortan los highlight
 	for(i = 0, offset = 0; i < MAX_MENU_STATES; i++, offset += MENU_OPTION_DELTA_Y)
@@ -652,13 +772,13 @@ static void sprites_init(void)
 													MENU_OPTION_H);
 	}
 
-	//fondo de menu															//sprite_menu_diff_background.png
-	sprites.menu[MENU_WINDOW_DIFFICULTY].background = al_load_bitmap("media/sprites/sprite_menu_background.png");
-	//botones con highlight, sin recortar
-	sprites.menu[MENU_WINDOW_DIFFICULTY].uncut = al_load_bitmap("media/sprites/sprite_menu.png");
-															//sprite_menu_diff.png	
+
+	path = make_sprite_path(SPRITE_MENU_DIFF_BACK, path);
+	sprites.menu[MENU_WINDOW_DIFFICULTY].background = al_load_bitmap(path);
+
+	path = make_sprite_path(SPRITE_MENU_DIFF, path);
+	sprites.menu[MENU_WINDOW_DIFFICULTY].uncut = al_load_bitmap(path);
 	
-	//se recortan los highlight
 	for(i = 0, offset = 0; i < MAX_MENU_STATES; i++, offset += MENU_OPTION_DELTA_Y)
 	{
 		sprites.menu[MENU_WINDOW_DIFFICULTY].option[i] = sprite_cut(sprites.menu[MENU_WINDOW_DIFFICULTY].uncut, 
@@ -668,13 +788,13 @@ static void sprites_init(void)
 													MENU_OPTION_H);
 	}
 
-	//fondo de menu															//sprite_menu_pause_background.png
-	sprites.menu[MENU_WINDOW_PAUSE].background = al_load_bitmap("media/sprites/sprite_menu_background.png");
-	//botones con highlight, sin recortar
-	sprites.menu[MENU_WINDOW_PAUSE].uncut = al_load_bitmap("media/sprites/sprite_menu.png");
-															//sprite_menu_pause.png	
+
+	path = make_sprite_path(SPRITE_MENU_PAUSE_BACK, path);
+	sprites.menu[MENU_WINDOW_PAUSE].background = al_load_bitmap(path);
+
+	path = make_sprite_path(SPRITE_MENU_PAUSE, path);
+	sprites.menu[MENU_WINDOW_PAUSE].uncut = al_load_bitmap(path);
 	
-	//se recortan los highlight
 	for(i = 0, offset = 0; i < MAX_MENU_STATES; i++, offset += MENU_OPTION_DELTA_Y)
 	{
 		sprites.menu[MENU_WINDOW_PAUSE].option[i] = sprite_cut(sprites.menu[MENU_WINDOW_PAUSE].uncut, 
@@ -683,10 +803,30 @@ static void sprites_init(void)
 													MENU_OPTION_W, 
 													MENU_OPTION_H);
 	}
-#pragma endregion sprites_menu	
 
 
+	free(path);
+}
 
+static char *make_sprite_path(char * file_name, char* prev_str)
+{
+	if(prev_str != NULL)
+		free(prev_str);
+
+	char *path = NULL;
+
+	int str_size = sizeof(PATH_SPRITES) + strlen(file_name) + sizeof(EXTENSION_SPRITES) + 1;
+
+	path = malloc(str_size);
+	must_init(path, file_name);
+
+	memset(path, 0, str_size);
+
+	strcat(path, PATH_SPRITES);
+	strcat(path, file_name);
+	strcat(path, EXTENSION_SPRITES);
+
+	return path;
 }
 
 static void sprites_deinit(void)
@@ -790,7 +930,8 @@ static bool init_audio_stream(const char *file, float gain)
 	ALLEGRO_AUDIO_STREAM** pt = &sounds.stream;
 	unsigned char* state = &sounds.stream_state;
 
-	char path[PATH_ARRAY_SIZE] = PATH_SOUND_STREAMS;
+	int str_size = sizeof(PATH_SOUND_STREAMS) + strlen(file) + sizeof(EXTENSION_SOUND_STREAM) + 1;
+	char *path = NULL;
 
 	//analisis de reproduccion y carga de stream "para que no explote todo"
 	switch (*state)
@@ -807,6 +948,10 @@ static bool init_audio_stream(const char *file, float gain)
 	
 		case SOUND_STREAM_STATE_NO_INIT:
 			//armado del path del archivo
+			path = malloc(str_size);
+			must_init(path, file);
+			memset(path, 0, str_size);
+			strcat(path, PATH_SOUND_STREAMS);
 			strcat(path, file);
 			strcat(path, EXTENSION_SOUND_STREAM);
 
@@ -814,6 +959,8 @@ static bool init_audio_stream(const char *file, float gain)
 			*pt = al_load_audio_stream(path, 2, 2048);
 			if(*pt == NULL)
 				return false;
+
+			free(path);
 
 			//modo de reproduccion
 			al_set_audio_stream_playmode(*pt, ALLEGRO_PLAYMODE_LOOP);
@@ -845,11 +992,19 @@ static bool init_sample(ALLEGRO_SAMPLE** sample, const char* file)
 	if(file == NULL)
 		return false;
 
-	char path[PATH_ARRAY_SIZE] = PATH_SOUND_SAMPLES;
+	int str_size = sizeof(PATH_SOUND_SAMPLES) + strlen(file) + sizeof(EXTENSION_SOUND_SAMPLE) + 1;
+	char *path = NULL;
+
+	path = malloc(str_size);
+	must_init(path, file);
+	memset(path, 0, str_size);
+	strcat(path, PATH_SOUND_SAMPLES);
 	strcat(path, file);
 	strcat(path, EXTENSION_SOUND_SAMPLE);
 
 	*sample = al_load_sample(path);
+
+	free(path);
 
 	if(*sample == NULL)
 		return false;
