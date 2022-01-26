@@ -415,8 +415,13 @@ void *thread_autos(void* ptr){
 }
 
 void *thread_display_juego(void* ptr){
+	reconfigurarDisplayON();
+
     while(p2CurrentState == jugando)
 		actualizarInterfaz();
+
+	reconfigurarDisplayOFF();
+
 	return NULL;
 }
 
@@ -513,6 +518,7 @@ static void siguiente_nivel(){
 
 static void iniciar_juego(void){
 	inicializarJuego();
+	reconfigurarDisplayOFF();
 
     //mandar el string con el nombre que vive en fsm.c al jugador.nombre
 
@@ -566,6 +572,7 @@ static void pausar(void){
 	pthread_join(ttiempo, NULL);
 	pthread_join(tautos, NULL);
 	pthread_join(tdisplayjuego, NULL);
+	reconfigurarDisplayON();
 	fijarTexto("PAUSA", POS_MSJ_PAUSA);
 	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
 	setMenu(menu, 3);
@@ -576,6 +583,8 @@ static void pausar(void){
 static void continuar(void){
 	pthread_join(tdisplaymenu, NULL);
 	limpiarDisplay();
+	continuandoJuego();
+	reconfigurarDisplayOFF();
 	pthread_create(&tdisplayjuego, NULL, thread_display_juego, NULL);
 	pthread_create(&tautos, NULL, thread_autos, NULL);
 	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);

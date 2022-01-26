@@ -128,6 +128,17 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos){
     mostrarTexto(puntos, POS_MSJ2);
 }
 
+void reconfigurarDisplayON(void)
+{
+	
+}
+
+void reconfigurarDisplayOFF(void)
+{
+
+}
+
+
 
 
 /*******************************************************************************
