@@ -64,6 +64,13 @@ void entities_update(void);
  */
 void entities_draw(void);
 
+/**
+ * @brief Indica que la rana debe dar un salto en la direccion dada
+ * 
+ * @param direction enum DIRECTIONS
+ */
+void entities_move_frog(unsigned char direction);
+
 /*******************************************************************************
  ******************************************************************************/
 

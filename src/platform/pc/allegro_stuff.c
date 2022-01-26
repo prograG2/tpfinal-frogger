@@ -17,6 +17,8 @@
 #include "geometry.h"
 #include <string.h>
 
+#include "algif.h"
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -42,14 +44,16 @@
 #define SPRITE_TURTLES				"sprite_turtles"
 #define SPRITE_MENU_HOME_BACK		"sprite_menu_home_background"
 #define SPRITE_MENU_HOME			"sprite_menu_home"
+/*
 #define SPRITE_MENU_DIFF_BACK		"sprite_menu_home_background"
 #define SPRITE_MENU_DIFF			"sprite_menu_home"
 #define SPRITE_MENU_PAUSE_BACK		"sprite_menu_home_background"
 #define SPRITE_MENU_PAUSE			"sprite_menu_home"
-//#define SPRITE_MENU_DIFF_BACK		"sprite_menu_diff_background"
-//#define SPRITE_MENU_DIFF			"sprite_menu_diff"
-//#define SPRITE_MENU_PAUSE_BACK	"sprite_menu_pause_background"
-//#define SPRITE_MENU_PAUSE			"sprite_menu_pause"
+*/
+#define SPRITE_MENU_DIFF_BACK		"sprite_menu_diff_background"
+#define SPRITE_MENU_DIFF			"sprite_menu_diff"
+#define SPRITE_MENU_PAUSE_BACK		"sprite_menu_pause_background"
+#define SPRITE_MENU_PAUSE			"sprite_menu_pause"
 
 //Extensiones
 #define EXTENSION_SOUND_SAMPLE		".wav"
@@ -214,6 +218,18 @@ static bool init_audio_stream(const char *file, float gain);
  */
 static bool init_sample(ALLEGRO_SAMPLE** sample, const char* file);
 
+/**
+ * @brief 
+ * 
+ */
+static void rick_init(void);
+
+/**
+ * @brief 
+ * 
+ */
+static void rick_deinit(void);
+
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -238,6 +254,10 @@ static sounds_t sounds;
 
 //nombre del ultimo stream inicializado
 static char last_init_stream[30];
+
+static ALGIF_ANIMATION *rick;
+
+static char rick_prev_stream[30];
 
 /*******************************************************************************
  *******************************************************************************
@@ -320,21 +340,11 @@ void allegro_inits(void)
 	allegro_vars.queue = al_create_event_queue();
 	must_init(allegro_vars.queue, "queue");
 
-	//opciones para el display (antialiasing)
-	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
-	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
-	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
-
-
 	//Inicializa los spritesheets.
 	sprites_init();
 
-
-	//creación del display
-	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
-	must_init(allegro_vars.disp, "display");
-	al_set_window_position (allegro_vars.disp, 200, 0);
-	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
+	//creacion del display
+	allegro_reinit_display();
 
 	char string[60] = PATH_FONTS;
 	strcat(string, "ProFontWindows.ttf");
@@ -350,7 +360,7 @@ void allegro_inits(void)
 
 	//registra eventos posibles
 	al_register_event_source(allegro_vars.queue, al_get_keyboard_event_source());
-	al_register_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
+	//al_register_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
 	al_register_event_source(allegro_vars.queue, al_get_timer_event_source(allegro_vars.timer));
 	al_register_event_source(allegro_vars.queue, al_get_mouse_event_source());
 
@@ -369,6 +379,8 @@ void allegro_inits(void)
 
 	audio_init();
 
+	rick_init();
+
 	//inicializa timer
 	al_start_timer(allegro_vars.timer);
 
@@ -376,12 +388,38 @@ void allegro_inits(void)
 
 void allegro_deinits(void)
 {
+	rick_deinit();
 	sprites_deinit();
 	audio_deinit();
 	al_destroy_font(allegro_vars.font);
 	al_destroy_display(allegro_vars.disp);
 	al_destroy_timer(allegro_vars.timer);
 	al_destroy_event_queue(allegro_vars.queue);
+}
+
+void allegro_reinit_display(void)
+{
+	/*
+	if(allegro_vars.disp != NULL)
+		al_destroy_display(allegro_vars.disp);
+	*/
+
+	//creación del display
+	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
+	must_init(allegro_vars.disp, "display");
+	al_set_window_position (allegro_vars.disp, 200, 0);
+	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
+	//opciones para el display (antialiasing)
+	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
+	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
+	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	
+}
+
+void allegro_deinit_display(void)
+{
+	if(allegro_vars.disp != NULL)
+		al_destroy_display(allegro_vars.disp);
 }
 
 ALLEGRO_EVENT_TYPE allegro_wait_for_event(void)
@@ -657,6 +695,26 @@ void allegro_draw_hitbox(int x, int y, int w, int h)
 						1);		//grosor
 }
 
+
+void allegro_rick_on(void)
+{
+	strcpy(rick_prev_stream, last_init_stream);
+
+	allegro_sound_set_stream_rick();
+	allegro_sound_play_stream();
+}
+
+void allegro_rick_off(void)
+{
+	must_init(init_audio_stream(rick_prev_stream, 1.0),
+					"retornando stream ~~ sacando rick");
+	allegro_sound_play_stream();
+}
+
+void allegro_rick_draw(void)
+{
+	al_draw_bitmap(algif_get_bitmap(rick, al_get_time()), 100, DISPLAY_H/2, 0);
+}
 
 /*******************************************************************************
  *******************************************************************************
@@ -1012,3 +1070,12 @@ static bool init_sample(ALLEGRO_SAMPLE** sample, const char* file)
 	return true;
 }
 
+static void rick_init(void)
+{
+	rick = algif_load_animation("../res/gifs/rick.gif");
+}
+
+static void rick_deinit()
+{
+	algif_destroy_animation(rick);
+}

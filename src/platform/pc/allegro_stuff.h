@@ -37,7 +37,7 @@
 #define FPS 60
 
 #define CHECK_KEY(key) (keyboard_check_key(key) == KEY_JUST_PRESSED)
-//#define CHECK_KEY(key)	(keyboard_check_key(key))
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -168,6 +168,18 @@ void allegro_inits(void);
  * 
  */
 void allegro_deinits(void);
+
+/**
+ * @brief Reinicializa el display de allegro
+ * 
+ */
+void allegro_reinit_display(void);
+
+/**
+ * @brief Desinicializa el display
+ * 
+ */
+void allegro_deinit_display(void);
 
 /**
  * @brief Espera a que ocurra un evento y lo devuelve
@@ -406,6 +418,24 @@ void allegro_sound_play_effect_run_completed(void);
  */
 void allegro_draw_hitbox(int x, int y, int w, int h);
 
+
+/**
+ * @brief 
+ * 
+ */
+void allegro_rick_on(void);
+
+/**
+ * @brief 
+ * 
+ */
+void allegro_rick_off(void);
+
+/**
+ * @brief 
+ * 
+ */
+void allegro_rick_draw(void);
 
 /*******************************************************************************
  ******************************************************************************/

@@ -58,7 +58,7 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static int temperaturas_actuales[4];+
+static bool rick_flag = false;
 
 
 /*******************************************************************************
@@ -168,9 +168,6 @@ void inicializarJuego(void)
 	allegro_sound_play_stream();
 
 	allegro_clear_display();
-	al_draw_text(allegro_get_var_font(),
-				al_map_rgb(255,255,255),250,100,0,
-				"INICIANDO JUEGO ALLEGRO");
 	al_flip_display();
 
 }
@@ -198,8 +195,7 @@ void incrementarPuntos(int pt)
 
 void refrescar(void)
 {
-	game_data_update();
-	entities_update();
+	
 }
 
 void refrescarJugador(void)
@@ -214,22 +210,22 @@ void refrescarAutos(void)
 
 void moverAdelante(void)
 {
-
+	entities_move_frog(DIRECTION_UP);
 }
 
 void moverAtras(void)
 {
-
+	entities_move_frog(DIRECTION_DOWN);
 }
 
 void moverIzda(void)
 {
-
+	entities_move_frog(DIRECTION_LEFT);
 }
 
 void moverDcha(void)
 {
-
+	entities_move_frog(DIRECTION_RIGHT);
 }
 
 void respawn(void)
@@ -264,13 +260,47 @@ void subirNivel(void)
 
 void actualizarInterfaz(void)
 {
+	if(CHECK_KEY(ALLEGRO_KEY_9))
+	{
+		if(!rick_flag)
+		{
+			allegro_rick_on();
+			rick_flag = true;
+		}
+
+		else
+		{
+			allegro_rick_off();
+			rick_flag = false;
+		}		
+	}
+
+	game_data_update();
 	entities_update();
 
+	allegro_clear_display();
+	allegro_draw_background();
+
+	if(rick_flag)
+		allegro_rick_draw();
+
+	entities_draw();
+	game_data_draw();
+
+	al_flip_display();
+	
 }
 
 void imprimirMapa(void)
 {
 	
+}
+
+void continuandoJuego(void)
+{
+	allegro_sound_set_stream_playing();
+	allegro_sound_play_stream();
+	rick_flag = false;
 }
 
 /*******************************************************************************

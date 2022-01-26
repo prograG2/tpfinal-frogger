@@ -70,6 +70,7 @@ typedef struct
 	int facing;
 	int steps;
 	unsigned char state;
+	unsigned char next_action;
 
 } frog_t;
 
@@ -311,6 +312,15 @@ void entities_draw()
 	frog_draw();
 }
 
+void entities_move_frog(unsigned char direction)
+{
+	if(direction == DIRECTION_DOWN || direction == DIRECTION_LEFT ||
+		direction == DIRECTION_UP || direction == DIRECTION_RIGHT)
+	{
+		frog.next_action = direction;
+	}
+}
+
 
 
 /*******************************************************************************
@@ -328,9 +338,10 @@ static void frog_init(void)
 	frog.x = CELL_START_FROG_X;
 	frog.y = CELL_START_FROG_Y;
 	frog.moving = false;
-	frog.facing = UP;
+	frog.facing = DIRECTION_UP;
 	frog.steps = 0;
 	frog.state = FROG_STATE_ROAD;
+	frog.next_action = DIRECTION_NONE;
 }
 
 static void frog_update(void)
@@ -340,43 +351,27 @@ static void frog_update(void)
 
 	if(!frog.moving)
 	{
-		if(check_keyboard_copy(ALLEGRO_KEY_LEFT))
+		if(frog.next_action == DIRECTION_DOWN || frog.next_action == DIRECTION_LEFT ||
+			frog.next_action == DIRECTION_UP || frog.next_action == DIRECTION_RIGHT)
 		{
-			frog.facing = LEFT;
+			frog.facing = frog.next_action;
 			frog.moving = true;
-		}
-		else if(check_keyboard_copy(ALLEGRO_KEY_RIGHT))
-		{
-			frog.facing = RIGHT;
-			frog.moving = true;
-		}
-		else if(check_keyboard_copy(ALLEGRO_KEY_UP))
-		{
-			frog.facing = UP;
-			frog.moving = true;
-		}
-		else if(check_keyboard_copy(ALLEGRO_KEY_DOWN))
-		{
-			frog.facing = DOWN;
-			frog.moving = true;
-		}
-
-		if(frog.moving)
-		{
+			frog.next_action = DIRECTION_NONE;
 			allegro_sound_play_effect_jump();
 		}
+
 	}
 
 	else if (frog.moving)
 	{
 
-		if(frog.facing == LEFT)
+		if(frog.facing == DIRECTION_LEFT)
 			frog.x -= STEP_FRACTION_SIZE;
-		else if(frog.facing == RIGHT)
+		else if(frog.facing == DIRECTION_RIGHT)
 			frog.x += STEP_FRACTION_SIZE;
-		else if(frog.facing == UP)
+		else if(frog.facing == DIRECTION_UP)
 			frog.y -= STEP_FRACTION_SIZE;
-		else if(frog.facing == DOWN)
+		else if(frog.facing == DIRECTION_DOWN)
 			frog.y += STEP_FRACTION_SIZE;
 
 		if(++frog.steps == STEP_RATIO)
@@ -562,26 +557,26 @@ static void frog_draw(void)
 
 	if(frog.moving)
 	{
-		if(frog.facing == UP)
+		if(frog.facing == DIRECTION_UP)
 			tempbitmap = sprites.frog[1];
-		if(frog.facing == DOWN)
+		if(frog.facing == DIRECTION_DOWN)
 			tempbitmap = sprites.frog[7];
-		if(frog.facing == RIGHT)
+		if(frog.facing == DIRECTION_RIGHT)
 			tempbitmap = sprites.frog[3];
-		if(frog.facing == LEFT)
+		if(frog.facing == DIRECTION_LEFT)
 			tempbitmap = sprites.frog[5];
 
 	}
 
 	else if(!frog.moving)
 	{
-		if(frog.facing == UP)
+		if(frog.facing == DIRECTION_UP)
 			tempbitmap = sprites.frog[0];
-		if(frog.facing == DOWN)
+		if(frog.facing == DIRECTION_DOWN)
 			tempbitmap = sprites.frog[6];
-		if(frog.facing == RIGHT)
+		if(frog.facing == DIRECTION_RIGHT)
 			tempbitmap = sprites.frog[2];
-		if(frog.facing == LEFT)
+		if(frog.facing == DIRECTION_LEFT)
 			tempbitmap = sprites.frog[4];
 
 	}

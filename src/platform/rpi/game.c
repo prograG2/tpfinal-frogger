@@ -202,7 +202,7 @@ clock_t getTiempoInicial(){
 	return jugador.tiempo_inicial;
 }
 
-clock_t getTiempoLimite(clock_t limite){
+clock_t getTiempoLimite(void){
 	return jugador.tiempo_limite;
 }
 
@@ -372,6 +372,11 @@ void subirNivel(){
 
 void imprimirMapa(){
 	printMatriz(jugador.mapa);
+}
+
+void continuandoJuego(void)
+{
+
 }
 
 
