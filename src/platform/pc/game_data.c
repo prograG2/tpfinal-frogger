@@ -252,6 +252,7 @@ static void hud_draw(void)
 			if(score_display <= (data.score - shifter))
 				score_display += shifter;
 		}
+
 	}
 
 	al_draw_textf(

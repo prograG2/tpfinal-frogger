@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <unistd.h>
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -82,6 +84,8 @@ int main (void)
 		{
 			fsm(evento);
 		}
+
+		usleep(100);	
 	}
 
 	printf("\nSaliendo...\n");

@@ -343,18 +343,6 @@ void allegro_inits(void)
 	//Inicializa los spritesheets.
 	sprites_init();
 
-	//creacion del display
-	allegro_reinit_display();
-
-	char string[60] = PATH_FONTS;
-	strcat(string, "ProFontWindows.ttf");
-	//para usar la fuente builtin
-	//allegro_vars.font = al_create_builtin_font();
-	allegro_vars.font = al_load_font(string, FONT_HEIGHT, 0);
-	must_init(allegro_vars.font, "font");
-	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
-	allegro_vars.font_w = al_get_text_width(allegro_vars.font, "a");
-
 	//para dibujar figuras primitivas (círculos, rectángulos, líneas, rellenos o no, etc.)
 	must_init(al_init_primitives_addon(), "primitives");
 
@@ -380,6 +368,9 @@ void allegro_inits(void)
 	audio_init();
 
 	rick_init();
+
+	//creacion del display
+	allegro_reinit_display();
 
 	//inicializa timer
 	al_start_timer(allegro_vars.timer);
@@ -413,6 +404,16 @@ void allegro_reinit_display(void)
 	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
 	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
 	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
+
+	char string[60] = PATH_FONTS;
+	strcat(string, "ProFontWindows.ttf");
+	//para usar la fuente builtin
+	//allegro_vars.font = al_create_builtin_font();
+	allegro_vars.font = al_load_font(string, FONT_HEIGHT, 0);
+	must_init(allegro_vars.font, "font");
+	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
+	allegro_vars.font_w = al_get_text_width(allegro_vars.font, "a");
 	
 }
 
