@@ -101,6 +101,9 @@ void agregarLetra(void)
 		}
 	}
 
+	if(check_keyboard_copy(ALLEGRO_KEY_BACKSPACE))
+		game_data_add_name_letter(ALLEGRO_KEY_BACKSPACE);
+
 }
 
 void subirNombre(void)
