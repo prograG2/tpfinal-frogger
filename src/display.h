@@ -24,7 +24,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_MSJ_NOMBRE, POS_MSJ_PASAR, POS_MSJ_PAUSA, POS_MSJ_NEW_HI_SCORE, POS_MSJ_GAME_OVER};
+enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_MSJ_NOMBRE, POS_MSJ_PASAR, POS_MSJ_PAUSA, POS_MSJ_NEW_HI_SCORE, POS_MSJ_GAME_OVER, POS_OPCION, POS_RANKING_2};
 
 
 /*******************************************************************************

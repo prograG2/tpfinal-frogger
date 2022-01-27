@@ -57,13 +57,6 @@ void* thread_input(void* ptr);
  * 
  * @return void* 
  */
-void* thread_display_menu(void* ptr);
-
-/**
- * @brief 
- * 
- * @return void* 
- */
 void* thread_tiempo(void* ptr);
 
 /**
@@ -197,7 +190,7 @@ static void ulltoa(uint64_t num, char* str);
 static STATE* p2CurrentState = NULL;
 
 //threads a implementar
-pthread_t tinput, tdisplaymenu, tdisplayjuego, tdisplayranking, tautos, ttiempo;
+pthread_t tinput, tdisplayjuego, tdisplayranking, tautos, ttiempo;
 
 
 #pragma region FSM STATES
@@ -337,7 +330,6 @@ bool inicializarFsm(void)
 	setMenu(menu, 4);
 	setOpcion(0);
 
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 	pthread_create(&tinput, NULL, thread_input, NULL);
 
 	return true;
@@ -381,16 +373,6 @@ void* thread_input(void* ptr){
 	return NULL;
 }
 
-void* thread_display_menu(void* ptr){
-    while((p2CurrentState == en_menu_ppal) || (p2CurrentState == en_dificultad) || (p2CurrentState == en_pausa) || (p2CurrentState == en_game_over)){
-        clock_t meta = clock() + SLEEP_CLOCKS;
-        while(clock() < meta);
-        moverOpcionActual();
-    }
-	queue_insert(CTE_OPCION+getOpcion());
-
-	return NULL;
-}
 
 void *thread_tiempo(void* ptr){
 	clock_t tiempo = getTiempoInicial(), inicio = getTiempoInicial();
@@ -457,7 +439,7 @@ static void do_nothing(void)
 
 static void menu_enter(void){
 	limpiarDisplay();
-	pthread_join(tdisplaymenu, NULL);
+	queue_insert(CTE_OPCION+getOpcion());
 }
 
 static void pasar_a_menu_ppal(){
@@ -465,7 +447,6 @@ static void pasar_a_menu_ppal(){
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
 	setMenu(menu, 4);
 	setOpcion(0);
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
 static void pasar_a_ranking(){
@@ -484,7 +465,6 @@ static void pasar_a_ranking(){
 
 static void salir_del_juego(){
 	pthread_join(tinput, NULL);
-	pthread_join(tdisplaymenu, NULL);
 	destruirMenu();
 	limpiarDisplay();
 	queue_insert(SALIR);
@@ -492,7 +472,7 @@ static void salir_del_juego(){
 
 static void ranking_enter(void){
 	pthread_join(tdisplayranking, NULL);
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
+	limpiarDisplay();
 }
 
 
@@ -554,18 +534,13 @@ static void pasar_a_dificultad(){
 	int menu[3] = {FACIL, NORMAL, DIFICIL};
 	setMenu(menu, 3);
 	setOpcion(0);
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
 static void set_dificultad(void){
-	p2CurrentState = menu_ppal_esperando_opcion;
-	pthread_join(tdisplaymenu, NULL);
 	setDificultad(FACIL + getOpcion());
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
 	setMenu(menu, 4);
 	setOpcion(0);
-	p2CurrentState = en_menu_ppal;
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
 static void pausar(void){
@@ -577,11 +552,9 @@ static void pausar(void){
 	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
 	setMenu(menu, 3);
 	setOpcion(0);
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
 static void continuar(void){
-	pthread_join(tdisplaymenu, NULL);
 	limpiarDisplay();
 	continuandoJuego();
 	reconfigurarDisplayOFF();
@@ -591,7 +564,6 @@ static void continuar(void){
 }
 
 static void salir_al_menu(void){
-	pthread_join(tdisplaymenu, NULL);
 	limpiarDisplay();
 	pasar_a_menu_ppal();
 }
@@ -650,7 +622,6 @@ static void game_over(void){
 	limpiarDisplay();
 	setMenu(menu, 2);
 	setOpcion(0);
-	pthread_create(&tdisplaymenu, NULL, thread_display_menu, NULL);
 }
 
 static void ulltoa(uint64_t num, char* str)

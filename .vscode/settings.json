@@ -21,6 +21,8 @@
 		"util.h": "c",
 		"string.h": "c",
 		"stdlib.h": "c",
-		"joydrv.h": "c"
+		"joydrv.h": "c",
+		"bitmap.h": "c",
+		"mensajes.h": "c"
 	}
 }

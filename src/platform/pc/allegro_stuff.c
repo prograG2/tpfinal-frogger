@@ -329,7 +329,7 @@ void allegro_inits(void)
 	must_init(al_install_keyboard(), "keyboard");
 	must_init(al_install_mouse(), "mouse");
 	must_init(al_init_image_addon(), "image");
-	must_init(al_init_font_addon(), "font addon");
+	al_init_font_addon();
 	must_init(al_init_ttf_addon(), "ttf addon");
    
 	//timer que actualiza cada 1/60 segundos (60fps)
@@ -399,7 +399,7 @@ void allegro_reinit_display(void)
 	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
 	must_init(allegro_vars.disp, "display");
 	al_set_window_position (allegro_vars.disp, 200, 0);
-	al_set_new_window_title ("~ Programación I ~ TP Final ~ Frogger ~");
+	al_set_window_title (allegro_vars.disp, "~ Programación I ~ TP Final ~ Frogger ~");
 	//opciones para el display (antialiasing)
 	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
 	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);

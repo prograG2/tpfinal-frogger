@@ -215,6 +215,13 @@ mensaje_t mensaje(char* msj, int pos);
 void moverMensaje(mensaje_t* msj, int repetir);
 
 /**
+ * @brief 
+ * 
+ * @param msj
+ */
+void reiniciarMensaje(mensaje_t* msj);
+
+/**
  * @brief Get the Longitud object
  * 
  * @param a 

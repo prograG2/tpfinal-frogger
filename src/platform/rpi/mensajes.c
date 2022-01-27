@@ -309,6 +309,7 @@ void moverMensaje(mensaje_t* msj, int repetir){
             borrarRenglon(msj->renglon);
         return;
     }
+
     renglonDobleShiftIzq(msj->renglon, msj->reserva, 1);
 
     if(!renglonBool(msj->reserva)){ //si la reserva queda vacía, dejo un espacio y relleno la reserva con letras nuevas
@@ -348,6 +349,12 @@ void moverMensaje(mensaje_t* msj, int repetir){
             renglonOr(msj->reserva, letra);
         }
     }
+}
+
+void reiniciarMensaje(mensaje_t* msj){
+    msj->index = msj->index_inicio;
+    copiarRenglon(msj->renglon_inicio, msj->renglon);
+    copiarRenglon(msj->reserva_inicio, msj->reserva);
 }
 
 int getLongitud(char c){

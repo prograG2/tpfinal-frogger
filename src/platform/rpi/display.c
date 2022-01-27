@@ -27,7 +27,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-
+#define CASTEAR_POSICION(pos) (((pos) == POS_OPCION) || ((pos) == POS_RANKING_2) ? POS_MSJ2 : POS_MSJ1)
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -46,8 +46,6 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-
-
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -63,7 +61,11 @@ static pthread_mutex_t lock;
 
 static Matriz disp_matriz;
 
-static pthread_t ttexto1, ttexto2;
+static pthread_t ttextodisplay;
+
+static mensaje_t texto1, texto2;
+
+static int texto;
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
@@ -97,7 +99,10 @@ void actualizarDisplay()
 void limpiarDisplay()
 {
 	pthread_mutex_lock(&lock);
-    //si hay threads activos, detenerlos
+    if(texto){
+        texto = 0;
+        pthread_join(thread_texto_display, NULL);
+    }
     limpiarMatriz(disp_matriz);
     actualizarDisplay();
     pthread_mutex_unlock(&lock);
@@ -105,7 +110,8 @@ void limpiarDisplay()
 
 void mostrarTexto(char* txt, int pos)
 {
-	mensaje_t msj = mensaje(txt, pos);
+    int posicion = CASTEAR_POSICION(pos);
+	mensaje_t msj = mensaje(txt, posicion);
     while(renglonBool(msj.renglon)){
         clock_t meta = clock() + SLEEP_CLOCKS;
         while(clock() < meta);
@@ -116,16 +122,46 @@ void mostrarTexto(char* txt, int pos)
 }
 
 void fijarTexto(char* txt, int pos){
-    mensaje_t msj = mensaje(txt, pos);
-    copiarMatrizRenglon(disp_matriz, msj.renglon, msj.posicion);
-    actualizarDisplay();
+    int posicion = CASTEAR_POSICION(pos);
+    switch (posicion)
+    {
+    case POS_MSJ1:
+        texto1 = mensaje(txt, posicion);
+        break;
+    
+    default:
+        texto2 = mensaje(txt, posicion);
+        break;
+    }
+    if(!texto){
+        pthread_create(&ttextodisplay, NULL, thread_texto_display, NULL);
+        texto = 1;
+    }
+}
+
+void fijarMensaje(mensaje_t* msj, int pos){
+    int posicion = CASTEAR_POSICION(pos);
+    switch (posicion)
+    {
+    case POS_MSJ1:
+        texto1 = *msj;
+        break;
+    
+    default:
+        texto2 = *msj;
+        break;
+    }
+    if(!texto){
+        pthread_create(&ttextodisplay, NULL, thread_texto_display, NULL);
+        texto = 1;
+    }
 }
 
 void mostrarPosicion(char* posicion, char* nombre, char* puntos){
     limpiarDisplay();
-    fijarTexto(posicion, POS_MSJ1);
-    mostrarTexto(nombre, POS_MSJ2);
-    mostrarTexto(puntos, POS_MSJ2);
+    fijarTexto(posicion, POS_MSJ_RANKING);
+    mostrarTexto(nombre, POS_RANKING_2);
+    mostrarTexto(puntos, POS_RANKING_2);
 }
 
 void reconfigurarDisplayON(void)
@@ -138,6 +174,18 @@ void reconfigurarDisplayOFF(void)
 
 }
 
+void* thread_texto_display(void* ptr){
+    while(texto){
+        clock_t meta = clock() + SLEEP_CLOCKS;
+        while(clock() < meta);
+        moverMensaje(&texto1, REPETIR);
+        copiarMatrizRenglon(disp_matriz, texto1.renglon, POS_MSJ1);
+        moverMensaje(&texto2, REPETIR);
+        copiarMatrizRenglon(disp_matriz, texto2.renglon, POS_MSJ2);
+        actualizarDisplay();
+    }
+}
+
 
 
 
@@ -146,7 +194,6 @@ void reconfigurarDisplayOFF(void)
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-
 
  
 
