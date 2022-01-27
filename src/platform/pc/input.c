@@ -86,9 +86,9 @@ event_t leerEntradas(void)
 		switch ((*event).type)
 		{
 			case ALLEGRO_EVENT_TIMER:
-			allegro_set_var_redraw(true);
+				allegro_set_var_redraw(true);
 
-			break;
+				break;
 
 			case ALLEGRO_EVENT_KEY_DOWN:
 				last_key = allegro_get_last_key();
@@ -106,6 +106,10 @@ event_t leerEntradas(void)
 
 				break;
 
+			case ALLEGRO_EVENT_DISPLAY_CLOSE:
+				queue_insert(SALIR);
+
+				break;
 
 			default:
 				break;
