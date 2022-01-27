@@ -83,85 +83,15 @@ void pausar_musica(void)
 	
 }
 
-void reproducir_musica_menu_ppal(void)
-{
-	
-}
-
-void reproducir_musica_ranking(void)
-{
-	
-}
-
-void reproducir_musica_creditos(void)
-{
-	
-}
-
-void reproducir_musica_jugando(void)
-{
-	
-}
-
-void reproducir_musica_menu_pausa(void)
+void reproducir_musica(int musica)
 {
 	
 }
 
 
-void reproducir_efecto_seleccion(void)
+void reproducir_efecto(int efecto)
 {
 	
-}
-
-void reproducir_efecto_salto(void)
-{
-	
-}
-
-void reproducir_efecto_impacto(void)
-{
-	
-}
-
-void reproducir_efecto_ahogado(void)
-{
-	
-}
-
-void reproducir_efecto_poco_tiempo(void)
-{
-	
-}
-
-void reproducir_efecto_meta(void)
-{
-	
-}
-
-void reproducir_efecto_nivel_completo(void)
-{
-	
-}
-
-void reproducir_efecto_nuevo_max_score(void)
-{
-	
-}
-
-void reproducir_efecto_game_over(void)
-{
-	
-}
-
-void reproducir_efecto_menu_enter(void)
-{
-	
-}
-
-void reproducir_efecto_saliendo(void)
-{
-
 }
 
 

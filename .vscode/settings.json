@@ -23,6 +23,7 @@
 		"stdlib.h": "c",
 		"joydrv.h": "c",
 		"bitmap.h": "c",
-		"mensajes.h": "c"
+		"mensajes.h": "c",
+		"audio.h": "c"
 	}
 }

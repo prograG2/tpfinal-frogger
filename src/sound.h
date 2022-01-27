@@ -29,7 +29,8 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-
+enum musica{MUSICA_MENU_PPAL, MUSICA_RANKING, MUSICA_CREDITOS, MUSICA_JUGANDO, MUSICA_MENU_PAUSA}
+enum efectos{EFECTO_SELECCION, EFECTO_SALTO, EFECTO_IMPACTO, EFECTO_AHOGADO, EFECTO_POCO_TIEMPO, EFECTO_META, EFECTO_NIVEL_COMPLETO, EFECTO_NUEVO_MAX_SCORE, EFECTO_GAME_OVER, EFECTO_MENU_ENTER}
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -66,99 +67,16 @@ void pausar_musica(void);
 /**
  * @brief 
  * 
+ * @param
  */
-void reproducir_musica_menu_ppal(void);
+void reproducir_musica(int musica);
 
 /**
  * @brief 
  * 
+ * @param
  */
-void reproducir_musica_ranking(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_musica_creditos(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_musica_jugando(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_musica_menu_pausa(void);
-
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_seleccion(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_salto(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_impacto(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_ahogado(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_poco_tiempo(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_meta(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_nivel_completo(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_nuevo_max_score(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_game_over(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_menu_enter(void);
-
-/**
- * @brief 
- * 
- */
-void reproducir_efecto_saliendo(void);
+void reproducir_efecto(int efecto);
 
 
 

@@ -84,6 +84,16 @@ void pausar_musica(void)
 	allegro_sound_pause_stream();
 }
 
+void reproducir_musica(int musica){
+
+}
+
+void reproducir_sonido(int sonido){
+
+}
+
+/*
+
 void reproducir_musica_menu_ppal(void)
 {
 	allegro_sound_set_stream_main_menu();
@@ -169,6 +179,8 @@ void reproducir_efecto_saliendo(void)
 {
 	allegro_sound_play_effect_exiting();	
 }
+
+*/
 
 
 
