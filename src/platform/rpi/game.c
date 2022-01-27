@@ -21,6 +21,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <pthread.h>
 
 
 /*******************************************************************************
@@ -34,13 +35,15 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef struct{
+static struct{
     char nombre[L_MAX];
     int dificultad;
     int niv_actual;
     int agua;
     int posicion_sur;
     int posicion_oeste;
+	int timeout_ref;
+	int timeout_cnt;
     uint16_t vidas;
     uint16_t ranas;
     uint16_t jugador_1;
@@ -49,11 +52,12 @@ typedef struct{
 	uint32_t carril[5];
     uint64_t puntos;
     uint64_t max_puntos;
-    clock_t tiempo_inicial;
-	clock_t tiempo;
-    clock_t tiempo_limite;
+	bool jugando;
+	bool refresco;
+	bool timeout;
+    clock_t tiempo;
     Matriz mapa;
-} jugador_t;
+} jugador;
 
 
 /*******************************************************************************
@@ -81,9 +85,9 @@ extern Matriz disp_matriz;
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static jugador_t jugador;
+static pthread_t ttiempo;
 
-static clock_t frac, acc;
+static int frac, acc;
 
 
 /*******************************************************************************
@@ -95,44 +99,20 @@ static clock_t frac, acc;
 void setNombre(char* nombre){
 	strcpy(jugador.nombre, nombre);
 }
-void setPuntos(uint64_t puntos){
-	jugador.puntos = puntos;
-}
 
 void setMaxPuntos(uint64_t max){
 	jugador.max_puntos = max;
 }
 
-void setMaxVidas(){
-	jugador.vidas = 5;
-}
-
-void decrementarVida(){
-	jugador.vidas--;
-}
-
-void incrementarPuntos(int pt)
-{
-	
-}
-
 void refrescar(){
 	static int refresco_autos = 0;
 
-	refrescarJugador();
-	if(refresco_autos)
-		refrescarAutos();
-	refresco_autos = ~refresco_autos;
-}
-
-void refrescarJugador(){
 	uint16_t tmp = jugador.jugador_1;
 	jugador.jugador_1 = jugador.jugador_2;
 	jugador.jugador_2 = tmp;
-}
 
-void refrescarAutos(){
-	int i;
+	if(refresco_autos){
+		int i;
 	for(i=0; i<5; i++){
 		jugador.carril[i] <<= 1;
         if(jugador.agua){
@@ -151,34 +131,18 @@ void refrescarAutos(){
         jugador.mapa[POS_AUTOS+2*i] = medio_carril;
         jugador.mapa[POS_AUTOS+2*i+1] = medio_carril;
 	}
-
-}
-
-void setTiempoInicial(clock_t tiempo){
-	jugador.tiempo_inicial = tiempo;
-}
-
-void setTiempoLimite(clock_t limite){
-	jugador.tiempo_limite = limite;
-}
-
-void setTiempo(clock_t tiempo){
-	jugador.tiempo = tiempo;
-	if(jugador.tiempo > acc){
-		acc += frac;
-		jugador.tiempo_bits >>= 1;
 	}
-
+	refresco_autos = ~refresco_autos;
 }
 
 bool tiempoRefrescoEntidades(void)
 {
-
+	return jugador.refresco;
 }
 
 bool tiempoLimite(void)
 {
-	
+	return jugador.timeout;
 }
 
 
@@ -197,37 +161,18 @@ uint64_t getMaxPuntos(){
 	return jugador.max_puntos;
 }
 
-int getVidas(){
-	return jugador.vidas;
-}
-
 int getNivel(){
 	return jugador.niv_actual;
 }
 
-int getAgua(){
-	return jugador.agua;
-}
-
-clock_t getTiempoInicial(){
-	return jugador.tiempo_inicial;
-}
-
-clock_t getTiempoLimite(void){
-	return jugador.tiempo_limite;
-}
-
-int getDificultad(){
-	return jugador.dificultad;
-}
-
 void reiniciarNivel(){
 	jugador.ranas = 0b1001001001001001;
-	jugador.tiempo_limite = 60*CLOCKS_PER_SEC*(1-0.05*(jugador.dificultad-FACIL));
-	frac = jugador.tiempo_limite / 16;
+	jugador.timeout_cnt = 0;
+	jugador.timeout_ref = 2*60*(1-0.05*(jugador.dificultad-FACIL));
+	frac = jugador.timeout_ref / 16;
 	acc = frac;
+	jugador.tiempo = 0;
 	jugador.tiempo_bits = 0b1111111111111111;
-	jugador.tiempo_inicial = 0;
 	jugador.agua = 0;
 	respawn();
 }
@@ -291,6 +236,8 @@ void moverAdelante(){
 			//printf("%d\n", jugador.ranas);
 			if(jugador.ranas == 0b1111111111111111){
             	queue_insert(META);
+				jugador.jugando = false;
+				jugador.niv_actual++;
 			}
 			else{
 				jugador.agua = 0;
@@ -324,7 +271,7 @@ void moverDcha(){
 void perderVidaChoque(){
 	//ruido1
 	jugador.vidas <<= 1;
-	jugador.tiempo_inicial = 0;
+	jugador.tiempo = 0;
 	jugador.agua = 0;
 	if(!jugador.vidas)
 		queue_insert(GAME_OVER);
@@ -335,7 +282,7 @@ void perderVidaChoque(){
 void perderVidaAgua(){
 	//ruido2
 	jugador.vidas <<= 1;
-	jugador.tiempo_inicial = 0;
+	jugador.tiempo = 0;
 	jugador.agua = 0;
 	if(!jugador.vidas)
 		queue_insert(GAME_OVER);
@@ -346,7 +293,7 @@ void perderVidaAgua(){
 void perderVidaTimeout(){
 	//sin ruido?
 	jugador.vidas <<= 1;
-	jugador.tiempo_inicial = 0;
+	jugador.tiempo = 0;
 	jugador.agua = 0;
 	if(!jugador.vidas)
 		queue_insert(GAME_OVER);
@@ -354,16 +301,15 @@ void perderVidaTimeout(){
 		respawn();
 }
 
-void llegada(){
-	
-
-}
-
 void inicializarJuego()
 {
     jugador.puntos = 0;
 	jugador.niv_actual = 1;
 	jugador.vidas = 0b1111100000000000;
+}
+
+void pausarJuego(){
+	jugador.jugando = false;
 }
 
 void actualizarInterfaz(){
@@ -377,12 +323,13 @@ void actualizarInterfaz(){
         queue_insert(jugador.agua? AGUA : CHOCAR);
 }
 
-void subirNivel(){
-	jugador.niv_actual++;
-}
-
 void imprimirMapa(){
 	printMatriz(jugador.mapa);
+}
+
+void continuandoJuego(void)
+{
+	jugador.jugando = true;
 }
 
 
@@ -392,6 +339,22 @@ void imprimirMapa(){
  *******************************************************************************
  ******************************************************************************/
 
-
+void thread_tiempo(void* ptr){
+	clock_t ref = clock();
+	while(jugador.jugando && !(jugador.timeout)){
+		jugador.tiempo += clock() - ref;
+		if(jugador.tiempo >= SLEEP_CLOCKS){
+			jugador.tiempo = 0;
+			jugador.refresco = true;
+			jugador.timeout = ++(jugador.timeout_cnt)  >= jugador.timeout_ref;
+			if(jugador.timeout_cnt >= acc){
+				acc += frac;
+				jugador.tiempo_bits >>= 1;
+			}
+		}
+	}
+	
+	return NULL;
+}
 
  

@@ -72,31 +72,6 @@ void setNombre(char* nombre)
 
 }
 
-void setPuntos(uint64_t puntos)
-{
-
-}
-
-void setMaxPuntos(uint64_t max)
-{
-
-}
-
-void setMaxVidas()
-{
-
-}
-
-void setTiempoInicial(clock_t tiempo)
-{
-
-}
-
-void setTiempoLimite(clock_t limite)
-{
-
-}
-
 void setDificultad(int diff)
 {
 	if(diff == FACIL)
@@ -105,11 +80,6 @@ void setDificultad(int diff)
 		game_data_set_diff(DIFFICULTIES_NORMAL);
 	else if(diff == DIFICIL)
 		game_data_set_diff(DIFFICULTIES_HARD);
-}
-
-void setTiempo(clock_t tiempo)
-{
-
 }
 
 bool tiempoRefrescoEntidades(void)
@@ -138,36 +108,10 @@ uint64_t getMaxPuntos(void)
 
 }
 
-int getVidas(void)
-{
-
-}
-
 int getNivel(void)
 {
 
 }
-
-clock_t getTiempoInicial(void)
-{
-
-}
-
-clock_t getTiempoLimite(void)
-{
-
-}
-
-int getDificultad(void)
-{
-
-}
-
-int getAgua(void)
-{
-
-}
-
 
 void inicializarJuego(void)
 {
@@ -181,23 +125,7 @@ void inicializarJuego(void)
 
 }
 
-void inicializarNivel(void)
-{
-
-}
-
 void reiniciarNivel(void)
-{
-
-}
-
-void decrementarVida(void)
-{
-
-}
-
-
-void incrementarPuntos(int pt)
 {
 
 }
@@ -205,16 +133,6 @@ void incrementarPuntos(int pt)
 void refrescar(void)
 {
 	
-}
-
-void refrescarJugador(void)
-{
-
-}
-
-void refrescarAutos(void)
-{
-
 }
 
 void moverAdelante(void)
@@ -253,16 +171,6 @@ void perderVidaAgua(void)
 }
 
 void perderVidaTimeout(void)
-{
-
-}
-
-void llegada(void)
-{
-
-}
-
-void subirNivel(void)
 {
 
 }

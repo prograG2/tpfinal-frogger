@@ -51,12 +51,6 @@
  */
 void setNombre(char* nombre);
 
-/**
- * @brief Set the Puntos object
- * 
- * @param puntos 
- */
-void setPuntos(uint64_t puntos);
 
 /**
  * @brief Set the Max Puntos object
@@ -66,38 +60,11 @@ void setPuntos(uint64_t puntos);
 void setMaxPuntos(uint64_t max);
 
 /**
- * @brief Set the Max Vidas object
- * 
- */
-void setMaxVidas();
-
-/**
- * @brief Set the Tiempo Inicial object
- * 
- * @param tiempo 
- */
-void setTiempoInicial(clock_t tiempo);
-
-/**
- * @brief Set the Tiempo Limite object
- * 
- * @param limite 
- */
-void setTiempoLimite(clock_t limite);
-
-/**
  * @brief Set the Dificultad object
  * 
  * @param dif 
  */
 void setDificultad(int dif);
-
-/**
- * @brief Set the Tiempo object
- * 
- * @param tiempo 
- */
-void setTiempo(clock_t tiempo);
 
 /**
  * @brief 
@@ -114,8 +81,6 @@ bool tiempoRefrescoEntidades(void);
  * @return false 
  */
 bool tiempoLimite(void);
-
-
 
 /**
  * @brief Get the Nombre object
@@ -138,12 +103,6 @@ uint64_t getPuntos(void);
  */
 uint64_t getMaxPuntos(void);
 
-/**
- * @brief Get the Vidas object
- * 
- * @return int 
- */
-int getVidas(void);
 
 /**
  * @brief Get the Nivel object
@@ -151,36 +110,6 @@ int getVidas(void);
  * @return int 
  */
 int getNivel(void);
-
-/**
- * @brief Get the Tiempo Inicial object
- * 
- * @return clock_t 
- */
-clock_t getTiempoInicial(void);
-
-/**
- * @brief Get the Tiempo Limite object
- * 
- * @return clock_t 
- */
-clock_t getTiempoLimite(void);
-
-/**
- * @brief Get the Dificultad object
- * 
- * @return int 
- */
-int getDificultad(void);
-
-/**
- * @brief Get the Agua object
- * 
- * @return int 
- */
-int getAgua(void);
-
-
 
 /**
  * @brief 
@@ -192,45 +121,20 @@ void inicializarJuego(void);
  * @brief 
  * 
  */
-void inicializarNivel(void);
-
-/**
- * @brief 
- * 
- */
 void reiniciarNivel(void);
 
 /**
  * @brief 
  * 
  */
-void decrementarVida(void);
 
- 
-/**
- * @brief 
- * 
- * @param pt 
- */
-void incrementarPuntos(int pt);
+void pausarJuego(void);
 
 /**
  * @brief 
  * 
  */
 void refrescar(void);
-
-/**
- * @brief 
- * 
- */
-void refrescarJugador(void);
-
-/**
- * @brief 
- * 
- */
-void refrescarAutos(void);
 
 /**
  * @brief 
@@ -279,18 +183,6 @@ void perderVidaAgua(void);
  * 
  */
 void perderVidaTimeout(void);
-
-/**
- * @brief 
- * 
- */
-void llegada(void);
-
-/**
- * @brief 
- * 
- */
-void subirNivel(void);
 
 /**
  * @brief 

@@ -386,6 +386,8 @@ void *thread_juego(void* ptr){
 
 		actualizarInterfaz();
 	}
+
+	pausarJuego();
 		
 	reconfigurarDisplayOFF();
 
@@ -467,7 +469,6 @@ static void ranking_enter(void){
 
 static void subir_nivel(){
 	pthread_join(tjuego, NULL);
-	subirNivel();
 	char pasar_str[10] = "NIVEL ";
 	char niv_str[3];
 	ulltoa(getNivel(), niv_str);
@@ -482,6 +483,7 @@ static void siguiente_nivel(){
 
 
 static void iniciar_juego(void){
+	setNombre(devolverNombre());
 	inicializarJuego();
 	reconfigurarDisplayOFF();
 
