@@ -16,8 +16,6 @@
 #include "../../menu.h"
 #include "../../display.h"
 
-#include "mensajes.h"
-
 #include <stdlib.h>
 
 
@@ -77,7 +75,6 @@ void setMenu(int* a, unsigned int size){
 
 void setOpcion(int opc){
     menu.opcion_actual = opc;
-    reiniciarMensaje(&(menu_textos[menu.menu_actual[menu.opcion_actual]]));
     fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
 }
 
