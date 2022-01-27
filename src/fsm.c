@@ -447,6 +447,7 @@ static void salir_del_juego(){
 	destruirMenu();
 	limpiarDisplay();
 	queue_insert(SALIR);
+	printf("GRACIAS POR JUGAR\n");
 }
 
 static void ranking_enter(void){
