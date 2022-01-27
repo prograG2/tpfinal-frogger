@@ -174,8 +174,7 @@ void inicializarJuego(void)
 	game_data_init();
 	entities_init();
 
-	allegro_sound_set_stream_playing();
-	allegro_sound_play_stream();
+	rick_flag = false;
 
 	allegro_clear_display();
 	al_flip_display();
@@ -311,12 +310,6 @@ void imprimirMapa(void)
 	
 }
 
-void continuandoJuego(void)
-{
-	allegro_sound_set_stream_playing();
-	allegro_sound_play_stream();
-	rick_flag = false;
-}
 
 /*******************************************************************************
  *******************************************************************************

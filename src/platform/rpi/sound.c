@@ -14,6 +14,7 @@
  ******************************************************************************/
 
 #include "../../sound.h"
+#include "audio.h"
 
 
 /*******************************************************************************
@@ -76,6 +77,11 @@ void destruirSonido(void)
 	
 }
 
+
+void pausar_musica(void)
+{
+	
+}
 
 void reproducir_musica_menu_ppal(void)
 {
@@ -146,6 +152,16 @@ void reproducir_efecto_nuevo_max_score(void)
 void reproducir_efecto_game_over(void)
 {
 	
+}
+
+void reproducir_efecto_menu_enter(void)
+{
+	
+}
+
+void reproducir_efecto_saliendo(void)
+{
+
 }
 
 

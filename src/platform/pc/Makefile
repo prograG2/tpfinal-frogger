@@ -14,7 +14,7 @@ LIB_DIR := ../../../lib
 
 
 # Objetos genericos sin path
-_OBJS	:= display.o game.o input.o menu.o nombre.o 
+_OBJS	:= display.o game.o input.o menu.o nombre.o sound.o
 # Objetos especificos sin path
 _OBJS	+= allegro_stuff.o entities.o game_data.o geometry.o
 # Objetos con path y la ID de la plataforma
@@ -66,6 +66,9 @@ $(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h allegro_stuff.h geometry.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h allegro_stuff.h game_data.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/sound_PC.o: sound.c ../../sound.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,10 +139,13 @@ game.o: game.c ../../game.h allegro_stuff.h entities.h game_data.h
 input.o: input.c ../../input.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
-menu.o: menu.c ../../menu.h allegro_stuff.h geometry.h
+menu.o: menu.c ../../menu.h allegro_stuff.h geometry.h ../../sound.h
 	$(CC) $(CFLAGS) -c $<
 
 nombre.o: nombre.c ../../nombre.h allegro_stuff.h game_data.h
+	$(CC) $(CFLAGS) -c $<
+
+sound.o: sound.c ../../sound.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $<
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~

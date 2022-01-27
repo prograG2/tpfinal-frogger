@@ -291,6 +291,12 @@ void allegro_sound_set_stream_main_menu(void);
 void allegro_sound_set_stream_pause_menu(void);
 
 /**
+ * @brief Selecciona musica de ranking. Comienza pausada.
+ * 
+ */
+void allegro_sound_set_stream_ranking(void);
+
+/**
  * @brief Selecciona musica de jugando. Comienza pausada.
  * 
  */
@@ -379,6 +385,18 @@ void allegro_sound_play_effect_low_time(void);
  * 
  */
 void allegro_sound_play_effect_run_completed(void);
+
+/**
+ * @brief Reproduce efecto de 'menu enter'
+ * 
+ */
+void allegro_sound_play_effect_menu_enter(void);
+
+/**
+ * @brief Reproduce efecto de 'saliendo'
+ * 
+ */
+void allegro_sound_play_effect_exiting(void);
 
 #pragma endregion allegro_sound_play_sample
 

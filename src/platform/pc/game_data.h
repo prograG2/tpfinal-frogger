@@ -153,6 +153,14 @@ void game_data_clear_name(void);
  */
 void game_data_add_name_letter(char letter);
 
+/**
+ * @brief Devuelve puntero al nombre del jugador
+ * 
+ * @return char* 
+ */
+const char *game_data_get_name(void);
+
+
 
 /*******************************************************************************
  ******************************************************************************/

@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <pthread.h>
+#include <unistd.h>
 
 
 /*******************************************************************************
@@ -328,6 +329,8 @@ bool inicializarFsm(void)
 
 	pthread_create(&tinput, NULL, thread_input, NULL);
 
+	reproducir_musica_menu_ppal();
+
 	return true;
 }
 
@@ -427,6 +430,7 @@ static void do_nothing(void)
 
 static void menu_enter(void){
 	limpiarDisplay();
+	reproducir_efecto_menu_enter();
 	queue_insert(CTE_OPCION+getOpcion());
 }
 
@@ -439,12 +443,15 @@ static void pasar_a_menu_ppal(){
 
 static void pasar_a_ranking(){
 	mostrarTexto("RANKING", POS_MSJ_RANKING);
-
+	reproducir_musica_ranking();
 	pthread_create(&tdisplayranking, NULL, thread_display_ranking, NULL);
 }
 
 static void salir_del_juego(){
 	pthread_join(tinput, NULL);
+	pausar_musica();
+	reproducir_efecto_saliendo();
+	sleep(6);
 	destruirMenu();
 	limpiarDisplay();
 	queue_insert(SALIR);
@@ -453,6 +460,7 @@ static void salir_del_juego(){
 
 static void ranking_enter(void){
 	pthread_join(tdisplayranking, NULL);
+	reproducir_musica_menu_ppal();
 	limpiarDisplay();
 }
 
@@ -476,6 +484,8 @@ static void siguiente_nivel(){
 static void iniciar_juego(void){
 	inicializarJuego();
 	reconfigurarDisplayOFF();
+
+	reproducir_musica_jugando();
 
     //mandar el string con el nombre que vive en fsm.c al jugador.nombre
 
@@ -513,6 +523,7 @@ static void pasar_a_dificultad(){
 
 static void set_dificultad(void){
 	setDificultad(FACIL + getOpcion());
+	reproducir_efecto_menu_enter();
 	int menu[4] = {JUGAR, DIFICULTAD, RANKING, SALIRTXT};
 	setMenu(menu, 4);
 	setOpcion(0);
@@ -520,6 +531,7 @@ static void set_dificultad(void){
 
 static void pausar(void){
 	pthread_join(tjuego, NULL);
+	reproducir_musica_menu_pausa();
 	reconfigurarDisplayON();
 	fijarTexto("PAUSA", POS_MSJ_PAUSA);
 	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
@@ -529,13 +541,14 @@ static void pausar(void){
 
 static void continuar(void){
 	limpiarDisplay();
-	continuandoJuego();
 	reconfigurarDisplayOFF();
+	reproducir_musica_jugando();
 	pthread_create(&tjuego, NULL, thread_juego, NULL);
 }
 
 static void salir_al_menu(void){
 	limpiarDisplay();
+	reproducir_musica_menu_ppal();
 	pasar_a_menu_ppal();
 }
 

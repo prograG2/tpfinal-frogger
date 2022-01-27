@@ -32,6 +32,7 @@
 #define SOUND_STREAM_FILE_MAIN		"main_menu_theme"
 #define SOUND_STREAM_FILE_PAUSE		"pause_menu_theme"
 #define SOUND_STREAM_FILE_PLAYING	"playing_theme"
+#define SOUND_STREAM_FILE_RANKING	"ranking_theme"
 #define SOUND_STREAM_FILE_RICK		"rick"
 
 //Nombres de los sprites
@@ -114,6 +115,8 @@ typedef struct
 		ALLEGRO_SAMPLE* bonus;
 		ALLEGRO_SAMPLE* run_completed;
 		ALLEGRO_SAMPLE* drowned;
+		ALLEGRO_SAMPLE* menu_enter;
+		ALLEGRO_SAMPLE* exiting;
 	} samples;
 
 } sounds_t;
@@ -251,6 +254,8 @@ static ALGIF_ANIMATION *rick;
 
 static char rick_prev_stream[30];
 
+static ALLEGRO_MONITOR_INFO monitor_info;
+
 /*******************************************************************************
  *******************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
@@ -310,6 +315,8 @@ void allegro_inits(void)
 
 	rick_init();
 
+	must_init(al_get_monitor_info(0, &monitor_info), "getting monitor info");
+
 	//creacion del display
 	allegro_reinit_display();
 
@@ -331,22 +338,26 @@ void allegro_deinits(void)
 
 void allegro_reinit_display(void)
 {
-	/*
-	if(allegro_vars.disp != NULL)
-		al_destroy_display(allegro_vars.disp);
-	*/
+	
+	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	//Para tener aceleracion por HW desde la GPU (hace que no explote con los draw_text)
+	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
+	//al_set_new_display_flags(ALLEGRO_RESIZABLE);
+
+	//Titulo de la ventana
+	al_set_new_window_title("~ Programación I ~ TP Final ~ Frogger ~");
+	//Centrado en pantalla, según el monitor
+	al_set_new_window_position(monitor_info.x2 / 2 - DISPLAY_W / 2, monitor_info.y2 / 2 - DISPLAY_H / 2 - 50);
+	
+	//opciones para el display (antialiasing)
+	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
+	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
 
 	//creación del display
 	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
 	must_init(allegro_vars.disp, "display");
-	al_set_window_position (allegro_vars.disp, 200, 0);
-	al_set_window_title (allegro_vars.disp, "~ Programación I ~ TP Final ~ Frogger ~");
-	//opciones para el display (antialiasing)
-	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
-	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
-	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
-	al_set_new_bitmap_flags(ALLEGRO_VIDEO_BITMAP);
 
+	//Reload de la fuente
 	char string[60] = PATH_FONTS;
 	strcat(string, "ProFontWindows.ttf");
 	//para usar la fuente builtin
@@ -356,8 +367,6 @@ void allegro_reinit_display(void)
 	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
 	allegro_vars.font_w = al_get_text_width(allegro_vars.font, "a");
 
-
-	
 }
 
 void allegro_deinit_display(void)
@@ -478,7 +487,7 @@ void allegro_sound_set_stream_credits(void)
 	else
 	{
 		must_init(init_audio_stream(file, 1.0),
-			"credtis stream");
+			"credits stream");
 	}
 	
 }
@@ -495,7 +504,7 @@ void allegro_sound_set_stream_main_menu(void)
 	else
 	{
 		must_init(init_audio_stream(file, 1.0),
-			"credtis stream");
+			"main menu stream");
 	}
 }
 
@@ -511,7 +520,23 @@ void allegro_sound_set_stream_pause_menu(void)
 	else
 	{
 		must_init(init_audio_stream(file, 1.0),
-			"credtis stream");
+			"pause menu stream");
+	}
+}
+
+void allegro_sound_set_stream_ranking(void)
+{
+	char file[] = SOUND_STREAM_FILE_RANKING;
+
+	//si ya estaba inicializado...
+	if(strcmp(file, last_init_stream) == 0)
+	{
+		allegro_sound_pause_stream();
+	}
+	else
+	{
+		must_init(init_audio_stream(file, 1.0),
+			"ranking stream");
 	}
 }
 
@@ -527,7 +552,7 @@ void allegro_sound_set_stream_playing(void)
 	else
 	{
 		must_init(init_audio_stream(file, 1.0),
-			"credtis stream");
+			"playing stream");
 	}
 }
 
@@ -633,6 +658,16 @@ void allegro_sound_play_effect_low_time(void)
 void allegro_sound_play_effect_run_completed(void)
 {
 	al_play_sample(sounds.samples.run_completed, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_menu_enter(void)
+{
+	al_play_sample(sounds.samples.menu_enter, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_exiting(void)
+{
+	al_play_sample(sounds.samples.exiting, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 #pragma endregion allegro_sound_play_sample
@@ -910,6 +945,12 @@ static void audio_init(void)
 	must_init(init_sample(&sounds.samples.run_completed, "run_completed"),
 				"effect_run_completed sample");
 
+	must_init(init_sample(&sounds.samples.menu_enter, "menu_enter"),
+				"effect_menu_enter sample");
+
+	must_init(init_sample(&sounds.samples.exiting, "saliendo"),
+				"effect_saliendo sample");
+
 }
 
 static void audio_deinit(void)
@@ -925,6 +966,7 @@ static void audio_deinit(void)
 	al_destroy_sample(sounds.samples.jump);
 	al_destroy_sample(sounds.samples.low_time);
 	al_destroy_sample(sounds.samples.run_completed);
+	al_destroy_sample(sounds.samples.menu_enter);
 
 }
 

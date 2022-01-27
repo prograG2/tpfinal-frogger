@@ -11,7 +11,7 @@ OBJ_DIR := ../../../obj
 
 
 # Objetos genericos sin path
-_OBJS	:= display.o game.o input.o menu.o nombre.o 
+_OBJS	:= display.o game.o input.o menu.o nombre.o sound.o
 # Objetos especificos sin path
 _OBJS	+= bitmap.o mensajes.o
 # Objetos con path y la ID de la plataforma
@@ -58,6 +58,9 @@ $(OBJ_DIR)/menu_RPI.o: menu.c ../../menu.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/nombre_RPI.o: nombre.c ../../nombre.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/sound_RPI.o: sound.c ../../sound.h audio.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,6 +117,9 @@ menu.o: menu.c ../../menu.h
 
 nombre.o: nombre.c ../../nombre.h
 	$(CC) $(CFLAGS) -c $<
+
+sound.o: sound.c ../../sound.h audio.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -14,6 +14,7 @@
  ******************************************************************************/
 
 #include "../../menu.h"
+#include "../../sound.h"
 
 #include "allegro_stuff.h"
 #include "geometry.h"
@@ -117,9 +118,6 @@ void setMenu(int* a, unsigned int size)
 		//menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
 		case JUGAR:
 			menu.actual_window = MENU_WINDOW_HOME;
-
-			allegro_sound_set_stream_main_menu();
-			allegro_sound_play_stream();
 			
 			break;
 		
@@ -132,9 +130,6 @@ void setMenu(int* a, unsigned int size)
 		//menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
 		case CONTINUAR: 
 			menu.actual_window = MENU_WINDOW_PAUSE;
-
-			allegro_sound_set_stream_pause_menu();
-			allegro_sound_play_stream();
 
 			break;
 		
@@ -167,10 +162,10 @@ void subirOpcion(void)
 	{
 		(*actual_option)--;
 
-		allegro_sound_play_effect_click();
 		menu_draw();
 	}
 		
+	reproducir_efecto_seleccion();
 }
 
 void bajarOpcion(void)
@@ -182,10 +177,10 @@ void bajarOpcion(void)
 	{
 		(*actual_option)++;
 
-		allegro_sound_play_effect_click();
 		menu_draw();
 	}
 
+	reproducir_efecto_seleccion();
 }
 
 void moverOpcionActual(void)

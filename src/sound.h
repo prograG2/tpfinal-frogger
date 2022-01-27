@@ -61,6 +61,12 @@ void destruirSonido(void);
  * @brief 
  * 
  */
+void pausar_musica(void);
+
+/**
+ * @brief 
+ * 
+ */
 void reproducir_musica_menu_ppal(void);
 
 /**
@@ -142,7 +148,17 @@ void reproducir_efecto_nuevo_max_score(void);
  */
 void reproducir_efecto_game_over(void);
 
+/**
+ * @brief 
+ * 
+ */
+void reproducir_efecto_menu_enter(void);
 
+/**
+ * @brief 
+ * 
+ */
+void reproducir_efecto_saliendo(void);
 
 
 

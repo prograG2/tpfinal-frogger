@@ -15,6 +15,7 @@
 
 #include "../../menu.h"
 #include "../../display.h"
+#include "../../sound.h"
 
 #include <stdlib.h>
 
@@ -86,12 +87,16 @@ void subirOpcion(){
     if(--menu.opcion_actual < 0)
         menu.opcion_actual = menu.max_opciones - 1;
     fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
+
+	reproducir_efecto_seleccion();
 }
 
 void bajarOpcion(){
     if(++menu.opcion_actual >= menu.max_opciones)
         menu.opcion_actual = 0;
     fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
+
+	reproducir_efecto_seleccion();
 }
 
 void iniciarMenu(){

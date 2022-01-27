@@ -70,7 +70,12 @@
 void nuevoNombre(void)
 {
 	allegro_clear_display();
-	al_clear_to_color(al_map_rgb(100,1,1));
+
+	/*cambiar por background correspondiente*/
+	al_clear_to_color(al_map_rgb(100,50,50));
+	
+	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 10, DISPLAY_H/2, 0,
+					"Nombre del jugador: ");
 	al_flip_display();
 }
 
@@ -93,6 +98,18 @@ void agregarLetra(void)
 {
 	game_data_add_name_letter(allegro_get_last_key());
 
+	const char *name  = game_data_get_name();
+
+	allegro_clear_display();
+
+	/*cambiar por background correspondiente*/
+	al_clear_to_color(al_map_rgb(100,50,50));
+
+	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 10, DISPLAY_H/2, 0,
+					"Nombre del jugador: %s", name);
+		
+	al_flip_display();	
+	
 }
 
 void subirNombre(void)

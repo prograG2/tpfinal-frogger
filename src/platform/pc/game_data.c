@@ -199,22 +199,28 @@ void game_data_add_name_letter(char letter)
 		{
 			letter += '@';
 			strncat(data.name, &letter, 1);
+			length++;
 		}
 
 		
 
-		/*algún sprite*/
 	}	
 
+	/*
 	if(length > 0)
 	{
-		al_clear_to_color(al_map_rgb(255,255,255));
 		al_draw_textf(allegro_get_var_font(), al_map_rgb(100,100,100), 10, DISPLAY_H/2, 0,
 					"Nombre del jugador: %s", data.name);
 		
 		al_flip_display();	
 	}
+	*/
 	
+}
+
+const char *game_data_get_name(void)
+{
+	return(&data.name);
 }
 
 
