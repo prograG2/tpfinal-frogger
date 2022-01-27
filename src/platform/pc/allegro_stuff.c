@@ -247,7 +247,7 @@ static sounds_t sounds;
 //nombre del ultimo stream inicializado
 static char last_init_stream[30];
 
-//static ALGIF_ANIMATION *rick;
+static ALGIF_ANIMATION *rick;
 
 static char rick_prev_stream[30];
 
@@ -667,7 +667,7 @@ void allegro_rick_off(void)
 
 void allegro_rick_draw(void)
 {
-	//al_draw_bitmap(algif_get_bitmap(rick, al_get_time()), 100, DISPLAY_H/2, 0);
+	al_draw_bitmap(algif_get_bitmap(rick, al_get_time()), 100, DISPLAY_H/2, 0);
 }
 
 /*******************************************************************************
@@ -1021,10 +1021,10 @@ static bool init_sample(ALLEGRO_SAMPLE** sample, const char* file)
 
 static void rick_init(void)
 {
-	//rick = algif_load_animation("../res/gifs/rick.gif");
+	rick = algif_load_animation("../res/gifs/rick.gif");
 }
 
 static void rick_deinit()
 {
-	//algif_destroy_animation(rick);
+	algif_destroy_animation(rick);
 }
