@@ -72,6 +72,11 @@ void setNombre(char* nombre)
 
 }
 
+void setMaxPuntos(uint64_t max)
+{
+	
+}
+
 void setDificultad(int diff)
 {
 	if(diff == FACIL)
@@ -118,10 +123,13 @@ void inicializarJuego(void)
 	game_data_init();
 	entities_init();
 
-	rick_flag = false;
-
 	allegro_clear_display();
 	al_flip_display();
+
+}
+
+void pausarJuego(void)
+{
 
 }
 
@@ -179,16 +187,16 @@ void actualizarInterfaz(void)
 {
 	if(allegro_get_last_key() == ALLEGRO_KEY_9)
 	{
-		if(!rick_flag)
+		if(!allegro_get_rick_flag())
 		{
 			allegro_rick_on();
-			rick_flag = true;
+			allegro_set_rick_flag(true);
 		}
 
 		else
 		{
 			allegro_rick_off();
-			rick_flag = false;
+			allegro_set_rick_flag(false);
 		}		
 	}
 

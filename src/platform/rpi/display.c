@@ -46,6 +46,14 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
+/**
+ * @brief 
+ * 
+ * @param ptr 
+ * @return void* 
+ */
+static void* thread_texto_display(void* ptr);
+
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -164,6 +172,11 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos){
     mostrarTexto(puntos, POS_RANKING_2);
 }
 
+void mostrarCreditos(char* linea)
+{
+
+}
+
 void reconfigurarDisplayON(void)
 {
 	
@@ -174,17 +187,7 @@ void reconfigurarDisplayOFF(void)
 
 }
 
-void* thread_texto_display(void* ptr){
-    while(texto){
-        clock_t meta = clock() + SLEEP_CLOCKS;
-        while(clock() < meta);
-        moverMensaje(&texto1, REPETIR);
-        copiarMatrizRenglon(disp_matriz, texto1.renglon, POS_MSJ1);
-        moverMensaje(&texto2, REPETIR);
-        copiarMatrizRenglon(disp_matriz, texto2.renglon, POS_MSJ2);
-        actualizarDisplay();
-    }
-}
+
 
 
 
@@ -195,7 +198,17 @@ void* thread_texto_display(void* ptr){
  *******************************************************************************
  ******************************************************************************/
 
- 
+static void* thread_texto_display(void* ptr){
+    while(texto){
+        clock_t meta = clock() + SLEEP_CLOCKS;
+        while(clock() < meta);
+        moverMensaje(&texto1, REPETIR);
+        copiarMatrizRenglon(disp_matriz, texto1.renglon, POS_MSJ1);
+        moverMensaje(&texto2, REPETIR);
+        copiarMatrizRenglon(disp_matriz, texto2.renglon, POS_MSJ2);
+        actualizarDisplay();
+    }
+}
 
 
 

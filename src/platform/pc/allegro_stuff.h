@@ -423,6 +423,19 @@ void allegro_rick_on(void);
  * @brief 
  * 
  */
+bool allegro_get_rick_flag(void);
+
+/**
+ * @brief 
+ * 
+ * @param state 
+ */
+void allegro_set_rick_flag(bool state);
+
+/**
+ * @brief 
+ * 
+ */
 void allegro_rick_off(void);
 
 /**

@@ -130,6 +130,7 @@ void setMenu(int* a, unsigned int size)
 		//menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
 		case CONTINUAR: 
 			menu.actual_window = MENU_WINDOW_PAUSE;
+			allegro_set_rick_flag(false);
 
 			break;
 		
@@ -165,7 +166,7 @@ void subirOpcion(void)
 		menu_draw();
 	}
 		
-	reproducir_efecto_seleccion();
+	//reproducir_efecto_seleccion();
 }
 
 void bajarOpcion(void)
@@ -180,7 +181,7 @@ void bajarOpcion(void)
 		menu_draw();
 	}
 
-	reproducir_efecto_seleccion();
+	//reproducir_efecto_seleccion();
 }
 
 void moverOpcionActual(void)

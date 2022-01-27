@@ -84,11 +84,13 @@ void pausar_musica(void)
 	allegro_sound_pause_stream();
 }
 
-void reproducir_musica(int musica){
+void reproducir_musica(int musica)
+{
 
 }
 
-void reproducir_sonido(int sonido){
+void reproducir_sonido(int sonido)
+{
 
 }
 
