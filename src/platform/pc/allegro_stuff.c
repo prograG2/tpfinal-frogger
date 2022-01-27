@@ -17,7 +17,7 @@
 #include "geometry.h"
 #include <string.h>
 
-#include "algif.h"
+#include "./algif5/algif.h"
 
 
 /*******************************************************************************

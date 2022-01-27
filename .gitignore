@@ -33,7 +33,8 @@ bin
 
 # Libraries
 *.lib
-# *.a
+*.a
+!lib/librpiutils.a
 *.la
 *.lo
 
