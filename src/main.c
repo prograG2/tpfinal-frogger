@@ -19,48 +19,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
 #include <unistd.h>
-
-
-/*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: unsigned int anio_actual;+
 
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static void falta_envido (int);+
-
-
-/*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
-
-
-/*******************************************************************************
- * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static int temperaturas_actuales[4];+
+/**
+ * @brief Fixea consumo elevado de cpu en el while loop principal
+ * 
+ */
+static void fix_high_cpu_usage(void);
 
 
 /*******************************************************************************
@@ -71,9 +41,9 @@
 
 int main (void)
 {
-	srand(time(NULL));
-
     event_t evento;
+
+	srand(time(NULL));
 
 	if(!inicializarFsm())
 		return 1;
@@ -85,7 +55,7 @@ int main (void)
 			fsm(evento);
 		}
 
-		usleep(500);	
+		fix_high_cpu_usage();
 	}
 
 	printf("\nSaliendo...\n");
@@ -100,6 +70,10 @@ int main (void)
  *******************************************************************************
  ******************************************************************************/
 
+static void fix_high_cpu_usage(void)
+{
+	usleep(1000);
+}
 
 
 
