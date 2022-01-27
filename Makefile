@@ -46,7 +46,7 @@ LIBS_PC 	+= -Llib -lalgif
 
 # Librerias para RPI
 LIBS_RPI	:=
-LIBS_RPI	+=  -Llib -lrpiutils
+LIBS_RPI	+=  -Llib -lrpiutils -lSDL2
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
