@@ -28,7 +28,7 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-struct
+static struct
 {
 	int *menu_actual; //arreglo con los índices de textos ordenados para mostrar como menú
 	int opcion_actual;
@@ -88,7 +88,7 @@ void subirOpcion(){
         menu.opcion_actual = menu.max_opciones - 1;
     fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
 
-	reproducir_efecto_seleccion();
+	reproducir_efecto(EFECTO_SELECCION);
 }
 
 void bajarOpcion(){
@@ -96,21 +96,10 @@ void bajarOpcion(){
         menu.opcion_actual = 0;
     fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
 
-	reproducir_efecto_seleccion();
+	reproducir_efecto(EFECTO_SELECCION);
 }
 
 void iniciarMenu(){
-    /*
-    menu.textos[JUGAR] = "JUGAR";
-    menu.textos[DIFICULTAD] = "DIFICULTAD";
-    menu.textos[RANKING] = "RANKING";
-    menu.textos[SALIRTXT] = "SALIR";
-    menu.textos[CONTINUAR] = "CONTINUAR";
-    menu.textos[REINICIAR] = "REINICIAR";
-    menu.textos[FACIL] = "FACIL";
-    menu.textos[NORMAL] = "NORMAL";
-    menu.textos[DIFICIL] = "DIFICIL";
-    */
 }
 
 void destruirMenu(){

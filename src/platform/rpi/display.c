@@ -39,7 +39,7 @@
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: unsigned int anio_actual;+
+Matriz disp_matriz;
 
 
 /*******************************************************************************
@@ -66,8 +66,6 @@ static void* thread_texto_display(void* ptr);
  ******************************************************************************/
 
 static pthread_mutex_t lock;
-
-static Matriz disp_matriz;
 
 static pthread_t ttextodisplay;
 
@@ -109,7 +107,7 @@ void limpiarDisplay()
 	pthread_mutex_lock(&lock);
     if(texto){
         texto = 0;
-        pthread_join(thread_texto_display, NULL);
+        pthread_join(ttextodisplay, NULL);
     }
     limpiarMatriz(disp_matriz);
     actualizarDisplay();
@@ -208,6 +206,8 @@ static void* thread_texto_display(void* ptr){
         copiarMatrizRenglon(disp_matriz, texto2.renglon, POS_MSJ2);
         actualizarDisplay();
     }
+
+    return NULL;
 }
 
 

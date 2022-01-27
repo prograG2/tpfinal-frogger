@@ -89,6 +89,8 @@ static pthread_t ttiempo;
 
 static int frac, acc;
 
+static void* thread_tiempo(void* ptr);
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -175,6 +177,7 @@ void reiniciarNivel(){
 	jugador.tiempo_bits = 0b1111111111111111;
 	jugador.agua = 0;
 	respawn();
+	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
 }
 
 void respawn(){
@@ -310,6 +313,7 @@ void inicializarJuego()
 
 void pausarJuego(){
 	jugador.jugando = false;
+	pthread_join(ttiempo, NULL);
 }
 
 void actualizarInterfaz(){
@@ -329,6 +333,7 @@ void imprimirMapa(){
 
 void continuandoJuego(void)
 {
+	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
 	jugador.jugando = true;
 }
 
@@ -339,7 +344,7 @@ void continuandoJuego(void)
  *******************************************************************************
  ******************************************************************************/
 
-void thread_tiempo(void* ptr){
+static void* thread_tiempo(void* ptr){
 	clock_t ref = clock();
 	while(jugador.jugando && !(jugador.timeout)){
 		jugador.tiempo += clock() - ref;

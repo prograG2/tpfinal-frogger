@@ -58,7 +58,7 @@
  ******************************************************************************/
 
 static char* archivos_musica[] = {MUSICA_DIR"/main_menu_theme.wav", MUSICA_DIR"/ranking_theme.wav", MUSICA_DIR"/credits_theme.wav", MUSICA_DIR"/playing_theme.wav", MUSICA_DIR"/pause_menu_theme.wav", MUSICA_DIR"/game_over_menu_theme.wav"};
-static char* archivos_efectos[] = {EFECTOS_DIR"/click.wav", EFECTOS_DIR"/jump_original.wav", EFECTOS_DIR"/crash.wav", EFECTOS_DIR"/fall_in_water.wav", EFECTOS_DIR"/low_time.wav", EFECTOS_DIR"/goal_reached.wav", EFECTOS_DIR"/run_completed.wav", EFECTOS_DIR"/respect.wav", EFECTOS_DIR"/menu_enter.wav", EFECTOS_DIR"/saliendo.wav"}
+static char* archivos_efectos[] = {EFECTOS_DIR"/click.wav", EFECTOS_DIR"/jump_original.wav", EFECTOS_DIR"/crash.wav", EFECTOS_DIR"/fall_in_water.wav", EFECTOS_DIR"/low_time.wav", EFECTOS_DIR"/goal_reached.wav", EFECTOS_DIR"/run_completed.wav", EFECTOS_DIR"/respect.wav", EFECTOS_DIR"/died.wav", EFECTOS_DIR"/menu_enter.wav", EFECTOS_DIR"/saliendo.wav"};
 
 static Audio *musica[SIZEOF_MUSICA], *efectos[SIZEOF_EFECTOS];
 /*******************************************************************************
@@ -80,7 +80,7 @@ bool iniciarSonido(void)
     for(i=0; i<SIZEOF_MUSICA; i++)
         musica[i] = createAudio(archivos_musica[i], 1, SDL_MIX_MAXVOLUME);
     for(i=0; i<SIZEOF_EFECTOS; i++)
-        efectos[i] = createAudio(archivos_efectos[i], 0, SDL_MIX_MAXVOLUME / 2);
+        efectos[i] = createAudio(archivos_efectos[i], 0, SDL_MIX_MAXVOLUME);
     return true;
 }
 
@@ -89,9 +89,9 @@ void destruirSonido(void)
 	endAudio();
     int i;
     for(i=0; i<SIZEOF_MUSICA; i++)
-        musica[i] = freeAudio(archivos_musica[i], 1, SDL_MIX_MAXVOLUME);
+        freeAudio(musica[i]);
     for(i=0; i<SIZEOF_EFECTOS; i++)
-        efectos[i] = freeAudio(archivos_efectos[i], 0, SDL_MIX_MAXVOLUME / 2);
+        freeAudio(efectos[i]);
 }
 
 
@@ -108,7 +108,7 @@ void reproducir_musica(int m)
 
 void reproducir_efecto(int e)
 {
-	memory_fun(efectos[e]);
+	playSoundFromMemory(efectos[e], SDL_MIX_MAXVOLUME);
 }
 
 
