@@ -15,6 +15,7 @@
 #include "menu.h"
 #include "input.h"
 #include "nombre.h"
+#include "sound.h"
 
 #include <stdio.h>
 #include <stdlib.h>
