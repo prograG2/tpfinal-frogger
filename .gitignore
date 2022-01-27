@@ -12,7 +12,7 @@ obj
 # Directorio de ejecutables
 bin
 
-*/lib/*
+lib
 
 
 ### C ###
