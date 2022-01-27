@@ -21,7 +21,7 @@
 
 typedef int event_t;
 
-enum textos_menu{JUGAR = 0, DIFICULTAD, RANKING, SALIRTXT, CONTINUAR, REINICIAR, FACIL, NORMAL, DIFICIL};
+enum textos_menu{JUGAR = 0, DIFICULTAD, RANKING, CREDITOS, SALIRTXT, CONTINUAR, REINICIAR, FACIL, NORMAL, DIFICIL};
 enum eventos{NADA = -1, SALIR = 0, CHOCAR = 200, AGUA, TIMEOUT, GAME_OVER, META};
 enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO}; //Se respetan las definiciones de ALLEGRO ¡Chequear si se cambió la versión!
 

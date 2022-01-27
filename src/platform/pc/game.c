@@ -72,6 +72,11 @@ void setNombre(char* nombre)
 
 }
 
+void setMaxPuntos(uint64_t max)
+{
+	
+}
+
 void setDificultad(int diff)
 {
 	if(diff == FACIL)
@@ -120,6 +125,11 @@ void inicializarJuego(void)
 
 	allegro_clear_display();
 	al_flip_display();
+
+}
+
+void pausarJuego(void)
+{
 
 }
 

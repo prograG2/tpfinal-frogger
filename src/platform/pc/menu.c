@@ -166,7 +166,7 @@ void subirOpcion(void)
 		menu_draw();
 	}
 		
-	reproducir_efecto_seleccion();
+	//reproducir_efecto_seleccion();
 }
 
 void bajarOpcion(void)
@@ -181,7 +181,7 @@ void bajarOpcion(void)
 		menu_draw();
 	}
 
-	reproducir_efecto_seleccion();
+	//reproducir_efecto_seleccion();
 }
 
 void moverOpcionActual(void)

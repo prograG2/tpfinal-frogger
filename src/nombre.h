@@ -77,6 +77,11 @@ void agregarLetra(void);
  */
 void subirNombre(void);
 
+/**
+ * @brief 
+ * 
+ * @return char* 
+ */
 char* devolverNombre(void);
 
 /*******************************************************************************

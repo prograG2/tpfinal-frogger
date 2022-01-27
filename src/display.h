@@ -89,6 +89,13 @@ void fijarTexto(char* txt, int pos);
 void mostrarPosicion(char* posicion, char* nombre, char* puntos);
 
 /**
+ * @brief 
+ * 
+ * @param linea 
+ */
+void mostrarCreditos(char* linea);
+
+/**
  * @brief Construct a new reconfigurar Display object
  * 
  */

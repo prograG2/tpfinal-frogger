@@ -112,6 +112,11 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos)
 	printf("Posicion: %s ~ Nombre: %s ~ Score: %s\n", posicion, nombre, puntos);
 }
 
+void mostrarCreditos(char* linea)
+{
+
+}
+
 void reconfigurarDisplayON(void)
 {
 	allegro_reinit_display();
