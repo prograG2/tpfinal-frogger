@@ -355,7 +355,7 @@ bool inicializarFsm(void)
 
 	pthread_create(&tinput, NULL, thread_input, NULL);
 
-	//reproducir_musica_menu_ppal();
+	reproducir_musica(MUSICA_MENU_PPAL);
 
 	return true;
 }
@@ -478,7 +478,7 @@ static void do_nothing(void)
 
 static void menu_enter(void){
 	limpiarDisplay();
-	//reproducir_efecto_menu_enter();
+	reproducir_efecto(EFECTO_MENU_ENTER);
 	queue_insert(CTE_OPCION+getOpcion());
 }
 
@@ -491,23 +491,24 @@ static void pasar_a_menu_ppal(){
 
 static void pasar_a_ranking(){
 	mostrarTexto("RANKING", POS_MSJ_RANKING);
-	//reproducir_musica_ranking();
+	reproducir_musica(MUSICA_RANKING);
 	pthread_create(&tdisplayranking, NULL, thread_display_ranking, NULL);
 }
 
 static void pasar_a_creditos(void)
 {
 	mostrarTexto("CREDITOS", POS_MSJ_RANKING);
-	//reproducir_musica_creditos();
+	reproducir_musica(MUSICA_CREDITOS);
 	pthread_create(&tdisplaycreditos, NULL, thread_display_creditos, NULL);
 }
 
 static void salir_del_juego(){
 	pthread_join(tinput, NULL);
 	pausar_musica();
-	//reproducir_efecto_saliendo();
+	reproducir_efecto(EFECTO_SALIENDO);
 	sleep(6);
 	destruirMenu();
+	destruirSonido();
 	limpiarDisplay();
 	queue_insert(SALIR);
 	printf("GRACIAS POR JUGAR\n");
@@ -515,14 +516,14 @@ static void salir_del_juego(){
 
 static void ranking_enter(void){
 	pthread_join(tdisplayranking, NULL);
-	//reproducir_musica_menu_ppal();
+	reproducir_musica(MUSICA_MENU_PPAL);
 	limpiarDisplay();
 }
 
 static void creditos_enter(void)
 {
 	pthread_join(tdisplaycreditos, NULL);
-	//reproducir_musica_cretidos
+	reproducir_musica(MUSICA_MENU_PPAL);
 	limpiarDisplay();
 }
 
@@ -547,9 +548,7 @@ static void iniciar_juego(void){
 	inicializarJuego();
 	reconfigurarDisplayOFF();
 
-	//_musica_jugando();
-
-    //mandar el string con el nombre que vive en fsm.c al jugador.nombre
+	reproducir_musica(MUSICA_JUGANDO);
 
 	FILE* pFile;
     char linea[100];
@@ -585,7 +584,7 @@ static void pasar_a_dificultad(){
 
 static void set_dificultad(void){
 	setDificultad(FACIL + getOpcion());
-	//reproducir_efecto_menu_enter();
+	reproducir_efecto(EFECTO_MENU_ENTER);
 	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
 	setMenu(menu, 5);
 	setOpcion(0);
@@ -593,7 +592,7 @@ static void set_dificultad(void){
 
 static void pausar(void){
 	pthread_join(tjuego, NULL);
-	//reproducir_musica_menu_pausa();
+	reproducir_musica(MUSICA_MENU_PAUSA);
 	reconfigurarDisplayON();
 	fijarTexto("PAUSA", POS_MSJ_PAUSA);
 	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
@@ -604,21 +603,20 @@ static void pausar(void){
 static void continuar(void){
 	limpiarDisplay();
 	reconfigurarDisplayOFF();
-	//reproducir_musica_jugando();
+	reproducir_musica(MUSICA_JUGANDO);
 	pthread_create(&tjuego, NULL, thread_juego, NULL);
 }
 
 static void salir_al_menu(void){
 	limpiarDisplay();
-	//reproducir_musica_menu_ppal();
+	reproducir_musica(MUSICA_MENU_PPAL);
 	pasar_a_menu_ppal();
 }
 
 static void game_over(void){
-	//cambiar_musica
 	pthread_join(tjuego, NULL);
 
-	//reproducir_musica_game_over
+	reproducir_musica(MUSICA_GAME_OVER);
 	reconfigurarDisplayON();
 
 	uint64_t jugador_puntos = getPuntos();
@@ -651,13 +649,13 @@ static void game_over(void){
 				ulltoa(jugador_puntos, nueva_puntuacion);
 				strcat(aux, " ");
 				strcat(aux, nueva_puntuacion);
-				//fprintf(pFile2, "%s", aux);
+				fprintf(pFile2, "%s", aux);
 				ubicado = 1;
 			}
 			if(strcmp(nueva_linea, getNombre()) != 0){ //miro si NO es el nombre que ya puse
 				strcat(nueva_linea, " ");
 				strcat(nueva_linea, pch); //concateno los puntos
-				//fprintf(pFile2, "%s", nueva_linea);
+				fprintf(pFile2, "%s", nueva_linea);
 			}
 		}
 		fclose (pFile1);
