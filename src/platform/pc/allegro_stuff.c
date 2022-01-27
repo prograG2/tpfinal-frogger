@@ -181,12 +181,6 @@ static char *make_sprite_path(char * file_name, char* prev_str);
 static void sprites_deinit(void);
 
 /**
- * @brief Inicializa variable de tecla
- *
- */
-static void keyboard_init(void);
-
-/**
  * @brief Inicializa audios
  *
  */
@@ -244,10 +238,8 @@ static void rick_deinit(void);
 //variables principales de allegro
 static allegro_t allegro_vars;
 
-//arreglo para registrar el estado de cada tecla
-static unsigned char key[ALLEGRO_KEY_MAX];
-
-static ALLEGRO_KEYBOARD_STATE key_state;
+//Ultima tecla presionada
+static unsigned char last_key;
 
 //variable con los sonidos/musicas del juego
 static sounds_t sounds;
@@ -274,54 +266,6 @@ void must_init(bool test, const char *description)
 	}
 }
 
-void keyboard_update(void)
-{
-	ALLEGRO_EVENT event = allegro_vars.event;
-
-	switch(event.type)
-	{
-		case ALLEGRO_EVENT_KEY_CHAR:
-
-			if(!event.keyboard.repeat)
-				key[event.keyboard.keycode] = KEY_JUST_PRESSED;
-
-			break;
-
-		case ALLEGRO_EVENT_KEY_UP:
-			key[event.keyboard.keycode] = KEY_RELEASED;
-
-			break;
-
-		default:
-			break;
-	}
-
-}
-
-void save_keyboard_state(void)
-{
-	al_get_keyboard_state(&key_state);
-}
-
-bool check_keyboard_copy(unsigned char allegro_key_code)
-{
-	return(al_key_down(&key_state, allegro_key_code));
-}
-
-unsigned char keyboard_check_key(unsigned char allegro_key_code)
-{
-	unsigned char state = key[allegro_key_code];
-
-	if(state == KEY_JUST_PRESSED)
-		key[allegro_key_code] = KEY_PRESSED;
-
-	return(state);
-}
-
-void keyboard_set_key(unsigned char allegro_key_code)
-{
-	key[allegro_key_code] = KEY_PRESSED;
-}
 
 void allegro_inits(void)
 {
@@ -356,9 +300,6 @@ void allegro_inits(void)
 	allegro_vars.done = false;
 	//flag para renderizar
 	allegro_vars.redraw = false;
-
-	//inicializa teclado
-	keyboard_init();
 
 	//audio
 	must_init(al_install_audio(), "audio");
@@ -414,6 +355,8 @@ void allegro_reinit_display(void)
 	must_init(allegro_vars.font, "font");
 	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
 	allegro_vars.font_w = al_get_text_width(allegro_vars.font, "a");
+
+
 	
 }
 
@@ -423,6 +366,16 @@ void allegro_deinit_display(void)
 		al_destroy_display(allegro_vars.disp);
 }
 
+unsigned char allegro_get_last_key(void)
+{
+	return(last_key);
+}
+
+void allegro_set_last_key(unsigned char allegro_key_code)
+{
+	last_key = allegro_key_code;
+}
+
 ALLEGRO_EVENT_TYPE allegro_wait_for_event(void)
 {
 	al_wait_for_event(allegro_vars.queue, &allegro_vars.event);
@@ -430,14 +383,14 @@ ALLEGRO_EVENT_TYPE allegro_wait_for_event(void)
 	return(allegro_vars.event.type);
 }
 
-ALLEGRO_EVENT_TYPE allegro_get_next_event(void)
+ALLEGRO_EVENT* allegro_get_next_event(void)
 {
 	bool flag = al_get_next_event(allegro_vars.queue, &allegro_vars.event);
 
 	if(flag)
-		return (allegro_vars.event.type);
+		return (&allegro_vars.event);
 	else
-		return false;
+		return NULL;
 }
 
 ALLEGRO_EVENT allegro_get_var_event(void)
@@ -925,11 +878,6 @@ static void sprites_deinit(void)
 	}
 	
 
-}
-
-static void keyboard_init(void)
-{
-	memset(key, 0, ALLEGRO_KEY_MAX);
 }
 
 static void audio_init(void)

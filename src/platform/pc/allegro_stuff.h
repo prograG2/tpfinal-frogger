@@ -36,8 +36,6 @@
 
 #define FPS 60
 
-#define CHECK_KEY(key) (keyboard_check_key(key) == KEY_JUST_PRESSED)
-
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -122,42 +120,6 @@ extern sprites_t sprites;
 void must_init(bool test, const char *description);
 
 /**
- * @brief Registra cambios en las teclas
- * 
- */
-void keyboard_update(void);
-
-/**
- * @brief Guarda el estado del teclado en el momento de la invocacion
- * 
- */
-void save_keyboard_state(void);
-
-/**
- * @brief Verifica si se presionó una tecla, consultando en la copia del teclado
- * 
- * @param allegro_key_code Tecla a consultar
- * @return true 
- * @return false 
- */
-bool check_keyboard_copy(unsigned char allegro_key_code);
-
-/**
- * @brief Verifica el estado de una tecla
- * 
- * @param allegro_key_code Código de allegro para cada tecla
- * @return unsigned char KEY_RELEASED xor KEY_JUST_PRESSED xor KEY_PRESSED
- */
-unsigned char keyboard_check_key(unsigned char allegro_key_code);
-
-/**
- * @brief Registra que una tecla ya fue presionada. Agiliza la actualización de teclas.
- * 
- * @param allegro_key_code Código de allegro para cada tecla
- */
-void keyboard_set_key(unsigned char allegro_key_code);
-
-/**
  * @brief Inicializaciones de allegro. Si algo falla, lo notifica por consola y finaliza el programa.
  * 
  */
@@ -182,6 +144,20 @@ void allegro_reinit_display(void);
 void allegro_deinit_display(void);
 
 /**
+ * @brief Devuelve la ultima tecla presionada registrada
+ * 
+ * @return unsigned char ALLEGRO_KEY_CODE
+ */
+unsigned char allegro_get_last_key(void);
+
+/**
+ * @brief Setea una ultima tecla presionada
+ * 
+ * @param allegro_key_code ALLEGRO_KEY_CODE
+ */
+void allegro_set_last_key(unsigned char allegro_key_code);
+
+/**
  * @brief Espera a que ocurra un evento y lo devuelve
  * 
  * @return ALLEGRO_EVENT_TYPE 
@@ -191,9 +167,9 @@ ALLEGRO_EVENT_TYPE allegro_wait_for_event(void);
 /**
  * @brief Devuelve el proximo evento de la cola, si es que existe. De no haber, devuele false.
  * 
- * @return ALLEGRO_EVENT_TYPE 
+ * @return ALLEGRO_EVENT* 
  */
-ALLEGRO_EVENT_TYPE allegro_get_next_event(void);
+ALLEGRO_EVENT* allegro_get_next_event(void);
 
 /**
  * @brief Devuelve el evento de allegro

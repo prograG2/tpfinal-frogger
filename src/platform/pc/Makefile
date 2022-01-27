@@ -21,7 +21,7 @@ OBJS	:= $(patsubst %.o,$(OBJ_DIR)/%_PC.o,$(_OBJS))
 # Compilador
 CC := gcc
 #Flags de compilacion
-CFLAGS := -Wall -Wno-unknown-pragmas
+CFLAGS := -Wall -Wno-unknown-pragmas -O2
 ifdef CFLAG_DEBUG
 CFLAGS += $(CFLAG_DEBUG)
 endif

@@ -260,7 +260,7 @@ void subirNivel(void)
 
 void actualizarInterfaz(void)
 {
-	if(CHECK_KEY(ALLEGRO_KEY_9))
+	if(allegro_get_last_key() == ALLEGRO_KEY_9)
 	{
 		if(!rick_flag)
 		{

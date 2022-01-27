@@ -189,19 +189,32 @@ void game_data_add_name_letter(char letter)
 	int length = strlen(data.name);
 
 	if((letter == ALLEGRO_KEY_BACKSPACE) && (length > 0))
-		data.name[length - 1] = 0;
-
-	else if(strlen(data.name) < MAX_NAME_CHAR)
 	{
-		strncat(data.name, &letter, 1);
+		data.name[length - 1] = 0;
 	}
 
-	al_clear_to_color(al_map_rgb(255,255,255));
-	/*algún sprite*/
-	//printf("\nName: %s\n", data.name);
-	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,100,100), 10, DISPLAY_H/2, 0,
+	else if(letter >= ALLEGRO_KEY_A && letter <= ALLEGRO_KEY_Z)
+	{
+		if(strlen(data.name) < MAX_NAME_CHAR)
+		{
+			letter += '@';
+			strncat(data.name, &letter, 1);
+		}
+
+		
+
+		/*algún sprite*/
+	}	
+
+	if(length > 0)
+	{
+		al_clear_to_color(al_map_rgb(255,255,255));
+		al_draw_textf(allegro_get_var_font(), al_map_rgb(100,100,100), 10, DISPLAY_H/2, 0,
 					"Nombre del jugador: %s", data.name);
-	al_flip_display();	
+		
+		al_flip_display();	
+	}
+	
 }
 
 

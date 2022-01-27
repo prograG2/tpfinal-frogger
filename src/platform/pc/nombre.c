@@ -91,18 +91,7 @@ void siguienteLetra(void)
 
 void agregarLetra(void)
 {
-	int i;
-	for(i = ALLEGRO_KEY_A; i <= ALLEGRO_KEY_Z; i++)
-	{
-		if(check_keyboard_copy(i))
-		{
-			game_data_add_name_letter(i + '@');
-			break;
-		}
-	}
-
-	if(check_keyboard_copy(ALLEGRO_KEY_BACKSPACE))
-		game_data_add_name_letter(ALLEGRO_KEY_BACKSPACE);
+	game_data_add_name_letter(allegro_get_last_key());
 
 }
 

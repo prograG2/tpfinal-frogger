@@ -20,7 +20,7 @@ DEPS_GENERIC = display.h game.h input.h menu.h nombre.h
 # Compilador
 CC := gcc
 #Flags de compilacion
-CFLAGS := -Wall -Wno-unknown-pragmas
+CFLAGS := -Wall -Wno-unknown-pragmas -O2
 ifdef CFLAG_DEBUG
 CFLAGS += $(CFLAG_DEBUG)
 endif

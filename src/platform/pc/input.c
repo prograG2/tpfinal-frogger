@@ -57,7 +57,9 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static ALLEGRO_EVENT_TYPE event;
+static ALLEGRO_EVENT* event;
+
+static unsigned char last_key;
 
 
 /*******************************************************************************
@@ -78,59 +80,40 @@ event_t leerEntradas(void)
 
 	event = allegro_get_next_event();
 
-	if(event)
+
+	if(event != NULL)
 	{
-		switch (event)
+		switch ((*event).type)
 		{
 			case ALLEGRO_EVENT_TIMER:
+			allegro_set_var_redraw(true);
+
+			break;
+
+			case ALLEGRO_EVENT_KEY_DOWN:
+				last_key = allegro_get_last_key();
+
+				if(last_key != (*event).keyboard.keycode)
+				{
+					retorno = (*event).keyboard.keycode;
+					allegro_set_last_key(retorno);
+				}
 
 				break;
+			
+			case ALLEGRO_EVENT_KEY_UP:
+				allegro_set_last_key(0);
+
+				break;
+
 
 			default:
 				break;
 		}
-
-		//actualiza teclado
-		keyboard_update();
-		
-		//NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO
-
-		if(CHECK_KEY(ALLEGRO_KEY_ESCAPE))
-			retorno = ESC;
-		else if(CHECK_KEY(ALLEGRO_KEY_ENTER))
-			retorno = ENTER;
-		else if(CHECK_KEY(ALLEGRO_KEY_LEFT))
-			retorno = IZDA;
-		else if(CHECK_KEY(ALLEGRO_KEY_RIGHT))
-			retorno = DCHA;
-		else if(CHECK_KEY(ALLEGRO_KEY_UP))
-			retorno = ARRIBA;
-		else if(CHECK_KEY(ALLEGRO_KEY_DOWN))
-			retorno = ABAJO;
-		else if(CHECK_KEY(ALLEGRO_KEY_BACKSPACE))
-		{
-			retorno = BORRAR;
-			save_keyboard_state();
-		}
-		else
-		{
-			int i;
-			for(i = ALLEGRO_KEY_A; i <= ALLEGRO_KEY_Z; i++)
-			{
-				if(CHECK_KEY(i))
-				{
-					retorno = i;
-					save_keyboard_state();
-
-					break;
-				}
-			}
-		}
-			
-
 	
-		
 	}
+	
+
 	
 	return retorno;
 }

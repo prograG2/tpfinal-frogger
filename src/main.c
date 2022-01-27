@@ -85,7 +85,7 @@ int main (void)
 			fsm(evento);
 		}
 
-		usleep(100);	
+		usleep(500);	
 	}
 
 	printf("\nSaliendo...\n");
