@@ -17,7 +17,7 @@
 #include "geometry.h"
 #include <string.h>
 
-#include "./algif5/algif.h"
+#include "algif.h"
 
 
 /*******************************************************************************
@@ -253,6 +253,8 @@ static char last_init_stream[30];
 static ALGIF_ANIMATION *rick;
 
 static char rick_prev_stream[30];
+
+static bool rick_flag;
 
 static ALLEGRO_MONITOR_INFO monitor_info;
 
@@ -693,6 +695,16 @@ void allegro_rick_on(void)
 	allegro_sound_play_stream();
 }
 
+bool allegro_get_rick_flag(void)
+{
+	return rick_flag;
+}
+
+void allegro_set_rick_flag(bool state)
+{
+	rick_flag = state;
+}
+
 void allegro_rick_off(void)
 {
 	must_init(init_audio_stream(rick_prev_stream, 1.0),
@@ -1064,6 +1076,7 @@ static bool init_sample(ALLEGRO_SAMPLE** sample, const char* file)
 static void rick_init(void)
 {
 	rick = algif_load_animation("../res/gifs/rick.gif");
+	allegro_set_rick_flag(false);
 }
 
 static void rick_deinit()

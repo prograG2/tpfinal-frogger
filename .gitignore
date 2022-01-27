@@ -12,8 +12,6 @@ obj
 # Directorio de ejecutables
 bin
 
-lib
-
 
 ### C ###
 # Prerequisites
@@ -36,8 +34,7 @@ lib
 
 # Libraries
 *.lib
-*.a
-!*/lib/librpiutils.a
+#*.a
 *.la
 *.lo
 

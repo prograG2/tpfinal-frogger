@@ -35,7 +35,7 @@ OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))
 
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 # Librerias genericas
-LIBS		:= -lpthread -lm
+LIBS		:= -lpthread
 
 # Librerias para PC
 LIBS_PC		:=
@@ -107,7 +107,7 @@ $(BIN_DIR)/$(TARGET): build_MAIN build_$(PLATFORM)
 	@echo ;
 	@echo Echoing platform: $(PLATFORM)
 	@echo ;
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@ -lm
 
 
 # Regla para modulos principales
