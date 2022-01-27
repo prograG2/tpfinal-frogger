@@ -112,6 +112,16 @@ void setTiempo(clock_t tiempo)
 
 }
 
+bool tiempoRefrescoEntidades(void)
+{
+
+}
+
+bool tiempoLimite(void)
+{
+	
+}
+
 
 char* getNombre(void)
 {
@@ -275,19 +285,24 @@ void actualizarInterfaz(void)
 		}		
 	}
 
-	game_data_update();
-	entities_update();
+	if(allegro_get_var_redraw())
+	{
+		game_data_update();
+		entities_update();
 
-	allegro_clear_display();
-	allegro_draw_background();
+		allegro_clear_display();
+		allegro_draw_background();
 
-	if(rick_flag)
-		allegro_rick_draw();
+		if(rick_flag)
+			allegro_rick_draw();
 
-	entities_draw();
-	game_data_draw();
+		entities_draw();
+		game_data_draw();
 
-	al_flip_display();
+		al_flip_display();
+
+		allegro_set_var_redraw(false);
+	}
 	
 }
 

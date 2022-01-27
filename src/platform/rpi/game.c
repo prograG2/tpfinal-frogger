@@ -171,6 +171,17 @@ void setTiempo(clock_t tiempo){
 
 }
 
+bool tiempoRefrescoEntidades(void)
+{
+
+}
+
+bool tiempoLimite(void)
+{
+	
+}
+
+
 void setDificultad(int dificultad){
 	jugador.dificultad = dificultad;
 }

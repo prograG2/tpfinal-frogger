@@ -27,8 +27,6 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.5
-
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -57,21 +55,7 @@ void* thread_input(void* ptr);
  * 
  * @return void* 
  */
-void* thread_tiempo(void* ptr);
-
-/**
- * @brief 
- * 
- * @return void* 
- */
-void* thread_autos(void* ptr);
-
-/**
- * @brief 
- * 
- * @return void* 
- */
-void* thread_display_juego(void* ptr);
+void* thread_juego(void* ptr);
 
 /**
  * @brief 
@@ -175,6 +159,14 @@ static void game_over(void);
  */
 static void ulltoa(uint64_t num, char* str);
 
+/**
+ * @brief Crea archivo txt de ranking, si no lo estaba ya
+ * 
+ * @return true Exito
+ * @return false Fail
+ */
+static bool crear_ranking_txt(void);
+
 #pragma endregion privatePrototypes
 
 /*******************************************************************************
@@ -190,7 +182,7 @@ static void ulltoa(uint64_t num, char* str);
 static STATE* p2CurrentState = NULL;
 
 //threads a implementar
-pthread_t tinput, tdisplayjuego, tdisplayranking, tautos, ttiempo;
+static pthread_t tinput, tjuego, tdisplayranking;
 
 
 #pragma region FSM STATES
@@ -317,9 +309,12 @@ STATE en_game_over_esperando_opcion[]=
 bool inicializarFsm(void)
 {
 	p2CurrentState = en_menu_ppal;
-	
-	if(!queue_init())
-		return false;
+
+	if(!crear_ranking_txt())
+	{
+		perror("error creando ranking txt al inicializar fsm");
+	}
+
 
     iniciarDisplay();
     iniciarMenu();
@@ -373,41 +368,29 @@ void* thread_input(void* ptr){
 	return NULL;
 }
 
+void *thread_juego(void* ptr){
 
-void *thread_tiempo(void* ptr){
-	clock_t tiempo = getTiempoInicial(), inicio = getTiempoInicial();
-	clock_t limite = getTiempoLimite();
-    clock_t ref = clock();
-    while((p2CurrentState == jugando) && (tiempo < limite)){
-        tiempo = inicio + clock() - ref;
-		setTiempo(tiempo);
-    }
-    queue_insert(TIMEOUT);
-	return NULL;
-}
-
-void *thread_autos(void* ptr){
-	while(p2CurrentState == jugando){
-	clock_t meta = clock() + REFRESH_JUGADOR_CLOCKS;
-	while(clock() < meta);
-	refrescar();
-	//printf("agua: %d", getAgua());
-	}
-	return NULL;
-}
-
-void *thread_display_juego(void* ptr){
 	reconfigurarDisplayON();
 
     while(p2CurrentState == jugando)
-		actualizarInterfaz();
+	{
+		if(tiempoRefrescoEntidades())
+			refrescar();
 
+		if(tiempoLimite())
+			queue_insert(TIMEOUT);
+
+		actualizarInterfaz();
+	}
+		
 	reconfigurarDisplayOFF();
 
 	return NULL;
 }
 
-void *thread_display_ranking(void* ptr){
+void *thread_display_ranking(void* ptr)
+{
+
 	FILE* pFile;
 	char linea[100];
 	pFile = fopen ("ranking.txt" , "r");
@@ -417,17 +400,21 @@ void *thread_display_ranking(void* ptr){
 	}
 	int puesto_int = 1;
 	char puesto[2], *nombre, *puntos;
-	
-	while(fgets(linea, 100, pFile) != NULL){
-		char* pch = strtok(linea," ");
-		nombre = pch;
-		ulltoa(puesto_int++, puesto);
-		pch = strtok(NULL, " ");
-		puntos = pch;
-		mostrarPosicion(puesto, nombre, puntos);
+	while(p2CurrentState == viendo_ranking)
+	{
+		while(fgets(linea, 100, pFile) != NULL)
+		{
+			char* pch = strtok(linea," ");
+			nombre = pch;
+			ulltoa(puesto_int++, puesto);
+			pch = strtok(NULL, " ");
+			puntos = pch;
+			mostrarPosicion(puesto, nombre, puntos);
+		}
 	}
+
 	fclose (pFile);
-	queue_insert(ENTER);
+
 	return NULL;
 }
 
@@ -452,14 +439,6 @@ static void pasar_a_menu_ppal(){
 static void pasar_a_ranking(){
 	mostrarTexto("RANKING", POS_MSJ_RANKING);
 
-	//crea el archivo, si no lo estaba
-	FILE* pFile;
-	pFile = fopen ("ranking.txt" , "a");
-	if (pFile == NULL){
-		perror ("Error creanto archivo de ranking");
-	}
-	fclose (pFile);
-
 	pthread_create(&tdisplayranking, NULL, thread_display_ranking, NULL);
 }
 
@@ -477,9 +456,7 @@ static void ranking_enter(void){
 
 
 static void subir_nivel(){
-	pthread_join(ttiempo, NULL);
-	pthread_join(tautos, NULL);
-	pthread_join(tdisplayjuego, NULL);
+	pthread_join(tjuego, NULL);
 	subirNivel();
 	char pasar_str[10] = "NIVEL ";
 	char niv_str[3];
@@ -490,9 +467,7 @@ static void subir_nivel(){
 
 static void siguiente_nivel(){
 	reiniciarNivel();
-	pthread_create(&tdisplayjuego, NULL, thread_display_juego, NULL);
-	pthread_create(&tautos, NULL, thread_autos, NULL);
-	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
+	pthread_create(&tjuego, NULL, thread_juego, NULL);
 }
 
 
@@ -518,9 +493,7 @@ static void iniciar_juego(void){
     fclose (pFile);
 
 	reiniciarNivel();
-	pthread_create(&tdisplayjuego, NULL, thread_display_juego, NULL);
-	pthread_create(&tautos, NULL, thread_autos, NULL);
-	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
+	pthread_create(&tjuego, NULL, thread_juego, NULL);
 }
 
 static void pasar_a_nombre(){
@@ -544,9 +517,7 @@ static void set_dificultad(void){
 }
 
 static void pausar(void){
-	pthread_join(ttiempo, NULL);
-	pthread_join(tautos, NULL);
-	pthread_join(tdisplayjuego, NULL);
+	pthread_join(tjuego, NULL);
 	reconfigurarDisplayON();
 	fijarTexto("PAUSA", POS_MSJ_PAUSA);
 	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
@@ -558,9 +529,7 @@ static void continuar(void){
 	limpiarDisplay();
 	continuandoJuego();
 	reconfigurarDisplayOFF();
-	pthread_create(&tdisplayjuego, NULL, thread_display_juego, NULL);
-	pthread_create(&tautos, NULL, thread_autos, NULL);
-	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
+	pthread_create(&tjuego, NULL, thread_juego, NULL);
 }
 
 static void salir_al_menu(void){
@@ -570,9 +539,7 @@ static void salir_al_menu(void){
 
 static void game_over(void){
 	//cambiar_musica
-	pthread_join(ttiempo, NULL);
-	pthread_join(tautos, NULL);
-	pthread_join(tdisplayjuego, NULL);
+	pthread_join(tjuego, NULL);
 	uint64_t jugador_puntos = getPuntos();
 	if(jugador_puntos > getMaxPuntos()){
 		mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ_NEW_HI_SCORE);
@@ -645,4 +612,18 @@ static void ulltoa(uint64_t num, char* str)
         str[i--] = str[j];
         str[j++] = ch;
     }
+}
+
+static bool crear_ranking_txt(void)
+{
+	//crea el archivo, si no lo estaba
+	FILE* pFile;
+	pFile = fopen ("ranking.txt" , "a");
+
+	if (pFile == NULL)
+		return false;
+
+	fclose (pFile);
+
+	return true;
 }

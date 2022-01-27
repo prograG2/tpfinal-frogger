@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 #include <time.h>
+#include <stdbool.h>
 
 
 /*******************************************************************************
@@ -97,6 +98,22 @@ void setDificultad(int dif);
  * @param tiempo 
  */
 void setTiempo(clock_t tiempo);
+
+/**
+ * @brief 
+ * 
+ * @return true 
+ * @return false 
+ */
+bool tiempoRefrescoEntidades(void);
+
+/**
+ * @brief  
+ * 
+ * @return true 
+ * @return false 
+ */
+bool tiempoLimite(void);
 
 
 
