@@ -18,19 +18,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <unistd.h>
 
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
-
-/**
- * @brief Fixea consumo elevado de cpu en el while loop principal
- * 
- */
-static void fix_high_cpu_usage(void);
 
 
 /*******************************************************************************
@@ -69,12 +61,4 @@ int main (void)
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-
-static void fix_high_cpu_usage(void)
-{
-	usleep(1000);
-}
-
-
-
 

@@ -29,6 +29,8 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
+#define FIX_CPU_USAGE_SLEEP_US		500	
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -381,6 +383,11 @@ void fsm(event_t evento_actual)
 	(*aux -> p_rut_accion) ();
 }
 
+void fix_high_cpu_usage(void)
+{
+	usleep(FIX_CPU_USAGE_SLEEP_US);
+}
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -394,6 +401,8 @@ static void* thread_input(void* ptr){
 	    if(entrada != NADA){
 		    queue_insert(entrada);
 		}
+
+		fix_high_cpu_usage();
     }
 
 	return NULL;
@@ -412,6 +421,8 @@ static void *thread_juego(void* ptr){
 			queue_insert(TIMEOUT);
 
 		actualizarInterfaz();
+
+		fix_high_cpu_usage();
 	}
 
 	pausarJuego();
@@ -442,6 +453,8 @@ static void *thread_display_ranking(void* ptr)
 		pch = strtok(NULL, " ");
 		puntos = pch;
 		mostrarPosicion(puesto, nombre, puntos);
+
+		fix_high_cpu_usage();
 	}
 	
 	fclose (pFile);
@@ -464,6 +477,8 @@ static void *thread_display_creditos(void* ptr)
 		while((fgets(linea, 100, pFile)) != NULL && (p2CurrentState == viendo_creditos))
 		{
 			mostrarCreditos(linea);
+
+			fix_high_cpu_usage();
 		}
 	}
 	*/
@@ -485,6 +500,7 @@ static void menu_enter(void){
 
 static void pasar_a_menu_ppal(){
 	fijarTexto("MENU", POS_MSJ_MENU);
+	reproducir_musica(MUSICA_MENU_PPAL);
 	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
 	setMenu(menu, 5);
 	setOpcion(0);
@@ -507,7 +523,7 @@ static void salir_del_juego(){
 	pthread_join(tinput, NULL);
 	pausar_musica();
 	reproducir_efecto(EFECTO_SALIENDO);
-	sleep(6);
+	sleep(2);
 	destruirMenu();
 	destruirSonido();
 	limpiarDisplay();

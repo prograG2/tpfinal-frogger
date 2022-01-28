@@ -12,7 +12,6 @@
  ******************************************************************************/
 
 #include "queue.h"
-
 #include <stdbool.h>
 
 /*******************************************************************************
@@ -80,6 +79,16 @@ bool inicializarFsm(void);
  * @param evento_actual Evento recibido.
  */
 void fsm(event_t evento_actual);
+
+/**
+ * @brief Fixea consumo elevado de cpu en el while loop principal
+ * 
+ * Not the best solucion, but sirve...
+ * 
+ * https://softwareengineering.stackexchange.com/questions/256524/infinite-while-loop-cpu-usage
+ * 
+ */
+void fix_high_cpu_usage(void);
 
 /*******************************************************************************
  ******************************************************************************/
