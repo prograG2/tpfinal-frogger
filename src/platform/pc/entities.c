@@ -412,35 +412,36 @@ static void frog_update(void)
 		else if(y_no_offset >= CELL_H * 2 && y_no_offset <= CELL_H * (lanes_cars[0] - 1))
 			frog.state = FROG_STATE_WATER;
 
-		//choque contra alguno de los muros superiores
-		//con 'match_uint' se sabe si la columna de la frog es alguna de la de los puntos de llegada
-		//entonces, con '!match_uint' sabemos si esta en alguna columna de muros
-		else if (y_no_offset < CELL_H * 2 && !is_frog_in_goal())
+		//choque contra alguno de los muros superiores, o llegada bien a un goal
+		else if (y_no_offset < CELL_H * 2)
 		{
-			frog.state = FROG_STATE_CRASH_WALL;
-			interaction_flag = true;
-		}
-			
-		//llego bien a algun goal
-		else
-		{
-			frog.state = FROG_STATE_GOAL;
-
-			//colision con fly
-			if(fly.used)
+			if(!is_frog_in_goal())
 			{
-				if(collide_short(	fly.x,
-									fly.y,
-									FLY_SIDE,
-									FLY_SIDE,
-									frog.x,
-									frog.y,
-									FROG_W,
-									FROG_H))
+				frog.state = FROG_STATE_CRASH_WALL;
+			}
+
+			else
+			{
+				frog.state = FROG_STATE_GOAL;
+
+				//colision con fly
+				if(fly.used)
 				{
-					frog.state = FROG_STATE_GOAL_FLY;
-					fly.used = false;
+					if(collide_short(	fly.x,
+										fly.y,
+										FLY_SIDE,
+										FLY_SIDE,
+										frog.x,
+										frog.y,
+										FROG_W,
+										FROG_H))
+					{
+						frog.state = FROG_STATE_GOAL_FLY;
+						fly.used = false;
+					}
 				}
+
+				
 			}
 
 			interaction_flag = true;
@@ -544,9 +545,9 @@ static void frog_update(void)
 	switch (frog.state)
 	{
 		case FROG_STATE_WATER:
-			//game_data_subtract_live();
-			//allegro_sound_play_effect_drowned();
-			//frog_init();
+			game_data_subtract_live();
+			allegro_sound_play_effect_drowned();
+			frog_init();
 			break;
 		
 		case FROG_STATE_CRASH_CAR:
@@ -558,8 +559,7 @@ static void frog_update(void)
 		
 		case FROG_STATE_CRASH_WALL:
 			game_data_subtract_live();
-			//allegro_sound_play_effect_crash();
-			allegro_sound_play_effect_low_time();
+			allegro_sound_play_effect_crash();
 			frog_init();
 
 			break;
