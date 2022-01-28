@@ -58,8 +58,6 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static bool rick_flag = false;
-
 
 /*******************************************************************************
  *******************************************************************************
@@ -185,19 +183,15 @@ void perderVidaTimeout(void)
 
 void actualizarInterfaz(void)
 {
-	if(allegro_get_last_key() == ALLEGRO_KEY_9)
+	if(allegro_get_last_key() == ALLEGRO_KEY_8 && !allegro_get_rick_flag())
 	{
-		if(!allegro_get_rick_flag())
-		{
-			allegro_rick_on();
-			allegro_set_rick_flag(true);
-		}
-
-		else
-		{
-			allegro_rick_off();
-			allegro_set_rick_flag(false);
-		}		
+		allegro_rick_on();
+		allegro_set_rick_flag(true);	
+	}
+	if(allegro_get_last_key() == ALLEGRO_KEY_9 && allegro_get_rick_flag())
+	{
+		allegro_rick_off();
+		allegro_set_rick_flag(false);
 	}
 
 	if(allegro_get_var_redraw())
@@ -208,7 +202,7 @@ void actualizarInterfaz(void)
 		allegro_clear_display();
 		allegro_draw_background();
 
-		if(rick_flag)
+		if(allegro_get_rick_flag())
 			allegro_rick_draw();
 
 		entities_draw();
