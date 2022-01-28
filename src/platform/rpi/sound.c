@@ -23,8 +23,8 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define MUSICA_DIR "/../res/sounds/streams"
-#define EFECTOS_DIR "/../res/sounds/samples"
+#define MUSICA_DIR "../res/sounds/streams"
+#define EFECTOS_DIR "../res/sounds/samples"
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS

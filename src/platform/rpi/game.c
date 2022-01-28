@@ -170,7 +170,7 @@ int getNivel(){
 void reiniciarNivel(){
 	jugador.ranas = 0b1001001001001001;
 	jugador.timeout_cnt = 0;
-	jugador.timeout_ref = 2*60*(1-0.05*(jugador.dificultad-FACIL));
+	jugador.timeout_ref = 2*60*(1-0.05*(jugador.dificultad));
 	frac = jugador.timeout_ref / 16;
 	acc = frac;
 	jugador.tiempo = 0;

@@ -347,6 +347,7 @@ bool inicializarFsm(void)
     iniciarDisplay();
     iniciarMenu();
     iniciarEntradas();
+	iniciarSonido();
 
 	fijarTexto("MENU", POS_MSJ_MENU);
 	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
@@ -511,7 +512,6 @@ static void salir_del_juego(){
 	destruirSonido();
 	limpiarDisplay();
 	queue_insert(SALIR);
-	printf("GRACIAS POR JUGAR\n");
 }
 
 static void ranking_enter(void){
@@ -583,7 +583,7 @@ static void pasar_a_dificultad(){
 }
 
 static void set_dificultad(void){
-	setDificultad(FACIL + getOpcion());
+	setDificultad(getOpcion());
 	reproducir_efecto(EFECTO_MENU_ENTER);
 	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
 	setMenu(menu, 5);

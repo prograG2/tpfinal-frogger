@@ -29,7 +29,7 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-
+enum textos_menu{JUGAR = 0, DIFICULTAD, RANKING, CREDITOS, SALIRTXT, CONTINUAR, REINICIAR, FACIL, NORMAL, DIFICIL};
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE

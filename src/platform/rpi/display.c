@@ -104,14 +104,12 @@ void actualizarDisplay()
 
 void limpiarDisplay()
 {
-	pthread_mutex_lock(&lock);
     if(texto){
         texto = 0;
         pthread_join(ttextodisplay, NULL);
     }
     limpiarMatriz(disp_matriz);
     actualizarDisplay();
-    pthread_mutex_unlock(&lock);
 }
 
 void mostrarTexto(char* txt, int pos)
@@ -140,8 +138,8 @@ void fijarTexto(char* txt, int pos){
         break;
     }
     if(!texto){
-        pthread_create(&ttextodisplay, NULL, thread_texto_display, NULL);
         texto = 1;
+        pthread_create(&ttextodisplay, NULL, thread_texto_display, NULL);
     }
 }
 

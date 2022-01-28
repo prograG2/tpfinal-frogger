@@ -56,7 +56,7 @@ static struct
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-char* menu_textos[9] = {"JUGAR", "DIFICULTAD", "RANKING", "SALIR", "CONTINUAR", "REINICIAR", "FACIL", "NORMAL", "DIFICIL"};
+char* menu_textos[] = {"JUGAR", "DIFICULTAD", "RANKING", "CREDITOS", "SALIR", "CONTINUAR", "REINICIAR", "FACIL", "NORMAL", "DIFICIL"};
 
 
 /*******************************************************************************

@@ -54,7 +54,7 @@ LIBS_RPI	+=  -Llib -lrpiutils -lSDL2
 CC := gcc
 #Flags de compilacion
 CFLAGS := -Wall -Wno-unknown-pragmas -O2
-#CFLAG_DEBUG := -g
+CFLAG_DEBUG := -g
 ifdef CFLAG_DEBUG
 CFLAGS += $(CFLAG_DEBUG)
 endif
@@ -68,19 +68,25 @@ MK := mkdir -p
 
 
 # Se exportan variables para que sean visibles por subshells de otros comandos
-export OBJ_DIR CFLAG_DEBUG
+export CFLAG_DEBUG
 
 
 
 # Plataforma (https://westermarck.com/thoughts/raspberry-pi-linux-32-64/)
-arch		:= ($shell uname -m)
+arch		:= $(shell uname -m)
 ifeq ($(arch), armv7l)
-PLATFORM 	= RPI
-TARGET 		= frogger_RPI
+PLATFORM	= RPI
 else
-PLATFORM = PC
-TARGET 		= frogger_PC
+PLATFORM	= PC
 endif
+
+#decidir el target según el valor de PLATFORM
+ifeq ($(PLATFORM), RPI)
+TARGET		= frogger_RPI
+else
+TARGET		= frogger_PC
+endif
+
 
 
 
@@ -96,7 +102,7 @@ dummy_obj_folder := $(shell mkdir -p $(BIN_DIR))
 
 all: $(BIN_DIR)/$(TARGET)
 
-
+#linkear lo que se compiló (las 2 dependencias que son build_MAIN y build_$(PLATFORM))
 $(BIN_DIR)/$(TARGET): build_MAIN build_$(PLATFORM)
 	$(eval OBJS += $(wildcard $(OBJ_DIR)/*_$(PLATFORM).o))
 	$(eval LIBS += $(LIBS_$(PLATFORM)))
@@ -107,7 +113,7 @@ $(BIN_DIR)/$(TARGET): build_MAIN build_$(PLATFORM)
 	@echo ;
 	@echo Echoing platform: $(PLATFORM)
 	@echo ;
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@ -lm
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@ -lm 
 
 
 # Regla para modulos principales
