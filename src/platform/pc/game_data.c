@@ -52,6 +52,8 @@ typedef struct
 
 	unsigned char flag;
 
+	bool goals[MAX_GOALS];
+
 } data_t;
 
 enum DATA_FLAGS
@@ -72,11 +74,37 @@ enum DATA_FLAGS
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
+/**
+ * @brief Inicializa datos internos
+ * 
+ */
 static void data_init(void);
 
+/**
+ * @brief Actualiza datos internos
+ * 
+ */
 static void data_update(void);
 
+/**
+ * @brief Dibuja el HUD (datos in-game) 
+ * 
+ */
 static void hud_draw(void);
+
+/**
+ * @brief Verifica si todos los goals estan completos
+ * 
+ * @return true Si
+ * @return false No
+ */
+static bool are_all_goals_full(void);
+
+/**
+ * @brief Dibuja "ranas facing down" en los puntos de llegada ya alcanzados
+ * 
+ */
+static void draw_reached_goals(void);
 
 
 /*******************************************************************************
@@ -99,6 +127,8 @@ static long time_ref;
 static int char_h;	//altura de un caracter
 static int char_w;	//ancho de un caracter
 
+static ALLEGRO_COLOR text_color;
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -113,6 +143,8 @@ void game_data_init(void)
 	char_h = allegro_get_var_font_h();
 	char_w = allegro_get_var_font_w();
 
+	text_color = al_map_rgb(255,255,255);
+
 	data_init();
 
 }
@@ -126,6 +158,7 @@ void game_data_update(void)
 void game_data_draw(void)
 {
 	hud_draw();
+	draw_reached_goals();
 }
 
 int game_data_get_lives(void)
@@ -218,9 +251,28 @@ void game_data_add_name_letter(char letter)
 	
 }
 
-const char *game_data_get_name(void)
+char *game_data_get_name(void)
 {
 	return(&data.name);
+}
+
+bool game_data_get_goal_state(unsigned int goal)
+{
+	if(goal < MAX_GOALS)
+		return data.goals[goal];
+}
+
+void game_data_set_goal(unsigned int goal)
+{
+	if(goal < MAX_GOALS)
+		data.goals[goal] = true;
+}
+
+void game_data_reset_goals(void)
+{
+	int i;
+	for(i = 0; i < MAX_GOALS; i++)
+		data.goals[i] = false;
 }
 
 
@@ -242,6 +294,8 @@ static void data_init(void)
 	data.timer_in_sec = 0;
 
 	data.flag = DATA_FLAG_STARTING;
+
+	game_data_reset_goals();
 }
 
 static void data_update(void)
@@ -276,7 +330,7 @@ static void hud_draw(void)
 
 	al_draw_textf(
 		allegro_get_var_font(),
-		al_map_rgb(0, 0, 0),        //Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
+		text_color,        //Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
 		1, 1,                       //Arriba a la izquierda.
 		0,
 		"Score: %06d",                    //6 cifras (por ahi es mucho).
@@ -285,7 +339,7 @@ static void hud_draw(void)
 	//Dibuja el numero de vuelta.
 	al_draw_textf(
 		allegro_get_var_font(),
-		al_map_rgb(0, 0, 0),
+		text_color,
 		1, char_h + 2,              //Para que quede abaj de la puntuacion en pantalla.
 		0,
 		"Run: %02d",                    //2 cifras. No me acuerdo si esta bien asi.
@@ -311,12 +365,44 @@ static void hud_draw(void)
 	//Segundos.
 	al_draw_textf(
 		allegro_get_var_font(),
-		al_map_rgb(0, 0, 0),
+		text_color,
 		al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3*char_w, 1,
 		0,
 		"Played Time: %04d",
 		data.timer_in_sec);
 		
+}
+
+static bool are_all_goals_full(void)
+{
+	bool state = true;
+
+	int i;
+	for(i = 0; i < MAX_GOALS; i++)
+	{
+		//si alguno esa vacio...
+		if(!data.goals[i])
+		{
+			state = false;
+			break;
+		}
+	}
+	
+	return state;
+}
+
+static void draw_reached_goals(void)
+{
+	int i;
+	for(i = 0; i < MAX_GOALS; i++)
+	{
+		//si algun goal fue alcanzado...
+		if(data.goals[i])
+			al_draw_bitmap(sprites.frog[6],
+							goal_cols[i]*CELL_W + FROG_OFFSET_X - 1,
+							CELL_H + FROG_OFFSET_Y + GOAL_ROW_OFFSET_Y_FIX,
+							0);
+	}
 }
 
 

@@ -16,6 +16,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+#include <stdbool.h>
 
 
 /*******************************************************************************
@@ -158,7 +159,29 @@ void game_data_add_name_letter(char letter);
  * 
  * @return char* 
  */
-const char *game_data_get_name(void);
+char *game_data_get_name(void);
+
+/**
+ * @brief Revisa si un punto de llegada es valido o no (vacio o lleno)
+ * 
+ * @param goal 0 a MAX_GOALS-1
+ * @return true Invalido
+ * @return false Valido
+ */
+bool game_data_get_goal_state(unsigned int goal);
+
+/**
+ * @brief Setea un goal como completado
+ * 
+ * @param goal 0 a MAX_GOALS-1
+ */
+void game_data_set_goal(unsigned int goal);
+
+/**
+ * @brief Habilita todos los goals
+ * 
+ */
+void game_data_reset_goals(void);
 
 
 

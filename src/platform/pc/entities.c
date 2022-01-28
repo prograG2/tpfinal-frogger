@@ -25,9 +25,6 @@
 
 //#define DEBUG_ENTITIES_TEXT
 
-//Factor que determina cuando considerar que un bloque esta dentro de otro (ver 'inside_short_scaled')
-#define INSERTION_FACTOR		(double)0.75
-
 #define LOGS_SPAWN_MIN			1
 #define LOGS_SPAWN_MAX			2
 #define LOGS_SPAWN_FRAMES		60
@@ -57,6 +54,7 @@
 #define	FLY_SPAWN_FRAMES_MAX	600	//maximo tiempo para respawnear mosca
 #define FLY_DESPAWN_FRAMES_MIN	600	//mínimo tiempo para sacar mosca
 #define	FLY_DESPAWN_FRAMES_MAX	900	//maximo tiempo para sacar mosca
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -236,12 +234,27 @@ static void fly_update(void);
  */
 static void fly_draw(void);
 
-
 /**
  * @brief Alinea y centra la posición de la rana con las celdas del mapa, por desvios sobre troncos.
  *
  */
-static void fix_frog_pos(void);
+//static void fix_frog_pos(void);
+
+/**
+ * @brief Alinea coordenadaY de la rana con las celdas del mapa, por desvios varios.
+ * 
+ */
+static void fix_frog_coord_y(void);
+
+/**
+ * @brief Verifica si la rana llego a un punto de llegada valido 
+ * 
+ * Verifica en terminos de coordenada X y en terminos de si el punto de llegada es repetido
+ * 
+ * @return true Llegó
+ * @return false No llegó
+ */
+static bool is_frog_in_goal(void);
 
 
 /*******************************************************************************
@@ -347,7 +360,6 @@ static void frog_init(void)
 static void frog_update(void)
 {
 	int i;
-	unsigned int x_no_offset = frog.x - FROG_OFFSET_X, y_no_offset = frog.y - FROG_OFFSET_Y;
 
 	if(!frog.moving)
 	{
@@ -374,12 +386,12 @@ static void frog_update(void)
 		else if(frog.facing == DIRECTION_DOWN)
 			frog.y += STEP_FRACTION_SIZE;
 
-		if(++frog.steps == STEP_RATIO)
+		if(++frog.steps >= STEP_RATIO)
 		{
 			frog.steps = 0;
 			frog.moving = false;
 
-			//fix_frog_pos();
+			fix_frog_coord_y();
 		}
 	}
 
@@ -388,111 +400,137 @@ static void frog_update(void)
 	//donde esta parada
 	if(!frog.moving)
 	{
+		unsigned int x_no_offset = frog.x - FROG_OFFSET_X, y_no_offset = frog.y - FROG_OFFSET_Y;
+
+		bool interaction_flag = false;
+
 		//en alguna fila de descanso o de autos
 		if(y_no_offset >= CELL_H * (lanes_cars[0] - 1) && y_no_offset <= DISPLAY_H - CELL_H)
 			frog.state = FROG_STATE_ROAD;
 
 		//en alguna fila de agua. Luego se actualiza si es sobre tronco o turtle
-		else if(y_no_offset >= CELL_H * 2 && y_no_offset < CELL_H * (lanes_cars[0] - 1))
+		else if(y_no_offset >= CELL_H * 2 && y_no_offset <= CELL_H * (lanes_cars[0] - 1))
 			frog.state = FROG_STATE_WATER;
 
 		//choque contra alguno de los muros superiores
 		//con 'match_uint' se sabe si la columna de la frog es alguna de la de los puntos de llegada
 		//entonces, con '!match_uint' sabemos si esta en alguna columna de muros
-		else if (y_no_offset < CELL_H * 2 && !match_uint(x_no_offset / CELL_W, goal_cols))
+		else if (y_no_offset < CELL_H * 2 && !is_frog_in_goal())
+		{
 			frog.state = FROG_STATE_CRASH_WALL;
-
-		//llego bien a algun goal. Luego se actualiza si fue con fly.
+			interaction_flag = true;
+		}
+			
+		//llego bien a algun goal
 		else
+		{
 			frog.state = FROG_STATE_GOAL;
+
+			//colision con fly
+			if(fly.used)
+			{
+				if(collide_short(	fly.x,
+									fly.y,
+									FLY_SIDE,
+									FLY_SIDE,
+									frog.x,
+									frog.y,
+									FROG_W,
+									FROG_H))
+				{
+					frog.state = FROG_STATE_GOAL_FLY;
+					fly.used = false;
+				}
+			}
+
+			interaction_flag = true;
+		}
+			
 			
 		/*---*/
 
-		//colision con autos
-		for(i = 0; i < MAX_CARS; i++)
+		
+
+		if(!interaction_flag)
 		{
-			if(!car[i].used)
-				continue;
+			//colision con autos
+			for(i = 0; i < MAX_CARS; i++)
+			{
+				if(!car[i].used)
+					continue;
+				
+				if(collide_short(	car[i].x,
+									car[i].y,
+									CAR_W,
+									CAR_H,
+									frog.x,
+									frog.y,
+									FROG_W,
+									FROG_H))
+				{
+					frog.state = FROG_STATE_CRASH_CAR;
+					interaction_flag = true;
+					break;	//no puede chocar con 2 autos a la vez
+				}
+			}
+		}
+
+		if(!interaction_flag)
+		{
+			//esta en algun tronco?
+			for(i = 0; i < MAX_LOGS; i++)
+			{
+				if(!log[i].used)
+					continue;
+
+				if(inside_shot_scaled(	log[i].x,
+										log[i].y,
+										LOG_W,
+										LOG_H,
+										frog.x,
+										frog.y,
+										FROG_W,
+										FROG_H,
+										INSERTION_FACTOR))
+				{
+					frog.x += log[i].dx;
+					frog.state = FROG_STATE_LOG;
+					interaction_flag = true;
+					break;		//no puede estar en 2 troncos a la vez
+				}
+			}
+		}
+		
+		if(!interaction_flag)
+		{
+			//esta en algun turtle_pack?
+			for(i = 0; i < MAX_TURTLE_PACKS; i++)
+			{
+				if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
+					continue;
+
+				if(inside_shot_scaled(	turtle_pack[i].x,
+										turtle_pack[i].y,
+										turtle_pack[i].wide,
+										TURTLE_SIDE,
+										frog.x,
+										frog.y,
+										FROG_W,
+										FROG_H,
+										INSERTION_FACTOR))
+				{
+					frog.x += turtle_pack[i].dx;
+					frog.state = FROG_STATE_TURTLE;
+					interaction_flag = true;
+					break;		//no puede estar en 2 troncos a la vez
+				}
+			}
+		}
 			
-			if(collide_short(	car[i].x,
-								car[i].y,
-								CAR_W,
-								CAR_H,
-								frog.x,
-								frog.y,
-								FROG_W,
-								FROG_H))
-			{
-				frog.state = FROG_STATE_CRASH_CAR;
-				break;	//no puede chocar con 2 autos a la vez
-			}
-		}
-
-		//colision con fly
-		if(fly.used)
-		{
-			if(collide_short(	fly.x,
-								fly.y,
-								FLY_SIDE,
-								FLY_SIDE,
-								frog.x,
-								frog.y,
-								FROG_W,
-								FROG_H))
-			{
-				frog.state = FROG_STATE_GOAL_FLY;
-				fly.used = false;
-			}
-		}
+		
 	}
 	
-	
 
-	//esta en algun tronco?
-	for(i = 0; i < MAX_LOGS; i++)
-	{
-		if(!log[i].used)
-			continue;
-
-		if(inside_shot_scaled(	log[i].x,
-								log[i].y,
-								LOG_W,
-								LOG_H,
-								frog.x,
-								frog.y,
-								FROG_W,
-								FROG_H,
-								INSERTION_FACTOR))
-		{
-			frog.x += log[i].dx;
-			frog.state = FROG_STATE_LOG;
-			break;		//no puede estar en 2 troncos a la vez
-		}
-	}
-
-	//esta en algun turtle_pack?
-	for(i = 0; i < MAX_TURTLE_PACKS; i++)
-	{
-		if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
-			continue;
-
-		if(inside_shot_scaled(	turtle_pack[i].x,
-								turtle_pack[i].y,
-								turtle_pack[i].wide,
-								TURTLE_SIDE,
-								frog.x,
-								frog.y,
-								FROG_W,
-								FROG_H,
-								INSERTION_FACTOR))
-		{
-			frog.x += turtle_pack[i].dx;
-			frog.state = FROG_STATE_TURTLE;
-			break;		//no puede estar en 2 troncos a la vez
-		}
-	}
-
-	
 	//revision de limites
 	if(frog.x < FROG_MIN_X)
 		frog.x = FROG_MIN_X;
@@ -506,9 +544,9 @@ static void frog_update(void)
 	switch (frog.state)
 	{
 		case FROG_STATE_WATER:
-			game_data_subtract_live();
-			allegro_sound_play_effect_drowned();
-			frog_init();
+			//game_data_subtract_live();
+			//allegro_sound_play_effect_drowned();
+			//frog_init();
 			break;
 		
 		case FROG_STATE_CRASH_CAR:
@@ -520,7 +558,8 @@ static void frog_update(void)
 		
 		case FROG_STATE_CRASH_WALL:
 			game_data_subtract_live();
-			allegro_sound_play_effect_crash();
+			//allegro_sound_play_effect_crash();
+			allegro_sound_play_effect_low_time();
 			frog_init();
 
 			break;
@@ -545,7 +584,7 @@ static void frog_update(void)
 
 #ifdef DEBUG_ENTITIES_TEXT
 	if(!(game_frames % 10))
-		printf("state: %d ~~ y_no_offset: %d\n", frog.state, y_no_offset);
+		printf("state: %d ~~ y_no_offset: %d\n", frog.state, frog.y - FROG_OFFSET_Y);
 #endif
 
 }
@@ -1094,7 +1133,7 @@ static void turtles_draw(void)
 static void fly_init(void)
 {
 	fly.used = false;
-	fly.y = CELL_H + FLY_OFFSET_XY;
+	fly.y = CELL_H + FLY_OFFSET_XY + GOAL_ROW_OFFSET_Y_FIX;
 }
 
 static void fly_update(void)
@@ -1111,13 +1150,24 @@ static void fly_update(void)
 		if(!(game_frames % timeout))
 		{
 			//calculo de coordenada x para alguno de los puntos de llegada
-			fly.x = CELL_W * goal_cols[get_rand_between(0, MAX_GOALS - 1)] + FLY_OFFSET_XY;
+			int temp_goal = get_rand_between(0, MAX_GOALS - 1);
+			
+			//si el goal está libre...
+			if(!game_data_get_goal_state(temp_goal))
+			{
+				fly.x = CELL_W * goal_cols[temp_goal] + FLY_OFFSET_XY;
+				//marcado como usado
+				fly.used = true;
+				//desinicializo el timeout
+				timeout = 0;
+			}
 
-			//marcado como usado
-			fly.used = true;
+			//si no, cuando pasa otro timeout se intenta de nuevo
+			else
+			{
 
-			//desinicializo el timeout
-			timeout = 0;
+			}
+			
 		}
 
 	}
@@ -1160,6 +1210,7 @@ static void fly_draw(void)
 #endif
 }
 
+/*
 static void fix_frog_pos(void)
 {
 	//coordenadas topleft, sin offset
@@ -1222,4 +1273,77 @@ static void fix_frog_pos(void)
 
 		break;
 	}
+}
+*/
+
+static void fix_frog_coord_y(void)
+{
+	int y = (frog.y - FROG_OFFSET_Y);
+
+	int y_values[ROWS];
+
+	int i;
+
+	//Carga valores "correctos" de y
+	for(i = 1; i < ROWS - 1; i++)
+		y_values[i] = i * CELL_H;
+
+	int temp_a, temp_b;
+	for(i = 1; i < ROWS - 1; i++)
+	{
+		temp_a = y - y_values[i];
+
+		if(temp_a > 0)
+			continue;
+		if(temp_a == 0)
+			break;
+
+		temp_b = y_values[i-1] - y;
+
+		//"si está más cerca de la fila 'i' que de la 'i+1"
+		if(temp_a <= temp_b)
+			frog.y = y_values[i-1] + FROG_OFFSET_Y;
+		else
+			frog.y = y_values[i] + FROG_OFFSET_Y;
+
+		break;
+	}
+
+}
+
+static bool is_frog_in_goal(void)
+{
+	bool state = false;
+	int x = frog.x;
+
+	int i, x_col;
+	for(i = 0; i < MAX_GOALS; i++)
+	{
+		x_col = goal_cols[i]*CELL_W;
+
+		//Calculo para ver si entro bien o no
+		if(		(x > x_col - GOAL_ROW_MARGIN_TO_REACH) 
+								&& 
+				((x + FROG_W) < x_col + CELL_W + GOAL_ROW_MARGIN_TO_REACH))
+		{
+			//coodenada X aceptable
+			state = true;
+			break;
+		}
+	}
+
+	//Si coincide en coordenada y el goal esta libre...
+	if(state && !game_data_get_goal_state(i))
+	{
+		//marca el goal como completo
+		game_data_set_goal(i);
+	}
+	else
+	{
+		//no llego a un goal valido
+		state = false;
+	}
+		
+
+	return state;
 }

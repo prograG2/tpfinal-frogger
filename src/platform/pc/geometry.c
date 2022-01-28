@@ -71,19 +71,19 @@ static const pair_xy_t pair_xy_frog_sprites_frames[FROG_FRAMES] =
 
 //coordenadas topleft de cada frame del sprite de la tortuga
 static const pair_xy_t pair_xy_turtle_sprites_frames[TURTLE_FRAMES] =
-    {
+	{
         {2,0},
         {51,0},
         {99,0},
         {146,0},
         {194,0},
-        {242,0},
-        {289,0},
+        {243,0},
+        {290,0},
         {337,0},
-        {389,8},
-        {426,8},
-        {460,11}
-    };
+        {382,0},
+        {445,0},
+        {496,0}
+	};
 
 
 /*******************************************************************************
