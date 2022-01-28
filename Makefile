@@ -92,7 +92,7 @@ endif
 
 # Crea directorio de objetos y ejecutable
 dummy_obj_folder := $(shell mkdir -p $(OBJ_DIR))
-dummy_obj_folder := $(shell mkdir -p $(BIN_DIR))
+dummy_bin_folder := $(shell mkdir -p $(BIN_DIR))
 
 
 
