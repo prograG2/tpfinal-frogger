@@ -68,6 +68,9 @@ $(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h allegro_stuff.h geometry.h
 $(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h allegro_stuff.h game_data.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJ_DIR)/sound_PC.o: sound.c ../../sound.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -158,6 +161,9 @@ game_data.o: game_data.c game_data.h allegro_stuff.h geometry.h
 
 geometry.o: geometry.c geometry.h
 	$(CC) $(CFLAGS) -c $<
+
+sound.o: sound.c ../../sound.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~
 
