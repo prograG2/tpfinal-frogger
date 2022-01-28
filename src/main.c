@@ -35,8 +35,6 @@ int main (void)
 {
     event_t evento;
 
-	srand(time(NULL));
-
 	if(!inicializarFsm())
 		return 1;
 

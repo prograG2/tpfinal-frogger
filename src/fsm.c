@@ -345,6 +345,8 @@ bool inicializarFsm(void)
 		perror("error creando ranking txt al inicializar fsm");
 	}
 
+	srand(time(NULL));
+
 
     iniciarDisplay();
     iniciarMenu();
@@ -411,6 +413,8 @@ static void* thread_input(void* ptr){
 static void *thread_juego(void* ptr){
 
 	reconfigurarDisplayON();
+
+	srand(time(NULL));
 
     while(p2CurrentState == jugando)
 	{
