@@ -14,7 +14,7 @@ LIB_DIR := ../../../lib
 
 
 # Objetos genericos sin path
-_OBJS	:= display.o game.o input.o menu.o nombre.o 
+_OBJS	:= display.o game.o input.o menu.o nombre.o sound.o
 # Objetos especificos sin path
 _OBJS	+= allegro_stuff.o entities.o game_data.o geometry.o
 # Objetos con path y la ID de la plataforma
