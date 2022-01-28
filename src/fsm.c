@@ -636,7 +636,7 @@ static void salir_al_menu(void){
 static void game_over(void){
 	pthread_join(tjuego, NULL);
 
-	reproducir_musica(MUSICA_GAME_OVER);
+	reproducir_efecto(EFECTO_GAME_OVER);
 	reconfigurarDisplayON();
 
 	uint64_t jugador_puntos = getPuntos();

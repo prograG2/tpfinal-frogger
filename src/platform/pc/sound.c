@@ -88,10 +88,6 @@ void reproducir_musica(int musica)
 		case MUSICA_CREDITOS:
 			allegro_sound_set_stream_credits();
 			break;
-		
-		case MUSICA_GAME_OVER:
-			
-			break;
 
 		case MUSICA_JUGANDO:
 			allegro_sound_set_stream_playing();
@@ -126,7 +122,7 @@ void reproducir_efecto(int sonido)
 			break;
 
 		case EFECTO_GAME_OVER:
-			
+			allegro_sound_play_effect_game_over();
 			break;
 
 		case EFECTO_IMPACTO:
@@ -146,7 +142,7 @@ void reproducir_efecto(int sonido)
 			break;
 
 		case EFECTO_NUEVO_MAX_SCORE:
-			allegro_sound_play_effect_bonus();
+			allegro_sound_play_effect_new_max_score();
 			break;
 
 		case EFECTO_POCO_TIEMPO:

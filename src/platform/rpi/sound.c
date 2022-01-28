@@ -57,10 +57,28 @@
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static char* archivos_musica[] = {MUSICA_DIR"/main_menu_theme.wav", MUSICA_DIR"/ranking_theme.wav", MUSICA_DIR"/credits_theme.wav", MUSICA_DIR"/playing_theme.wav", MUSICA_DIR"/pause_menu_theme.wav", MUSICA_DIR"/game_over_menu_theme.wav"};
-static char* archivos_efectos[] = {EFECTOS_DIR"/click.wav", EFECTOS_DIR"/jump_original.wav", EFECTOS_DIR"/crash.wav", EFECTOS_DIR"/fall_in_water.wav", EFECTOS_DIR"/low_time.wav", EFECTOS_DIR"/goal_reached.wav", EFECTOS_DIR"/run_completed.wav", EFECTOS_DIR"/respect.wav", EFECTOS_DIR"/died.wav", EFECTOS_DIR"/menu_enter.wav", EFECTOS_DIR"/saliendo.wav"};
+static char* archivos_musica[] =
+	{MUSICA_DIR"/main_menu_theme.wav",
+	MUSICA_DIR"/ranking_theme.wav",
+	MUSICA_DIR"/credits_theme.wav",
+	MUSICA_DIR"/playing_theme.wav",
+	MUSICA_DIR"/pause_menu_theme.wav"};
+
+static char* archivos_efectos[] =
+	{EFECTOS_DIR"/click.wav",
+	EFECTOS_DIR"/jump_original.wav",
+	EFECTOS_DIR"/crash.wav",
+	EFECTOS_DIR"/fall_in_water.wav",
+	EFECTOS_DIR"/low_time.wav",
+	EFECTOS_DIR"/goal_reached.wav",
+	EFECTOS_DIR"/run_completed.wav",
+	EFECTOS_DIR"/new_max_score.wav",
+	EFECTOS_DIR"/game_over.wav",
+	EFECTOS_DIR"/menu_enter.wav",
+	EFECTOS_DIR"/saliendo.wav"};
 
 static Audio *musica[SIZEOF_MUSICA], *efectos[SIZEOF_EFECTOS];
+
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS

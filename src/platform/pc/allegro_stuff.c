@@ -118,6 +118,8 @@ typedef struct
 		ALLEGRO_SAMPLE* run_completed;
 		ALLEGRO_SAMPLE* drowned;
 		ALLEGRO_SAMPLE* menu_enter;
+		ALLEGRO_SAMPLE* new_max_score;
+		ALLEGRO_SAMPLE* game_over;
 		ALLEGRO_SAMPLE* exiting;
 	} samples;
 
@@ -669,6 +671,16 @@ void allegro_sound_play_effect_menu_enter(void)
 	al_play_sample(sounds.samples.menu_enter, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
+void allegro_sound_play_effect_game_over(void)
+{
+	al_play_sample(sounds.samples.game_over, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
+void allegro_sound_play_effect_new_max_score(void)
+{
+	al_play_sample(sounds.samples.new_max_score, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
 void allegro_sound_play_effect_exiting(void)
 {
 	al_play_sample(sounds.samples.exiting, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
@@ -969,6 +981,12 @@ static void audio_init(void)
 
 	must_init(init_sample(&sounds.samples.menu_enter, "menu_enter"),
 				"effect_menu_enter sample");
+
+	must_init(init_sample(&sounds.samples.game_over, "game_over"),
+				"effect_game_over sample");
+
+	must_init(init_sample(&sounds.samples.new_max_score, "new_max_score"),
+				"effect_new_max_score");
 
 	must_init(init_sample(&sounds.samples.exiting, "saliendo"),
 				"effect_saliendo sample");

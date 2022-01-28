@@ -393,6 +393,18 @@ void allegro_sound_play_effect_run_completed(void);
 void allegro_sound_play_effect_menu_enter(void);
 
 /**
+ * @brief Reproduce efecto de 'game over'
+ * 
+ */
+void allegro_sound_play_effect_game_over(void);
+
+/**
+ * @brief Reproduce efecto de 'new_max_score'
+ * 
+ */
+void allegro_sound_play_effect_new_max_score(void);
+
+/**
  * @brief Reproduce efecto de 'saliendo'
  * 
  */
