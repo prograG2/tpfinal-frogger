@@ -40,7 +40,7 @@ typedef struct
 
 typedef struct
 {
-	window_t window[MAX_MENU_WINDOWS];
+	window_t window[MENU_WINDOW_MAX];
 
 	int actual_window;
 
@@ -133,6 +133,12 @@ void setMenu(int* a, unsigned int size)
 			allegro_set_rick_flag(false);
 
 			break;
+
+		//menu game over (REINICIAR, SALIRTXT)
+		case REINICIAR:
+			menu.actual_window = MENU_WINDOW_GAME_OVER;
+
+			break;
 		
 		default:
 			break;
@@ -158,15 +164,16 @@ int getOpcion(void)
 void subirOpcion(void)
 {
 	int *actual_option = &menu.window[menu.actual_window].actual_state;
+	int *max_option = &menu.window[menu.actual_window].max_states;
 
-	if(*actual_option)
-	{
-		(*actual_option)--;
+	(*actual_option)--;
 
+	if(*actual_option < 0)
+		setOpcion(*max_option - 1);
+	else
 		menu_draw();
-	}
-		
-	//reproducir_efecto_seleccion();
+
+	reproducir_efecto(EFECTO_SELECCION);
 }
 
 void bajarOpcion(void)
@@ -174,14 +181,14 @@ void bajarOpcion(void)
 	int *actual_option = &menu.window[menu.actual_window].actual_state;
 	int *max_option = &menu.window[menu.actual_window].max_states;
 
-	if(*actual_option < (*max_option - 1))
-	{
-		(*actual_option)++;
+	(*actual_option)++;
 
+	if(*actual_option == *max_option)
+		setOpcion(0);
+	else
 		menu_draw();
-	}
 
-	//reproducir_efecto_seleccion();
+	reproducir_efecto(EFECTO_SELECCION);
 }
 
 void moverOpcionActual(void)
@@ -199,13 +206,17 @@ void moverOpcionActual(void)
 static void menu_init(void)
 {
 	//menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
-	menu.window[MENU_WINDOW_HOME].max_states = 4;
+	menu.window[MENU_WINDOW_HOME].max_states = 5;
 
 	//menu dificultades (FACIL, NORMAL, DIFICIL)
 	menu.window[MENU_WINDOW_DIFFICULTY].max_states = 3;
 
 	//menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
 	menu.window[MENU_WINDOW_PAUSE].max_states = 3;
+
+	//menu game over (REINICIAR, SALIRTXT)
+	menu.window[MENU_WINDOW_GAME_OVER].max_states = 2;
+	
 
 }
 

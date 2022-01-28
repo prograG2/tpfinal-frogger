@@ -78,9 +78,9 @@ typedef struct
 	struct
 	{
 		ALLEGRO_BITMAP* uncut;
-		ALLEGRO_BITMAP* option[MAX_MENU_STATES];
+		ALLEGRO_BITMAP* option[MENU_STATE_MAX];
 		ALLEGRO_BITMAP* background;
-	} menu[MAX_MENU_WINDOWS];
+	} menu[MENU_WINDOW_MAX];
     
 
     /*

@@ -31,8 +31,6 @@
 #define CELL_H  46
 #define CELL_W  46
 
-#define	MAX_GOALS			5			//cantidad de puntos de llegada
-
 #define MAX_LANES			(ROWS - 1)	//-1 por la primera que es para HUD
 
 #define LANES_CAR_TOTAL		5
@@ -69,7 +67,7 @@
 
 //Para los pasos de la rana
 #define STEP_FULL_SIZE  CELL_H
-#define STEP_RATIO      (CELL_H/2)
+#define STEP_RATIO      (CELL_H/3)
 #define STEP_FRACTION_SIZE  (STEP_FULL_SIZE / STEP_RATIO)
 
 //Bordes para la rana en el mapa
@@ -94,12 +92,8 @@
 //Tortugas
 #define TURTLE_FRAMES							11	//11 frames distintos tiene la animación completa
 #define	TURTLE_SIDE								CELL_W
-#define TURTLE_FRAME_ZERO_TO_SEVEN_SIDE			TURTLE_SIDE
-#define TURTLE_FRAME_ZERO_TO_SEVEN_OFFSET_XY	(CELL_W/2 - TURTLE_FRAME_ZERO_TO_SEVEN_SIDE/2)
-#define	TURTLE_FRAME_EIGTH_TO_NINE_SIDE			30
-#define TURTLE_FRAME_EIGTH_TO_NINE_OFFSET_XY	(CELL_W/2 - TURTLE_FRAME_EIGTH_TO_NINE_SIDE/2)
-#define TURTLE_FRAME_TEN_SIDE					20
-#define TURTLE_FRAME_TEN_OFFSET_XY				(CELL_W/2 - TURTLE_SIDE_TEN/2)
+#define TURTLE_FRAME_OFFSET_XY					(CELL_W/2 - TURTLE_SIDE/2)
+
 
 //Moscas
 #define	FLY_SIDE				30
@@ -109,15 +103,19 @@
 #define SPRITE_SIZE_HEART	20	//cuadrado
 
 
-#define MAX_MENU_WINDOWS	3
-#define MAX_MENU_STATES		4
-
-
 #define MENU_OPTION_TOPLEFT_X 	45
 #define MENU_OPTION_TOPLEFT_Y	175
 #define MENU_OPTION_DELTA_Y		100
 #define MENU_OPTION_W			600
 #define MENU_OPTION_H			75
+
+
+//Factor que determina cuando considerar que un bloque esta dentro de otro (ver 'inside_short_scaled')
+#define INSERTION_FACTOR		(double)0.75
+
+
+#define GOAL_ROW_OFFSET_Y_FIX		5	//baja un poco mas en Y
+#define GOAL_ROW_MARGIN_TO_REACH	5	//holgura para meterse a uno de los goals
 
 
 /*******************************************************************************
@@ -130,6 +128,16 @@ typedef struct
 	int y;
 
 } pair_xy_t;
+
+enum GOALS
+{
+	GOAL_LEFT,
+	GOAL_LEFT_MID,
+	GOAL_MID,
+	GOAL_RIGHT_MID,
+	GOAL_RIGHT,
+	MAX_GOALS
+};
 
 enum DIRECTIONS
 {
@@ -145,14 +153,18 @@ enum MENU_STATES
 	MENU_STATE_OPCION_0,
 	MENU_STATE_OPCION_1,
 	MENU_STATE_OPCION_2,
-	MENU_STATE_OPCION_3
+	MENU_STATE_OPCION_3,
+	MENU_STATE_OPCION_4,
+	MENU_STATE_MAX
 };
 
 enum MENU_WINDOWS
 {
 	MENU_WINDOW_HOME,
 	MENU_WINDOW_DIFFICULTY,
-	MENU_WINDOW_PAUSE
+	MENU_WINDOW_PAUSE,
+	MENU_WINDOW_GAME_OVER,
+	MENU_WINDOW_MAX
 };
 
 /*******************************************************************************

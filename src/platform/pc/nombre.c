@@ -98,7 +98,7 @@ void agregarLetra(void)
 {
 	game_data_add_name_letter(allegro_get_last_key());
 
-	const char *name  = game_data_get_name();
+	char *name  = game_data_get_name();
 
 	allegro_clear_display();
 
@@ -115,6 +115,11 @@ void agregarLetra(void)
 void subirNombre(void)
 {
 	
+}
+
+char* devolverNombre(void)
+{
+	return game_data_get_name();
 }
 
 /*******************************************************************************

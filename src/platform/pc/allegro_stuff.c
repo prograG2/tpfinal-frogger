@@ -55,6 +55,8 @@
 #define SPRITE_MENU_DIFF			"sprite_menu_diff"
 #define SPRITE_MENU_PAUSE_BACK		"sprite_menu_pause_background"
 #define SPRITE_MENU_PAUSE			"sprite_menu_pause"
+#define SPRITE_MENU_GAME_OVER_BACK	SPRITE_MENU_PAUSE_BACK
+#define SPRITE_MENU_GAME_OVER		SPRITE_MENU_PAUSE
 
 //Extensiones
 #define EXTENSION_SOUND_SAMPLE		".wav"
@@ -791,16 +793,8 @@ static void sprites_init(void)
 	for(i = 0; i < TURTLE_FRAMES; i++)
 	{
 		temp_xy = geometry_get_pair_xy_turtle_frame(i);
-		int temp_side;
 
-		if(i <= 7)
-			temp_side = TURTLE_FRAME_ZERO_TO_SEVEN_SIDE;
-		else if(i <= 9)
-			temp_side = TURTLE_FRAME_EIGTH_TO_NINE_SIDE;
-		else
-			temp_side = TURTLE_FRAME_TEN_SIDE;
-
-		sprites.turtle[i] = sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, temp_side, temp_side);
+		sprites.turtle[i] = sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, TURTLE_SIDE, TURTLE_SIDE);
 	}
 
 	//el de la mosca
@@ -822,7 +816,7 @@ static void sprites_init(void)
 	sprites.menu[MENU_WINDOW_HOME].uncut = al_load_bitmap(path);	
 	
 	//se recortan los highlight
-	for(i = 0, offset = 0; i < MAX_MENU_STATES; i++, offset += MENU_OPTION_DELTA_Y)
+	for(i = 0, offset = 0; i < MENU_STATE_MAX; i++, offset += MENU_OPTION_DELTA_Y)
 	{
 		sprites.menu[MENU_WINDOW_HOME].option[i] = sprite_cut(sprites.menu[MENU_WINDOW_HOME].uncut, 
 													MENU_OPTION_TOPLEFT_X,
@@ -838,7 +832,7 @@ static void sprites_init(void)
 	path = make_sprite_path(SPRITE_MENU_DIFF, path);
 	sprites.menu[MENU_WINDOW_DIFFICULTY].uncut = al_load_bitmap(path);
 	
-	for(i = 0, offset = 0; i < MAX_MENU_STATES; i++, offset += MENU_OPTION_DELTA_Y)
+	for(i = 0, offset = 0; i < MENU_STATE_MAX; i++, offset += MENU_OPTION_DELTA_Y)
 	{
 		sprites.menu[MENU_WINDOW_DIFFICULTY].option[i] = sprite_cut(sprites.menu[MENU_WINDOW_DIFFICULTY].uncut, 
 													MENU_OPTION_TOPLEFT_X,
@@ -854,9 +848,25 @@ static void sprites_init(void)
 	path = make_sprite_path(SPRITE_MENU_PAUSE, path);
 	sprites.menu[MENU_WINDOW_PAUSE].uncut = al_load_bitmap(path);
 	
-	for(i = 0, offset = 0; i < MAX_MENU_STATES; i++, offset += MENU_OPTION_DELTA_Y)
+	for(i = 0, offset = 0; i < MENU_STATE_MAX; i++, offset += MENU_OPTION_DELTA_Y)
 	{
 		sprites.menu[MENU_WINDOW_PAUSE].option[i] = sprite_cut(sprites.menu[MENU_WINDOW_PAUSE].uncut, 
+													MENU_OPTION_TOPLEFT_X,
+													MENU_OPTION_TOPLEFT_Y + offset, 
+													MENU_OPTION_W, 
+													MENU_OPTION_H);
+	}
+
+
+	path = make_sprite_path(SPRITE_MENU_GAME_OVER_BACK, path);
+	sprites.menu[MENU_WINDOW_GAME_OVER].background = al_load_bitmap(path);
+
+	path = make_sprite_path(SPRITE_MENU_GAME_OVER, path);
+	sprites.menu[MENU_WINDOW_GAME_OVER].uncut = al_load_bitmap(path);
+	
+	for(i = 0, offset = 0; i < MENU_STATE_MAX; i++, offset += MENU_OPTION_DELTA_Y)
+	{
+		sprites.menu[MENU_WINDOW_GAME_OVER].option[i] = sprite_cut(sprites.menu[MENU_WINDOW_GAME_OVER].uncut, 
 													MENU_OPTION_TOPLEFT_X,
 													MENU_OPTION_TOPLEFT_Y + offset, 
 													MENU_OPTION_W, 
@@ -913,12 +923,12 @@ static void sprites_deinit(void)
 
 	al_destroy_bitmap(sprites.heart);
 
-	for(i = 0; i < MAX_MENU_WINDOWS; i++)
+	for(i = 0; i < MENU_WINDOW_MAX; i++)
 	{
 		al_destroy_bitmap(sprites.menu[i].background);
 		al_destroy_bitmap(sprites.menu[i].uncut);
 
-		for(j = 0; j < MAX_MENU_STATES; j++)
+		for(j = 0; j < MENU_STATE_MAX; j++)
 		{
 			al_destroy_bitmap(sprites.menu[i].option[j]);
 		}

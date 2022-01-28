@@ -67,10 +67,7 @@
 
 bool iniciarSonido(void)
 {
-	bool state = true;
-
-
-	return state;
+	return true;
 }
 
 void destruirSonido(void)
@@ -86,105 +83,93 @@ void pausar_musica(void)
 
 void reproducir_musica(int musica)
 {
+	switch (musica)
+	{
+		case MUSICA_CREDITOS:
+			allegro_sound_set_stream_credits();
+			break;
+		
+		case MUSICA_GAME_OVER:
+			
+			break;
 
-}
+		case MUSICA_JUGANDO:
+			allegro_sound_set_stream_playing();
+			break;
 
-void reproducir_sonido(int sonido)
-{
+		case MUSICA_MENU_PAUSA:
+			allegro_sound_set_stream_pause_menu();
+			break;
 
-}
+		case MUSICA_MENU_PPAL:
+			allegro_sound_set_stream_main_menu();
+			break;
 
-/*
+		case MUSICA_RANKING:
+			allegro_sound_set_stream_ranking();
+			break;
+		
+		default:
+			break;
+	}
 
-void reproducir_musica_menu_ppal(void)
-{
-	allegro_sound_set_stream_main_menu();
 	allegro_sound_play_stream();
+
 }
 
-void reproducir_musica_ranking(void)
+void reproducir_efecto(int sonido)
 {
-	allegro_sound_set_stream_ranking();
-	allegro_sound_play_stream();
+	switch(sonido)
+	{
+		case EFECTO_AHOGADO:
+			allegro_sound_play_effect_drowned();
+			break;
+
+		case EFECTO_GAME_OVER:
+			
+			break;
+
+		case EFECTO_IMPACTO:
+			allegro_sound_play_effect_crash();
+			break;
+
+		case EFECTO_MENU_ENTER:
+			allegro_sound_play_effect_menu_enter();
+			break;
+
+		case EFECTO_META:
+			allegro_sound_play_effect_goal();
+			break;
+
+		case EFECTO_NIVEL_COMPLETO:
+			allegro_sound_play_effect_run_completed();
+			break;
+
+		case EFECTO_NUEVO_MAX_SCORE:
+			allegro_sound_play_effect_bonus();
+			break;
+
+		case EFECTO_POCO_TIEMPO:
+			allegro_sound_play_effect_low_time();
+			break;
+
+		case EFECTO_SALIENDO:
+			allegro_sound_play_effect_exiting();
+			break;
+
+		case EFECTO_SALTO:
+			allegro_sound_play_effect_jump();
+			break;
+
+		case EFECTO_SELECCION:
+			allegro_sound_play_effect_click();
+			break;
+
+		default:
+			break;
+	}
+
 }
-
-void reproducir_musica_creditos(void)
-{
-	allegro_sound_set_stream_credits();
-	allegro_sound_play_stream();
-}
-
-void reproducir_musica_jugando(void)
-{
-	allegro_sound_set_stream_playing();
-	allegro_sound_play_stream();
-}
-
-void reproducir_musica_menu_pausa(void)
-{
-	allegro_sound_set_stream_pause_menu();
-	allegro_sound_play_stream();
-}
-
-
-void reproducir_efecto_seleccion(void)
-{
-	allegro_sound_play_effect_click();
-}
-
-void reproducir_efecto_salto(void)
-{
-	
-}
-
-void reproducir_efecto_impacto(void)
-{
-	
-}
-
-void reproducir_efecto_ahogado(void)
-{
-	
-}
-
-void reproducir_efecto_poco_tiempo(void)
-{
-	
-}
-
-void reproducir_efecto_meta(void)
-{
-	
-}
-
-void reproducir_efecto_nivel_completo(void)
-{
-	
-}
-
-void reproducir_efecto_nuevo_max_score(void)
-{
-	
-}
-
-void reproducir_efecto_game_over(void)
-{
-	
-}
-
-void reproducir_efecto_menu_enter(void)
-{
-	allegro_sound_play_effect_menu_enter();
-}
-
-void reproducir_efecto_saliendo(void)
-{
-	allegro_sound_play_effect_exiting();	
-}
-
-*/
-
-
 
 
 /*******************************************************************************
