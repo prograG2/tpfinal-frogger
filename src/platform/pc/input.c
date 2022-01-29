@@ -107,10 +107,17 @@ event_t leerEntradas(void)
 						case ALLEGRO_KEY_F1:
 							allegro_sound_set_stream_gain_down();
 							break;
-					
+
+						case ALLEGRO_KEY_8:
+							break;
+
+						case ALLEGRO_KEY_9:
+							break;
+
 						default:
 							break;
 					}
+
 				}
 
 				break;
@@ -121,7 +128,6 @@ event_t leerEntradas(void)
 				break;
 
 			case ALLEGRO_EVENT_DISPLAY_CLOSE:
-				queue_insert(SALIR);
 
 				break;
 

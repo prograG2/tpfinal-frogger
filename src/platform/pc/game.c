@@ -72,7 +72,7 @@ void setNombre(char* nombre)
 
 void setMaxPuntos(uint64_t max)
 {
-	
+	game_data_set_score_max(max);
 }
 
 void setDificultad(int diff)
@@ -87,33 +87,33 @@ void setDificultad(int diff)
 
 bool tiempoRefrescoEntidades(void)
 {
-
+	return allegro_get_var_redraw();
 }
 
 bool tiempoLimite(void)
 {
-	
+	return game_data_get_time_left_flag();
 }
 
 
 char* getNombre(void)
 {
-
+	return game_data_get_name();
 }
 
 uint64_t getPuntos(void)
 {
-
+	return game_data_get_score();
 }
 
 uint64_t getMaxPuntos(void)
 {
-
+	return game_data_get_score_max();
 }
 
 int getNivel(void)
 {
-
+	return game_data_get_run_number();
 }
 
 void inicializarJuego(void)
@@ -133,12 +133,18 @@ void pausarJuego(void)
 
 void reiniciarNivel(void)
 {
-
+	
 }
 
 void refrescar(void)
 {
-	
+	game_data_update();
+	entities_update();
+
+	if(game_data_are_goals_full())
+	{
+		queue_insert(META);
+	}
 }
 
 void moverAdelante(void)
@@ -188,6 +194,7 @@ void actualizarInterfaz(void)
 		allegro_rick_on();
 		allegro_set_rick_flag(true);	
 	}
+	
 	if(allegro_get_last_key() == ALLEGRO_KEY_9 && allegro_get_rick_flag())
 	{
 		allegro_rick_off();
@@ -196,9 +203,6 @@ void actualizarInterfaz(void)
 
 	if(allegro_get_var_redraw())
 	{
-		game_data_update();
-		entities_update();
-
 		allegro_clear_display();
 		allegro_draw_background();
 
