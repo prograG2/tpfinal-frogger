@@ -16,6 +16,7 @@
 #include "../../display.h"
 
 #include "allegro_stuff.h"
+#include "game_data.h"
 
 
 /*******************************************************************************
@@ -99,6 +100,11 @@ void mostrarTexto(char* txt, int pos)
 	if(txt[0] == 'R')
 	{
 
+	}
+
+	if(pos == POS_MSJ_PASAR)
+	{
+		game_data_next_run();
 	}
 }
 

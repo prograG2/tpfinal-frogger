@@ -29,7 +29,7 @@
 #define LOGS_SPAWN_MAX			2
 #define LOGS_SPAWN_FRAMES		60
 #define LOGS_BASE_SPEED			2
-#define LOGS_MAX_USED			5		//Maximo en pantalla (1 mas de lo que dice)
+#define LOGS_MAX_USED			7
 
 #define CARS_SPAWN_MIN			1
 #define CARS_SPAWN_MAX			4
@@ -42,7 +42,7 @@
 #define TURTLES_SPAWN_FRAMES	60	//cada cuantos frames spawnean
 #define TURTLES_SPAWN_MIN		1	//minimas a spawnear de una
 #define TURTLES_SPAWN_MAX		2	//maximas a spawnear de una
-#define TURTLES_MAX_USED		5	//maximas en pantalla
+#define TURTLES_MAX_USED		7	//maximas en pantalla
 #define TURTLES_BASE_SPEED		2	
 #define TURTLES_FRAME_TIMEOUT	10	//cuanto "tiempo" dura un frame dibujado antes de pasar al siguiente
 #define TURTLES_SURFACE_FRAMES_MIN		200	//minimo "tiempo" en superficie
@@ -286,7 +286,7 @@ static turtle_pack_t turtle_pack[TURTLES_MAX_USED];
 static fly_t fly;
 
 //Contador de frames ejecutados
-static long game_frames;
+static unsigned long game_frames;
 
 //Carriles variables.
 static unsigned char normal_diff_lane;
@@ -572,14 +572,16 @@ static void frog_update(void)
 			break;
 		
 		case FROG_STATE_GOAL:
-			game_data_add_score(SCORE_PER_GOAL);
+			game_data_add_run_time_goal();
+			game_data_add_score();
 			allegro_sound_play_effect_goal();
 			frog_init();
 			
 			break;
 			
 		case FROG_STATE_GOAL_FLY:
-			game_data_add_score(SCORE_PER_GOAL_FLY);
+			game_data_add_run_time_goal_bonus();
+			game_data_add_score_bonus();
 			allegro_sound_play_effect_bonus();
 			frog_init();
 

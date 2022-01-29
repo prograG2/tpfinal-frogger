@@ -48,11 +48,6 @@ typedef struct nodeT
  */
 static void delete();
 
-/**
- * @brief 
- * 
- */
-static void printQueue();
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -82,7 +77,6 @@ void queue_insert(event_t nuevo)
 
     temp->data = nuevo;
     //printf("%d\n", nuevo); //si se quita esto la queue funciona mal
-    //printQueue();
 
     if (front ==  NULL)
     {
@@ -99,7 +93,6 @@ void queue_insert(event_t nuevo)
       back->next = temp;
       back = back->next;
     }
-    //printQueue();
 }
 
 
@@ -116,7 +109,6 @@ event_t queue_next()
   else{
     event_t r = front->data;
     delete();
-    //printQueue();
     printf("\n%d\n", r); //para ver el evento que sigue
     return r;
   }
@@ -143,6 +135,7 @@ static void delete()
   }
 }
 
+/*
 static void printQueue(){
   node_t *temp = front;
   while(temp != back){
@@ -150,5 +143,6 @@ static void printQueue(){
     temp = temp->next;
   }
 }
+*/
 
  

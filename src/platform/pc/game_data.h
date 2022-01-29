@@ -22,13 +22,6 @@
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-#define MAX_NAME_CHAR		20
-
-#define MAX_LIVES           3
-
-#define SCORE_PER_GOAL		500		//puntaje por llegar a la meta
-#define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
-#define SCORE_PER_RUN		1000	//puntaje por completar una run
 
 enum DIFFICULTIES
 {
@@ -94,11 +87,30 @@ void game_data_subtract_live(void);
 int game_data_get_score(void);
 
 /**
- * @brief Agrega un valor al score actual
+ * @brief Agrega score por llegar a la meta
  * 
- * @param add Valor a agregar. Si es negativo, no agrega.
  */
-void game_data_add_score(int add);
+void game_data_add_score(void);
+
+/**
+ * @brief Agrega score por llegar a la meta con bonus (fly)
+ * 
+ */
+void game_data_add_score_bonus(void);
+
+/**
+ * @brief Carga el score maximo del jugador actual
+ * 
+ * @param score 
+ */
+void game_data_set_score_max(int score);
+
+/**
+ * @brief Devuelve el score maximo del jugador actual
+ * 
+ * @return int Score maximo
+ */
+int game_data_get_score_max(void);
 
 /**
  * @brief Devuelve el numero de run
@@ -121,11 +133,23 @@ void game_data_next_run(void);
 int game_data_get_run_time_left(void);
 
 /**
+ * @brief Agrega tiempo a la run por llegar a una meta
+ * 
+ */
+void game_data_add_run_time_goal(void);
+
+/**
+ * @brief Agrega tiempo (más) a la run por llegar a una meta con mosca
+ * 
+ */
+void game_data_add_run_time_goal_bonus(void);
+
+/**
  * @brief Devuelve los frames transcurridos del juego
  * 
- * @return long Frames transcurridos
+ * @return unsigned long Frames transcurridos
  */
-long game_data_get_frames(void);
+unsigned long game_data_get_frames(void);
 
 /**
  * @brief Devuelve el tiempo transcurrido en segundos
@@ -189,6 +213,22 @@ void game_data_set_goal(unsigned int goal);
  * 
  */
 void game_data_reset_goals(void);
+
+/**
+ * @brief Avisa si se excedio el tiempo de juego
+ * 
+ * @return true Excedido
+ * @return false No excedido
+ */
+bool game_data_get_time_left_flag(void);
+
+/**
+ * @brief Avisa si estan todas las metas completas
+ * 
+ * @return true Si
+ * @return false No
+ */
+bool game_data_are_goals_full(void);
 
 
 

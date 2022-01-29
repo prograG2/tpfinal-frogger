@@ -67,12 +67,6 @@ typedef struct
 static void menu_init(void);
 
 /**
- * @brief Actualiza el menu
- * 
- */
-static void menu_update(void);
-
-/**
  * @brief Dibuja lelas menu
  * 
  */
@@ -218,11 +212,6 @@ static void menu_init(void)
 	menu.window[MENU_WINDOW_GAME_OVER].max_states = 2;
 	
 
-}
-
-static void menu_update()
-{
-	
 }
 
 static void menu_draw()

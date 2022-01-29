@@ -555,6 +555,7 @@ static void subir_nivel(){
 	ulltoa(getNivel(), niv_str);
 	strcat(pasar_str, niv_str);
 	mostrarTexto(pasar_str, POS_MSJ_PASAR);
+	reproducir_efecto(EFECTO_NIVEL_COMPLETO);
 }		
 
 static void siguiente_nivel(){
