@@ -797,6 +797,18 @@ static void sprites_init(void)
 	path = make_sprite_path(SPRITE_CAR_0, path);
 	sprites.car[0] = al_load_bitmap(path);
 
+	//recorte de los autos.
+	/*
+	path = make_sprite_path('nombre del archivo completo', path);
+	sprites.cars_uncut = al_load_bitmap(path);
+
+	sprites.car[0] = sprite_cut(sprites.cars_uncut, esqsupx0, esqsupy0, CAR_W, CAR_H);
+	sprites.car[1] = sprite_cut(sprites.cars_uncut, esqsupx1, esqsupy1, CAR_W, CAR_H);
+	sprites.car[2] = sprite_cut(sprites.cars_uncut, esqsupx2, esqsupy2, CAR_W, CAR_H);
+	sprites.car[3] = sprite_cut(sprites.cars_uncut, esqsupx3, esqsupy3, CAR_TRUCK_FIRE_W, CAR_H);
+	sprites.car[4] = sprite_cut(sprites.cars_uncut, esqsupx4, esqsupy4, CAR_TRUCK_W, CAR_H);
+	*/
+
 	//el de las tortugas sin recortar
 	path = make_sprite_path(SPRITE_TURTLES, path);
 	sprites.turtle_uncut = al_load_bitmap(path);

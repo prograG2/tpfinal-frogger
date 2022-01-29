@@ -78,7 +78,8 @@ typedef struct
 	int y;
     int lane;           //Carril del auto.
 	int dx;
-    unsigned char type;
+    CAR_TYPE type;		//Tipo de auto.
+	int length;			//Largo del auto.
     bool used;          //Marca disponibilidad en el array.
 } car_t;
 
@@ -462,7 +463,7 @@ static void frog_update(void)
 				
 				if(collide_short(	car[i].x,
 									car[i].y,
-									CAR_W,
+									car[i].length,
 									CAR_H,
 									frog.x,
 									frog.y,
@@ -810,11 +811,32 @@ static void cars_update(void)
 			//Velocidad mayor en rutas mas alejadas
 			car[i].dx = lanes_cars[LANES_CAR_TOTAL-1] - car[i].lane + 1;
 
+			//Asigno tipos.
+			car[i].type = get_rand_between(0, CAR_TYPE_N - 1);
+
+			//Defino los largos correspondientes,
+			switch(car[i].type)
+            {
+				case CAR_POLICE:
+				case CAR_YELLOW:
+                case CAR_BLUE: 
+                    car[i].length = CAR_W;
+                    break;
+                case TRUCK_FIRE:
+                    car[i].length = CAR_TRUCK_FIRE_W;
+                    break;
+                case TRUCK:
+                    car[i].length = CAR_TRUCK_W;
+                    break;
+                default:
+                    break;
+            }
+
 			//en pares...
 			if(!(car[i].lane % 2))
 			{
 				//coordenada de inicio
-				car[i].x = -CAR_W;
+				car[i].x = -car[i].length;
 			}
 
 			//en impares...
@@ -838,11 +860,11 @@ static void cars_update(void)
 					if	(collide(
 									car[i].x,
 									car[i].y,
-									car[i].x + CAR_W,
+									car[i].x + CAR_TRUCK_W,		//Es el mas largo.
 									car[i].y + CAR_H,
 									car[p].x,
 									car[p].y,
-									car[p].x + CAR_W,
+									car[p].x + CAR_TRUCK_W,
 									car[p].y + CAR_H
 								)
 						)
@@ -879,7 +901,7 @@ static void cars_update(void)
 			car[i].x += car[i].dx;
 
 			//chequea si llego a los limites
-			if((car[i].dx > 0 && car[i].x >= DISPLAY_W) || (car[i].dx < 0 && car[i].x <= -CAR_W))
+			if((car[i].dx > 0 && car[i].x >= DISPLAY_W) || (car[i].dx < 0 && car[i].x <= -car[i].length))
 				car[i].used = false;
 
 			//printf("~car%d lane%d dx%d~\n", i, car[i].lane, car[i].dx);
@@ -897,7 +919,7 @@ static void cars_draw()
         if(car[i].used)
 		{
 			//Dibujo los autos en sus carriles.
-			al_draw_bitmap(sprites.car[0], car[i].x, car[i].y, 0);
+			al_draw_bitmap(sprites.car[car[i].type], car[i].x, car[i].y, 0);
 
 #ifdef DEBUG_ENTITIES_TEXT	
 			//Dibujo hitbox

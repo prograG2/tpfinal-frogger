@@ -84,7 +84,9 @@
 #define LOG_OFFSET_Y    (CELL_H/2 - LOG_H/2)
 
 //Autos
-#define CAR_W   		(4 * CELL_W)
+#define CAR_W   		(2 * CELL_W)
+#define CAR_TRUCK_FIRE_W   		(3 * CELL_W)
+#define CAR_TRUCK_W   			(4 * CELL_W)
 #define CAR_H   		40
 #define CAR_OFFSET_X    0
 #define CAR_OFFSET_Y    (CELL_H/2 - LOG_H/2)
@@ -166,6 +168,16 @@ enum MENU_WINDOWS
 	MENU_WINDOW_GAME_OVER,
 	MENU_WINDOW_MAX
 };
+
+typedef enum CAR_TYPE
+{
+    CAR_BLUE = 0,
+    CAR_POLICE,
+    CAR_YELLOW,
+    TRUCK_FIRE,
+    TRUCK,
+    CAR_TYPE_N
+} CAR_TYPE;
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE

@@ -66,7 +66,8 @@ typedef struct
 
     ALLEGRO_BITMAP* log;
 
-    ALLEGRO_BITMAP* car[CARS_TYPES];
+    ALLEGRO_BITMAP* cars_uncut;
+    ALLEGRO_BITMAP* car[CAR_TYPE_N];
 
     ALLEGRO_BITMAP* turtle_uncut;
     ALLEGRO_BITMAP* turtle[TURTLE_FRAMES];
