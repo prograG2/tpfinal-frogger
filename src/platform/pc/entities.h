@@ -23,9 +23,6 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define MAX_CARS            10
-#define MAX_LOGS            10
-#define MAX_TURTLE_PACKS    4 
 
 
 /*******************************************************************************

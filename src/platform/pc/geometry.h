@@ -113,7 +113,7 @@
 
 
 //Factor que determina cuando considerar que un bloque esta dentro de otro (ver 'inside_short_scaled')
-#define INSERTION_FACTOR		(double)0.75
+#define INSERTION_FACTOR		(double)0.5
 
 
 #define GOAL_ROW_OFFSET_Y_FIX		5	//baja un poco mas en Y

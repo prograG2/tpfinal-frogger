@@ -29,20 +29,20 @@
 #define LOGS_SPAWN_MAX			2
 #define LOGS_SPAWN_FRAMES		60
 #define LOGS_BASE_SPEED			2
-#define LOGS_MAX_USED			4
+#define LOGS_MAX_USED			5
 
 #define CARS_SPAWN_MIN			1
 #define CARS_SPAWN_MAX			2
 #define CARS_SPAWN_FRAMES		60
 #define CARS_BASE_SPEED			2
-#define CARS_MAX_USED			4
+#define CARS_MAX_USED			10
 
 #define TURTLES_MIN_PER_PACK	2
 #define	TURTLES_MAX_PER_PACK	3
 #define TURTLES_SPAWN_FRAMES	60	//cada cuantos frames spawnean
 #define TURTLES_SPAWN_MIN		1	//minimas a spawnear de una
 #define TURTLES_SPAWN_MAX		2	//maximas a spawnear de una
-#define TURTLES_MAX_USED		3	//maximas en pantalla
+#define TURTLES_MAX_USED		5	//maximas en pantalla
 #define TURTLES_BASE_SPEED		2	
 #define TURTLES_FRAME_TIMEOUT	10	//cuanto "tiempo" dura un frame dibujado antes de pasar al siguiente
 #define TURTLES_SURFACE_FRAMES_MIN		200	//minimo "tiempo" en superficie
@@ -273,13 +273,13 @@ static bool is_frog_in_goal(void);
 static frog_t frog;
 
 //Array de troncos
-static log_t log[MAX_LOGS];
+static log_t log[LOGS_MAX_USED];
 
 //Array de autos
-static car_t car[MAX_CARS];
+static car_t car[CARS_MAX_USED];
 
 //Array de paquetes de tortugas
-static turtle_pack_t turtle_pack[MAX_TURTLE_PACKS];
+static turtle_pack_t turtle_pack[TURTLES_MAX_USED];
 
 //Mosca
 static fly_t fly;
@@ -362,6 +362,8 @@ static void frog_update(void)
 {
 	int i;
 
+	bool interaction_flag = false;
+
 	if(!frog.moving)
 	{
 		if(frog.next_action == DIRECTION_DOWN || frog.next_action == DIRECTION_LEFT ||
@@ -396,14 +398,11 @@ static void frog_update(void)
 		}
 	}
 
-	
 
 	//donde esta parada
 	if(!frog.moving)
 	{
-		unsigned int x_no_offset = frog.x - FROG_OFFSET_X, y_no_offset = frog.y - FROG_OFFSET_Y;
-
-		bool interaction_flag = false;
+		unsigned int y_no_offset = frog.y - FROG_OFFSET_Y;
 
 		//en alguna fila de descanso o de autos
 		if(y_no_offset >= CELL_H * (lanes_cars[0] - 1) && y_no_offset <= DISPLAY_H - CELL_H)
@@ -456,7 +455,7 @@ static void frog_update(void)
 		if(!interaction_flag)
 		{
 			//colision con autos
-			for(i = 0; i < MAX_CARS; i++)
+			for(i = 0; i < CARS_MAX_USED; i++)
 			{
 				if(!car[i].used)
 					continue;
@@ -475,61 +474,60 @@ static void frog_update(void)
 					break;	//no puede chocar con 2 autos a la vez
 				}
 			}
-		}
+		}		
+		
+	}
 
-		if(!interaction_flag)
+	if(!interaction_flag)
+	{
+		//esta en algun tronco?
+		for(i = 0; i < LOGS_MAX_USED; i++)
 		{
-			//esta en algun tronco?
-			for(i = 0; i < MAX_LOGS; i++)
-			{
-				if(!log[i].used)
-					continue;
+			if(!log[i].used)
+				continue;
 
-				if(inside_shot_scaled(	log[i].x,
-										log[i].y,
-										LOG_W,
-										LOG_H,
-										frog.x,
-										frog.y,
-										FROG_W,
-										FROG_H,
-										INSERTION_FACTOR))
-				{
-					frog.x += log[i].dx;
-					frog.state = FROG_STATE_LOG;
-					interaction_flag = true;
-					break;		//no puede estar en 2 troncos a la vez
-				}
+			if(inside_shot_scaled(	log[i].x,
+									log[i].y,
+									LOG_W,
+									LOG_H,
+									frog.x,
+									frog.y,
+									FROG_W,
+									FROG_H,
+									INSERTION_FACTOR))
+			{
+				frog.x += log[i].dx;
+				frog.state = FROG_STATE_LOG;
+				interaction_flag = true;
+				break;		//no puede estar en 2 troncos a la vez
 			}
 		}
-		
-		if(!interaction_flag)
+	}
+	
+	if(!interaction_flag)
+	{
+		//esta en algun turtle_pack?
+		for(i = 0; i < TURTLES_MAX_USED; i++)
 		{
-			//esta en algun turtle_pack?
-			for(i = 0; i < MAX_TURTLE_PACKS; i++)
-			{
-				if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
-					continue;
+			if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
+				continue;
 
-				if(inside_shot_scaled(	turtle_pack[i].x,
-										turtle_pack[i].y,
-										turtle_pack[i].wide,
-										TURTLE_SIDE,
-										frog.x,
-										frog.y,
-										FROG_W,
-										FROG_H,
-										INSERTION_FACTOR))
-				{
-					frog.x += turtle_pack[i].dx;
-					frog.state = FROG_STATE_TURTLE;
-					interaction_flag = true;
-					break;		//no puede estar en 2 troncos a la vez
-				}
+			if(inside_shot_scaled(	turtle_pack[i].x,
+									turtle_pack[i].y,
+									turtle_pack[i].wide,
+									TURTLE_SIDE,
+									frog.x,
+									frog.y,
+									FROG_W,
+									FROG_H,
+									INSERTION_FACTOR))
+			{
+				frog.x += turtle_pack[i].dx;
+				frog.state = FROG_STATE_TURTLE;
+				interaction_flag = true;
+				break;		//no puede estar en 2 troncos a la vez
 			}
 		}
-			
-		
 	}
 	
 
@@ -635,7 +633,7 @@ static void frog_draw(void)
 static void logs_init(void)
 {
 	int i;
-	for(i = 0; i < MAX_LOGS; i++)
+	for(i = 0; i < LOGS_MAX_USED; i++)
 		log[i].used = false;
 
 }
@@ -648,13 +646,13 @@ static void logs_update(void)
 	int i, used;
 
 	//cuento cuantos troncos usados hay
-	for(i = 0, used = 0; i < MAX_LOGS; i++)
+	for(i = 0, used = 0; i < LOGS_MAX_USED; i++)
 		used += log[i].used;
 
-    for(i = 0; i < MAX_LOGS; i++)
+    for(i = 0; i < LOGS_MAX_USED; i++)
     {
         //Spawneo de troncos
-        if(!log[i].used && new_quota > 0 && used <= LOGS_MAX_USED)           //Lugar libre?
+        if(!log[i].used && new_quota > 0 && used < LOGS_MAX_USED)           //Lugar libre?
         {
 
 			//Asigno carril.
@@ -687,7 +685,7 @@ static void logs_update(void)
 
 			int p;
 			bool check;		//para confirmar asignacion de lane
-			for(p = 0, check = true; p < MAX_LOGS; p++)
+			for(p = 0, check = true; p < LOGS_MAX_USED; p++)
 			{
 				//si no es el mismo tronco, y ese otro esta usado, y coinciden en lane...
 				if(p != i && log[p].used && log[p].lane == log[i].lane)
@@ -718,7 +716,7 @@ static void logs_update(void)
 			{
 				//Pasa a usado
 				log[i].used = true;
-
+				used++;
 				new_quota--;
 			}
 
@@ -738,7 +736,11 @@ static void logs_update(void)
 
 			//chequea si llego a los limites
 			if((log[i].dx > 0 && log[i].x >= DISPLAY_W) || (log[i].dx < 0 && log[i].x <= -LOG_W))
+			{
 				log[i].used = false;
+				used--;
+			}
+				
 
 			//printf("~log%d lane%d dx%d~\n", i, log[i].lane, log[i].dx);
 
@@ -752,7 +754,7 @@ static void logs_draw(void)
 {
 	int i;
 
-	for(i = 0; i < MAX_LOGS; i++)
+	for(i = 0; i < LOGS_MAX_USED; i++)
 	{
 		if(log[i].used)
 		{
@@ -769,7 +771,7 @@ static void logs_draw(void)
 #ifdef DEBUG_ENTITIES_TEXT	
 	//coordenadas
 	int space;
-	for(i = 0, space = 20; i < MAX_LOGS; i++, space += 10)
+	for(i = 0, space = 20; i < LOGS_MAX_USED; i++, space += 10)
 	{
 		al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "N°:%d X:%d Y:%d", i, log[i].x, log[i].y);
 	}
@@ -781,7 +783,7 @@ static void cars_init(void)
 {
 	int i;
 	//Inicio array de autos desocupando.
-	for(i = 0; i < MAX_CARS; i++)
+	for(i = 0; i < CARS_MAX_USED; i++)
         car[i].used = false;
 
 }
@@ -794,13 +796,13 @@ static void cars_update(void)
 	int i, used;
 
 	//cuento cuantos autos usados hay
-	for(i = 0, used = 0; i < MAX_CARS; i++)
+	for(i = 0, used = 0; i < CARS_MAX_USED; i++)
 		used += car[i].used;
 
-    for(i = 0; i < MAX_CARS; i++)
+    for(i = 0; i < CARS_MAX_USED; i++)
     {
         //Spawneo de autos.
-        if(!car[i].used && new_quota > 0 && used <= CARS_MAX_USED)	//Lugar libre?
+        if(!car[i].used && new_quota > 0 && used < CARS_MAX_USED)	//Lugar libre?
         {
 			//Asigno carril.
 			car[i].lane = lanes_cars[get_rand_between(0, LANES_CAR_TOTAL-1)];
@@ -809,7 +811,8 @@ static void cars_update(void)
 			car[i].y = CELL_H * car[i].lane + CAR_OFFSET_Y;
 
 			//Velocidad mayor en rutas mas alejadas
-			car[i].dx = lanes_cars[LANES_CAR_TOTAL-1] - car[i].lane + 1;
+			//car[i].dx = lanes_cars[LANES_CAR_TOTAL-1] - car[i].lane + 1;
+			car[i].dx = CARS_BASE_SPEED;
 
 			//Asigno tipos.
 			car[i].type = get_rand_between(0, CAR_TYPE_N - 1);
@@ -851,7 +854,7 @@ static void cars_update(void)
 
 			int p;
 			bool check;		//para confirmar asignacion de lane
-			for(p = 0, check = true; p < MAX_CARS; p++)
+			for(p = 0, check = true; p < CARS_MAX_USED; p++)
 			{
 				//si no es el mismo auto, y ese otro esta usado, y coinciden en lane...
 				if(p != i && car[p].used && car[p].lane == car[i].lane)
@@ -882,7 +885,7 @@ static void cars_update(void)
 			{
 				//Pasa a usado
 				car[i].used = true;
-
+				used++;
 				new_quota--;
 			}
 
@@ -902,7 +905,11 @@ static void cars_update(void)
 
 			//chequea si llego a los limites
 			if((car[i].dx > 0 && car[i].x >= DISPLAY_W) || (car[i].dx < 0 && car[i].x <= -car[i].length))
+			{
 				car[i].used = false;
+				used--;
+			}
+				
 
 			//printf("~car%d lane%d dx%d~\n", i, car[i].lane, car[i].dx);
 
@@ -914,21 +921,27 @@ static void cars_update(void)
 static void cars_draw()
 {
 	int i;
-	bool flag = 0;
-	for(i = 0; i < MAX_CARS; i++)
+	bool flag;
+
+	ALLEGRO_BITMAP* temp_bitmap = NULL;
+
+	for(i = 0; i < CARS_MAX_USED; i++)
     {
         if(car[i].used)
 		{
-			if (car[i].dx < 0)
+			if(car[i].dx < 0)
 				flag = ALLEGRO_FLIP_HORIZONTAL;
+			else
+				flag = 0;
+
+			temp_bitmap = sprites.car[car[i].type];
 
 			//Dibujo los autos en sus carriles.
-			al_draw_bitmap(sprites.car[car[i].type], car[i].x, car[i].y, flag);
+			al_draw_bitmap(temp_bitmap, car[i].x, car[i].y, flag);
 
 #ifdef DEBUG_ENTITIES_TEXT	
 			//Dibujo hitbox
-			al_draw_rectangle(car[i].x, car[i].y, car[i].x + CAR_W, car[i].y + CAR_H, al_map_rgb(100, 100, 100), 1);
-			allegro_draw_hitbox(car[i].x, car[i].y, CAR_W, CAR_H);
+			allegro_draw_hitbox(car[i].x, car[i].y, car[i].length, CAR_H);
 #endif
 		}
 
@@ -938,9 +951,10 @@ static void cars_draw()
 #ifdef DEBUG_ENTITIES_TEXT	
 	//coordenadas
 	int space;
-	for(i = 0, space = 200; i < MAX_CARS; i++, space += 10)
+	for(i = 0, space = 200; i < CARS_MAX_USED; i++, space += 20)
 	{
-		al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "N°:%d X:%d Y:%d", i, car[i].x, car[i].y);
+		//al_draw_textf(allegro_get_var_font(), al_map_rgb(255, 255, 255), 0, space, 0, "N°:%d X:%d Y:%d dx:%d", i, car[i].x, car[i].y, car[i].dx);
+		al_draw_textf(allegro_get_var_font(), al_map_rgb(255, 255, 255), 0, space, 0, "Lane:%d dx:%d", car[i].lane, car[i].dx);
 	}
 #endif
 }
@@ -948,7 +962,7 @@ static void cars_draw()
 static void turtles_init(void)
 {
 	int i;
-	for(i = 0; i < MAX_TURTLE_PACKS; i++)
+	for(i = 0; i < TURTLES_MAX_USED; i++)
 	{
 		turtle_pack[i].used = false;
 	}
@@ -966,7 +980,7 @@ static void turtles_update(void)
 	//inicializado en 0 por ser static
 	static int timeout;			//timeout para sumergir/emerger
 
-    for(i = 0; i < MAX_TURTLE_PACKS; i++)
+    for(i = 0; i < TURTLES_MAX_USED; i++)
     {
         //Spawneo de turtle_packs
         if(!turtle_pack[i].used && new_quota > 0 && used < TURTLES_MAX_USED)       //Lugar libre?
@@ -1007,7 +1021,7 @@ static void turtles_update(void)
 
 			int p;
 			bool check;		//para confirmar asignacion de lane
-			for(p = 0, check = true; p < MAX_TURTLE_PACKS; p++)
+			for(p = 0, check = true; p < TURTLES_MAX_USED; p++)
 			{
 				//si no es el mismo pack, y ese otro esta usado, y coinciden en lane...
 				if(p != i && turtle_pack[p].used && turtle_pack[p].lane == turtle_pack[i].lane)
@@ -1123,7 +1137,7 @@ static void turtles_update(void)
 static void turtles_draw(void)
 {
 	int i, j, flag;
-	for(i = 0; i < MAX_TURTLE_PACKS; i++)
+	for(i = 0; i < TURTLES_MAX_USED; i++)
     {
         if(turtle_pack[i].used)
 		{
@@ -1149,7 +1163,7 @@ static void turtles_draw(void)
 #ifdef DEBUG_ENTITIES_TEXT	
 	//coordenadas
 	int space;
-	for(i = 0, space = 350; i < MAX_TURTLE_PACKS; i++, space += 10)
+	for(i = 0, space = 350; i < TURTLES_MAX_USED; i++, space += 10)
 	{
 		al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "N°:%d X:%d Y:%d", i, turtle_pack[i].x, turtle_pack[i].y);
 	}

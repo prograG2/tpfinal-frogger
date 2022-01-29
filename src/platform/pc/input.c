@@ -97,6 +97,20 @@ event_t leerEntradas(void)
 				{
 					retorno = (*event).keyboard.keycode;
 					allegro_set_last_key(retorno);
+
+					switch (retorno)
+					{
+						case ALLEGRO_KEY_F2:
+							allegro_sound_set_stream_gain_up();
+							break;
+
+						case ALLEGRO_KEY_F1:
+							allegro_sound_set_stream_gain_down();
+							break;
+					
+						default:
+							break;
+					}
 				}
 
 				break;

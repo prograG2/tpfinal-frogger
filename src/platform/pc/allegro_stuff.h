@@ -322,6 +322,18 @@ void allegro_sound_pause_stream(void);
  */
 void allegro_sound_restart_stream(void);
 
+/**
+ * @brief Aumenta en 0.1 la ganancia de stream
+ * 
+ */
+void allegro_sound_set_stream_gain_up(void);
+
+/**
+ * @brief Reduce en 0.1 la ganancia de stream
+ * 
+ */
+void allegro_sound_set_stream_gain_down(void);
+
 #pragma endregion allegro_sound_control
 
 #pragma region allegro_sound_play_sample

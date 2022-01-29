@@ -25,7 +25,7 @@
  ******************************************************************************/
 
 //Altura de la fuente
-#define FONT_HEIGHT	20
+#define FONT_HEIGHT	16
 
 //Nombres de los stream files
 #define SOUND_STREAM_FILE_CREDITS 	"credits_theme"
@@ -34,6 +34,8 @@
 #define SOUND_STREAM_FILE_PLAYING	"playing_theme"
 #define SOUND_STREAM_FILE_RANKING	"ranking_theme"
 #define SOUND_STREAM_FILE_RICK		"rick"
+
+#define FONT_FILE_NAME				"PublicPixel.ttf"
 
 //Nombres de los sprites
 #define SPRITE_HEART				"minecraft_heart"
@@ -69,6 +71,8 @@
 #define PATH_FONTS					"../res/fonts/"
 #define PATH_SPRITES				"../res/sprites/"
 #define PATH_GIFS					"../res/gifs/"
+
+#define GLOBAL_STREAM_VOLUME		(double)0.5
 
 
 
@@ -262,6 +266,8 @@ static bool rick_flag;
 
 static ALLEGRO_MONITOR_INFO monitor_info;
 
+static double stream_gain = GLOBAL_STREAM_VOLUME;
+
 /*******************************************************************************
  *******************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
@@ -365,9 +371,7 @@ void allegro_reinit_display(void)
 
 	//Reload de la fuente
 	char string[60] = PATH_FONTS;
-	strcat(string, "ProFontWindows.ttf");
-	//para usar la fuente builtin
-	//allegro_vars.font = al_create_builtin_font();
+	strcat(string, FONT_FILE_NAME);
 	allegro_vars.font = al_load_font(string, FONT_HEIGHT, 0);
 	must_init(allegro_vars.font, "font");
 	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
@@ -492,7 +496,7 @@ void allegro_sound_set_stream_credits(void)
 	}
 	else
 	{
-		must_init(init_audio_stream(file, 1.0),
+		must_init(init_audio_stream(file, stream_gain),
 			"credits stream");
 	}
 	
@@ -509,7 +513,7 @@ void allegro_sound_set_stream_main_menu(void)
 	}
 	else
 	{
-		must_init(init_audio_stream(file, 1.0),
+		must_init(init_audio_stream(file, stream_gain),
 			"main menu stream");
 	}
 }
@@ -525,7 +529,7 @@ void allegro_sound_set_stream_pause_menu(void)
 	}
 	else
 	{
-		must_init(init_audio_stream(file, 1.0),
+		must_init(init_audio_stream(file, stream_gain),
 			"pause menu stream");
 	}
 }
@@ -541,7 +545,7 @@ void allegro_sound_set_stream_ranking(void)
 	}
 	else
 	{
-		must_init(init_audio_stream(file, 1.0),
+		must_init(init_audio_stream(file, stream_gain),
 			"ranking stream");
 	}
 }
@@ -557,7 +561,7 @@ void allegro_sound_set_stream_playing(void)
 	}
 	else
 	{
-		must_init(init_audio_stream(file, 1.0),
+		must_init(init_audio_stream(file, stream_gain),
 			"playing stream");
 	}
 }
@@ -573,7 +577,7 @@ void allegro_sound_set_stream_rick(void)
 	}
 	else
 	{
-		must_init(init_audio_stream(file, 1.0),
+		must_init(init_audio_stream(file, stream_gain),
 			"credtis stream");
 	}
 }
@@ -619,8 +623,28 @@ void allegro_sound_restart_stream(void)
 {
 	if(sounds.stream_state != SOUND_STREAM_STATE_NO_INIT)
 	{
-		init_audio_stream(last_init_stream, 1.0);
+		init_audio_stream(last_init_stream, stream_gain);
 	}
+}
+
+void allegro_sound_set_stream_gain_up(void)
+{
+	if(stream_gain <= 0.9)
+	{
+		stream_gain += 0.1;
+		al_set_audio_stream_gain(sounds.stream, stream_gain);
+	}
+		
+}
+
+void allegro_sound_set_stream_gain_down(void)
+{
+	if(stream_gain >= 0.1)
+	{
+		stream_gain -= 0.1;
+		al_set_audio_stream_gain(sounds.stream, stream_gain);
+	}
+	
 }
 
 #pragma endregion allegro_sound_control
@@ -721,7 +745,7 @@ void allegro_set_rick_flag(bool state)
 
 void allegro_rick_off(void)
 {
-	must_init(init_audio_stream(rick_prev_stream, 1.0),
+	must_init(init_audio_stream(rick_prev_stream, stream_gain),
 					"retornando stream ~~ sacando rick");
 	allegro_sound_play_stream();
 }
