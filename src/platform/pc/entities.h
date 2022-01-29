@@ -25,7 +25,6 @@
 
 #define MAX_CARS            10
 #define MAX_LOGS            10
-#define CARS_TYPES          1
 #define MAX_TURTLE_PACKS    4 
 
 

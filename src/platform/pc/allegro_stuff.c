@@ -38,7 +38,7 @@
 //Nombres de los sprites
 #define SPRITE_HEART				"minecraft_heart"
 #define SPRITE_BACKGROUND			"sprite_background"
-#define SPRITE_CAR_0				"sprite_car_0"
+#define SPRITE_CAR					"sprite_cars"
 #define SPRITE_FLY					"sprite_fly"
 #define SPRITE_FROG					"sprite_frog"
 #define SPRITE_LOG					"sprite_log"
@@ -789,25 +789,16 @@ static void sprites_init(void)
 	path = make_sprite_path(SPRITE_LOG, path);
 	sprites.log = al_load_bitmap(path);
 
-	/*
-	for(i = 0; i < CARS_TYPES; i++)
-		sprites.car[i] = al_load_bitmap("sprite_car_0.png");
-	*/
-	//de los autos
-	path = make_sprite_path(SPRITE_CAR_0, path);
-	sprites.car[0] = al_load_bitmap(path);
-
 	//recorte de los autos.
-	/*
-	path = make_sprite_path('nombre del archivo completo', path);
+
+	path = make_sprite_path(SPRITE_CAR, path);
 	sprites.cars_uncut = al_load_bitmap(path);
 
-	sprites.car[0] = sprite_cut(sprites.cars_uncut, esqsupx0, esqsupy0, CAR_W, CAR_H);
-	sprites.car[1] = sprite_cut(sprites.cars_uncut, esqsupx1, esqsupy1, CAR_W, CAR_H);
-	sprites.car[2] = sprite_cut(sprites.cars_uncut, esqsupx2, esqsupy2, CAR_W, CAR_H);
-	sprites.car[3] = sprite_cut(sprites.cars_uncut, esqsupx3, esqsupy3, CAR_TRUCK_FIRE_W, CAR_H);
-	sprites.car[4] = sprite_cut(sprites.cars_uncut, esqsupx4, esqsupy4, CAR_TRUCK_W, CAR_H);
-	*/
+	sprites.car[0] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(0).x, geometry_get_pair_xy_car_frame(0).y, CAR_W, CAR_H);
+	sprites.car[1] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(1).x, geometry_get_pair_xy_car_frame(1).y, CAR_W, CAR_H);
+	sprites.car[2] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(2).x, geometry_get_pair_xy_car_frame(2).y, CAR_W, CAR_H);
+	sprites.car[3] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(3).x, geometry_get_pair_xy_car_frame(3).y, CAR_TRUCK_FIRE_W, CAR_H);
+	sprites.car[4] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(4).x, geometry_get_pair_xy_car_frame(4).y, CAR_TRUCK_W, CAR_H);
 
 	//el de las tortugas sin recortar
 	path = make_sprite_path(SPRITE_TURTLES, path);
@@ -935,7 +926,7 @@ static void sprites_deinit(void)
 
 	al_destroy_bitmap(sprites.log);
 
-	for(i = 0; i < CARS_TYPES; i++)
+	for(i = 0; i < CAR_TYPE_N; i++)
 		al_destroy_bitmap(sprites.car[i]);
 
 	al_destroy_bitmap(sprites.turtle_uncut);

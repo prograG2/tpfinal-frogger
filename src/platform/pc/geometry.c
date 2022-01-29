@@ -85,6 +85,16 @@ static const pair_xy_t pair_xy_turtle_sprites_frames[TURTLE_FRAMES] =
         {496,0}
 	};
 
+//coordenadas topleft de cada frame del sprite del auto
+static const pair_xy_t pair_xy_car_sprites_frames[CAR_TYPE_N] =
+	{
+        {0,1},		//azul
+        {77,1},		//policia
+        {155,1},	//amarillo
+        {0,56},		//fire truck
+        {0,112}		//truck
+    };
+
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -167,6 +177,11 @@ pair_xy_t geometry_get_pair_xy_frog_frame(int frame)
 pair_xy_t geometry_get_pair_xy_turtle_frame(int frame)
 {
     return(pair_xy_turtle_sprites_frames[frame]);
+}
+
+pair_xy_t geometry_get_pair_xy_car_frame(int frame)
+{
+    return(pair_xy_car_sprites_frames[frame]);
 }
 
 bool match_uint(unsigned int val, const unsigned int *array)

@@ -82,21 +82,7 @@ typedef struct
 		ALLEGRO_BITMAP* option[MENU_STATE_MAX];
 		ALLEGRO_BITMAP* background;
 	} menu[MENU_WINDOW_MAX];
-    
 
-    /*
-    ALLEGRO_BITMAP* ship;
-    ALLEGRO_BITMAP* ship_shot[2];
-    ALLEGRO_BITMAP* life;
-
-    ALLEGRO_BITMAP* alien[3];
-    ALLEGRO_BITMAP* alien_shot;
-
-    ALLEGRO_BITMAP* explosion[EXPLOSION_FRAMES];
-    ALLEGRO_BITMAP* sparks[SPARKS_FRAMES];
-
-    ALLEGRO_BITMAP* powerup[4];
-    */
 } sprites_t;
 
 

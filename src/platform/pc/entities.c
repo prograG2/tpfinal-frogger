@@ -914,12 +914,16 @@ static void cars_update(void)
 static void cars_draw()
 {
 	int i;
+	bool flag = 0;
 	for(i = 0; i < MAX_CARS; i++)
     {
         if(car[i].used)
 		{
+			if (car[i].dx < 0)
+				flag = ALLEGRO_FLIP_HORIZONTAL;
+
 			//Dibujo los autos en sus carriles.
-			al_draw_bitmap(sprites.car[car[i].type], car[i].x, car[i].y, 0);
+			al_draw_bitmap(sprites.car[car[i].type], car[i].x, car[i].y, flag);
 
 #ifdef DEBUG_ENTITIES_TEXT	
 			//Dibujo hitbox

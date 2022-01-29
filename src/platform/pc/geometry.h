@@ -84,12 +84,12 @@
 #define LOG_OFFSET_Y    (CELL_H/2 - LOG_H/2)
 
 //Autos
-#define CAR_W   		(2 * CELL_W)
+#define CAR_W   				CELL_W + 26
 #define CAR_TRUCK_FIRE_W   		(3 * CELL_W)
 #define CAR_TRUCK_W   			(4 * CELL_W)
 #define CAR_H   		40
 #define CAR_OFFSET_X    0
-#define CAR_OFFSET_Y    (CELL_H/2 - LOG_H/2)
+#define CAR_OFFSET_Y    (CELL_H/2 - CAR_H/2)
 
 //Tortugas
 #define TURTLE_FRAMES							11	//11 frames distintos tiene la animación completa
@@ -303,7 +303,7 @@ int map_int(int source, int min_in, int max_in, int min_out, int max_out);
 /**
  * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de la rana
  * 
- * @param frame Numero de frame (0 a FROG_FRAMES)
+ * @param frame Numero de frame (0 a FROG_FRAMES - 1)
  * @return pair_xy_t Par de coordenadas
  */
 pair_xy_t geometry_get_pair_xy_frog_frame(int frame);
@@ -311,10 +311,19 @@ pair_xy_t geometry_get_pair_xy_frog_frame(int frame);
 /**
  * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de la tortuga
  * 
- * @param frame Numero de frame (0 a TURTLE_FRAMES)
+ * @param frame Numero de frame (0 a TURTLE_FRAMES - 1)
  * @return pair_xy_t Par de coordenadas
  */
 pair_xy_t geometry_get_pair_xy_turtle_frame(int frame);
+
+/**
+ * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite del auto
+ * 
+ * @param frame Numero de frame (0 a CAR_TYPE_N - 1)
+ * @return pair_xy_t PAr de coordenandas
+ */
+pair_xy_t geometry_get_pair_xy_car_frame(int frame);
+
 
 /**
  * @brief Verifica si un numero coincide con alguno de un array dado (uints)
