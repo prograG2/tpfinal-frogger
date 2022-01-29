@@ -54,7 +54,7 @@ LIBS_RPI	+=  -Llib -lrpiutils -lSDL2
 CC := gcc
 #Flags de compilacion
 CFLAGS := -Wall -Wno-unknown-pragmas -O2
-CFLAG_DEBUG := -g
+#CFLAG_DEBUG := -g
 ifdef CFLAG_DEBUG
 CFLAGS += $(CFLAG_DEBUG)
 endif

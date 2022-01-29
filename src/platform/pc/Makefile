@@ -53,22 +53,22 @@ all: $(OBJS) $(LIB_DIR)/libalgif.a
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/display_PC.o: display.c ../../display.h allegro_stuff.h
+$(OBJ_DIR)/display_PC.o: display.c ../../display.h ../../queue.h allegro_stuff.h game_data.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/game_PC.o: game.c ../../game.h allegro_stuff.h entities.h game_data.h 
+$(OBJ_DIR)/game_PC.o: game.c ../../game.h ../../menu.h ../../queue.h allegro_stuff.h entities.h game_data.h 
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/input_PC.o: input.c ../../input.h allegro_stuff.h
+$(OBJ_DIR)/input_PC.o: input.c ../../input.h ../../queue.h allegro_stuff.h entities.h game_data.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h allegro_stuff.h geometry.h
+$(OBJ_DIR)/menu_PC.o: menu.c ../../menu.h ../../sound.h ../../queue.h allegro_stuff.h geometry.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/nombre_PC.o: nombre.c ../../nombre.h allegro_stuff.h game_data.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/sound_PC.o: sound.c ../../sound.h
+$(OBJ_DIR)/sound_PC.o: sound.c ../../sound.h allegro_stuff.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,7 +77,7 @@ $(OBJ_DIR)/sound_PC.o: sound.c ../../sound.h
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-$(OBJ_DIR)/allegro_stuff_PC.o: allegro_stuff.c allegro_stuff.h entities.h geometry.h
+$(OBJ_DIR)/allegro_stuff_PC.o: allegro_stuff.c allegro_stuff.h entities.h geometry.h ./algif5/algif.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/entities_PC.o: entities.c entities.h allegro_stuff.h geometry.h game_data.h
@@ -130,27 +130,30 @@ all-debug: $(_OBJS)
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-display.o: display.c ../../display.h allegro_stuff.h
+display.o: display.c ../../display.h ../../queue.h  allegro_stuff.h game_data.h
 	$(CC) $(CFLAGS) -c $<
 
-game.o: game.c ../../game.h allegro_stuff.h entities.h game_data.h 
+game.o: game.c ../../game.h ../../menu.h ../../queue.h allegro_stuff.h entities.h game_data.h 
 	$(CC) $(CFLAGS) -c $<
 
-input.o: input.c ../../input.h allegro_stuff.h
+input.o: input.c ../../input.h ../../queue.h allegro_stuff.h entities.h game_data.h
 	$(CC) $(CFLAGS) -c $<
 
-menu.o: menu.c ../../menu.h allegro_stuff.h geometry.h
+menu.o: menu.c ../../menu.h ../../sound.h ../../queue.h allegro_stuff.h geometry.h
 	$(CC) $(CFLAGS) -c $<
 
 nombre.o: nombre.c ../../nombre.h allegro_stuff.h game_data.h
 	$(CC) $(CFLAGS) -c $<
+
+sound.o: sound.c ../../sound.h allegro_stuff.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos genericos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-allegro_stuff.o: allegro_stuff.c allegro_stuff.h entities.h geometry.h
+allegro_stuff.o: allegro_stuff.c allegro_stuff.h entities.h geometry.h ./algif5/algif.h
 	$(CC) $(CFLAGS) -c $<
 
 entities.o: entities.c entities.h allegro_stuff.h geometry.h game_data.h
@@ -161,9 +164,6 @@ game_data.o: game_data.c game_data.h allegro_stuff.h geometry.h
 
 geometry.o: geometry.c geometry.h
 	$(CC) $(CFLAGS) -c $<
-
-sound.o: sound.c ../../sound.h
-	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos especificos ~~~~~~~~~~~~~~~~~~~~~~~~
 
