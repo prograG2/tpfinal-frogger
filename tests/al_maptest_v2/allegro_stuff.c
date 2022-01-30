@@ -405,7 +405,7 @@ void allegro_draw_menu_background(void)
 
 bool allegro_is_event_queueVacia(void)
 {
-	return(al_is_event_queueVacia(allegro_vars.queue));
+	return(al_is_event_queue_empty(allegro_vars.queue));
 }
 
 #pragma region allegro_sound

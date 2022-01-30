@@ -68,9 +68,9 @@ static unsigned char last_key;
  *******************************************************************************
  ******************************************************************************/
 
-int iniciarEntradas(void)
+void iniciarEntradas(void)
 {
-	return 1;
+
 }
 
 event_t leerEntradas(void)

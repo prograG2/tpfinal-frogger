@@ -394,9 +394,6 @@ static void *threadJuego(void* ptr){
 		if(tiempoRefrescoEntidades())
 			refrescar();
 
-		if(tiempoLimite())
-			perderVida();
-
 		actualizarInterfaz();
 
 		fixHighCpuUsage();

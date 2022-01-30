@@ -111,7 +111,8 @@ event_t queueSiguienteEvento()
  
 void destruirQueue(){
   while(front != NULL){
-    event_t evento_basura = queueSiguienteEvento();
+    //event_t evento_basura = queueSiguienteEvento();
+	queueSiguienteEvento();
   }
 }
 

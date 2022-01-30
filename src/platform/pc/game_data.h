@@ -166,6 +166,12 @@ int game_data_get_timer_in_sec(void);
 void game_data_set_diff(int diff);
 
 /**
+ * @brief Devuelve dificultad
+ * 
+ * @return int 
+ */
+int game_data_get_diff(void);
+/**
  * @brief Limpia el nombre del jugador
  * 
  */

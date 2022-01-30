@@ -112,7 +112,7 @@ void cargarRanking(FILE* pFile)
 bool mostrarRanking(void)
 {
 
-
+	return true;
 }
 
 void finalizarRanking(void)
@@ -128,6 +128,7 @@ void cargarCreditos(void)
 bool mostrarCreditos(void)
 {
 
+	return true;
 }
 
 void finalizarCreditos(void)

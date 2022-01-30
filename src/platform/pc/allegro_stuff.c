@@ -469,7 +469,7 @@ void allegro_draw_menu_background(int window)
 
 bool allegro_is_event_queueVacia(void)
 {
-	return(al_is_event_queueVacia(allegro_vars.queue));
+	return(al_is_event_queue_empty(allegro_vars.queue));
 }
 
 ALLEGRO_EVENT_QUEUE* allegro_get_event_queue(void)

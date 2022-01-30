@@ -162,7 +162,7 @@ void refrescar(void)
 	{
 		next_run_flag = true;
 
-		reproducir_efecto(EFECTO_NIVEL_COMPLETO);
+		reproducirEfecto(EFECTO_NIVEL_COMPLETO);
 		reiniciarNivel();
 	}
 }
