@@ -544,15 +544,15 @@ static void frog_update(void)
 	switch (frog.state)
 	{
 		case FROG_STATE_WATER:
-			game_data_subtract_live();
-			allegro_sound_play_effect_drowned();
-			frog_init();
+			//game_data_subtract_live();
+			//allegro_sound_play_effect_drowned();
+			//frog_init();
 			break;
 		
 		case FROG_STATE_CRASH_CAR:
-			game_data_subtract_live();
-			allegro_sound_play_effect_crash();
-			frog_init();
+			//game_data_subtract_live();
+			//allegro_sound_play_effect_crash();
+			//frog_init();
 
 			break;
 		

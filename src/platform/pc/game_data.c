@@ -32,7 +32,7 @@
 #define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
 #define SCORE_PER_RUN		1000	//puntaje por completar una run
 
-#define INITIAL_RUN_TIME_LEFT   	12		//60s de run time
+#define INITIAL_RUN_TIME_LEFT   	15		
 
 #define EXTRA_TIME_PER_GOAL			10		//10s extras por llegar a una meta
 #define EXTRA_TIME_PER_BONUS_GOAL	15		//15s extras por llegar a una meta con fly
@@ -121,6 +121,13 @@ static void draw_reached_goals(void);
  */
 static void next_run(void);
 
+/**
+ * @brief Cambia el tiempo inicial de una run nueva
+ * 
+ * @param time_left Tiempo inicial a setear
+ */
+static void set_new_run_time_left(int time_left);
+
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -148,6 +155,8 @@ static bool flag_low_time_warning;
 
 static int last_loop_time;
 
+static int new_run_time_left;
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -165,6 +174,8 @@ void game_data_init(void)
 	text_color = al_map_rgb(255,255,255);
 
 	flag_low_time_warning = false;
+
+	new_run_time_left = INITIAL_RUN_TIME_LEFT;
 
 	data_init();
 
@@ -357,7 +368,6 @@ bool game_data_are_goals_full(void)
 }
 
 
-
 /*******************************************************************************
  *******************************************************************************
 						LOCAL FUNCTION DEFINITIONS
@@ -369,7 +379,7 @@ static void data_init(void)
 	data.frames = 0;
 	data.lives = MAX_LIVES;
 	data.run.number = 0;
-	data.run.time_left = INITIAL_RUN_TIME_LEFT;
+	data.run.time_left = new_run_time_left;
 	data.run.time = 0;
 	data.run.time_ref = time(NULL);
 	data.score = 0;
@@ -497,7 +507,7 @@ static void draw_reached_goals(void)
 static void next_run(void)
 {
 	data.run.number++;
-	data.run.time_left = INITIAL_RUN_TIME_LEFT;
+	data.run.time_left = new_run_time_left;
 	data.run.time = 0;
 	data.run.time_ref = time(NULL);
 
@@ -507,6 +517,12 @@ static void next_run(void)
 
 	game_data_reset_goals();
 }
+
+static void set_new_run_time_left(int time_left)
+{
+	new_run_time_left = time_left;
+}
+
 
 
  

@@ -102,10 +102,6 @@ void mostrarTexto(char* txt, int pos)
 
 	}
 
-	if(pos == POS_MSJ_PASAR)
-	{
-		game_data_next_run();
-	}
 }
 
 void fijarTexto(char* txt, int pos)
@@ -118,9 +114,35 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos)
 	printf("Posicion: %s ~ Nombre: %s ~ Score: %s\n", posicion, nombre, puntos);
 }
 
-void mostrarCreditos(char* linea)
+void cargarRanking(FILE* pFile)
 {
 
+}
+
+bool mostrarRanking(void)
+{
+
+
+}
+
+void finalizarRanking(void)
+{
+
+}
+
+void cargarCreditos(void)
+{
+
+}
+
+bool mostrarCreditos(void)
+{
+
+}
+
+void finalizarCreditos(void)
+{
+	
 }
 
 void reconfigurarDisplayON(void)

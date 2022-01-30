@@ -291,7 +291,7 @@ debug: all
 
 #https://gist.github.com/prwhite/8168133
 
-.DEFAULT_GOAL = help
+#.DEFAULT_GOAL = help
 
 ## This help message
 .PHONY: help
