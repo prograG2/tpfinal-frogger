@@ -29,12 +29,12 @@
 #define LOGS_SPAWN_MAX			2
 #define LOGS_SPAWN_FRAMES		60
 #define LOGS_BASE_SPEED			2
-#define LOGS_MAX_USED			5
+#define LOGS_MAX_USED			5		//Maximo en pantalla (1 mas de lo que dice)
 
 #define CARS_SPAWN_MIN			1
-#define CARS_SPAWN_MAX			2
+#define CARS_SPAWN_MAX			4
 #define CARS_SPAWN_FRAMES		60
-#define CARS_BASE_SPEED			2
+#define CARS_BASE_SPEED			1
 #define CARS_MAX_USED			10
 
 #define TURTLES_MIN_PER_PACK	2
@@ -77,9 +77,10 @@ typedef struct
     int x;              //Posicion del auto
 	int y;
     int lane;           //Carril del auto.
-	int dx;
+	int dx;				//Velocidad del auto.
     CAR_TYPE type;		//Tipo de auto.
 	int length;			//Largo del auto.
+	bool fast;
     bool used;          //Marca disponibilidad en el array.
 } car_t;
 
@@ -286,6 +287,13 @@ static fly_t fly;
 
 //Contador de frames ejecutados
 static long game_frames;
+
+//Carriles variables.
+static unsigned char normal_diff_lane;
+
+static unsigned char hard_diff_lane_1;
+
+static unsigned char hard_diff_lane_2;
 
 
 
@@ -786,6 +794,21 @@ static void cars_init(void)
 	for(i = 0; i < CARS_MAX_USED; i++)
         car[i].used = false;
 
+	switch (game_data_get_diff())
+	{
+		case DIFFICULTIES_EASY:
+			break;
+		
+		case DIFFICULTIES_NORMAL:
+			normal_diff_lane = get_rand_between(lanes_cars[0], lanes_cars[LANES_CAR_TOTAL - 1]);
+			break;
+
+		case DIFFICULTIES_HARD:
+			hard_diff_lane_1 = get_rand_between(lanes_cars[0], lanes_cars[2]);
+			hard_diff_lane_2 = get_rand_between(lanes_cars[3], lanes_cars[4]);
+			break;
+	}
+
 }
 
 static void cars_update(void)
@@ -810,9 +833,9 @@ static void cars_update(void)
 			//Coordenada 'y' en funcion del carril
 			car[i].y = CELL_H * car[i].lane + CAR_OFFSET_Y;
 
-			//Velocidad mayor en rutas mas alejadas
-			//car[i].dx = lanes_cars[LANES_CAR_TOTAL-1] - car[i].lane + 1;
-			car[i].dx = CARS_BASE_SPEED;
+			//Velocidad menor en rutas mas alejadas
+			car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED;
+			//car[i].dx = CARS_BASE_SPEED;
 
 			//Asigno tipos.
 			car[i].type = get_rand_between(0, CAR_TYPE_N - 1);
@@ -834,6 +857,9 @@ static void cars_update(void)
                 default:
                     break;
             }
+
+			//Inicializo el flag.
+			car[i].fast = 0;
 
 			//en pares...
 			if(!(car[i].lane % 2))
@@ -900,7 +926,52 @@ static void cars_update(void)
 		//si el auto esta usado...
 		else if(car[i].used)
 		{
-			//desplaza
+			//Carril con velocidad variable
+			switch (game_data_get_diff())
+			{
+				case DIFFICULTIES_EASY:
+					break;
+
+				case DIFFICULTIES_NORMAL:
+					if(car[i].lane == normal_diff_lane)
+					{
+						if(!(game_frames % FPS))
+						{
+							if(car[i].fast == 0)
+							{
+								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED + 2;
+								car[i].fast = 1;
+							}
+							else
+							{
+								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED;
+								car[i].fast = 0;
+							}
+						}
+					}
+					break;
+				case DIFFICULTIES_HARD:
+					if((car[i].lane == hard_diff_lane_1) || (car[i].lane == hard_diff_lane_2))
+					{
+						if(!(game_frames % FPS))
+						{
+							if(car[i].fast == 0)
+							{
+								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED + 2;
+								car[i].fast = 1;
+							}
+							else
+							{
+								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED;
+								car[i].fast = 0;
+							}
+						}
+					}
+				default:
+					break;
+			}
+
+			//Desplazamiento
 			car[i].x += car[i].dx;
 
 			//chequea si llego a los limites

@@ -75,14 +75,24 @@ void setMaxPuntos(uint64_t max)
 	
 }
 
-void setDificultad(int diff)
+void setDificultad(int diff)				
 {
-	if(diff == FACIL)
-		game_data_set_diff(DIFFICULTIES_EASY);
-	else if(diff == NORMAL)
-		game_data_set_diff(DIFFICULTIES_NORMAL);
-	else if(diff == DIFICIL)
-		game_data_set_diff(DIFFICULTIES_HARD);
+	switch (diff)
+	{
+		case 0:
+			game_data_set_diff(DIFFICULTIES_EASY);
+			break;
+
+		case 1:
+			game_data_set_diff(DIFFICULTIES_NORMAL);
+			break;
+			
+		case 2:
+			game_data_set_diff(DIFFICULTIES_HARD);
+
+		default:
+			break;
+	}
 }
 
 bool tiempoRefrescoEntidades(void)

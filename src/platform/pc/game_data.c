@@ -212,6 +212,11 @@ void game_data_set_diff(int diff)
 	data.difficulty = diff;
 }
 
+int game_data_get_diff(void)
+{
+	return(data.difficulty);
+}
+
 void game_data_clear_name(void)
 {
 	memset(data.name, 0, MAX_NAME_CHAR);
