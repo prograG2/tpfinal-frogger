@@ -16,6 +16,7 @@
 #include "../../game.h"
 #include "../../menu.h"
 #include "../../queue.h"
+#include "../../sound.h"
 
 #include "game_data.h"
 #include "entities.h"
@@ -57,6 +58,8 @@
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
+
+static bool next_run_flag = false;
 
 
 /*******************************************************************************
@@ -143,7 +146,11 @@ void pausarJuego(void)
 
 void reiniciarNivel(void)
 {
-	
+	if(next_run_flag)
+	{
+		game_data_next_run();
+		next_run_flag = false;
+	}
 }
 
 void refrescar(void)
@@ -153,7 +160,10 @@ void refrescar(void)
 
 	if(game_data_are_goals_full())
 	{
-		queue_insert(META);
+		next_run_flag = true;
+
+		reproducir_efecto(EFECTO_NIVEL_COMPLETO);
+		reiniciarNivel();
 	}
 }
 

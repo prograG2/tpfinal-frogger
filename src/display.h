@@ -17,7 +17,10 @@
  ******************************************************************************/
 
 #include <pthread.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include "queue.h"
+
 
 
 /*******************************************************************************
@@ -89,11 +92,45 @@ void fijarTexto(char* txt, int pos);
 void mostrarPosicion(char* posicion, char* nombre, char* puntos);
 
 /**
+ * @brief Envio el puntero de ranking.txt a la plataforma
+ * 
+ * @param txt 
+ */
+void cargarRanking(FILE* txt);
+
+/**
+ * @brief Bucle que muestra el ranking. Finaliza desde dentro, y hace que finalice el thread de ranking.
+ * 
+ * @return true No finaliza
+ * @return false Finaliza
+ */
+bool mostrarRanking(void);
+
+/**
  * @brief 
  * 
- * @param linea 
  */
-void mostrarCreditos(char* linea);
+void finalizarRanking(void);
+
+/**
+ * @brief Inicializa los cretidos en la plataforma
+ * 
+ */
+void cargarCreditos(void);
+
+/**
+ * @brief Bucle que muestra los creditos. Finaliza desde dentro, y hace que finalice el thread de ranking.
+ * 
+ * @return true No finaliz
+ * @return false Finaliza
+ */
+bool mostrarCreditos(void);
+
+/**
+ * @brief Construct a new finalizar Creditos object
+ * 
+ */
+void finalizarCreditos(void);
 
 /**
  * @brief Construct a new reconfigurar Display object

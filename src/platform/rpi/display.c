@@ -72,6 +72,14 @@ static pthread_t ttextodisplay;
 static mensaje_t texto1, texto2;
 
 static int texto;
+
+/*creditos*/
+static FILE* pFile;
+static char linea[100];
+static int puesto_int = 1;
+static char puesto[2], *nombre, *puntos;
+/*creditos*/
+
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
@@ -168,9 +176,66 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos){
     mostrarTexto(puntos, POS_RANKING_2);
 }
 
-void mostrarCreditos(char* linea)
+void cargarRanking(FILE* txt)
+{
+	pFile = txt;
+	puesto_int = 1;
+}
+
+bool mostrarRanking(void)
+{
+	while(fgets(linea, 100, pFile) != NULL)
+	{
+		char* pch = strtok(linea," ");
+		nombre = pch;
+		ulltoa(puesto_int++, puesto);
+		pch = strtok(NULL, " ");
+		puntos = pch;
+		mostrarPosicion(puesto, nombre, puntos);
+	}
+	
+	//termina de mostrarlos una vez, y sale.
+	return false;
+}
+
+void finalizarRanking(void)
 {
 
+}
+
+void cargarCreditos(void)
+{
+
+}
+
+bool mostrarCreditos(void)
+{
+	/*
+	FILE* pFile;
+	char linea[100];
+
+	pFile = fopen ("credits.txt" , "r");
+	if (pFile == NULL){
+		perror ("credits.txt: Error opening file");
+		return NULL;
+	}
+	
+		while((fgets(linea, 100, pFile)) != NULL && (p2CurrentState == viendo_creditos))
+		{
+			mostrarCreditos(linea);
+
+			fix_high_cpu_usage();
+		}
+	}
+	*/
+
+	//termina de mostrarlos una vez, y sale.
+	return false;
+}
+
+void finalizarCreditos(void)
+{
+	
 }
 
 void reconfigurarDisplayON(void)

@@ -17,6 +17,7 @@
 
 #include "bitmap.h"
 #include "../../display.h"
+#include "../../sound.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -238,7 +239,8 @@ void moverAdelante(){
 			jugador.ranas |= jugador.jugador_1 | jugador.jugador_2;
 			//printf("%d\n", jugador.ranas);
 			if(jugador.ranas == 0b1111111111111111){
-            	queue_insert(META);
+            	reproducir_efecto(EFECTO_NIVEL_COMPLETO);
+				reiniciarNivel();
 				jugador.jugando = false;
 				jugador.niv_actual++;
 			}
