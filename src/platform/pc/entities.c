@@ -34,8 +34,8 @@
 #define CARS_SPAWN_MIN			1
 #define CARS_SPAWN_MAX			4
 #define CARS_SPAWN_FRAMES		60
-#define CARS_BASE_SPEED			1
-#define CARS_MAX_USED			10
+#define CARS_BASE_SPEED			2
+#define CARS_MAX_USED			3
 
 #define TURTLES_MIN_PER_PACK	2
 #define	TURTLES_MAX_PER_PACK	3
