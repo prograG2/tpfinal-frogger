@@ -102,7 +102,7 @@ static int char_w;	//ancho de un caracter
  *******************************************************************************
  ******************************************************************************/
 
-void game_data_init(void)
+void gamedataInicializar(void)
 {
 	time_ref = time(NULL);
 
@@ -113,28 +113,28 @@ void game_data_init(void)
 
 }
 
-void game_data_update(void)
+void gamedataActualizar(void)
 {
 	data_update();
 
 }
 
-void game_data_draw(void)
+void gameDataRenderizar(void)
 {
 	hud_draw();
 }
 
-int game_data_get_lives(void)
+int getVidas(void)
 {
 	return(data.lives);
 }
 
-void game_data_subtract_live(void)
+void quitarVida(void)
 {
 	data.lives--;
 }
 
-int game_data_get_score(void)
+int getScore(void)
 {
 	return(data.score);
 }

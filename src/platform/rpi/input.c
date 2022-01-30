@@ -44,10 +44,10 @@
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief devuelve el módulo para una variable entera de 8 bits
  * 
- * @param x 
- * @return int8_t 
+ * @param x variable a obtener el módulo
+ * @return int8_t |x|, con la excepción modulo(-128) = 127
  */
 static int8_t modulo(int8_t x);
 

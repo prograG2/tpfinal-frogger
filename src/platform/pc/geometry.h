@@ -235,7 +235,7 @@ bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int 
  * @return true Colision
  * @return false No colision
  */
-bool collide_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh);
+bool collideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh);
 
 /**
  * @brief Detecta si un rectángulo está dentro de otro
@@ -267,10 +267,10 @@ bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int b
  * @return true Esta dentro
  * @return false Esta fuera
  */
-bool inside_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh);
+bool insideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh);
 
 /**
- * @brief Similar a 'inside_short', pero permite setear cuan dentro debe estar una box dentro de la otra para tomarla como tal
+ * @brief Similar a 'insideShort', pero permite setear cuan dentro debe estar una box dentro de la otra para tomarla como tal
  * 
  * @param ax topleft corner x de big
  * @param ay topleft corner y de big
@@ -284,7 +284,7 @@ bool inside_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh
  * @return true 
  * @return false 
  */
-bool inside_shot_scaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh, float scale);
+bool insideShortScaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh, float scale);
 
 /**
  * @brief Toma un valor comprendido dentro de un rango (in) y lo devuelve (mapea) a otro rango (out)
@@ -298,7 +298,7 @@ bool inside_shot_scaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, 
  * @param max_out Límite superior del rango de salida
  * @return int Valor mapeado
  */
-int map_int(int source, int min_in, int max_in, int min_out, int max_out);
+int mapInt(int source, int min_in, int max_in, int min_out, int max_out);
 
 /**
  * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de la rana
@@ -306,7 +306,7 @@ int map_int(int source, int min_in, int max_in, int min_out, int max_out);
  * @param frame Numero de frame (0 a FROG_FRAMES - 1)
  * @return pair_xy_t Par de coordenadas
  */
-pair_xy_t geometry_get_pair_xy_frog_frame(int frame);
+pair_xy_t getXYFromFrogFrame(int frame);
 
 /**
  * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de la tortuga
@@ -314,7 +314,7 @@ pair_xy_t geometry_get_pair_xy_frog_frame(int frame);
  * @param frame Numero de frame (0 a TURTLE_FRAMES - 1)
  * @return pair_xy_t Par de coordenadas
  */
-pair_xy_t geometry_get_pair_xy_turtle_frame(int frame);
+pair_xy_t getXYFromTurtleFrame(int frame);
 
 /**
  * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite del auto
@@ -322,7 +322,7 @@ pair_xy_t geometry_get_pair_xy_turtle_frame(int frame);
  * @param frame Numero de frame (0 a CAR_TYPE_N - 1)
  * @return pair_xy_t PAr de coordenandas
  */
-pair_xy_t geometry_get_pair_xy_car_frame(int frame);
+pair_xy_t getXYFromCarFrame(int frame);
 
 
 /**
@@ -333,7 +333,7 @@ pair_xy_t geometry_get_pair_xy_car_frame(int frame);
  * @return true Existe
  * @return false No existe
  */
-bool match_uint(unsigned int val, const unsigned int *array);
+bool matchUint(unsigned int val, const unsigned int *array);
 
 
 

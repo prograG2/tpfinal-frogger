@@ -76,12 +76,12 @@ void destruirSonido(void)
 }
 
 
-void pausar_musica(void)
+void pausarMusica(void)
 {
 	allegro_sound_pause_stream();
 }
 
-void reproducir_musica(int musica)
+void reproducirMusica(int musica)
 {
 	switch (musica)
 	{
@@ -113,7 +113,7 @@ void reproducir_musica(int musica)
 
 }
 
-void reproducir_efecto(int sonido)
+void reproducirEfecto(int sonido)
 {
 	switch(sonido)
 	{

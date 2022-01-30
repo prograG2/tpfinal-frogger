@@ -236,7 +236,7 @@ void allegro_draw_menu_background(void);
  * @return true Vacía
  * @return false No vacía
  */
-bool allegro_is_event_queue_empty(void);
+bool allegro_is_event_queueVacia(void);
 
 #pragma region allegro_sound
 

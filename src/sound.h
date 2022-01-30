@@ -85,21 +85,21 @@ void destruirSonido(void);
  * @brief 
  * 
  */
-void pausar_musica(void);
+void pausarMusica(void);
 
 /**
  * @brief 
  * 
  * @param
  */
-void reproducir_musica(int musica);
+void reproducirMusica(int musica);
 
 /**
  * @brief 
  * 
  * @param
  */
-void reproducir_efecto(int efecto);
+void reproducirEfecto(int efecto);
 
 
 

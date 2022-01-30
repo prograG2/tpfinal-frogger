@@ -83,7 +83,7 @@ static menu_t menu;
  *******************************************************************************
  ******************************************************************************/
 
-void menu_init(void)
+void inicializarMenu(void)
 {
 	menu.window = HOME;
 	menu.state = START;
@@ -133,7 +133,7 @@ void menu_update()
 	
 }
 
-void menu_draw()
+void renderizarMenu()
 {
 	ALLEGRO_BITMAP* tempbitmap;
 

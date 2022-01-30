@@ -116,7 +116,7 @@ bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int 
     return false;
 }
 
-bool collide_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
+bool collideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
 {
 	return(collide(ax, ay, ax + aw, ay + ah, bx, by, bx + bw, by + bh));
 }
@@ -133,12 +133,12 @@ bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int b
     return false;
 }
 
-bool inside_short(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
+bool insideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
 {
 	return(inside(ax, ay, ax + aw, ay + ah, bx, by, bx + bw, by + bh));
 }
 
-bool inside_shot_scaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh, float scale)
+bool insideShortScaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh, float scale)
 {
 	if(scale < 0.0 || scale > 1.0)
 		return false;
@@ -148,7 +148,7 @@ bool inside_shot_scaled(int ax, int ay, int aw, int ah, int bx, int by, int bw, 
 	return(inside(ax, ay, ax + aw, ay + ah, bx + diff, by, bx + bw - diff, by + bh));
 }
 
-int map_int(int source, int min_in, int max_in, int min_out, int max_out)
+int mapInt(int source, int min_in, int max_in, int min_out, int max_out)
 {
     //int slope = (max_out - max_in) / (min_out - min_in);
 
@@ -159,21 +159,21 @@ int map_int(int source, int min_in, int max_in, int min_out, int max_out)
     return(output);
 }
 
-pair_xy_t geometry_get_pair_xy_frog_frame(int frame)
+pair_xy_t getXYFromFrogFrame(int frame)
 {
     return(pair_xy_frog_sprites_frames[frame]);
 }
 
-pair_xy_t geometry_get_pair_xy_turtle_frame(int frame)
+pair_xy_t getXYFromTurtleFrame(int frame)
 {
     return(pair_xy_turtle_sprites_frames[frame]);
 }
 
-bool match_uint(unsigned int val, const unsigned int *array)
+bool matchUint(unsigned int val, const unsigned int *array)
 {
 	if(array == NULL)
 	{
-		printf("PUNTERO INVALIDO ~ funcion: match_uint ~ val=%d", val);
+		printf("PUNTERO INVALIDO ~ funcion: matchUint ~ val=%d", val);
 		exit(EXIT_FAILURE);
 	}
 	

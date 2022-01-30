@@ -241,7 +241,7 @@ void allegro_draw_menu_background(int window);
  * @return true Vacía
  * @return false No vacía
  */
-bool allegro_is_event_queue_empty(void);
+bool allegro_is_event_queueVacia(void);
 
 /**
  * @brief Devuelve puntero a la cola de eventos

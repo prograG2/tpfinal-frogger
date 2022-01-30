@@ -467,9 +467,9 @@ void allegro_draw_menu_background(int window)
 	al_draw_bitmap(sprites.menu[window].background, 0, 0, 0);
 }
 
-bool allegro_is_event_queue_empty(void)
+bool allegro_is_event_queueVacia(void)
 {
-	return(al_is_event_queue_empty(allegro_vars.queue));
+	return(al_is_event_queueVacia(allegro_vars.queue));
 }
 
 ALLEGRO_EVENT_QUEUE* allegro_get_event_queue(void)
@@ -784,7 +784,7 @@ static void sprites_init(void)
 	//se particiona el de la rana en sus 8 partes
 	for(i = 0; i < FROG_FRAMES; i++)
 	{
-		temp_xy = geometry_get_pair_xy_frog_frame(i);
+		temp_xy = getXYFromFrogFrame(i);
 
 		if(!(i%2))	//los sprites pares
 		{
@@ -818,11 +818,11 @@ static void sprites_init(void)
 	path = make_sprite_path(SPRITE_CAR, path);
 	sprites.cars_uncut = al_load_bitmap(path);
 
-	sprites.car[0] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(0).x, geometry_get_pair_xy_car_frame(0).y, CAR_W, CAR_H);
-	sprites.car[1] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(1).x, geometry_get_pair_xy_car_frame(1).y, CAR_W, CAR_H);
-	sprites.car[2] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(2).x, geometry_get_pair_xy_car_frame(2).y, CAR_W, CAR_H);
-	sprites.car[3] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(3).x, geometry_get_pair_xy_car_frame(3).y, CAR_TRUCK_FIRE_W, CAR_H);
-	sprites.car[4] = sprite_cut(sprites.cars_uncut, geometry_get_pair_xy_car_frame(4).x, geometry_get_pair_xy_car_frame(4).y, CAR_TRUCK_W, CAR_H);
+	sprites.car[0] = sprite_cut(sprites.cars_uncut, getXYFromCarFrame(0).x, getXYFromCarFrame(0).y, CAR_W, CAR_H);
+	sprites.car[1] = sprite_cut(sprites.cars_uncut, getXYFromCarFrame(1).x, getXYFromCarFrame(1).y, CAR_W, CAR_H);
+	sprites.car[2] = sprite_cut(sprites.cars_uncut, getXYFromCarFrame(2).x, getXYFromCarFrame(2).y, CAR_W, CAR_H);
+	sprites.car[3] = sprite_cut(sprites.cars_uncut, getXYFromCarFrame(3).x, getXYFromCarFrame(3).y, CAR_TRUCK_FIRE_W, CAR_H);
+	sprites.car[4] = sprite_cut(sprites.cars_uncut, getXYFromCarFrame(4).x, getXYFromCarFrame(4).y, CAR_TRUCK_W, CAR_H);
 
 	//el de las tortugas sin recortar
 	path = make_sprite_path(SPRITE_TURTLES, path);
@@ -831,7 +831,7 @@ static void sprites_init(void)
 	//se recortan los de la tortuga en sus 11 partes
 	for(i = 0; i < TURTLE_FRAMES; i++)
 	{
-		temp_xy = geometry_get_pair_xy_turtle_frame(i);
+		temp_xy = getXYFromTurtleFrame(i);
 
 		sprites.turtle[i] = sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, TURTLE_SIDE, TURTLE_SIDE);
 	}

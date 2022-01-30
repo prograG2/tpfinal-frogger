@@ -45,7 +45,7 @@
  * @brief Inicializa el menu
  * 
  */
-void menu_init(void);
+void inicializarMenu(void);
 
 /**
  * @brief Actualiza el menu
@@ -57,7 +57,7 @@ void menu_update(void);
  * @brief Dibuja lelas menu
  * 
  */
-void menu_draw(void);
+void renderizarMenu(void);
 
 
 /*******************************************************************************

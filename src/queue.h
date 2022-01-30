@@ -21,7 +21,7 @@
 
 typedef int event_t;
 
-enum eventos{NADA = -1, SALIR = 0, CHOCAR = 200, AGUA, TIMEOUT, GAME_OVER, META};
+enum eventos{NADA = -1, SALIR = 0, GAME_OVER};
 enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO}; //Se respetan las definiciones de ALLEGRO ¡Chequear si se cambió la versión!
 
 /*******************************************************************************
@@ -34,40 +34,31 @@ enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
+/**
+ * @brief 
+ * 
+ */
+void queueInsertar(event_t);
 
 /**
  * @brief 
  * 
  * @return int 
  */
-int queue_init();
-
-/**
- * @brief 
- * 
- */
-void queue_insert(event_t);
-
-/**
- * @brief 
- * 
- * @return int 
- */
-int queue_empty();
+int queueVacia();
 
 /**
  * @brief 
  * 
  * @return event_t 
  */
-event_t queue_next();
+event_t queueSiguienteEvento();
 
 /**
  * @brief 
  * 
- * @return int 
  */
-int queue_destroy();
+void destruirQueue();
 
 /*******************************************************************************
  ******************************************************************************/

@@ -52,7 +52,7 @@ Matriz disp_matriz;
  * @param ptr 
  * @return void* 
  */
-static void* thread_texto_display(void* ptr);
+static void* threadTextoDisplay(void* ptr);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -147,7 +147,7 @@ void fijarTexto(char* txt, int pos){
     }
     if(!texto){
         texto = 1;
-        pthread_create(&ttextodisplay, NULL, thread_texto_display, NULL);
+        pthread_create(&ttextodisplay, NULL, threadTextoDisplay, NULL);
     }
 }
 
@@ -164,7 +164,7 @@ void fijarMensaje(mensaje_t* msj, int pos){
         break;
     }
     if(!texto){
-        pthread_create(&ttextodisplay, NULL, thread_texto_display, NULL);
+        pthread_create(&ttextodisplay, NULL, threadTextoDisplay, NULL);
         texto = 1;
     }
 }
@@ -224,7 +224,7 @@ bool mostrarCreditos(void)
 		{
 			mostrarCreditos(linea);
 
-			fix_high_cpu_usage();
+			fixHighCpuUsage();
 		}
 	}
 	*/
@@ -259,7 +259,7 @@ void reconfigurarDisplayOFF(void)
  *******************************************************************************
  ******************************************************************************/
 
-static void* thread_texto_display(void* ptr){
+static void* threadTextoDisplay(void* ptr){
     while(texto){
         clock_t meta = clock() + SLEEP_CLOCKS;
         while(clock() < meta);

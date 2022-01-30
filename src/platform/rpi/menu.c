@@ -88,7 +88,7 @@ void subirOpcion(){
         menu.opcion_actual = menu.max_opciones - 1;
     fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
 
-	reproducir_efecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void bajarOpcion(){
@@ -96,7 +96,7 @@ void bajarOpcion(){
         menu.opcion_actual = 0;
     fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
 
-	reproducir_efecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void iniciarMenu(){

@@ -38,15 +38,17 @@ int main (void)
 	if(!inicializarFsm())
 		return 1;
 
-	while((evento = queue_next()))
+	while((evento = queueSiguienteEvento()))
 	{
 		if(evento != NADA)
 		{
 			fsm(evento);
 		}
 
-		fix_high_cpu_usage();
+		fixHighCpuUsage();
 	}
+
+	destruirQueue();
 
 	printf("\nSaliendo...\n");
 

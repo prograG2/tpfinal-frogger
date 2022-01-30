@@ -170,19 +170,7 @@ void respawn(void);
  * @brief 
  * 
  */
-void perderVidaChoque(void);
-
-/**
- * @brief 
- * 
- */
-void perderVidaAgua(void);
-
-/**
- * @brief 
- * 
- */
-void perderVidaTimeout(void);
+void perderVida(void);
 
 /**
  * @brief 

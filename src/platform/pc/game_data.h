@@ -52,39 +52,39 @@ enum DIFFICULTIES
  * @brief Inicializa datos internos del juego 
  * 
  */
-void game_data_init(void);
+void gamedataInicializar(void);
 
 /**
  * @brief Actualiza datos internos del juego
  * 
  */
-void game_data_update(void);
+void gamedataActualizar(void);
 
 /**
  * @brief Grafica datos del juego (HUD pricipalmente)
  * 
  */
-void game_data_draw(void);
+void gameDataRenderizar(void);
 
 /**
  * @brief Devuelve vidas
  * 
  * @return int vidas
  */
-int game_data_get_lives(void);
+int getVidas(void);
 
 /**
  * @brief Resta una vida
  * 
  */
-void game_data_subtract_live(void);
+void quitarVida(void);
 
 /**
  * @brief Devuelve score
  * 
  * @return int 
  */
-int game_data_get_score(void);
+int getScore(void);
 
 /**
  * @brief Agrega score por llegar a la meta

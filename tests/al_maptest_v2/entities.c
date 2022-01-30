@@ -402,9 +402,9 @@ static void frog_update(void)
 			frog.state = FROG_STATE_WATER;
 
 		//choque contra alguno de los muros superiores
-		//con 'match_uint' se sabe si la columna de la frog es alguna de la de los puntos de llegada
-		//entonces, con '!match_uint' sabemos si esta en alguna columna de muros
-		else if (y_no_offset < CELL_H * 2 && !match_uint(x_no_offset / CELL_W, goal_cols))
+		//con 'matchUint' se sabe si la columna de la frog es alguna de la de los puntos de llegada
+		//entonces, con '!matchUint' sabemos si esta en alguna columna de muros
+		else if (y_no_offset < CELL_H * 2 && !matchUint(x_no_offset / CELL_W, goal_cols))
 			frog.state = FROG_STATE_CRASH_WALL;
 
 		//llego bien a algun goal. Luego se actualiza si fue con fly.
@@ -419,7 +419,7 @@ static void frog_update(void)
 			if(!car[i].used)
 				continue;
 			
-			if(collide_short(	car[i].x,
+			if(collideShort(	car[i].x,
 								car[i].y,
 								CAR_W,
 								CAR_H,
@@ -436,7 +436,7 @@ static void frog_update(void)
 		//colision con fly
 		if(fly.used)
 		{
-			if(collide_short(	fly.x,
+			if(collideShort(	fly.x,
 								fly.y,
 								FLY_SIDE,
 								FLY_SIDE,
@@ -459,7 +459,7 @@ static void frog_update(void)
 		if(!log[i].used)
 			continue;
 
-		if(inside_shot_scaled(	log[i].x,
+		if(insideShortScaled(	log[i].x,
 								log[i].y,
 								LOG_W,
 								LOG_H,
@@ -481,7 +481,7 @@ static void frog_update(void)
 		if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
 			continue;
 
-		if(inside_shot_scaled(	turtle_pack[i].x,
+		if(insideShortScaled(	turtle_pack[i].x,
 								turtle_pack[i].y,
 								turtle_pack[i].wide,
 								TURTLE_SIDE,
@@ -511,20 +511,20 @@ static void frog_update(void)
 	switch (frog.state)
 	{
 		case FROG_STATE_WATER:
-			game_data_subtract_live();
+			quitarVida();
 			allegro_sound_play_effect_drowned();
 			frog_init();
 			break;
 		
 		case FROG_STATE_CRASH_CAR:
-			game_data_subtract_live();
+			quitarVida();
 			allegro_sound_play_effect_crash();
 			frog_init();
 
 			break;
 		
 		case FROG_STATE_CRASH_WALL:
-			game_data_subtract_live();
+			quitarVida();
 			allegro_sound_play_effect_crash();
 			frog_init();
 
@@ -630,7 +630,7 @@ static void logs_update(void)
 
 			//Velocidad
 			//log[i].dx = lanes_logs[LANES_LOG_TOTAL-1] - log[i].lane + 1;
-			//log[i].dx = map_int(log[i].lane, 0, lanes_logs[LANES_LOG_TOTAL-1], 1, 3);
+			//log[i].dx = mapInt(log[i].lane, 0, lanes_logs[LANES_LOG_TOTAL-1], 1, 3);
 			log[i].dx = LOGS_BASE_SPEED;
 
 			//en pares...

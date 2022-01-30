@@ -88,7 +88,7 @@ void fsm(event_t evento_actual);
  * https://softwareengineering.stackexchange.com/questions/256524/infinite-while-loop-cpu-usage
  * 
  */
-void fix_high_cpu_usage(void);
+void fixHighCpuUsage(void);
 
 /*******************************************************************************
  ******************************************************************************/

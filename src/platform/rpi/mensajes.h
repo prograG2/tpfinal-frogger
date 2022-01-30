@@ -20,7 +20,7 @@
 #include "bitmap.h"
 
 #include <stdint.h>
-
+#include <stdbool.h>
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -69,148 +69,149 @@ typedef struct Mensaje{
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief imprime Renglon en consola (para debuggear)
  * 
- * @param r 
+ * @param r Renglon a imprimir
  */
 void printRenglon(Renglon r);
 
 /**
- * @brief 
+ * @brief imprime dos variables Renglon en consola en forma contigua (para debuggear)
  * 
- * @param r1 
- * @param r2 
+ * @param r1 Renglon izquierdo
+ * @param r2 Renglon derecho
  */
 void printRenglonDoble(Renglon r1, Renglon r2);
 
 /**
- * @brief 
+ * @brief elimina el contenido del Renglon
  * 
- * @param r 
+ * @param r Renglon a limpiar
  */
 void borrarRenglon(Renglon r);
 
 /**
- * @brief 
+ * @brief Desplaza a la derecha el contenido de un Renglon 
  * 
- * @param r 
- * @param s 
+ * @param r Renglon a desplazar
+ * @param s cantidad de espacios
  */
 void renglonShiftDer(Renglon r, uint16_t s);
 
 /**
- * @brief 
+ * @brief Desplaza a la izquierda el contenido de un Renglon
  * 
- * @param r 
- * @param s 
+ * @param r Renglon a desplazar
+ * @param s cantidad de espacios
  */
 void renglonShiftIzq(Renglon r, uint16_t s);
 
 /**
- * @brief 
+ * @brief Se ejecuta la operación "r |= s"
  * 
- * @param r 
- * @param s 
+ * @param r primer operando OR
+ * @param s segundo operando OR
  */
 void renglonOr(Renglon r, Renglon s);
 
 /**
- * @brief 
+ * @brief Se ejecuta la operación "r &= s"
  * 
- * @param r 
- * @param s 
+ * @param r primer operando AND
+ * @param s segundo operando AND
  */
 void renglonAnd(Renglon r, Renglon s);
 
 /**
- * @brief 
+ * @brief Se invierte el contenido del Renglon (se obtiene el complemento)
  * 
- * @param r 
+ * @param r Renglon a invertir
  */
 void renglonNot(Renglon r);
 
 /**
- * @brief 
+ * @brief Desplaza a la derecha el contenido de dos renglones en forma conjunta ("r1:r2 >>= s")
  * 
- * @param r1 
- * @param r2 
- * @param s 
+ * @param r1 Renglon izquierdo
+ * @param r2 Renglon derecho
+ * @param s cantidad de espacios
  */
 void renglonDobleShiftDer(Renglon r1, Renglon r2, unsigned int s);
 
 /**
- * @brief 
+ * @brief Desplaza a la izquierda el contenido de dos renglones en forma conjunta ("r1:r2 <<= s")
  * 
- * @param r1 
- * @param r2 
- * @param s 
+ * @param r1 Renglon izquierdo
+ * @param r2 Renglon derecho
+ * @param s cantidad de espacios
  */
 void renglonDobleShiftIzq(Renglon r1, Renglon r2, unsigned int s);
 
 /**
- * @brief 
+ * @brief copia el contenido de r1 en r2
  * 
- * @param r1 
- * @param r2 
+ * @param r1 Renglon origen
+ * @param r2 Renglon destino
  */
 void copiarRenglon(Renglon r1, Renglon r2);
 
 /**
- * @brief 
+ * @brief copia un Renglon sobre una Matriz a partir de una fila especificada
  * 
- * @param m
- * @param r 
- * @param pos
+ * @param m Matriz destino
+ * @param r Renglon origen
+ * @param pos Fila de inicio
  */
 void copiarMatrizRenglon(Matriz m, Renglon r, int pos);
 
 /**
- * @brief 
+ * @brief indica si el Renglon tiene contenido
  * 
- * @param r 
- * @return int 
+ * @param r Renglon a chequear
+ * @return true Renglon con contenido
+ * @return false Renglon vacío
  */
-int renglonBool(Renglon r);
+bool renglonBool(Renglon r);
 
 /**
- * @brief 
+ * @brief Convierte un caracter a Renglon, ubicándolo en el extremo izquierdo del Renglon
  * 
- * @param c 
- * @param r 
+ * @param c caracter
+ * @param r Renglon
  */
 void CharARenglon(char c, Renglon r);
 
 /**
- * @brief 
+ * @brief Convierte un entero no signado a Renglon, ubicándolo en el extremo izquierdo del renglon
  * 
- * @param n 
- * @param r 
+ * @param n entero no signado de 16 bits
+ * @param r Renglon
  */
 void uintARenglon(uint16_t n, Renglon r); //copia un número a renglon hasta que se acabe el número o el renglon (lo 1 q ocurra)
 
 /**
- * @brief 
+ * @brief (re)escribe sobre el Renglon un caracter dado a partir de la columna j
  * 
- * @param r 
- * @param c 
- * @param j 
+ * @param r Renglon
+ * @param c caracter
+ * @param j columna sobre la que se quiere escribir
  */
 void reemplazarLetra(Renglon r, char c, int j);
 
 /**
- * @brief 
+ * @brief constructor de la variable mensaje_t
  * 
- * @param msj 
- * @param pos 
+ * @param msj String que se desea convertir a mensaje
+ * @param pos fila sobre la que se deberá mostrar en display
  * @return mensaje_t 
  */
 mensaje_t mensaje(char* msj, int pos);
 
 /**
- * @brief 
+ * @brief desplaza el contenido del Renglon doble hacia la izquierda
  * 
- * @param msj 
- * @param repetir 
+ * @param msj puntero a la variable mensaje_t
+ * @param repetir Indica si es necesario volver a pasar el contenido del mensaje tras haberlo hecho una vez
  */
 void moverMensaje(mensaje_t* msj, int repetir);
 

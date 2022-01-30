@@ -90,7 +90,7 @@ static pthread_t ttiempo;
 
 static int frac, acc;
 
-static void* thread_tiempo(void* ptr);
+static void* threadTiempo(void* ptr);
 
 
 /*******************************************************************************
@@ -178,7 +178,7 @@ void reiniciarNivel(){
 	jugador.tiempo_bits = 0b1111111111111111;
 	jugador.agua = 0;
 	respawn();
-	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
+	pthread_create(&ttiempo, NULL, threadTiempo, NULL);
 }
 
 void respawn(){
@@ -239,7 +239,7 @@ void moverAdelante(){
 			jugador.ranas |= jugador.jugador_1 | jugador.jugador_2;
 			//printf("%d\n", jugador.ranas);
 			if(jugador.ranas == 0b1111111111111111){
-            	reproducir_efecto(EFECTO_NIVEL_COMPLETO);
+            	reproducirEfecto(EFECTO_NIVEL_COMPLETO);
 				reiniciarNivel();
 				jugador.jugando = false;
 				jugador.niv_actual++;
@@ -273,35 +273,14 @@ void moverDcha(){
 	}
 }
 
-void perderVidaChoque(){
-	//ruido1
-	jugador.vidas <<= 1;
-	jugador.tiempo = 0;
-	jugador.agua = 0;
-	if(!jugador.vidas)
-		queue_insert(GAME_OVER);
-	else
-		respawn();
-}
 
-void perderVidaAgua(){
-	//ruido2
-	jugador.vidas <<= 1;
-	jugador.tiempo = 0;
-	jugador.agua = 0;
-	if(!jugador.vidas)
-		queue_insert(GAME_OVER);
-	else
-		respawn();
-}
-
-void perderVidaTimeout(){
+void perderVida(){
 	//sin ruido?
 	jugador.vidas <<= 1;
 	jugador.tiempo = 0;
 	jugador.agua = 0;
 	if(!jugador.vidas)
-		queue_insert(GAME_OVER);
+		queueInsertar(GAME_OVER);
 	else
 		respawn();
 }
@@ -325,8 +304,11 @@ void actualizarInterfaz(){
     disp_matriz[jugador.posicion_sur] |= jugador.jugador_2;
     actualizarDisplay();
     
-    if((jugador.jugador_1 & jugador.mapa[jugador.posicion_sur-1]) | (jugador.jugador_2 & jugador.mapa[jugador.posicion_sur]))
-        queue_insert(jugador.agua? AGUA : CHOCAR);
+    if((jugador.jugador_1 & jugador.mapa[jugador.posicion_sur-1]) | (jugador.jugador_2 & jugador.mapa[jugador.posicion_sur])){
+		jugador.agua ? reproducirEfecto(EFECTO_AHOGADO) : reproducirEfecto(EFECTO_IMPACTO);
+		perderVida();
+	}
+        
 }
 
 void imprimirMapa(){
@@ -335,7 +317,7 @@ void imprimirMapa(){
 
 void continuandoJuego(void)
 {
-	pthread_create(&ttiempo, NULL, thread_tiempo, NULL);
+	pthread_create(&ttiempo, NULL, threadTiempo, NULL);
 	jugador.jugando = true;
 }
 
@@ -346,7 +328,7 @@ void continuandoJuego(void)
  *******************************************************************************
  ******************************************************************************/
 
-static void* thread_tiempo(void* ptr){
+static void* threadTiempo(void* ptr){
 	clock_t ref = clock();
 	while(jugador.jugando && !(jugador.timeout)){
 		jugador.tiempo += clock() - ref;

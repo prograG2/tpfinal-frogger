@@ -78,21 +78,11 @@ int iniciarDisplay()
 
 void actualizarDisplay()
 {
-	pthread_mutex_lock(&lock);
-
-
-
-	pthread_mutex_unlock(&lock);
 }
 
 
 void limpiarDisplay()
 {
-	pthread_mutex_lock(&lock);
-
-
-
-	pthread_mutex_unlock(&lock);
 }
 
 void mostrarTexto(char* txt, int pos)

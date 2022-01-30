@@ -64,13 +64,13 @@ typedef struct
  * @brief Inicializa el menu
  * 
  */
-static void menu_init(void);
+static void inicializarMenu(void);
 
 /**
  * @brief Dibuja lelas menu
  * 
  */
-static void menu_draw(void);
+static void renderizarMenu(void);
 
 
 /*******************************************************************************
@@ -96,7 +96,7 @@ static menu_t menu;
 
 void iniciarMenu(void)
 {
-	menu_init();
+	inicializarMenu();
 
 }
 
@@ -147,7 +147,7 @@ void setOpcion(int opc)
 	//Seleccina uno de los botones del menu actual
 	menu.window[menu.actual_window].actual_state = opc;
 
-	menu_draw();
+	renderizarMenu();
 }
 
 int getOpcion(void)
@@ -165,9 +165,9 @@ void subirOpcion(void)
 	if(*actual_option < 0)
 		setOpcion(*max_option - 1);
 	else
-		menu_draw();
+		renderizarMenu();
 
-	reproducir_efecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void bajarOpcion(void)
@@ -180,9 +180,9 @@ void bajarOpcion(void)
 	if(*actual_option == *max_option)
 		setOpcion(0);
 	else
-		menu_draw();
+		renderizarMenu();
 
-	reproducir_efecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void moverOpcionActual(void)
@@ -197,7 +197,7 @@ void moverOpcionActual(void)
  *******************************************************************************
  ******************************************************************************/
 
-static void menu_init(void)
+static void inicializarMenu(void)
 {
 	//menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
 	menu.window[MENU_WINDOW_HOME].max_states = 5;
@@ -214,7 +214,7 @@ static void menu_init(void)
 
 }
 
-static void menu_draw()
+static void renderizarMenu()
 {
 	allegro_clear_display();
 

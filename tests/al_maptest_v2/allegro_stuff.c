@@ -403,9 +403,9 @@ void allegro_draw_menu_background(void)
 	al_draw_bitmap(sprites.menu_background, 0, 0, 0);
 }
 
-bool allegro_is_event_queue_empty(void)
+bool allegro_is_event_queueVacia(void)
 {
-	return(al_is_event_queue_empty(allegro_vars.queue));
+	return(al_is_event_queueVacia(allegro_vars.queue));
 }
 
 #pragma region allegro_sound
@@ -569,7 +569,7 @@ static void sprites_init(void)
 	//se particiona el de la rana en sus 8 partes
 	for(i = 0; i < FROG_FRAMES; i++)
 	{
-		temp_xy = geometry_get_pair_xy_frog_frame(i);
+		temp_xy = getXYFromFrogFrame(i);
 
 		if(!(i%2))	//los sprites pares
 		{
@@ -609,7 +609,7 @@ static void sprites_init(void)
 	//se recortan los de la tortuga en sus 11 partes
 	for(i = 0; i < TURTLE_FRAMES; i++)
 	{
-		temp_xy = geometry_get_pair_xy_turtle_frame(i);
+		temp_xy = getXYFromTurtleFrame(i);
 		int temp_side;
 
 		if(i <= 7)

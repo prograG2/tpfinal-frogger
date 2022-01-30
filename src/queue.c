@@ -46,7 +46,7 @@ typedef struct nodeT
  * @brief 
  * 
  */
-static void delete();
+static void borrarElemento();
 
 
 /*******************************************************************************
@@ -66,12 +66,7 @@ static node_t *front = NULL, *back = NULL;
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-int queue_init(){
-  return 1;
-}
-
-
-void queue_insert(event_t nuevo)
+void queueInsertar(event_t nuevo)
 {
     node_t *temp = (node_t*)malloc(sizeof(node_t));
 
@@ -96,25 +91,29 @@ void queue_insert(event_t nuevo)
 }
 
 
-int queue_empty()
+int queueVacia()
 {
   return front == NULL;
 }
 
-event_t queue_next()
+event_t queueSiguienteEvento()
 {
   if (front == NULL){
     return NADA;
   }
   else{
     event_t r = front->data;
-    delete();
+    borrarElemento();
     printf("\n%d\n", r); //para ver el evento que sigue
     return r;
   }
 }
  
-
+void destruirQueue(){
+  while(front != NULL){
+    event_t evento_basura = queueSiguienteEvento();
+  }
+}
 
 
 /*******************************************************************************
@@ -123,7 +122,7 @@ event_t queue_next()
  *******************************************************************************
  ******************************************************************************/
 
-static void delete()
+static void borrarElemento()
 {
   if(front != NULL){
     node_t *temp = front;

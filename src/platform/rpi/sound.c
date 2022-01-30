@@ -113,18 +113,18 @@ void destruirSonido(void)
 }
 
 
-void pausar_musica(void)
+void pausarMusica(void)
 {
 	pauseAudio();
 }
 
-void reproducir_musica(int m)
+void reproducirMusica(int m)
 {
     playMusicFromMemory(musica[m], SDL_MIX_MAXVOLUME);
 }
 
 
-void reproducir_efecto(int e)
+void reproducirEfecto(int e)
 {
 	playSoundFromMemory(efectos[e], SDL_MIX_MAXVOLUME);
 }

@@ -93,10 +93,10 @@ int main(void)
     */
     
 	allegro_inits();
-	game_data_init();
+	gamedataInicializar();
 	entities_init();
 	
-    //menu_init();
+    //inicializarMenu();
 
 	pthread_create(&th0, NULL, thread0, NULL);
 	
@@ -139,7 +139,7 @@ static void *thread0(void *ptr)
         {
             case ALLEGRO_EVENT_TIMER:
                 
-                game_data_update();
+                gamedataActualizar();
                 entities_update();
                 //menu_update();
                 
@@ -148,7 +148,7 @@ static void *thread0(void *ptr)
                     allegro_set_var_done(true);     
                 /*
                 if(CHECK_KEY(ALLEGRO_KEY_T))
-					game_data_subtract_live();
+					quitarVida();
 
 				if(CHECK_KEY(ALLEGRO_KEY_Y))
 					game_data_add_score(100);
@@ -187,7 +187,7 @@ static void *thread0(void *ptr)
 
 		//al_lock_mutex(allegro_mutex);
 		//pthread_mutex_lock(&allegro_lock);
-		if(allegro_get_var_redraw() && allegro_is_event_queue_empty())
+		if(allegro_get_var_redraw() && allegro_is_event_queueVacia())
 		{
 			allegro_clear_display();
 
@@ -195,7 +195,7 @@ static void *thread0(void *ptr)
             //entidades
             entities_draw();
             //data
-            game_data_draw();
+            gameDataRenderizar();
 	
 
 			al_flip_display();
