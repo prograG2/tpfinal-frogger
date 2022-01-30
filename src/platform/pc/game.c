@@ -192,20 +192,6 @@ void respawn(void)
 
 }
 
-void perderVidaChoque(void)
-{
-
-}
-
-void perderVidaAgua(void)
-{
-
-}
-
-void perderVidaTimeout(void)
-{
-
-}
 
 void actualizarInterfaz(void)
 {
