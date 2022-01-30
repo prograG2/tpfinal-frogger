@@ -72,11 +72,9 @@ static int prev = NO_MOVER;
  *******************************************************************************
  ******************************************************************************/
 
-int iniciarEntradas()
+void iniciarEntradas()
 {
     joy_init();
-	
-    return 0;
 }
 
 event_t leerEntradas()

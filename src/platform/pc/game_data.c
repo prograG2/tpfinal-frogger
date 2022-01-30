@@ -164,7 +164,7 @@ static int new_run_time_left;
  *******************************************************************************
  ******************************************************************************/
 
-void gamedataInicializar(void)
+void game_data_init(void)
 {
 	time_ref = time(NULL);
 
@@ -181,7 +181,7 @@ void gamedataInicializar(void)
 
 }
 
-void gamedataActualizar(void)
+void game_data_update(void)
 {
 	data_update();
 
@@ -209,23 +209,23 @@ void gamedataActualizar(void)
 
 }
 
-void gameDataRenderizar(void)
+void game_data_draw(void)
 {
 	hud_draw();
 	draw_reached_goals();
 }
 
-int getVidas(void)
+int game_data_get_lives(void)
 {
 	return(data.lives);
 }
 
-void quitarVida(void)
+void game_data_subtract_live(void)
 {
 	data.lives--;
 }
 
-int getScore(void)
+int game_data_get_score(void)
 {
 	return(data.score);
 }
@@ -527,7 +527,3 @@ static void set_new_run_time_left(int time_left)
 {
 	new_run_time_left = time_left;
 }
-
-
-
- 

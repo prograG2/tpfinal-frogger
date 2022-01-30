@@ -531,14 +531,14 @@ static void frog_update(void)
 			break;
 		
 		case FROG_STATE_GOAL:
-			game_data_add_score(SCORE_PER_GOAL);
+			game_data_add_score();
 			allegro_sound_play_effect_goal();
 			frog_init();
 			
 			break;
 		
 		case FROG_STATE_GOAL_FLY:
-			game_data_add_score(SCORE_PER_GOAL_FLY);
+			game_data_add_score_bonus();
 			allegro_sound_play_effect_bonus();
 			frog_init();
 

@@ -18,6 +18,7 @@
 
 #include "queue.h"
 
+#include <stdbool.h>
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -45,9 +46,9 @@
 /**
  * @brief 
  * 
- * @return int 
+ * 
  */
-int iniciarEntradas(void);
+void iniciarEntradas(void);
 
 /**
  * @brief 

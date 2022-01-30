@@ -40,7 +40,6 @@ static struct{
     char nombre[L_MAX];
     int dificultad;
     int niv_actual;
-    int agua;
     int posicion_sur;
     int posicion_oeste;
 	int timeout_ref;
@@ -54,6 +53,7 @@ static struct{
     uint64_t puntos;
     uint64_t max_puntos;
 	bool jugando;
+	bool agua;
 	bool refresco;
 	bool timeout;
     clock_t tiempo;
@@ -176,7 +176,7 @@ void reiniciarNivel(){
 	acc = frac;
 	jugador.tiempo = 0;
 	jugador.tiempo_bits = 0b1111111111111111;
-	jugador.agua = 0;
+	jugador.agua = false;
 	respawn();
 	pthread_create(&ttiempo, NULL, threadTiempo, NULL);
 }
@@ -231,7 +231,7 @@ void moverAdelante(){
 		jugador.posicion_sur--;
     if(jugador.posicion_sur == 3){
         if(!jugador.agua){
-		jugador.agua = 1;
+		jugador.agua = true;
 		respawn();
 		}
 		else{
@@ -245,7 +245,7 @@ void moverAdelante(){
 				jugador.niv_actual++;
 			}
 			else{
-				jugador.agua = 0;
+				jugador.agua = false;
 				respawn();
 			}
 	    }
@@ -278,7 +278,7 @@ void perderVida(){
 	//sin ruido?
 	jugador.vidas <<= 1;
 	jugador.tiempo = 0;
-	jugador.agua = 0;
+	jugador.agua = false;
 	if(!jugador.vidas)
 		queueInsertar(GAME_OVER);
 	else

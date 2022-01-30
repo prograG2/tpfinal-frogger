@@ -187,8 +187,8 @@ void copiarMatrizRenglon(Matriz m, Renglon r, int pos){
 
 int renglonBool(Renglon r){
     for (int i=0; i<TAM_RENGLON; i++)
-        if(r[i]) return 1;
-    return 0;
+        if(r[i]) return true;
+    return false;
 }
 
 void CharARenglon(char c, Renglon r){

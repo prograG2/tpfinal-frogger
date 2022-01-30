@@ -52,39 +52,39 @@ enum DIFFICULTIES
  * @brief Inicializa datos internos del juego 
  * 
  */
-void gamedataInicializar(void);
+void game_data_init(void);
 
 /**
  * @brief Actualiza datos internos del juego
  * 
  */
-void gamedataActualizar(void);
+void game_data_update(void);
 
 /**
  * @brief Grafica datos del juego (HUD pricipalmente)
  * 
  */
-void gameDataRenderizar(void);
+void game_data_draw(void);
 
 /**
  * @brief Devuelve vidas
  * 
  * @return int vidas
  */
-int getVidas(void);
+int game_data_get_lives(void);
 
 /**
  * @brief Resta una vida
  * 
  */
-void quitarVida(void);
+void game_data_subtract_live(void);
 
 /**
  * @brief Devuelve score
  * 
  * @return int 
  */
-int getScore(void);
+int game_data_get_score(void);
 
 /**
  * @brief Agrega score por llegar a la meta
@@ -164,13 +164,6 @@ int game_data_get_timer_in_sec(void);
  * @param diff enum DIFFICULTIES
  */
 void game_data_set_diff(int diff);
-
-/**
- * @brief Devuelve la dificultad seteada
- * 
- * @return int Dificultad (entre 1 y 3)
- */
-int game_data_get_diff(void);
 
 /**
  * @brief Limpia el nombre del jugador

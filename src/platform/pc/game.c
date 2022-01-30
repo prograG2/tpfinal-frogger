@@ -116,7 +116,7 @@ char* getNombre(void)
 
 uint64_t getPuntos(void)
 {
-	return getScore();
+	return game_data_get_score();
 }
 
 uint64_t getMaxPuntos(void)
@@ -131,7 +131,7 @@ int getNivel(void)
 
 void inicializarJuego(void)
 {
-	gamedataInicializar();
+	game_data_init();
 	entities_init();
 
 	allegro_clear_display();
@@ -155,14 +155,14 @@ void reiniciarNivel(void)
 
 void refrescar(void)
 {
-	gamedataActualizar();
+	game_data_update();
 	entities_update();
 
 	if(game_data_are_goals_full())
 	{
 		next_run_flag = true;
 
-		reproducirEfecto(EFECTO_NIVEL_COMPLETO);
+		reproducir_efecto(EFECTO_NIVEL_COMPLETO);
 		reiniciarNivel();
 	}
 }
@@ -230,7 +230,7 @@ void actualizarInterfaz(void)
 			allegro_rick_draw();
 
 		entities_draw();
-		gameDataRenderizar();
+		game_data_draw();
 
 		al_flip_display();
 

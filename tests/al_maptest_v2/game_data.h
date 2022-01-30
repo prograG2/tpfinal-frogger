@@ -16,17 +16,19 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+#include <stdbool.h>
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define MAX_LIVES           3
-
-#define SCORE_PER_GOAL		500		//puntaje por llegar a la meta
-#define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
-#define SCORE_PER_RUN		1000	//puntaje por completar una run
+enum DIFFICULTIES
+{
+	DIFFICULTIES_EASY = 1,
+	DIFFICULTIES_NORMAL,
+	DIFFICULTIES_HARD
+};
 
 
 /*******************************************************************************
@@ -50,46 +52,65 @@
  * @brief Inicializa datos internos del juego 
  * 
  */
-void gamedataInicializar(void);
+void game_data_init(void);
 
 /**
  * @brief Actualiza datos internos del juego
  * 
  */
-void gamedataActualizar(void);
+void game_data_update(void);
 
 /**
  * @brief Grafica datos del juego (HUD pricipalmente)
  * 
  */
-void gameDataRenderizar(void);
+void game_data_draw(void);
 
 /**
  * @brief Devuelve vidas
  * 
  * @return int vidas
  */
-int getVidas(void);
+int game_data_get_lives(void);
 
 /**
  * @brief Resta una vida
  * 
  */
-void quitarVida(void);
+void game_data_subtract_live(void);
 
 /**
  * @brief Devuelve score
  * 
  * @return int 
  */
-int getScore(void);
+int game_data_get_score(void);
 
 /**
- * @brief Agrega un valor al score actual
+ * @brief Agrega score por llegar a la meta
  * 
- * @param add Valor a agregar. Si es negativo, no agrega.
  */
-void game_data_add_score(int add);
+void game_data_add_score(void);
+
+/**
+ * @brief Agrega score por llegar a la meta con bonus (fly)
+ * 
+ */
+void game_data_add_score_bonus(void);
+
+/**
+ * @brief Carga el score maximo del jugador actual
+ * 
+ * @param score 
+ */
+void game_data_set_score_max(int score);
+
+/**
+ * @brief Devuelve el score maximo del jugador actual
+ * 
+ * @return int Score maximo
+ */
+int game_data_get_score_max(void);
 
 /**
  * @brief Devuelve el numero de run
@@ -112,11 +133,23 @@ void game_data_next_run(void);
 int game_data_get_run_time_left(void);
 
 /**
+ * @brief Agrega tiempo a la run por llegar a una meta
+ * 
+ */
+void game_data_add_run_time_goal(void);
+
+/**
+ * @brief Agrega tiempo (más) a la run por llegar a una meta con mosca
+ * 
+ */
+void game_data_add_run_time_goal_bonus(void);
+
+/**
  * @brief Devuelve los frames transcurridos del juego
  * 
- * @return long Frames transcurridos
+ * @return unsigned long Frames transcurridos
  */
-long game_data_get_frames(void);
+unsigned long game_data_get_frames(void);
 
 /**
  * @brief Devuelve el tiempo transcurrido en segundos
@@ -125,6 +158,77 @@ long game_data_get_frames(void);
  */
 int game_data_get_timer_in_sec(void);
 
+/**
+ * @brief Setea dificultad 
+ * 
+ * @param diff enum DIFFICULTIES
+ */
+void game_data_set_diff(int diff);
+
+/**
+ * @brief Devuelve la dificultad seteada
+ * 
+ * @return int Dificultad (entre 1 y 3)
+ */
+int game_data_get_diff(void);
+
+/**
+ * @brief Limpia el nombre del jugador
+ * 
+ */
+void game_data_clear_name(void);
+
+/**
+ * @brief Agrega una letra la nombre del jugador
+ * 
+ * @param letter Letra
+ */
+void game_data_add_name_letter(char letter);
+
+/**
+ * @brief Devuelve puntero al nombre del jugador
+ * 
+ * @return char* 
+ */
+char *game_data_get_name(void);
+
+/**
+ * @brief Revisa si un punto de llegada es valido o no (vacio o lleno)
+ * 
+ * @param goal 0 a MAX_GOALS-1
+ * @return true Invalido
+ * @return false Valido
+ */
+bool game_data_get_goal_state(unsigned int goal);
+
+/**
+ * @brief Setea un goal como completado
+ * 
+ * @param goal 0 a MAX_GOALS-1
+ */
+void game_data_set_goal(unsigned int goal);
+
+/**
+ * @brief Habilita todos los goals
+ * 
+ */
+void game_data_reset_goals(void);
+
+/**
+ * @brief Avisa si se excedio el tiempo de juego
+ * 
+ * @return true Excedido
+ * @return false No excedido
+ */
+bool game_data_get_time_left_flag(void);
+
+/**
+ * @brief Avisa si estan todas las metas completas
+ * 
+ * @return true Si
+ * @return false No
+ */
+bool game_data_are_goals_full(void);
 
 
 
