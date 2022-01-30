@@ -57,8 +57,8 @@
 #define SPRITE_MENU_DIFF			"sprite_menu_diff"
 #define SPRITE_MENU_PAUSE_BACK		"sprite_menu_pause_background"
 #define SPRITE_MENU_PAUSE			"sprite_menu_pause"
-#define SPRITE_MENU_GAME_OVER_BACK	SPRITE_MENU_PAUSE_BACK
-#define SPRITE_MENU_GAME_OVER		SPRITE_MENU_PAUSE
+#define SPRITE_MENU_GAME_OVER_BACK	"sprite_menu_gameover_background"
+#define SPRITE_MENU_GAME_OVER		"sprite_menu_gameover"
 
 //Extensiones
 #define EXTENSION_SOUND_SAMPLE		".wav"
