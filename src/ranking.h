@@ -27,8 +27,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-//Nombre por defecto del jugador
-#define DEFAULT_PLAYER_NAME "PLAYER"
+#define DEFAULT_PLAYER_NAME	"PLAYER"
 
 
 /*******************************************************************************
@@ -41,7 +40,6 @@
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: extern unsigned int anio_actual;+
 
 
 /*******************************************************************************

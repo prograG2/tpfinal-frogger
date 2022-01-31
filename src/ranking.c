@@ -38,7 +38,6 @@
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: unsigned int anio_actual;+
 
 
 /*******************************************************************************
@@ -134,8 +133,11 @@ void actualizarRanking(char *name, uint64_t score)
 	bool player_exists;
 
 	//Veo si el jugador esta en el ranking
-	for(i = 0, player_exists = false; i < (lineNumber - 1) && !player_exists; i++)
+	for(i = 0, player_exists = false; i < lineNumber && !player_exists; i++)
 	{
+		if(!lineNumber)
+			break;
+
 		//Si el nombre coincide...
 		if(strcmp(names[i], name) == 0)
 		{
@@ -163,16 +165,13 @@ void actualizarRanking(char *name, uint64_t score)
 		lineNumber++;
 	}
 
+	ordenarRanking();
 }
 
 void desiniciarRanking(void)
 {
-	//Ordena
-	ordenarRanking();
-
 	//Escribe al archivo
 	writeRanking();
-
 
 	//Liberacion de memoria
 	int i;
@@ -190,7 +189,11 @@ bool verificarJugadorRanking(char *name)
 	int i;
 	bool exists;
 
-	for(i = 0, exists = false; i < lineNumber - 1 && !exists; i++)
+	if(!lineNumber)
+		return false;
+		
+
+	for(i = 0, exists = false; i < lineNumber && !exists; i++)
 	{
 		//Si el nombre coincide...
 		if(strcmp(names[i], name) == 0)
@@ -206,7 +209,7 @@ uint64_t getJugadorRankingPuntos(char *name)
 	bool exists;
 	uint64_t score;
 
-	for(i = 0, exists = false; i < lineNumber - 1 && !exists; i++)
+	for(i = 0, exists = false; i < lineNumber && !exists; i++)
 	{
 		//Si el nombre coincide...
 		if(strcmp(names[i], name) == 0)
@@ -226,8 +229,7 @@ uint64_t getJugadorRankingPuntos(char *name)
 
 int getRankingLineas(void)
 {
-	// -1 porque se le suma siempre 1 al actualizarse
-	return (lineNumber - 1);
+	return lineNumber;
 }
 
 char **getRankingNombres(void)
@@ -310,10 +312,13 @@ static void writeRanking(void)
 {
 	int i;
 
-	//Copia lo nuevo en temp.txt
-	for(i = 0; i < lineNumber; i++)
+	if(lineNumber)
 	{
-		fprintf(handlerTemp, "%s %ld\n", names[i], scores[i]); 
+		//Copia lo nuevo en temp.txt
+		for(i = 0; i < lineNumber; i++)
+		{
+			fprintf(handlerTemp, "%s %ld\n", names[i], scores[i]); 
+		}
 	}
 
 	remove(strRanking);
