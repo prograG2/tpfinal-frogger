@@ -295,6 +295,12 @@ void allegro_sound_set_stream_playing(void);
  */
 void allegro_sound_set_stream_rick(void);
 
+/**
+ * @brief Selecciona musica de game over. Comienza pausada.
+ * 
+ */
+void allegro_sound_set_stream_game_over(void);
+
 #pragma endregion allegro_sound_set_stream
 
 #pragma region allegro_sound_control
@@ -390,12 +396,6 @@ void allegro_sound_play_effect_run_completed(void);
  * 
  */
 void allegro_sound_play_effect_menu_enter(void);
-
-/**
- * @brief Reproduce efecto de 'game over'
- * 
- */
-void allegro_sound_play_effect_game_over(void);
 
 /**
  * @brief Reproduce efecto de 'new_max_score'

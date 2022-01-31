@@ -34,6 +34,7 @@
 #define SOUND_STREAM_FILE_PLAYING	"playing_theme"
 #define SOUND_STREAM_FILE_RANKING	"ranking_theme"
 #define SOUND_STREAM_FILE_RICK		"rick"
+#define SOUND_STREAM_FILE_GAME_OVER	"game_over"
 
 #define FONT_FILE_NAME				"PublicPixel.ttf"
 
@@ -123,7 +124,6 @@ typedef struct
 		ALLEGRO_SAMPLE* drowned;
 		ALLEGRO_SAMPLE* menu_enter;
 		ALLEGRO_SAMPLE* new_max_score;
-		ALLEGRO_SAMPLE* game_over;
 		ALLEGRO_SAMPLE* exiting;
 	} samples;
 
@@ -309,7 +309,6 @@ void allegro_inits(void)
 
 	//registra eventos posibles
 	al_register_event_source(allegro_vars.queue, al_get_keyboard_event_source());
-	//al_register_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
 	al_register_event_source(allegro_vars.queue, al_get_timer_event_source(allegro_vars.timer));
 	al_register_event_source(allegro_vars.queue, al_get_mouse_event_source());
 
@@ -368,6 +367,7 @@ void allegro_reinit_display(void)
 	//creación del display
 	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
 	must_init(allegro_vars.disp, "display");
+	al_register_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
 
 	//Reload de la fuente
 	char string[60] = PATH_FONTS;
@@ -382,7 +382,11 @@ void allegro_reinit_display(void)
 void allegro_deinit_display(void)
 {
 	if(allegro_vars.disp != NULL)
+	{
+		al_unregister_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
 		al_destroy_display(allegro_vars.disp);
+	}
+		
 }
 
 unsigned char allegro_get_last_key(void)
@@ -582,6 +586,22 @@ void allegro_sound_set_stream_rick(void)
 	}
 }
 
+void allegro_sound_set_stream_game_over(void)
+{
+	char file[] = SOUND_STREAM_FILE_GAME_OVER;
+
+	//si ya estaba inicializado...
+	if(strcmp(file, last_init_stream) == 0)
+	{
+		allegro_sound_pause_stream();
+	}
+	else
+	{
+		must_init(init_audio_stream(file, stream_gain),
+			"game over stream");
+	}
+}
+
 #pragma endregion allegro_sound_set_stream
 
 #pragma region allegro_sound_control
@@ -693,11 +713,6 @@ void allegro_sound_play_effect_run_completed(void)
 void allegro_sound_play_effect_menu_enter(void)
 {
 	al_play_sample(sounds.samples.menu_enter, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
-}
-
-void allegro_sound_play_effect_game_over(void)
-{
-	al_play_sample(sounds.samples.game_over, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_new_max_score(void)
@@ -1008,9 +1023,6 @@ static void audio_init(void)
 
 	must_init(init_sample(&sounds.samples.menu_enter, "menu_enter"),
 				"effect_menu_enter sample");
-
-	must_init(init_sample(&sounds.samples.game_over, "game_over"),
-				"effect_game_over sample");
 
 	must_init(init_sample(&sounds.samples.new_max_score, "new_max_score"),
 				"effect_new_max_score");

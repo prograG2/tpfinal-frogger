@@ -71,6 +71,8 @@ void nuevoNombre(void)
 {
 	allegro_clear_display();
 
+	game_data_clear_name();
+
 	/*cambiar por background correspondiente*/
 	al_clear_to_color(al_map_rgb(100,50,50));
 	

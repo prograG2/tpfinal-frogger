@@ -92,11 +92,11 @@ void fijarTexto(char* txt, int pos);
 void mostrarPosicion(char* posicion, char* nombre, char* puntos);
 
 /**
- * @brief Envio el puntero de ranking.txt a la plataforma
+ * @brief Inicia muestreo de ranking en la plataforma
  * 
  * @param txt 
  */
-void cargarRanking(FILE* txt);
+void cargarRanking(void);
 
 /**
  * @brief Bucle que muestra el ranking. Finaliza desde dentro, y hace que finalice el thread de ranking.

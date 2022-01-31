@@ -14,6 +14,7 @@
  ******************************************************************************/
 
 #include "../../display.h"
+#include "../../ranking.h"
 
 #include "mensajes.h"
 #include "bitmap.h"
@@ -176,10 +177,9 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos){
     mostrarTexto(puntos, POS_RANKING_2);
 }
 
-void cargarRanking(FILE* txt)
+void cargarRanking(void)
 {
-	pFile = txt;
-	puesto_int = 1;
+
 }
 
 bool mostrarRanking(void)

@@ -29,7 +29,7 @@ SRC_PC_DIR			:= $(SRC_DIR)/platform/pc
 SRC_RPI_DIR			:= $(SRC_DIR)/platform/rpi
 
 # Objetos principales (sin path)
-_OBJS = main.o queue.o fsm.o
+_OBJS = main.o queue.o fsm.o ranking.o
 OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_OBJS))
 
 

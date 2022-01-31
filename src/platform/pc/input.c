@@ -114,6 +114,14 @@ event_t leerEntradas(void)
 						case ALLEGRO_KEY_9:
 							break;
 
+						case ALLEGRO_KEY_PAD_1:
+							game_data_add_score();
+							break;
+
+						case ALLEGRO_KEY_PAD_2:
+							retorno = GAME_OVER;
+							break;
+
 						default:
 							break;
 					}
@@ -128,7 +136,7 @@ event_t leerEntradas(void)
 				break;
 
 			case ALLEGRO_EVENT_DISPLAY_CLOSE:
-
+				retorno = FORCE_SALIR;
 				break;
 
 			default:

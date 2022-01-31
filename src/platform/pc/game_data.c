@@ -151,11 +151,17 @@ static int char_w;	//ancho de un caracter
 
 static ALLEGRO_COLOR text_color;
 
+//Flag para triggear sonido de poco tiempo
 static bool flag_low_time_warning;
 
+//Auxiliar para hacer acciones en los cambios de segundos
 static int last_loop_time;
 
+//Tiempo restante inicial de una nueva run. Se puede modificar externamente
 static int new_run_time_left;
+
+//Auxiliar para mostrar el score gradualmente en el HUD
+static int score_display;
 
 
 /*******************************************************************************
@@ -176,6 +182,8 @@ void game_data_init(void)
 	flag_low_time_warning = false;
 
 	new_run_time_left = INITIAL_RUN_TIME_LEFT;
+
+	score_display = 0;
 
 	data_init();
 
@@ -302,6 +310,11 @@ void game_data_clear_name(void)
 	memset(data.name, 0, MAX_NAME_CHAR);
 }
 
+void game_data_overwrite_name(char* name)
+{
+	strcpy(data.name, name);
+}
+
 void game_data_add_name_letter(char letter)
 {
 	int length = strlen(data.name);
@@ -423,7 +436,6 @@ static void hud_draw(void)
 	//Dibuja la puntuacion en pantalla.
 
 	int i;
-	static int score_display;
 
 	//Graduacion del score a mostrar para que vaya incrementando de apoco
 	if(score_display != data.score)

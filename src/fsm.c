@@ -17,6 +17,8 @@
 #include "nombre.h"
 #include "sound.h"
 
+#include "ranking.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -29,7 +31,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define FIX_CPU_USAGE_SLEEP_US		500	
+#define FIX_CPU_USAGE_SLEEP_US		1000
 
 
 /*******************************************************************************
@@ -48,130 +50,123 @@
  ******************************************************************************/
 
 /**
- * @brief 
- * 
- * @return void* 
+ * @brief
+ *
+ * @return void*
  */
 static void* threadInput(void* ptr);
 
 /**
- * @brief 
- * 
- * @return void* 
+ * @brief
+ *
+ * @return void*
  */
 static void* threadJuego(void* ptr);
 
 /**
- * @brief 
- * 
- * @return void* 
+ * @brief
+ *
+ * @return void*
  */
 static void* threadDisplayRanking(void* ptr);
 
 /**
- * @brief 
- * 
- * @param ptr 
- * @return void* 
+ * @brief
+ *
+ * @param ptr
+ * @return void*
  */
 static void* threadDisplayCreditos(void* ptr);
 
 /**
  * @brief Rutina que hace nada.
- * 
+ *
  */
 static void do_nothing(void);
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void procesar_enter_menu(void);
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void ir_a_menu_ppal(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void ir_a_poniendo_nombre(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void ir_a_seleccionando_dificultad(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void ir_a_viendo_ranking(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void ir_a_viendo_creditos(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void salir_del_juego(void);
 
 /**
  * @brief Set the dificultad object
- * 
+ *
  */
 static void procesar_enter_dificultad(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void procesar_enter_ranking(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void procesar_enter_creditos(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void iniciar_juego(void);
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void pausar(void);
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void continuar(void);
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void procesar_game_over(void);
 
 /**
- * @brief 
- * 
- * @param num 
- * @param str 
+ * @brief
+ *
+ * @param num
+ * @param str
  */
 static void ulltoa(uint64_t num, char* str);
 
-/**
- * @brief Crea archivo txt de ranking, si no lo estaba ya
- * 
- * @return true Exito
- * @return false Fail
- */
-static bool crear_ranking_txt(void);
 
 #pragma endregion privatePrototypes
 
@@ -305,7 +300,7 @@ STATE en_game_over_esperando_opcion[]=
 
 /*******************************************************************************
  *******************************************************************************
-                        GLOBAL FUNCTION DEFINITIONS
+						GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
@@ -313,18 +308,14 @@ bool inicializarFsm(void)
 {
 	p2CurrentState = en_menu_ppal;
 
-	if(!crear_ranking_txt())
-	{
-		perror("error creando ranking txt al inicializar fsm");
-	}
-
 	srand(time(NULL));
 
-
-    iniciarDisplay();
-    iniciarMenu();
-    iniciarEntradas();
+	iniciarDisplay();
+	iniciarMenu();
+	iniciarEntradas();
 	iniciarSonido();
+
+	iniciarRanking();
 
 	fijarTexto("MENU", POS_MSJ_MENU);
 	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
@@ -350,10 +341,10 @@ void fsm(event_t evento_actual)
 		//Verifico con la siguiente posibilidad dentro del mismo estado.
 		++aux;
 	}
-	
+
 	//Pasa al siguiente estado
-	p2CurrentState = aux -> proximo_estado;   
-      
+	p2CurrentState = aux -> proximo_estado;
+
 	//Ejecuta la rutina correspondiente
 	(*aux -> p_rut_accion) ();
 }
@@ -366,19 +357,19 @@ void fixHighCpuUsage(void)
 
 /*******************************************************************************
  *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
+						LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
 static void* threadInput(void* ptr){
-    while(p2CurrentState){
-	    event_t entrada = leerEntradas();
-	    if(entrada != NADA){
-		    queueInsertar(entrada);
+	while(p2CurrentState){
+		event_t entrada = leerEntradas();
+		if(entrada != NADA){
+			queueInsertar(entrada);
 		}
 
 		fixHighCpuUsage();
-    }
+	}
 
 	return NULL;
 }
@@ -389,7 +380,7 @@ static void *threadJuego(void* ptr){
 
 	srand(time(NULL));
 
-    while(p2CurrentState == jugando)
+	while(p2CurrentState == jugando)
 	{
 		if(tiempoRefrescoEntidades())
 			refrescar();
@@ -400,7 +391,7 @@ static void *threadJuego(void* ptr){
 	}
 
 	pausarJuego();
-		
+
 	reconfigurarDisplayOFF();
 
 	return NULL;
@@ -410,14 +401,7 @@ static void *threadDisplayRanking(void* ptr)
 {
 	reconfigurarDisplayON();
 
-	FILE* pFile;
-	pFile = fopen ("ranking.txt" , "r");
-	if (pFile == NULL){
-		perror ("mostrarRanking(): Error opening file");
-		return NULL;
-	}
-
-	cargarRanking(pFile);
+	cargarRanking();
 
 	while(p2CurrentState == viendo_ranking)
 	{
@@ -426,8 +410,6 @@ static void *threadDisplayRanking(void* ptr)
 	}
 
 	finalizarRanking();
-
-	fclose (pFile);
 
 	reconfigurarDisplayOFF();
 
@@ -491,17 +473,18 @@ static void ir_a_viendo_creditos(void)
 static void salir_del_juego(){
 	pthread_join(tinput, NULL);
 	pausarMusica();
-	reproducirEfecto(EFECTO_SALIENDO);
-	sleep(2);
+	//reproducirEfecto(EFECTO_SALIENDO);
+	//sleep(2);
 	destruirMenu();
 	destruirSonido();
+	desiniciarRanking();
 	limpiarDisplay();
 	queueInsertar(SALIR);
 }
 
 static void procesar_enter_ranking(void){
 	pthread_join(tdisplayranking, NULL);
-	reconfigurarDisplayON();	
+	reconfigurarDisplayON();
 	reproducirMusica(MUSICA_MENU_PPAL);
 	limpiarDisplay();
 
@@ -525,26 +508,34 @@ static void procesar_enter_creditos(void)
 }
 
 static void iniciar_juego(void){
-	setNombre(devolverNombre());
+
+	char *nombreJugador = devolverNombre();
+	if(nombreJugador == NULL)
+	{
+		//Nombre default por si no se ingresó uno.
+		setNombre(DEFAULT_PLAYER_NAME);
+	}
+	else if(nombreJugador[0] == 0)
+	{
+		//Nombre default por si no se ingresó uno.
+		setNombre(DEFAULT_PLAYER_NAME);
+	}
+	else
+	{	
+		setNombre(nombreJugador);
+	}
+	
 	inicializarJuego();
 	reconfigurarDisplayOFF();
 
 	reproducirMusica(MUSICA_JUGANDO);
 
-	FILE* pFile;
-    char linea[100];
-    pFile = fopen ("ranking.txt" , "r");
-    if (pFile == NULL)
-        perror ("ranking.txt: Error opening file");
-    while(fgets(linea, 100, pFile) != NULL){
-        char* pch = strtok(linea," "); //separo el primer token
-        if(strcoll(pch, getNombre()) == 0){ //miro si es el nombre que buscaba
-            pch = strtok(NULL," "); //separo el segundo token
-			setMaxPuntos(strtoull(pch, NULL, 10));
-            break;
-        }
-    }
-    fclose (pFile);
+	if(verificarJugadorRanking(getNombre()))
+	{
+		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
+
+		printf("\n\nJugador detectado: %s %ld\n\n", getNombre(), getMaxPuntos());
+	}
 
 	reiniciarNivel();
 	pthread_create(&tjuego, NULL, threadJuego, NULL);
@@ -589,54 +580,22 @@ static void continuar(void){
 }
 
 static void procesar_game_over(void){
+	sleep(1);
 	pthread_join(tjuego, NULL);
 
-	reproducirEfecto(EFECTO_GAME_OVER);
+	reproducirMusica(MUSICA_GAME_OVER);
 	reconfigurarDisplayON();
 
 	uint64_t jugador_puntos = getPuntos();
-	if(jugador_puntos > getMaxPuntos()){
+
+	if(jugador_puntos > getMaxPuntos())
+	{
+		printf("\n\nNew score para %s ~ Score nuevo: %ld ~ Score anterior: %ld\n\n", getNombre(), getPuntos(), getMaxPuntos());
+
 		mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ_NEW_HI_SCORE);
 		setMaxPuntos(jugador_puntos);
 
-		FILE *pFile1, *pFile2;
-		char linea[100];
-		char nueva_linea[100];
-		pFile1 = fopen("ranking.txt" , "r");
-		pFile2 = fopen("tmp.txt", "w");
-		if (pFile1 == NULL)
-			perror ("procesar_game_over(): Error opening file ranking.txt ");
-		if (pFile2 == NULL)
-			perror ("procesar_game_over(): Error opening file tmp.txt ");
-
-		int ubicado = 0;
-
-		while(fgets(linea, 100, pFile1) != NULL){
-			char* pch = strtok(linea," "); //separo el nombre
-			strcpy(nueva_linea, pch);
-			pch = strtok(NULL, " "); //separo los puntos
-			uint64_t puntos = strtoull(pch, NULL, 10);
-
-			if(jugador_puntos > puntos && !ubicado){ //ubico la puntuacion donde corresponde
-				char aux[100];
-				strcpy(aux, getNombre());
-				char nueva_puntuacion[25];
-				ulltoa(jugador_puntos, nueva_puntuacion);
-				strcat(aux, " ");
-				strcat(aux, nueva_puntuacion);
-				fprintf(pFile2, "%s", aux);
-				ubicado = 1;
-			}
-			if(strcmp(nueva_linea, getNombre()) != 0){ //miro si NO es el nombre que ya puse
-				strcat(nueva_linea, " ");
-				strcat(nueva_linea, pch); //concateno los puntos
-				fprintf(pFile2, "%s", nueva_linea);
-			}
-		}
-		fclose (pFile1);
-		fclose (pFile2);
-		remove("ranking.txt");
-		rename("tmp.txt", "ranking.txt");
+		actualizarRanking(getNombre(), getMaxPuntos());
 	}
 	mostrarTexto("FIN DEL JUEGO", POS_MSJ_GAME_OVER);
 	int menu[2] = {REINICIAR, SALIRTXT};
@@ -658,26 +617,13 @@ static void ulltoa(uint64_t num, char* str)
 	}while (sum);
 	str[i--] = '\0';
 
-    int j = 0;
-    char ch;
-    while(i > j)
-    {
-        ch = str[i];
-        str[i--] = str[j];
-        str[j++] = ch;
-    }
+	int j = 0;
+	char ch;
+	while(i > j)
+	{
+		ch = str[i];
+		str[i--] = str[j];
+		str[j++] = ch;
+	}
 }
 
-static bool crear_ranking_txt(void)
-{
-	//crea el archivo, si no lo estaba
-	FILE* pFile;
-	pFile = fopen ("ranking.txt" , "a");
-
-	if (pFile == NULL)
-		return false;
-
-	fclose (pFile);
-
-	return true;
-}

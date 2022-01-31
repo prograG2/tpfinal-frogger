@@ -62,7 +62,8 @@ static char* archivos_musica[] =
 	MUSICA_DIR"/ranking_theme.wav",
 	MUSICA_DIR"/credits_theme.wav",
 	MUSICA_DIR"/playing_theme.wav",
-	MUSICA_DIR"/pause_menu_theme.wav"};
+	MUSICA_DIR"/pause_menu_theme.wav",
+	MUSICA_DIR"/game_over.wav"};
 
 static char* archivos_efectos[] =
 	{EFECTOS_DIR"/click.wav",
@@ -73,7 +74,6 @@ static char* archivos_efectos[] =
 	EFECTOS_DIR"/goal_reached.wav",
 	EFECTOS_DIR"/run_completed.wav",
 	EFECTOS_DIR"/new_max_score.wav",
-	EFECTOS_DIR"/game_over.wav",
 	EFECTOS_DIR"/menu_enter.wav",
 	EFECTOS_DIR"/saliendo.wav"};
 

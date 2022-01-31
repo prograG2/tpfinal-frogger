@@ -25,8 +25,8 @@
  ******************************************************************************/
 typedef struct nodeT
 {
-    event_t data;
-    struct nodeT *next;
+	event_t data;
+	struct nodeT *next;
 }node_t;
 
 
@@ -43,8 +43,8 @@ typedef struct nodeT
  ******************************************************************************/
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 static void borrarElemento();
 
@@ -63,31 +63,31 @@ static node_t *front = NULL, *back = NULL;
 
 /*******************************************************************************
  *******************************************************************************
-                        GLOBAL FUNCTION DEFINITIONS
+						GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 void queueInsertar(event_t nuevo)
 {
-    node_t *temp = (node_t*)malloc(sizeof(node_t));
+	node_t *temp = (node_t*)malloc(sizeof(node_t));
 
-    temp->data = nuevo;
-    //printf("%d\n", nuevo); //si se quita esto la queue funciona mal
+	temp->data = nuevo;
+	//printf("%d\n", nuevo); //si se quita esto la queue funciona mal
 
-    if (front ==  NULL)
-    {
-      front = temp;
-      front->next = NULL;
-    }
-    else if(back == NULL){
-      back = temp;
-      front->next = back;
-      back->next = NULL;
-    }
-    else
-    {
-      back->next = temp;
-      back = back->next;
-    }
+	if (front ==  NULL)
+	{
+	  front = temp;
+	  front->next = NULL;
+	}
+	else if(back == NULL){
+	  back = temp;
+	  front->next = back;
+	  back->next = NULL;
+	}
+	else
+	{
+	  back->next = temp;
+	  back = back->next;
+	}
 }
 
 
@@ -99,19 +99,19 @@ int queueVacia()
 event_t queueSiguienteEvento()
 {
   if (front == NULL){
-    return NADA;
+	return NADA;
   }
   else{
-    event_t r = front->data;
-    borrarElemento();
-    printf("\n%d\n", r); //para ver el evento que sigue
-    return r;
+	event_t r = front->data;
+	borrarElemento();
+	printf("\n%d\n", r); //para ver el evento que sigue
+	return r;
   }
-}
- 
+}	
+
 void destruirQueue(){
   while(front != NULL){
-    //event_t evento_basura = queueSiguienteEvento();
+	//event_t evento_basura = queueSiguienteEvento();
 	queueSiguienteEvento();
   }
 }
@@ -119,19 +119,19 @@ void destruirQueue(){
 
 /*******************************************************************************
  *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
+						LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
 static void borrarElemento()
 {
   if(front != NULL){
-    node_t *temp = front;
-    front = front->next;
-    free(temp);
-    if(front == NULL){
-      back = NULL;
-    }
+	node_t *temp = front;
+	front = front->next;
+	free(temp);
+	if(front == NULL){
+	  back = NULL;
+	}
   }
 }
 
@@ -139,10 +139,10 @@ static void borrarElemento()
 static void printQueue(){
   node_t *temp = front;
   while(temp != back){
-    printf("%d, ", temp->data);
-    temp = temp->next;
+	printf("%d, ", temp->data);
+	temp = temp->next;
   }
 }
 */
 
- 
+

@@ -14,6 +14,7 @@
  ******************************************************************************/
 
 #include "../../display.h"
+#include "../../ranking.h"
 
 #include "allegro_stuff.h"
 #include "game_data.h"
@@ -104,7 +105,7 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos)
 	printf("Posicion: %s ~ Nombre: %s ~ Score: %s\n", posicion, nombre, puntos);
 }
 
-void cargarRanking(FILE* pFile)
+void cargarRanking(void)
 {
 
 }

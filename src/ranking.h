@@ -1,59 +1,41 @@
 /**
- * @file sound.h
+ * @file ranking.h
  * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
- * @date 2022-01-27
+ * @date 2022-01-30
  * 
  * @copyright Copyright (c) 2022
  * 
  */
 
-#ifndef _SOUND_H_
-#define _SOUND_H_
+#ifndef _RANKING_H_
+#define _RANKING_H_
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
+#include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
+//Nombre por defecto del jugador
+#define DEFAULT_PLAYER_NAME "PLAYER"
 
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-enum musica
-{	
-	MUSICA_MENU_PPAL,
-	MUSICA_RANKING,
-	MUSICA_CREDITOS,
-	MUSICA_JUGANDO,
-	MUSICA_MENU_PAUSA,
-	MUSICA_GAME_OVER,
-	SIZEOF_MUSICA
-};
 
-enum efectos
-{	
-	EFECTO_SELECCION,
-	EFECTO_SALTO,
-	EFECTO_IMPACTO,
-	EFECTO_AHOGADO,
-	EFECTO_POCO_TIEMPO,
-	EFECTO_META,
-	EFECTO_NIVEL_COMPLETO,
-	EFECTO_NUEVO_MAX_SCORE,
-	EFECTO_MENU_ENTER,
-	EFECTO_SALIENDO,
-	SIZEOF_EFECTOS
-};
 
 /*******************************************************************************
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
@@ -67,44 +49,65 @@ enum efectos
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief Inicializa el sistema de ranking
  * 
- * @return true 
- * @return false 
  */
-bool iniciarSonido(void);
+void iniciarRanking(void);
 
 /**
- * @brief 
+ * @brief Actualiza el ranking de un jugador dado
  * 
+ * @param name Nombre del jugador
+ * @param score Puntos del jugador
  */
-void destruirSonido(void);
-
+void actualizarRanking(char *name, uint64_t score);
 
 /**
- * @brief 
+ * @brief Desinicializa el sistema de ranking, actualizando el archivo correspondiente
  * 
  */
-void pausarMusica(void);
+void desiniciarRanking(void);
 
 /**
- * @brief 
+ * @brief Verifica si el jugador existe en el ranking
  * 
- * @param
+ * @param name Nombre del jugador
+ * @return true Existe
+ * @return false No existe
  */
-void reproducirMusica(int musica);
+bool verificarJugadorRanking(char *name);
 
 /**
- * @brief 
+ * @brief Devuelve el puntaje de un jugador dado
  * 
- * @param
+ * @param name Nombre del jugador
+ * @return uint64_t Score
  */
-void reproducirEfecto(int efecto);
+uint64_t getJugadorRankingPuntos(char *name);
 
+/**
+ * @brief Devuelve cantidad de renglones del ranking
+ * 
+ * @return int Renglones
+ */
+int getRankingLineas(void);
 
+/**
+ * @brief Devuelve array de nombres de jugadores
+ * 
+ * @return char** 
+ */
+char **getRankingNombres(void);
+
+/**
+ * @brief Devuelve array de puntos de jugadores
+ * 
+ * @return uint64_t* 
+ */
+uint64_t *getRankingPuntos(void);
 
 
 /*******************************************************************************
  ******************************************************************************/
 
-#endif // _SOUND_H_
+#endif // _RANKING_H_

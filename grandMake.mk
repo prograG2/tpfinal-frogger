@@ -29,7 +29,7 @@ SRC_RPI_DIR			= $(SRC_DIR)/platform/rpi
 # Objects stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Objetos principales
-_OBJS_MAIN 		= main.o queue.o fsm.o
+_OBJS_MAIN 		= main.o queue.o fsm.o ranking.o
 OBJS_MAIN 		= $(patsubst %, $(OBJ_DIR)/%, $(_OBJS_MAIN))
 
 # Objetos genericos de plataforma
@@ -94,7 +94,7 @@ endif
 arch		= $(shell uname -m)
 ifeq ($(arch), armv7l)
 PLATFORM	= RPI
-EXTRA_DEPS	= 
+EXTRA_DEPS	=
 else
 PLATFORM 	= PC
 EXTRA_DEPS	= $(LIB_DIR)/libalgif.a
@@ -138,7 +138,7 @@ RM	= rm -f
 
 ## Compila y linkea todo el proyecto.
 .PHONY: all
-all: $(TARGET) 
+all: $(TARGET)
 
 ## Compila, linkea y ejecuta el proyecto.
 .PHONY: run
@@ -159,15 +159,18 @@ cleaner: clean
 
 # Linkeo y creacion del ejecutable
 $(TARGET): $(OBJS) $(EXTRA_DEPS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@ -lm 
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@ -lm
 
-$(OBJ_DIR)/main.o: $(patsubst %,$(SRC_DIR)/%,main.c fsm.h queue.h) 
+$(OBJ_DIR)/main.o: $(patsubst %,$(SRC_DIR)/%,main.c fsm.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/queue.o:  $(patsubst %,$(SRC_DIR)/%,queue.c queue.h)
+$(OBJ_DIR)/queue.o: $(patsubst %,$(SRC_DIR)/%,queue.c queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/fsm.o:  $(patsubst %,$(SRC_DIR)/%,fsm.c fsm.h queue.h) $(patsubst %.o,$(SRC_DIR)/%.h,$(_OBJS_GENERIC))
+$(OBJ_DIR)/fsm.o: $(patsubst %,$(SRC_DIR)/%,fsm.c fsm.h queue.h) $(patsubst %.o,$(SRC_DIR)/%.h,$(_OBJS_GENERIC))
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/ranking.o: $(patsubst %,$(SRC_DIR)/%,ranking.c ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Reglas principales ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,7 +180,7 @@ $(OBJ_DIR)/fsm.o:  $(patsubst %,$(SRC_DIR)/%,fsm.c fsm.h queue.h) $(patsubst %.o
 
 # Reglas PC ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/display_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,display.c allegro_stuff.h game_data.h) $(patsubst %,$(SRC_DIR)/%,display.h queue.h)
+$(OBJ_DIR)/display_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,display.c allegro_stuff.h game_data.h) $(patsubst %,$(SRC_DIR)/%,display.h queue.h ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/game_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,game.c allegro_stuff.h entities.h game_data.h) $(patsubst %,$(SRC_DIR)/%,game.h menu.h queue.h)
@@ -218,7 +221,7 @@ $(OBJ_DIR)/algif_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/algif.c)
 
 $(OBJ_DIR)/bitmap_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/bitmap.c)
 	$(CC) $(CFLAGS) -c $< -o $@
-	
+
 $(OBJ_DIR)/gif_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/gif.c)
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -231,7 +234,7 @@ $(OBJ_DIR)/lzw_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/lzw.c)
 
 # Reglas RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/display_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,display.c) $(patsubst %,$(SRC_DIR)/%,display.h)
+$(OBJ_DIR)/display_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,display.c) $(patsubst %,$(SRC_DIR)/%,display.h ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/game_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,game.c) $(patsubst %,$(SRC_DIR)/%,game.h)

@@ -178,6 +178,13 @@ int game_data_get_diff(void);
 void game_data_clear_name(void);
 
 /**
+ * @brief Sobreescribe el nombre del jugador
+ * 
+ * @param name 
+ */
+void game_data_overwrite_name(char* name);
+
+/**
  * @brief Agrega una letra la nombre del jugador
  * 
  * @param letter Letra

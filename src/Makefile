@@ -9,7 +9,7 @@ OBJ_DIR := ../obj
 
 
 # Objetos sin path
-_OBJS	:= main.o queue.o fsm.o 
+_OBJS	:= main.o queue.o fsm.o ranking.o
 # Objetos con path
 OBJS	:= $(patsubst %,$(OBJ_DIR)/%,$(_OBJS))
 
@@ -50,7 +50,10 @@ $(OBJ_DIR)/main.o: main.c fsm.h queue.h
 $(OBJ_DIR)/queue.o: queue.c queue.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/fsm.o: fsm.c fsm.h queue.h $(DEPS_GENERIC)
+$(OBJ_DIR)/fsm.o: fsm.c fsm.h queue.h ranking.o $(DEPS_GENERIC)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/ranking.o: ranking.c ranking.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Objetos ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -82,10 +85,13 @@ all-debug: $(_OBJS)
 main.o: main.c fsm.h queue.h
 	$(CC) $(CFLAGS) -c $<
 
-fsm.o: fsm.c fsm.h queue.h $(DEPS_GENERIC)
+fsm.o: fsm.c fsm.h queue.h ranking.h $(DEPS_GENERIC)
 	$(CC) $(CFLAGS) -c $<
 
 queue.o: queue.c queue.h
+	$(CC) $(CFLAGS) -c $<
+
+ranking.o: ranking.c ranking.h
 	$(CC) $(CFLAGS) -c $<
 
 # Objetos ~~~~~~~~~~~~~~~~~~~~~~~~~

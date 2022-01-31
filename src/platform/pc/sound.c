@@ -104,6 +104,10 @@ void reproducirMusica(int musica)
 		case MUSICA_RANKING:
 			allegro_sound_set_stream_ranking();
 			break;
+
+		case MUSICA_GAME_OVER:
+			allegro_sound_set_stream_game_over();
+			break;
 		
 		default:
 			break;
@@ -119,10 +123,6 @@ void reproducirEfecto(int sonido)
 	{
 		case EFECTO_AHOGADO:
 			allegro_sound_play_effect_drowned();
-			break;
-
-		case EFECTO_GAME_OVER:
-			allegro_sound_play_effect_game_over();
 			break;
 
 		case EFECTO_IMPACTO:

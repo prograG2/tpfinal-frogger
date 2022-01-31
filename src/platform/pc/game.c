@@ -70,7 +70,7 @@ static bool next_run_flag = false;
 
 void setNombre(char* nombre)
 {
-
+	game_data_overwrite_name(nombre);
 }
 
 void setMaxPuntos(uint64_t max)
@@ -165,6 +165,9 @@ void refrescar(void)
 		reproducirEfecto(EFECTO_NIVEL_COMPLETO);
 		reiniciarNivel();
 	}
+
+	if(game_data_get_lives() == 0)
+		queueInsertar(GAME_OVER);
 }
 
 void moverAdelante(void)

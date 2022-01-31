@@ -21,7 +21,7 @@
 
 typedef int event_t;
 
-enum eventos{NADA = -1, SALIR = 0, GAME_OVER};
+enum eventos{NADA = -1, SALIR = 0, GAME_OVER, FORCE_SALIR};
 enum eventos_tecla{NO_MOVER = -1, ESC = 59, BORRAR = 63, ENTER = 67, IZDA = 82, DCHA, ARRIBA, ABAJO}; //Se respetan las definiciones de ALLEGRO ¡Chequear si se cambió la versión!
 
 /*******************************************************************************

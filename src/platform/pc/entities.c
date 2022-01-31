@@ -114,6 +114,14 @@ typedef struct
 	bool used;						//flag de usada o no
 } fly_t;
 
+typedef struct
+{
+	int turtles;
+	int fly;
+
+} timeouts_t;
+
+
 enum TURTLE_STATES
 {
 	TURTLE_STATE_SURFACE,
@@ -290,10 +298,10 @@ static unsigned long game_frames;
 
 //Carriles variables.
 static unsigned char normal_diff_lane;
-
 static unsigned char hard_diff_lane_1;
-
 static unsigned char hard_diff_lane_2;
+
+static timeouts_t timeouts;
 
 
 
@@ -310,6 +318,11 @@ void entities_init(void)
 	cars_init();
 	turtles_init();
 	fly_init();
+
+	game_frames = 0;
+
+	timeouts.turtles = 0;
+	timeouts.fly = 0;
 }
 
 void entities_update()
@@ -1059,13 +1072,15 @@ static void turtles_update(void)
 {
 	int new_quota = ((game_frames % TURTLES_SPAWN_FRAMES) ? 0 : get_rand_between(TURTLES_SPAWN_MIN, TURTLES_SPAWN_MAX));
 
-	int i;
+	int i, used;
 
-	//packs usados
-	static int used;
+	int *timeout = &timeouts.turtles;
 
-	//inicializado en 0 por ser static
-	static int timeout;			//timeout para sumergir/emerger
+	for(i = 0, used = 0; i < TURTLES_MAX_USED; i++)
+	{
+		if(turtle_pack[i].used)
+			used++;
+	}
 
     for(i = 0; i < TURTLES_MAX_USED; i++)
     {
@@ -1171,18 +1186,18 @@ static void turtles_update(void)
 			if(turtle_pack[i].state == TURTLE_STATE_SURFACE)
 			{
 				//si no esta inicializado, inicializo timeout
-				if(!timeout)
-					timeout = get_rand_between(TURTLES_SURFACE_FRAMES_MIN, TURTLES_SURFACE_FRAMES_MAX);
+				if(!*timeout)
+					*timeout = get_rand_between(TURTLES_SURFACE_FRAMES_MIN, TURTLES_SURFACE_FRAMES_MAX);
 
 				if(turtle_pack[i].frame == 6)
 					turtle_pack[i].frame = 0;
 
 				//pasa a agua
-				if(!(game_frames % timeout))
+				if(!(game_frames % *timeout))
 				{
 					turtle_pack[i].state = TURTLE_STATE_WATER;
 					turtle_pack[i].frame = 7;
-					timeout = 0;
+					*timeout = 0;
 				}
 			}
 
@@ -1190,18 +1205,18 @@ static void turtles_update(void)
 			else if(turtle_pack[i].state == TURTLE_STATE_WATER)
 			{
 				//si no esta inicializado, inicializo timeout
-				if(!timeout)
-					timeout = get_rand_between(TURTLES_WATER_FRAMES_MIN, TURTLES_WATER_FRAMES_MAX);
+				if(!*timeout)
+					*timeout = get_rand_between(TURTLES_WATER_FRAMES_MIN, TURTLES_WATER_FRAMES_MAX);
 
 				if(turtle_pack[i].frame == 11)
 					turtle_pack[i].frame = 10;
 
 				//pasa a fuera
-				if(!(game_frames % timeout))
+				if(!(game_frames % *timeout))
 				{
 					turtle_pack[i].state = TURTLE_STATE_SURFACE;
 					turtle_pack[i].frame = 0;
-					timeout = 0;
+					*timeout = 0;
 				}
 			}
 
@@ -1265,16 +1280,15 @@ static void fly_init(void)
 
 static void fly_update(void)
 {
-	//inicializado en 0 por ser static
-	static int timeout;
+	int *timeout = &timeouts.fly;
 
 	if(!fly.used)
 	{
 		//si no esta inicializado, inicializo timeout para spawneo
-		if(!timeout)
-			timeout = get_rand_between(FLY_SPAWN_FRAMES_MIN, FLY_SPAWN_FRAMES_MAX);
+		if(!*timeout)
+			*timeout = get_rand_between(FLY_SPAWN_FRAMES_MIN, FLY_SPAWN_FRAMES_MAX);
 
-		if(!(game_frames % timeout))
+		if(!(game_frames % *timeout))
 		{
 			//calculo de coordenada x para alguno de los puntos de llegada
 			int temp_goal = get_rand_between(0, MAX_GOALS - 1);
@@ -1286,7 +1300,7 @@ static void fly_update(void)
 				//marcado como usado
 				fly.used = true;
 				//desinicializo el timeout
-				timeout = 0;
+				*timeout = 0;
 			}
 
 			//si no, cuando pasa otro timeout se intenta de nuevo
@@ -1302,17 +1316,17 @@ static void fly_update(void)
 	else
 	{
 		//timeout para despawneo
-		if(!timeout)
-			timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
+		if(!*timeout)
+			*timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
 
 		//si se puede despawnear
-		if(!(game_frames % timeout))
+		if(!(game_frames % *timeout))
 		{
 			//mosca no usada
 			fly.used = false;
 
 			//desinicializo timeout
-			timeout = 0;
+			*timeout = 0;
 		}
 	}
 
