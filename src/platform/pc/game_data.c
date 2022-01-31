@@ -468,24 +468,6 @@ static void hud_draw(void)
 		"Run: %02d",                    //2 cifras. No me acuerdo si esta bien asi.
 		data.run.number);
 
-
-	//Dibuja vidas.
-	for(int i = 0; i < data.lives; i++)         //No se si la rana tiene 'frog.lives' pero aca va el equivalente.
-		al_draw_bitmap(
-			sprites.heart,
-			//DISPLAY_W - SPRITE_SIZE_HEART * (data.lives - i), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
-			al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3*char_w + SPRITE_SIZE_HEART * (data.lives - i - 1),
-			CELL_H - char_h - 5,
-			0);
-			
-	if(!data.lives)
-		al_draw_text(
-			allegro_get_var_font(),
-			al_map_rgb(255, 255, 51),       //Amarillo, es el color que mas se ditingue en general.
-			DISPLAY_W / 2, DISPLAY_H / 2,
-			ALLEGRO_ALIGN_CENTER,           //Para que se dibuje en el medio.
-			"G A M E  O V E R");
-
 	//Segundos.
 	al_draw_textf(
 		allegro_get_var_font(),
@@ -499,11 +481,32 @@ static void hud_draw(void)
 	al_draw_textf(
 		allegro_get_var_font(),
 		text_color,
-		DISPLAY_W - 300,
+		al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3*char_w,
 		CELL_H - char_h - 5,
 		0,
 		"Time Left: %03d",
 		data.run.time_left);
+
+
+
+	//Dibuja vidas.
+	for(int i = 0; i < data.lives; i++)         //No se si la rana tiene 'frog.lives' pero aca va el equivalente.
+		al_draw_bitmap(
+			sprites.heart,
+			//DISPLAY_W - SPRITE_SIZE_HEART * (data.lives - i), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
+			DISPLAY_W - 100 + SPRITE_SIZE_HEART * (data.lives - i - 1),
+			(CELL_H - char_h - 5)/2,
+			0);
+
+	/*		
+	if(!data.lives)
+		al_draw_text(
+			allegro_get_var_font(),
+			al_map_rgb(255, 255, 51),       //Amarillo, es el color que mas se ditingue en general.
+			DISPLAY_W / 2, DISPLAY_H / 2,
+			ALLEGRO_ALIGN_CENTER,           //Para que se dibuje en el medio.
+			"G A M E  O V E R");
+	*/
 		
 }
 
