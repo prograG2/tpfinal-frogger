@@ -83,6 +83,10 @@ typedef struct
 		ALLEGRO_BITMAP* background;
 	} menu[MENU_WINDOW_MAX];
 
+	ALLEGRO_BITMAP* credits;
+
+	ALLEGRO_BITMAP* icon;
+
 } sprites_t;
 
 

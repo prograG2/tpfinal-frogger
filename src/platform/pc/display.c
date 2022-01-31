@@ -24,6 +24,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
+#define CREDITS_SCROLL_SPEED	1
 
 
 /*******************************************************************************
@@ -58,6 +59,8 @@
  ******************************************************************************/
 
 static pthread_mutex_t lock;
+
+static int credits_scroll_cont;
 
 
 /*******************************************************************************
@@ -107,11 +110,38 @@ void mostrarPosicion(char* posicion, char* nombre, char* puntos)
 
 void cargarRanking(void)
 {
+	int i = 0;
+	
+	int lines = getRankingLineas();
+	char **names = getRankingNombres();
+	uint64_t *scores = getRankingPuntos();
 
+	allegro_clear_display();
+	for(i = 0; i < lines; i++)
+	{
+		al_draw_textf(	allegro_get_var_font(),
+						al_map_rgb(255,255,255),
+						10,
+						100 + i*20,
+						0,
+						"%s", names[i]);
+
+		al_draw_textf(	allegro_get_var_font(),
+						al_map_rgb(255,255,255),
+						250,
+						100 + i*20,
+						0,
+						"%ld", scores[i]);
+	}
+	al_flip_display();
+	
 }
 
 bool mostrarRanking(void)
 {
+	
+
+	
 
 	return true;
 }
@@ -123,11 +153,24 @@ void finalizarRanking(void)
 
 void cargarCreditos(void)
 {
-
+	credits_scroll_cont = DISPLAY_H + DISPLAY_H/8;
 }
 
 bool mostrarCreditos(void)
 {
+	if(allegro_get_var_redraw())
+	{
+
+		credits_scroll_cont -= CREDITS_SCROLL_SPEED;
+		if(credits_scroll_cont == -CREDITS_SCREEN_LENGTH)
+			credits_scroll_cont = DISPLAY_H;
+
+		allegro_clear_display();
+		al_draw_bitmap(sprites.credits, 0, credits_scroll_cont, 0);
+		al_flip_display();
+
+		allegro_set_var_redraw(false);
+	}
 
 	return true;
 }

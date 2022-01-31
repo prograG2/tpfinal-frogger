@@ -60,6 +60,8 @@
 #define SPRITE_MENU_PAUSE			"sprite_menu_pause"
 #define SPRITE_MENU_GAME_OVER_BACK	"sprite_menu_gameover_background"
 #define SPRITE_MENU_GAME_OVER		"sprite_menu_gameover"
+#define SPRITE_CREDITS				"sprite_credits"
+#define SPRITE_ICON					"icon"
 
 //Extensiones
 #define EXTENSION_SOUND_SAMPLE		".wav"
@@ -368,6 +370,8 @@ void allegro_reinit_display(void)
 	allegro_vars.disp = al_create_display(DISPLAY_W, DISPLAY_H);
 	must_init(allegro_vars.disp, "display");
 	al_register_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
+
+	al_set_display_icon(allegro_vars.disp, sprites.icon);
 
 	//Reload de la fuente
 	char string[60] = PATH_FONTS;
@@ -928,6 +932,14 @@ static void sprites_init(void)
 	}
 
 
+	path = make_sprite_path(SPRITE_CREDITS, path);
+	sprites.credits = al_load_bitmap(path);
+
+
+	path = make_sprite_path(SPRITE_ICON, path);
+	sprites.icon = al_load_bitmap(path);
+
+
 	free(path);
 }
 
@@ -987,6 +999,10 @@ static void sprites_deinit(void)
 			al_destroy_bitmap(sprites.menu[i].option[j]);
 		}
 	}
+
+	al_destroy_bitmap(sprites.credits);
+
+	al_destroy_bitmap(sprites.icon);
 	
 
 }
