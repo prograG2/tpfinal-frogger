@@ -24,7 +24,8 @@
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-
+#define NAME_TOPLEFT_X 	55
+#define NAME_TOPLEFT_Y	312
 
 
 /*******************************************************************************
@@ -77,8 +78,6 @@ void nuevoNombre(void)
 	/*cambiar por background correspondiente*/
 	al_draw_bitmap(sprites.name, 0, 0, 0);
 	
-	//al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 45, DISPLAY_H/2, 0,
-	//				"Nombre del jugador: ");
 	al_flip_display();
 }
 
@@ -108,7 +107,7 @@ void agregarLetra(void)
 	/*cambiar por background correspondiente*/
 	al_draw_bitmap(sprites.name, 0, 0, 0);
 
-	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 55, DISPLAY_H/2 -10, 0,
+	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), NAME_TOPLEFT_X, NAME_TOPLEFT_Y, 0,
 					"%s", name);
 		
 	al_flip_display();	

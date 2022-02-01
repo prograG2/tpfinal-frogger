@@ -164,8 +164,8 @@ bool mostrarCreditos(void)
 	{
 
 		credits_scroll_cont -= CREDITS_SCROLL_SPEED;
-		if(credits_scroll_cont == -CREDITS_SCREEN_LENGTH + DISPLAY_H)
-			credits_scroll_cont = 0;
+		if(credits_scroll_cont == -CREDITS_SCREEN_FINAL)
+			credits_scroll_cont = CREDITS_SCREEN_START;
 
 		allegro_clear_display();
 		al_draw_bitmap(sprites.credits, 0, credits_scroll_cont, 0);

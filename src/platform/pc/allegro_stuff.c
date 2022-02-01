@@ -1011,6 +1011,8 @@ static void sprites_deinit(void)
 
 	al_destroy_bitmap(sprites.credits);
 
+	al_destroy_bitmap(sprites.name);
+
 	al_destroy_bitmap(sprites.icon);
 	
 

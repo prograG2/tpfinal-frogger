@@ -112,7 +112,8 @@
 #define MENU_OPTION_H			75
 
 #define CREDITS_SCREEN_LENGTH	2576
-
+#define CREDITS_SCREEN_START	0
+#define CREDITS_SCREEN_FINAL	(CREDITS_SCREEN_LENGTH - DISPLAY_H)
 
 //Factor que determina cuando considerar que un bloque esta dentro de otro (ver 'inside_short_scaled')
 #define INSERTION_FACTOR		(double)0.5
