@@ -31,7 +31,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define FIX_CPU_USAGE_SLEEP_US		1000
+#define FIX_CPU_USAGE_SLEEP_US		500
 
 
 /*******************************************************************************
@@ -535,6 +535,10 @@ static void iniciar_juego(void){
 		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
 
 		printf("\n\nJugador detectado: %s %ld\n\n", getNombre(), getMaxPuntos());
+	}
+	else
+	{
+		setMaxPuntos(0);
 	}
 
 	reiniciarNivel();

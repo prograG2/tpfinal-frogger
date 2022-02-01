@@ -1,5 +1,5 @@
-# Makefile del proyecto						\
-	Correr "make" para tener ayuda			\
+# Makefile del proyecto								\
+	Correr "make help" para obtener ayuda			\
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,10 +156,20 @@ clean:
 cleaner: clean
 	$(RM) $(TARGET)
 
+# Reglas principales ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Linkeo y creacion del ejecutable
+
+
+# Linkeo de objetos y creacion del ejecutable ~~~~~~~~~~~~~~~~~~~~~~~~~
+
 $(TARGET): $(OBJS) $(EXTRA_DEPS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@ -lm
+
+# Linkeo de objetos y creacion del ejecutable ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+# Compilacion generica ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $(OBJ_DIR)/main.o: $(patsubst %,$(SRC_DIR)/%,main.c fsm.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -173,12 +183,11 @@ $(OBJ_DIR)/fsm.o: $(patsubst %,$(SRC_DIR)/%,fsm.c fsm.h queue.h) $(patsubst %.o,
 $(OBJ_DIR)/ranking.o: $(patsubst %,$(SRC_DIR)/%,ranking.c ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Reglas principales ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilacion generica ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-
-# Reglas PC ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilacion de PC ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $(OBJ_DIR)/display_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,display.c allegro_stuff.h game_data.h) $(patsubst %,$(SRC_DIR)/%,display.h queue.h ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -189,7 +198,7 @@ $(OBJ_DIR)/game_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,game.c allegro_stuff.h entiti
 $(OBJ_DIR)/input_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,input.c allegro_stuff.h entities.h game_data.h) $(patsubst %,$(SRC_DIR)/%,input.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/menu_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,menu.c allegro_stuff.h geometry.h) $(patsubst %,$(SRC_DIR)/%,menu.h sound.h queue.h)
+$(OBJ_DIR)/menu_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,menu.c allegro_stuff.h geometry.h game_data.h) $(patsubst %,$(SRC_DIR)/%,menu.h sound.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/nombre_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,nombre.c allegro_stuff.h game_data.h) $(patsubst %,$(SRC_DIR)/%,nombre.h)
@@ -228,11 +237,11 @@ $(OBJ_DIR)/gif_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/gif.c)
 $(OBJ_DIR)/lzw_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/lzw.c)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Reglas PC ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilacion de PC ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-# Reglas RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilacion de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $(OBJ_DIR)/display_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,display.c) $(patsubst %,$(SRC_DIR)/%,display.h ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -259,7 +268,7 @@ $(OBJ_DIR)/bitmap_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,bitmap.c bitmap.h)
 $(OBJ_DIR)/mensajes_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,mensajes.c mensajes.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Reglas RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilacion de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
@@ -292,7 +301,7 @@ debug: all
 
 
 
-#https://gist.github.com/prwhite/8168133
+# https://gist.github.com/prwhite/8168133
 
 #.DEFAULT_GOAL = help
 
