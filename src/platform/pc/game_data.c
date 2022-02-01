@@ -32,7 +32,11 @@
 #define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
 #define SCORE_PER_RUN		1000	//puntaje por completar una run
 
+<<<<<<< HEAD
 #define INITIAL_RUN_TIME_LEFT   	30		
+=======
+#define INITIAL_RUN_TIME_LEFT   	60		
+>>>>>>> 525f131 (Feat: implementando sprite de muerte, e info emergente en el HUD)
 
 #define EXTRA_TIME_PER_GOAL			10		//10s extras por llegar a una meta
 #define EXTRA_TIME_PER_BONUS_GOAL	15		//15s extras por llegar a una meta con fly
@@ -80,6 +84,20 @@ enum DATA_FLAGS
 	DATA_FLAG_GAME_OVER
 };
 
+static struct
+{
+	bool flag;
+	int value;
+	int timer;
+} hud_extra_stuff[HUD_EXTRAS_MAX];
+
+enum HUD_EXTRAS
+{
+	HUD_EXTRA_TIME,
+	HUD_EXTRA_SCORE,
+	HUD_EXTRA_LIFE,
+	HUD_EXTRAS_MAX
+};
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
@@ -305,11 +323,13 @@ int game_data_get_run_time_left(void)
 void game_data_add_run_time_goal(void)
 {
 	data.run.time_left += EXTRA_TIME_PER_GOAL;
+	trigger_show_adding_time(EXTRA_TIME_PER_GOAL);
 }
 
 void game_data_add_run_time_goal_bonus(void)
 {
 	data.run.time_left += EXTRA_TIME_PER_BONUS_GOAL;
+	trigger_show_adding_time(EXTRA_TIME_PER_BONUS_GOAL);
 }
 
 unsigned long game_data_get_frames(void)
@@ -527,6 +547,11 @@ static void hud_draw(void)
 		"Time Left: %03d",
 		data.run.time_left);
 
+	if(hud_extra_stuff.time.flag)
+	{
+
+	}
+
 
 
 	//Dibuja vidas.
@@ -571,6 +596,8 @@ static void next_run(void)
 	data.run.time = 0;
 	data.run.time_ref = time(NULL);
 
+	data.score += SCORE_PER_RUN;
+
 	last_loop_time = 0;
 
 	flag_low_time_warning = false;
@@ -581,4 +608,9 @@ static void next_run(void)
 static void set_new_run_time_left(int time_left)
 {
 	new_run_time_left = time_left;
+}
+
+static void trigger_show_adding_time(int extra)
+{
+
 }

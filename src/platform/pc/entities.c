@@ -66,6 +66,7 @@
 #define FLY_WARNING_FRAMES_A	20	//blink rate
 #define FLY_WARNING_FRAMES_B	10
 
+#define SPRITE_DEAD_TIMEOUT		80	//frames que permanece en pantalla el sprite de muerte
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -141,6 +142,13 @@ typedef struct
 		
 } fly_t;
 
+static struct
+{
+	bool flag;						//para indicar graficar
+	unsigned int timer;				//contador para permanecer en pantalla
+	unsigned int x;
+	unsigned int y;
+} sprite_dead;
 
 enum TURTLE_STATES
 {
@@ -288,6 +296,14 @@ static void fix_frog_coord_y(void);
  */
 static bool is_frog_in_goal(void);
 
+/**
+ * @brief Configura el sprite de muerte para que se muestre
+ * 
+ * @param x Coordenada topleft X para graficar
+ * @param y Coordenara topleft Y para graficar
+ */
+static void set_sprite_dead(int x, int y);
+
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -327,6 +343,7 @@ static unsigned char hard_diff_lane_2;
 
 static unsigned char cars_spawn_max;
 
+
 /*******************************************************************************
  *******************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
@@ -342,6 +359,8 @@ void entities_init(void)
 	fly_init();
 
 	game_frames = 0;
+
+	sprite_dead.flag = false;
 }
 
 void entities_update()
@@ -361,6 +380,19 @@ void entities_draw()
 	cars_draw();
 	turtles_draw();
 	fly_draw();
+
+
+	if(sprite_dead.flag)
+	{
+		if(!(sprite_dead.timer++ % SPRITE_DEAD_TIMEOUT))
+			sprite_dead.flag = false;
+		else
+			al_draw_bitmap(sprites.dead, sprite_dead.x, sprite_dead.y, 0);
+
+	}
+	
+
+		//al_draw_bitmap(sprites.dead, 100, 100, 0);
 
 	//"frog siempre a lo ultimo, para que se vea"
 	frog_draw();
@@ -587,12 +619,21 @@ static void frog_update(void)
 		case FROG_STATE_WATER:
 			game_data_subtract_live();
 			allegro_sound_play_effect_drowned();
+
+			set_sprite_dead(frog.x, frog.y);
+
 			frog_init();
+			
+			
 			break;
 		
 		case FROG_STATE_CRASH_CAR:
 			game_data_subtract_live();
 			allegro_sound_play_effect_crash();
+			
+
+			set_sprite_dead(frog.x, frog.y);
+
 			frog_init();
 
 			break;
@@ -1579,4 +1620,12 @@ static bool is_frog_in_goal(void)
 		
 
 	return state;
+}
+
+static void set_sprite_dead(int x, int y)
+{
+	sprite_dead.flag = true;
+	sprite_dead.timer = 1;
+	sprite_dead.x = x - FROG_OFFSET_X + SPRITE_DEAD_OFFSET;
+	sprite_dead.y = y - FROG_OFFSET_Y + SPRITE_DEAD_OFFSET;
 }

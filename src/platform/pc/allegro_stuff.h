@@ -89,6 +89,8 @@ typedef struct
 
 	ALLEGRO_BITMAP* icon;
 
+	ALLEGRO_BITMAP* dead;
+
 } sprites_t;
 
 

@@ -104,6 +104,8 @@
 
 #define SPRITE_SIZE_HEART	20	//cuadrado
 
+#define SPRITE_DEAD_SIZE	35	//cuadrado
+#define SPRITE_DEAD_OFFSET	(CELL_W/2 - SPRITE_DEAD_SIZE/2)
 
 #define MENU_OPTION_TOPLEFT_X 	45
 #define MENU_OPTION_TOPLEFT_Y	72

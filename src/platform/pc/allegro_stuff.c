@@ -63,6 +63,7 @@
 #define SPRITE_CREDITS				"sprite_credits"
 #define SPRITE_NAME					"sprite_name"
 #define SPRITE_ICON					"icon"
+#define SPRITE_DEAD					"sprite_dead"
 
 //Extensiones
 #define EXTENSION_SOUND_SAMPLE		".wav"
@@ -947,6 +948,10 @@ static void sprites_init(void)
 
 	path = make_sprite_path(SPRITE_ICON, path);
 	sprites.icon = al_load_bitmap(path);
+
+
+	path = make_sprite_path(SPRITE_DEAD, path);
+	sprites.dead = al_load_bitmap(path);
 
 
 	free(path);
