@@ -74,10 +74,10 @@ void nuevoNombre(void)
 	game_data_clear_name();
 
 	/*cambiar por background correspondiente*/
-	al_clear_to_color(al_map_rgb(100,50,50));
+	al_draw_bitmap(sprites.name, 0, 0, 0);
 	
-	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 10, DISPLAY_H/2, 0,
-					"Nombre del jugador: ");
+	//al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 45, DISPLAY_H/2, 0,
+	//				"Nombre del jugador: ");
 	al_flip_display();
 }
 
@@ -105,10 +105,10 @@ void agregarLetra(void)
 	allegro_clear_display();
 
 	/*cambiar por background correspondiente*/
-	al_clear_to_color(al_map_rgb(100,50,50));
+	al_draw_bitmap(sprites.name, 0, 0, 0);
 
-	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 10, DISPLAY_H/2, 0,
-					"Nombre del jugador: %s", name);
+	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), 55, DISPLAY_H/2 -10, 0,
+					"%s", name);
 		
 	al_flip_display();	
 	

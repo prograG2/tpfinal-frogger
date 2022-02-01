@@ -153,7 +153,7 @@ void finalizarRanking(void)
 
 void cargarCreditos(void)
 {
-	credits_scroll_cont = DISPLAY_H + DISPLAY_H/8;
+	credits_scroll_cont = 0;
 }
 
 bool mostrarCreditos(void)
@@ -162,8 +162,8 @@ bool mostrarCreditos(void)
 	{
 
 		credits_scroll_cont -= CREDITS_SCROLL_SPEED;
-		if(credits_scroll_cont == -CREDITS_SCREEN_LENGTH)
-			credits_scroll_cont = DISPLAY_H;
+		if(credits_scroll_cont == -CREDITS_SCREEN_LENGTH + DISPLAY_H)
+			credits_scroll_cont = 0;
 
 		allegro_clear_display();
 		al_draw_bitmap(sprites.credits, 0, credits_scroll_cont, 0);

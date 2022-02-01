@@ -85,6 +85,8 @@ typedef struct
 
 	ALLEGRO_BITMAP* credits;
 
+    ALLEGRO_BITMAP* name;
+
 	ALLEGRO_BITMAP* icon;
 
 } sprites_t;

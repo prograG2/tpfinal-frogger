@@ -61,6 +61,7 @@
 #define SPRITE_MENU_GAME_OVER_BACK	"sprite_menu_gameover_background"
 #define SPRITE_MENU_GAME_OVER		"sprite_menu_gameover"
 #define SPRITE_CREDITS				"sprite_credits"
+#define SPRITE_NAME					"sprite_name"
 #define SPRITE_ICON					"icon"
 
 //Extensiones
@@ -935,6 +936,8 @@ static void sprites_init(void)
 	path = make_sprite_path(SPRITE_CREDITS, path);
 	sprites.credits = al_load_bitmap(path);
 
+	path = make_sprite_path(SPRITE_NAME, path);
+	sprites.name = al_load_bitmap(path);
 
 	path = make_sprite_path(SPRITE_ICON, path);
 	sprites.icon = al_load_bitmap(path);

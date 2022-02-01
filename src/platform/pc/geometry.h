@@ -111,7 +111,7 @@
 #define MENU_OPTION_W			600
 #define MENU_OPTION_H			75
 
-#define CREDITS_SCREEN_LENGTH	1288
+#define CREDITS_SCREEN_LENGTH	2576
 
 
 //Factor que determina cuando considerar que un bloque esta dentro de otro (ver 'inside_short_scaled')
