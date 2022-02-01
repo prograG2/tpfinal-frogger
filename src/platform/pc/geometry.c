@@ -35,13 +35,28 @@
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-//filas para troncos
+/**
+ * @brief Filas para troncos
+ * 
+ */
 const unsigned int lanes_logs[LANES_LOG_TOTAL] = {2,4,5};
-//filas para tortugas
+
+/**
+ * @brief Filas para tortugas
+ * 
+ */
 const unsigned int lanes_turtles[LANES_TURTLE_TOTAL] = {3,6};
-//filas para autos
+
+/**
+ * @brief Filas para autos
+ * 
+ */
 const unsigned int lanes_cars[LANES_CAR_TOTAL] = {8,9,10,11,12};
-//columnas para los puntos de llegada (referenciadas a 0)
+
+/**
+ * @brief Columnas para puntos de llegada
+ * 
+ */
 const unsigned int goal_cols[MAX_GOALS] = {1,4,7,10,13};
 
 

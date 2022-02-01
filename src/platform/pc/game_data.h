@@ -229,12 +229,27 @@ void game_data_reset_goals(void);
 bool game_data_get_time_left_flag(void);
 
 /**
+ * @brief Devuelve flag de game over
+ * 
+ * @return true Game over
+ * @return false No game over
+ */
+bool game_data_get_game_over_flag(void);
+
+/**
  * @brief Avisa si estan todas las metas completas
  * 
  * @return true Si
  * @return false No
  */
 bool game_data_are_goals_full(void);
+
+/**
+ * @brief Devuelve el score maximo sin actualizar al terminar el juego
+ * 
+ * @return int 
+ */
+int game_data_get_old_max_score(void);
 
 
 

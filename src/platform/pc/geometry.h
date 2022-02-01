@@ -185,13 +185,28 @@ typedef enum CAR_TYPE
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-//filas para troncos (referenciadas a 0
+/**
+ * @brief Filas para troncos, referenciadas a 0.
+ * 
+ */
 extern const unsigned int lanes_logs[LANES_LOG_TOTAL];
-//filas para tortugas (referenciadas a 0
+
+/**
+ * @brief Filas para tortugas, referenciadas a 0.
+ * 
+ */
 extern const unsigned int lanes_turtles[LANES_TURTLE_TOTAL];
-//filas para autos (referenciadas a 0
+
+/**
+ * @brief Filas para autos, referenciadas a 0.
+ * 
+ */
 extern const unsigned int lanes_cars[LANES_CAR_TOTAL];
-//columnas para los puntos de llegada (referenciadas a 0)
+
+/**
+ * @brief Columnas para puntos de llegada, referenciadas a 0.
+ * 
+ */
 extern const unsigned int goal_cols[MAX_GOALS];
 
 /*******************************************************************************

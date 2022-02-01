@@ -76,7 +76,8 @@ enum DATA_FLAGS
 {
 	DATA_FLAG_STARTING,
 	DATA_FLAG_NEXT_RUN,
-	DATA_FLAG_TIME_EXCEEDED
+	DATA_FLAG_TIME_EXCEEDED,
+	DATA_FLAG_GAME_OVER
 };
 
 
@@ -163,6 +164,9 @@ static int new_run_time_left;
 //Auxiliar para mostrar el score gradualmente en el HUD
 static int score_display;
 
+//Score maximo no actualizado en game over
+static int max_score_no_updated;
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -199,10 +203,7 @@ void game_data_update(void)
 		data.flag = DATA_FLAG_STARTING;
 	}
 
-	if(data.run.time_left < 0)
-	{
-		data.flag = DATA_FLAG_TIME_EXCEEDED;
-	}
+	
 
 	if(data.run.time_left == TIME_LEFT_WARNING && !flag_low_time_warning)
 	{
@@ -213,6 +214,25 @@ void game_data_update(void)
 	else if(data.run.time_left < TIME_LEFT_WARNING)
 		flag_low_time_warning = false;
 		
+
+	if(max_score_no_updated != data.score_max)
+		max_score_no_updated = data.score_max;
+
+
+
+
+	if(data.run.time_left == 0)
+	{
+		//data.flag = DATA_FLAG_TIME_EXCEEDED;
+		game_data_subtract_live();
+		allegro_sound_play_effect_no_time();
+		data.flag = DATA_FLAG_GAME_OVER;
+	}
+
+	if(data.lives == 0)
+	{
+		data.flag = DATA_FLAG_GAME_OVER;
+	}
 
 
 }
@@ -367,6 +387,14 @@ bool game_data_get_time_left_flag(void)
 		return false;
 }
 
+bool game_data_get_game_over_flag(void)
+{
+	if(data.flag == DATA_FLAG_GAME_OVER)
+		return true;
+	else
+		return false;
+}
+
 bool game_data_are_goals_full(void)
 {
 	bool state = true;
@@ -383,6 +411,11 @@ bool game_data_are_goals_full(void)
 	}
 	
 	return state;
+}
+
+int game_data_get_old_max_score(void)
+{
+	return max_score_no_updated;
 }
 
 

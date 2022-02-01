@@ -122,6 +122,16 @@ event_t leerEntradas(void)
 							retorno = GAME_OVER;
 							break;
 
+						case ALLEGRO_KEY_PAD_3:
+							int i;
+							for(i = 0; i < MAX_GOALS; i++)
+								game_data_set_goal(i);
+							break;
+
+						case ALLEGRO_KEY_PAD_4:
+							game_data_reset_goals();
+							break;
+
 						default:
 							break;
 					}

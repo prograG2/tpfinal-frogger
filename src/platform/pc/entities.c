@@ -26,34 +26,44 @@
 //#define DEBUG_ENTITIES_TEXT
 
 #define LOGS_SPAWN_MIN			1
-#define LOGS_SPAWN_MAX			2
+#define LOGS_SPAWN_MAX			3
 #define LOGS_SPAWN_FRAMES		60
 #define LOGS_BASE_SPEED			2
 #define LOGS_MAX_USED			7
+#define LOGS_EXTRA_SEPARATOR	LOG_W/2
 
 #define CARS_SPAWN_MIN			1
 #define CARS_SPAWN_MAX			4
 #define CARS_SPAWN_FRAMES		60
 #define CARS_BASE_SPEED			2
 #define CARS_MAX_USED			7
+#define CARS_EXTRA_SEPARATOR	CAR_W*2
 
-#define TURTLES_MIN_PER_PACK	2
-#define	TURTLES_MAX_PER_PACK	3
+#define TURTLES_MIN_PER_PACK	1
+#define	TURTLES_MAX_PER_PACK	2
 #define TURTLES_SPAWN_FRAMES	60	//cada cuantos frames spawnean
 #define TURTLES_SPAWN_MIN		1	//minimas a spawnear de una
 #define TURTLES_SPAWN_MAX		2	//maximas a spawnear de una
 #define TURTLES_MAX_USED		7	//maximas en pantalla
 #define TURTLES_BASE_SPEED		2	
-#define TURTLES_FRAME_TIMEOUT	10	//cuanto "tiempo" dura un frame dibujado antes de pasar al siguiente
-#define TURTLES_SURFACE_FRAMES_MIN		200	//minimo "tiempo" en superficie
-#define TURTLES_SURFACE_FRAMES_MAX		500	//maximo "tiempo"mes en superficie
-#define TURTLES_WATER_FRAMES_MIN		50	//minimo "tiempo" bajo el agua
-#define TURTLES_WATER_FRAMES_MAX		150 //maximo "tiempo" bajo el agua
+#define TURTLES_FRAME_TIMEOUT_SURFACE		10	//cuanto "tiempo" dura un frame dibujado antes de pasar al siguiente
+#define TURTLES_FRAME_TIMEOUT_GOING_DOWN	50	//tiempo por frame al sumergirse
+#define TURTLES_FRAME_TIMEOUT_WATER			20	//tiempo por frame para mostrarse bajo el agua
+#define TURTLES_FRAME_TIMEOUT_GOING_UP		10	//tiempo por frame para mostrarse saliendo del agua
+#define TURTLES_SURFACE_FRAMES_MIN		80	//minimo "tiempo" en superficie
+#define TURTLES_SURFACE_FRAMES_MAX		500	//maximo "tiempo" en superficie
+#define TURTLES_WATER_FRAMES_MIN		60	//minimo "tiempo" bajo el agua
+#define TURTLES_WATER_FRAMES_MAX		100 //maximo "tiempo" bajo el agua
+#define TURTLES_EXTRA_SEPARATOR			TURTLE_SIDE*2
 
 #define FLY_SPAWN_FRAMES_MIN	300	//mínimo tiempo para respawnear mosca
 #define	FLY_SPAWN_FRAMES_MAX	600	//maximo tiempo para respawnear mosca
-#define FLY_DESPAWN_FRAMES_MIN	600	//mínimo tiempo para sacar mosca
+#define FLY_DESPAWN_FRAMES_MIN	700	//mínimo tiempo para sacar mosca
 #define	FLY_DESPAWN_FRAMES_MAX	900	//maximo tiempo para sacar mosca
+#define FLY_FRAMES_TO_WARN_A	250	//frames previos al despawneo cuando empieza a titilar
+#define FLY_FRAMES_TO_WARN_B	100
+#define FLY_WARNING_FRAMES_A	20	//blink rate
+#define FLY_WARNING_FRAMES_B	10
 
 
 /*******************************************************************************
@@ -102,7 +112,14 @@ typedef struct
 	int dx;							//velocidad
 	bool used;						//flag de usada o no
 	unsigned char turtles_in_pack;	//cantidad de tortugas en el paquete
-	unsigned char frame;			//contador que indica en qué frame de la animación se está (de 1 a TURTLES_FRAMES)
+
+	struct
+	{
+		unsigned char frame;			//contador que indica en qué frame de la animación se está (de 1 a TURTLES_FRAMES)
+		unsigned int timeout;			//timeout interno para cambiar de frame
+		unsigned int cont;				//contador interno de frames de juego ejecutados
+	} fx;
+		
 	int wide;						//ancho del paquete, proporcional a turtles_in_pack y a TURTLES_SIDE
 	unsigned char state;			//estado (enum TURTLE_STATES)
 } turtle_pack_t;
@@ -112,20 +129,23 @@ typedef struct
 	int x;
 	int y;
 	bool used;						//flag de usada o no
+	struct
+	{
+		unsigned int timeout;		//Para spawneo y despawneo
+		unsigned int blink_timer;	//Para titilar mosca antes de sacarla
+		unsigned int cont;			//contador interno de frames de juego ejecutados
+		bool flag;					//Para indicar si debe parpadear o no
+	} fx;
+		
 } fly_t;
-
-typedef struct
-{
-	int turtles;
-	int fly;
-
-} timeouts_t;
 
 
 enum TURTLE_STATES
 {
 	TURTLE_STATE_SURFACE,
-	TURTLE_STATE_WATER
+	TURTLE_STATE_GOING_DOWN,
+	TURTLE_STATE_WATER,
+	TURTLE_STATE_GOING_UP
 };
 
 
@@ -301,9 +321,6 @@ static unsigned char normal_diff_lane;
 static unsigned char hard_diff_lane_1;
 static unsigned char hard_diff_lane_2;
 
-static timeouts_t timeouts;
-
-
 
 /*******************************************************************************
  *******************************************************************************
@@ -320,9 +337,6 @@ void entities_init(void)
 	fly_init();
 
 	game_frames = 0;
-
-	timeouts.turtles = 0;
-	timeouts.fly = 0;
 }
 
 void entities_update()
@@ -530,6 +544,7 @@ static void frog_update(void)
 		//esta en algun turtle_pack?
 		for(i = 0; i < TURTLES_MAX_USED; i++)
 		{
+			//Omite si el pack no esta usado o si esta bajo agua
 			if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
 				continue;
 
@@ -546,7 +561,7 @@ static void frog_update(void)
 				frog.x += turtle_pack[i].dx;
 				frog.state = FROG_STATE_TURTLE;
 				interaction_flag = true;
-				break;		//no puede estar en 2 troncos a la vez
+				break;		//no puede estar en 2 packs a la vez
 			}
 		}
 	}
@@ -715,9 +730,9 @@ static void logs_update(void)
 				{
 					//si colisiona con algun otro tronco...
 					if	(collide(
-									log[i].x,
+									log[i].x - LOGS_EXTRA_SEPARATOR,
 									log[i].y,
-									log[i].x + LOG_W,
+									log[i].x + LOG_W + LOGS_EXTRA_SEPARATOR,
 									log[i].y + LOG_H,
 									log[p].x,
 									log[p].y,
@@ -902,13 +917,13 @@ static void cars_update(void)
 				{
 					//si colisiona con algun otro auto...
 					if	(collide(
-									car[i].x,
+									car[i].x - CARS_EXTRA_SEPARATOR,
 									car[i].y,
-									car[i].x + CAR_TRUCK_W,		//Es el mas largo.
+									car[i].x + car[i].length + CARS_EXTRA_SEPARATOR,		//Es el mas largo.
 									car[i].y + CAR_H,
 									car[p].x,
 									car[p].y,
-									car[p].x + CAR_TRUCK_W,
+									car[p].x + car[p].length,
 									car[p].y + CAR_H
 								)
 						)
@@ -1074,8 +1089,6 @@ static void turtles_update(void)
 
 	int i, used;
 
-	int *timeout = &timeouts.turtles;
-
 	for(i = 0, used = 0; i < TURTLES_MAX_USED; i++)
 	{
 		if(turtle_pack[i].used)
@@ -1130,9 +1143,9 @@ static void turtles_update(void)
 				{
 					//si colisiona con algun otro pack...
 					if	(collide(
-									turtle_pack[i].x,
+									turtle_pack[i].x - TURTLES_EXTRA_SEPARATOR,
 									turtle_pack[i].y,
-									turtle_pack[i].x + turtle_pack[i].wide,
+									turtle_pack[i].x + turtle_pack[i].wide + TURTLES_EXTRA_SEPARATOR,
 									turtle_pack[i].y + TURTLE_SIDE,
 									turtle_pack[p].x,
 									turtle_pack[p].y,
@@ -1157,7 +1170,9 @@ static void turtles_update(void)
 				used++;
 
 				//se inicializa el contador de frames
-				turtle_pack[i].frame = 0;
+				turtle_pack[i].fx.frame = 0;
+				turtle_pack[i].fx.cont = 1;
+				turtle_pack[i].fx.timeout = 0;
 				//fuera del agua
 				turtle_pack[i].state = TURTLE_STATE_SURFACE;
 
@@ -1178,46 +1193,82 @@ static void turtles_update(void)
 			//desplaza
 			turtle_pack[i].x += turtle_pack[i].dx;
 
-			//pasa de frame
-			if(!(game_frames % TURTLES_FRAME_TIMEOUT))
-				turtle_pack[i].frame++;
 
-			//si esta fuera...
-			if(turtle_pack[i].state == TURTLE_STATE_SURFACE)
+			switch (turtle_pack[i].state)
 			{
-				//si no esta inicializado, inicializo timeout
-				if(!*timeout)
-					*timeout = get_rand_between(TURTLES_SURFACE_FRAMES_MIN, TURTLES_SURFACE_FRAMES_MAX);
+				case TURTLE_STATE_SURFACE:
+					if(!(turtle_pack[i].fx.cont++ % TURTLES_FRAME_TIMEOUT_SURFACE))
+						turtle_pack[i].fx.frame++;
 
-				if(turtle_pack[i].frame == 6)
-					turtle_pack[i].frame = 0;
+					//si no esta inicializado, inicializo timeout
+					if(!turtle_pack[i].fx.timeout)
+						turtle_pack[i].fx.timeout = get_rand_between(TURTLES_SURFACE_FRAMES_MIN, TURTLES_SURFACE_FRAMES_MAX);
+					
+					//pasa a agua
+					if(!(turtle_pack[i].fx.cont % turtle_pack[i].fx.timeout))
+					{
+						turtle_pack[i].state = TURTLE_STATE_GOING_DOWN;
+						turtle_pack[i].fx.frame = 7;
+						turtle_pack[i].fx.timeout = 0;
+						turtle_pack[i].fx.cont = 1;
+					}
 
-				//pasa a agua
-				if(!(game_frames % *timeout))
-				{
-					turtle_pack[i].state = TURTLE_STATE_WATER;
-					turtle_pack[i].frame = 7;
-					*timeout = 0;
-				}
-			}
+					//Reinicia animacion
+					else if(turtle_pack[i].fx.frame == 7)
+						turtle_pack[i].fx.frame = 0;
 
-			//si esta bajo agua...
-			else if(turtle_pack[i].state == TURTLE_STATE_WATER)
-			{
-				//si no esta inicializado, inicializo timeout
-				if(!*timeout)
-					*timeout = get_rand_between(TURTLES_WATER_FRAMES_MIN, TURTLES_WATER_FRAMES_MAX);
+					break;
 
-				if(turtle_pack[i].frame == 11)
-					turtle_pack[i].frame = 10;
+				case TURTLE_STATE_GOING_DOWN:
+					if(!(turtle_pack[i].fx.cont++ % TURTLES_FRAME_TIMEOUT_GOING_DOWN))
+						turtle_pack[i].fx.frame++;
 
-				//pasa a fuera
-				if(!(game_frames % *timeout))
-				{
-					turtle_pack[i].state = TURTLE_STATE_SURFACE;
-					turtle_pack[i].frame = 0;
-					*timeout = 0;
-				}
+					if(turtle_pack[i].fx.frame == 9)
+					{
+						turtle_pack[i].state = TURTLE_STATE_WATER;
+						turtle_pack[i].fx.cont = 1;
+					}
+
+					break;
+
+				case TURTLE_STATE_WATER:
+					if(!(turtle_pack[i].fx.cont++ % TURTLES_FRAME_TIMEOUT_WATER))
+						turtle_pack[i].fx.frame++;
+
+					//si no esta inicializado, inicializo timeout
+					if(!turtle_pack[i].fx.timeout)
+						turtle_pack[i].fx.timeout = get_rand_between(TURTLES_WATER_FRAMES_MIN, TURTLES_WATER_FRAMES_MAX);
+					
+					//pasa a fuera
+					if(!(turtle_pack[i].fx.cont % turtle_pack[i].fx.timeout))
+					{
+						turtle_pack[i].state = TURTLE_STATE_GOING_UP;
+						turtle_pack[i].fx.frame = 10;
+						turtle_pack[i].fx.timeout = 0;
+						turtle_pack[i].fx.cont = 1;
+					}
+
+					//Reinicia animacion
+					else if(turtle_pack[i].fx.frame == 11)
+						turtle_pack[i].fx.frame = 9;
+
+					break;
+
+				case TURTLE_STATE_GOING_UP:
+					if(!(turtle_pack[i].fx.cont++ % TURTLES_FRAME_TIMEOUT_GOING_UP))
+						turtle_pack[i].fx.frame--;
+
+					if(turtle_pack[i].fx.frame == 7)
+					{
+						turtle_pack[i].fx.frame = 6;
+						turtle_pack[i].state = TURTLE_STATE_SURFACE;
+						turtle_pack[i].fx.cont = 1;
+					}
+
+					break;
+				
+				default:
+					break;
 			}
 
 
@@ -1250,7 +1301,7 @@ static void turtles_draw(void)
 				else
 					flag = 0;
 
-				al_draw_bitmap(sprites.turtle[turtle_pack[i].frame], turtle_pack[i].x + TURTLE_SIDE * j, turtle_pack[i].y, flag);
+				al_draw_bitmap(sprites.turtle[turtle_pack[i].fx.frame], turtle_pack[i].x + TURTLE_SIDE * j, turtle_pack[i].y, flag);
 			}
 
 #ifdef DEBUG_ENTITIES_TEXT	
@@ -1276,19 +1327,22 @@ static void fly_init(void)
 {
 	fly.used = false;
 	fly.y = CELL_H + FLY_OFFSET_XY + GOAL_ROW_OFFSET_Y_FIX;
+
+	fly.fx.blink_timer = 0;
+	fly.fx.timeout = 0;
+	fly.fx.flag = false;
+	fly.fx.cont = 1;
 }
 
 static void fly_update(void)
 {
-	int *timeout = &timeouts.fly;
-
 	if(!fly.used)
 	{
 		//si no esta inicializado, inicializo timeout para spawneo
-		if(!*timeout)
-			*timeout = get_rand_between(FLY_SPAWN_FRAMES_MIN, FLY_SPAWN_FRAMES_MAX);
+		if(!fly.fx.timeout)
+			fly.fx.timeout = get_rand_between(FLY_SPAWN_FRAMES_MIN, FLY_SPAWN_FRAMES_MAX);
 
-		if(!(game_frames % *timeout))
+		if(!(fly.fx.cont % fly.fx.timeout))
 		{
 			//calculo de coordenada x para alguno de los puntos de llegada
 			int temp_goal = get_rand_between(0, MAX_GOALS - 1);
@@ -1300,7 +1354,9 @@ static void fly_update(void)
 				//marcado como usado
 				fly.used = true;
 				//desinicializo el timeout
-				*timeout = 0;
+				fly.fx.timeout = 0;
+				fly.fx.blink_timer = 0;
+				fly.fx.cont = 1;
 			}
 
 			//si no, cuando pasa otro timeout se intenta de nuevo
@@ -1316,19 +1372,41 @@ static void fly_update(void)
 	else
 	{
 		//timeout para despawneo
-		if(!*timeout)
-			*timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
+		if(!fly.fx.timeout)
+			fly.fx.timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
+
+		if(++fly.fx.blink_timer > fly.fx.timeout - FLY_FRAMES_TO_WARN_A)
+		{
+			if(fly.fx.blink_timer > fly.fx.timeout - FLY_FRAMES_TO_WARN_B)
+			{
+				if(!(fly.fx.cont % FLY_WARNING_FRAMES_B))
+					fly.fx.flag = !fly.fx.flag;
+			}
+			else
+			{
+				if(!(fly.fx.cont % FLY_WARNING_FRAMES_A))
+					fly.fx.flag = !fly.fx.flag;
+			}
+
+		}
 
 		//si se puede despawnear
-		if(!(game_frames % *timeout))
+		if(!(fly.fx.cont % fly.fx.timeout))
 		{
 			//mosca no usada
 			fly.used = false;
 
 			//desinicializo timeout
-			*timeout = 0;
+			fly.fx.timeout = 0;
+
+			//saco el blinking
+			fly.fx.flag = false;
+
+			fly.fx.cont = 1;
 		}
 	}
+
+	fly.fx.cont++;
 
 }
 
@@ -1336,8 +1414,10 @@ static void fly_draw(void)
 {
 	if(fly.used)
 	{
-		//spirte
-		al_draw_bitmap(sprites.fly, fly.x, fly.y, 0);
+		//Si no está el flag, dibujo sprite normalmente
+		if(!fly.fx.flag)
+			al_draw_bitmap(sprites.fly, fly.x, fly.y, 0);
+
 	}
 
 #ifdef DEBUG_ENTITIES_TEXT	
@@ -1460,6 +1540,7 @@ static bool is_frog_in_goal(void)
 	int i, x_col;
 	for(i = 0; i < MAX_GOALS; i++)
 	{
+		//Coordenada top left del punto de llegada
 		x_col = goal_cols[i]*CELL_W;
 
 		//Calculo para ver si entro bien o no

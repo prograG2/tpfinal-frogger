@@ -91,10 +91,12 @@ void limpiarDisplay()
 
 void mostrarTexto(char* txt, int pos)
 {
-	if(txt[0] == 'R')
+	/*
+	if(txt[0] == 'N' && txt[1] == 'U')
 	{
 
 	}
+	*/
 
 }
 
