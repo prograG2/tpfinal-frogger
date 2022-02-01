@@ -72,6 +72,7 @@ void nuevoNombre(void)
 	allegro_clear_display();
 
 	game_data_clear_name();
+	game_data_set_score_max(0);
 
 	/*cambiar por background correspondiente*/
 	al_clear_to_color(al_map_rgb(100,50,50));

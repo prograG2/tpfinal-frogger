@@ -166,7 +166,7 @@ void refrescar(void)
 		reiniciarNivel();
 	}
 
-	if(game_data_get_lives() == 0)
+	if(game_data_get_game_over_flag())
 		queueInsertar(GAME_OVER);
 }
 

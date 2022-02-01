@@ -18,13 +18,15 @@
 
 #include "allegro_stuff.h"
 #include "geometry.h"
+#include "game_data.h"
 
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-
+#define STATS_X_COORD			20
+#define STATS_Y_COORD_START		(DISPLAY_H/2 + 50)
 
 
 /*******************************************************************************
@@ -67,10 +69,16 @@ typedef struct
 static void inicializarMenu(void);
 
 /**
- * @brief Dibuja lelas menu
+ * @brief Dibuja menu
  * 
  */
 static void renderizarMenu(void);
+
+/**
+ * @brief Muestra nombre del jugador y score en el menu de pausa o gameover
+ * 
+ */
+static void show_stats(void);
 
 
 /*******************************************************************************
@@ -230,7 +238,93 @@ static void renderizarMenu()
 							MENU_OPTION_TOPLEFT_Y + (menu.window[menu.actual_window].actual_state * MENU_OPTION_DELTA_Y),
 							0);
 
+	if(menu.actual_window == MENU_WINDOW_PAUSE || menu.actual_window == MENU_WINDOW_GAME_OVER)
+		show_stats();
+
 	al_flip_display();
+
+}
+
+static void show_stats(void)
+{
+	char *name = game_data_get_name();
+	int score = game_data_get_score();
+	int max_score = game_data_get_old_max_score();
+	ALLEGRO_COLOR color = al_map_rgb(255,255,255);
+	ALLEGRO_FONT *font = allegro_get_var_font();
+
+	int x = STATS_X_COORD;
+	int y = STATS_Y_COORD_START;
+
+	al_draw_textf(	font, color,
+					x,
+					y,
+					0,
+					"Jugador: %s", name);
+	
+	y += 20;
+				
+	if(menu.actual_window == MENU_WINDOW_PAUSE)
+	{
+		al_draw_textf(	font, color,
+						x,
+						y,
+						0,
+						"Score:   %d", score);
+
+		y += 20;
+
+		al_draw_textf(	font, color,
+						x,
+						y,
+						0,
+						"Max score:   %d", max_score);
+	}
+	else if(menu.actual_window == MENU_WINDOW_GAME_OVER)
+	{
+		if(score > max_score)
+		{
+			al_draw_textf(	font, color,
+							x,
+							y + 10,
+							0,
+							"NUEVA PUNTUACION MAXIMA!");
+
+			y += 40;
+			
+			al_draw_textf(	font, color,
+							x,
+							y,
+							0,
+							"Anterior: %d", max_score);
+
+			y += 20;
+
+			al_draw_textf(	font, color,
+							x,
+							y,
+							0,
+							"Nueva: %d", score);
+		}
+
+		else
+		{
+			al_draw_textf(	font, color,
+							x,
+							y,
+							0,
+							"Score:   %d", score);
+
+			y += 20;
+
+			al_draw_textf(	font, color,
+							x,
+							y,
+							0,
+							"Max score:   %d", max_score);
+		}
+	}
+	
 
 }
 
