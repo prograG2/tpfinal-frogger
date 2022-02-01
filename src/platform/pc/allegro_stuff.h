@@ -413,6 +413,12 @@ void allegro_sound_play_effect_new_max_score(void);
  */
 void allegro_sound_play_effect_exiting(void);
 
+/**
+ * @brief Reproduce efecto de 'sin tiempo'
+ * 
+ */
+void allegro_sound_play_effect_no_time(void);
+
 #pragma endregion allegro_sound_play_sample
 
 #pragma endregion allegro_sound

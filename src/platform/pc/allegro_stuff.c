@@ -127,6 +127,7 @@ typedef struct
 		ALLEGRO_SAMPLE* menu_enter;
 		ALLEGRO_SAMPLE* new_max_score;
 		ALLEGRO_SAMPLE* exiting;
+		ALLEGRO_SAMPLE* no_time;
 	} samples;
 
 } sounds_t;
@@ -729,6 +730,11 @@ void allegro_sound_play_effect_exiting(void)
 	al_play_sample(sounds.samples.exiting, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
+void allegro_sound_play_effect_no_time(void)
+{
+	al_play_sample(sounds.samples.no_time, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
 #pragma endregion allegro_sound_play_sample
 
 #pragma endregion allegro_sound
@@ -1046,6 +1052,10 @@ static void audio_init(void)
 	must_init(init_sample(&sounds.samples.exiting, "saliendo"),
 				"effect_saliendo sample");
 
+	must_init(init_sample(&sounds.samples.no_time, "no_time"),
+				"effect_no_time sample");
+		
+
 }
 
 static void audio_deinit(void)
@@ -1062,6 +1072,7 @@ static void audio_deinit(void)
 	al_destroy_sample(sounds.samples.low_time);
 	al_destroy_sample(sounds.samples.run_completed);
 	al_destroy_sample(sounds.samples.menu_enter);
+	al_destroy_sample(sounds.samples.no_time);
 
 }
 

@@ -75,7 +75,8 @@ static char* archivos_efectos[] =
 	EFECTOS_DIR"/run_completed.wav",
 	EFECTOS_DIR"/new_max_score.wav",
 	EFECTOS_DIR"/menu_enter.wav",
-	EFECTOS_DIR"/saliendo.wav"};
+	EFECTOS_DIR"/saliendo.wav",
+	EFECTOS_DIR"/no_time.wav"};
 
 static Audio *musica[SIZEOF_MUSICA], *efectos[SIZEOF_EFECTOS];
 
