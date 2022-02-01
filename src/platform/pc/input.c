@@ -79,7 +79,7 @@ event_t leerEntradas(void)
 	//bool queue_no_empty;
 
 	event = allegro_get_next_event();
-
+	int i;
 
 	if(event != NULL)
 	{
@@ -123,7 +123,7 @@ event_t leerEntradas(void)
 							break;
 
 						case ALLEGRO_KEY_PAD_3:
-							int i;
+							//int i;
 							for(i = 0; i < MAX_GOALS; i++)
 								game_data_set_goal(i);
 							break;
