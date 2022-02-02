@@ -19,6 +19,8 @@
 #include "allegro_stuff.h"
 #include "game_data.h"
 
+#include <pthread.h>
+
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -91,16 +93,10 @@ void limpiarDisplay()
 
 void mostrarTexto(char* txt, int pos)
 {
-	/*
-	if(txt[0] == 'N' && txt[1] == 'U')
-	{
-
-	}
-	*/
 
 }
 
-void fijarTexto(char* txt, int pos)
+void dejarTexto(char* txt, int pos, bool repetir)
 {
 
 }
@@ -133,24 +129,14 @@ void cargarRanking(void)
 						250,
 						100 + i*20,
 						0,
-						"%ld", scores[i]);
+						"%lld", scores[i]);
 	}
 	al_flip_display();
 	
 }
 
-bool mostrarRanking(void)
+void mostrarRanking(void)
 {
-	
-
-	
-
-	return true;
-}
-
-void finalizarRanking(void)
-{
-
 }
 
 void cargarCreditos(void)
@@ -158,7 +144,7 @@ void cargarCreditos(void)
 	credits_scroll_cont = 0;
 }
 
-bool mostrarCreditos(void)
+void mostrarCreditos(void)
 {
 	if(allegro_get_var_redraw())
 	{
@@ -173,8 +159,6 @@ bool mostrarCreditos(void)
 
 		allegro_set_var_redraw(false);
 	}
-
-	return true;
 }
 
 void finalizarCreditos(void)

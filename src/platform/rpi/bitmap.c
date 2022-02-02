@@ -41,30 +41,6 @@
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-/**
- * @brief 
- * 
- * @param a 
- * @param b 
- */
-static void matrizAnd(Matriz a, Matriz b);
-
-/**
- * @brief 
- * 
- * @param a 
- * @param b 
- */
-static void matrizOr(Matriz a, Matriz b);
-
-/**
- * @brief 
- * 
- * @param a 
- */
-static void matrizNot(Matriz a);
-
-
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -85,7 +61,7 @@ static void matrizNot(Matriz a);
  *******************************************************************************
  ******************************************************************************/
 
-void printMatriz(Matriz a){
+void printMatriz(matriz_t a){
     for(int i=0; i<CANT_FILAS; i++, putchar('\n'))
         for(int j=0; j<CANT_FILAS; j++)
             putchar((a[i] & (0b1000000000000000 >> j)) ? '1' : '.'); 
@@ -93,16 +69,35 @@ void printMatriz(Matriz a){
     putchar('\n');
 }
 
-void limpiarMatriz(Matriz a){
+void limpiarMatriz(matriz_t a){
     for(int i=0; i<CANT_FILAS; i++)
         a[i] = 0;
 }
 
-void copiarMatriz(Matriz destino, Matriz desde){
+void copiarMatriz(matriz_t destino, matriz_t desde){
     for(int i=0; i<CANT_FILAS; i++)
         destino[i] = desde[i];
 }
 
+void matrizAnd(matriz_t a, matriz_t b){
+    for(int i=0; i<CANT_FILAS; i++)
+        a[i] &= b[i];
+}
+
+void matrizOr(matriz_t a, matriz_t b){
+    for(int i=0; i<CANT_FILAS; i++)
+        a[i] |= b[i];
+}
+
+void matrizXor(matriz_t a, matriz_t b){
+    for(int i=0; i<CANT_FILAS; i++)
+        a[i] ^= b[i];
+}
+
+void matrizNot(matriz_t a){
+    for(int i=0; i<CANT_FILAS; i++)
+        a[i] = ~a[i];
+}
 
 
 /*******************************************************************************
@@ -111,17 +106,3 @@ void copiarMatriz(Matriz destino, Matriz desde){
  *******************************************************************************
  ******************************************************************************/
 
-static void matrizAnd(Matriz a, Matriz b){
-    for(int i=0; i<CANT_FILAS; i++)
-        a[i] &= b[i];
-}
-
-static void matrizOr(Matriz a, Matriz b){
-    for(int i=0; i<CANT_FILAS; i++)
-        a[i] |= b[i];
-}
-
-static void matrizNot(Matriz a){
-    for(int i=0; i<CANT_FILAS; i++)
-        a[i] = ~a[i];
-}

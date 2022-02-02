@@ -315,7 +315,7 @@ static void writeRanking(void)
 		//Copia lo nuevo en temp.txt
 		for(i = 0; i < lineNumber; i++)
 		{
-			fprintf(handlerTemp, "%s %ld\n", names[i], scores[i]); 
+			fprintf(handlerTemp, "%s %lld\n", names[i], scores[i]); 
 		}
 	}
 

@@ -16,10 +16,9 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-#include <stdint.h>
-#include <time.h>
 #include <stdbool.h>
 
+#include <stdint.h>
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -129,6 +128,8 @@ void reiniciarNivel(void);
  */
 
 void pausarJuego(void);
+
+void reanudarJuego(void);
 
 /**
  * @brief 

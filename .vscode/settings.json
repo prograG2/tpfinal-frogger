@@ -24,6 +24,7 @@
 		"joydrv.h": "c",
 		"bitmap.h": "c",
 		"mensajes.h": "c",
-		"audio.h": "c"
+		"audio.h": "c",
+		"stdbool.h": "c"
 	}
 }

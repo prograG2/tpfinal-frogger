@@ -76,7 +76,7 @@ void setMenu(int* a, unsigned int size){
 
 void setOpcion(int opc){
     menu.opcion_actual = opc;
-    fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
+    dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
 }
 
 int getOpcion(){
@@ -86,7 +86,7 @@ int getOpcion(){
 void subirOpcion(){
     if(--menu.opcion_actual < 0)
         menu.opcion_actual = menu.max_opciones - 1;
-    fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
+    dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
 
 	reproducirEfecto(EFECTO_SELECCION);
 }
@@ -94,7 +94,7 @@ void subirOpcion(){
 void bajarOpcion(){
     if(++menu.opcion_actual >= menu.max_opciones)
         menu.opcion_actual = 0;
-    fijarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION);
+    dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
 
 	reproducirEfecto(EFECTO_SELECCION);
 }

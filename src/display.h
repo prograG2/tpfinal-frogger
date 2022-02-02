@@ -16,10 +16,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-#include <pthread.h>
-#include <stdio.h>
 #include <stdbool.h>
-#include "queue.h"
 
 
 
@@ -27,7 +24,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_MSJ_NOMBRE, POS_MSJ_PASAR, POS_MSJ_PAUSA, POS_MSJ_NEW_HI_SCORE, POS_MSJ_GAME_OVER, POS_OPCION, POS_RANKING_2};
+enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_MSJ_NOMBRE, POS_MSJ_PASAR, POS_MSJ_PAUSA, POS_MSJ_NEW_HI_SCORE, POS_MSJ_GAME_OVER, POS_OPCION, POS_RANKING_2, POS_CREDITOS};
 
 
 /*******************************************************************************
@@ -80,7 +77,7 @@ void mostrarTexto(char* txt, int pos);
  * @param txt 
  * @param pos 
  */
-void fijarTexto(char* txt, int pos);
+void dejarTexto(char* txt, int pos, bool repetir);
 
 /**
  * @brief 
@@ -101,16 +98,8 @@ void cargarRanking(void);
 /**
  * @brief Bucle que muestra el ranking. Finaliza desde dentro, y hace que finalice el thread de ranking.
  * 
- * @return true No finaliza
- * @return false Finaliza
  */
-bool mostrarRanking(void);
-
-/**
- * @brief 
- * 
- */
-void finalizarRanking(void);
+void mostrarRanking(void);
 
 /**
  * @brief Inicializa los cretidos en la plataforma
@@ -124,7 +113,7 @@ void cargarCreditos(void);
  * @return true No finaliz
  * @return false Finaliza
  */
-bool mostrarCreditos(void);
+void mostrarCreditos(void);
 
 /**
  * @brief Construct a new finalizar Creditos object

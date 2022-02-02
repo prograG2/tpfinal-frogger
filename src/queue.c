@@ -104,7 +104,6 @@ event_t queueSiguienteEvento()
   else{
 	event_t r = front->data;
 	borrarElemento();
-	printf("\n%d\n", r); //para ver el evento que sigue
 	return r;
   }
 }	

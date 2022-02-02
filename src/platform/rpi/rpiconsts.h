@@ -26,7 +26,7 @@
 
 #define ALTO 16
 #define ANCHO 16
-#define SLEEP_CLOCKS (clock_t)CLOCKS_PER_SEC*0.5
+#define SLEEP_CLOCKS (CLOCKS_PER_SEC >> 2)
 #define CANT_FILAS 16
 #define CANT_COLUMNAS 16
 

@@ -159,15 +159,6 @@ static void continuar(void);
  */
 static void procesar_game_over(void);
 
-/**
- * @brief
- *
- * @param num
- * @param str
- */
-static void ulltoa(uint64_t num, char* str);
-
-
 #pragma endregion privatePrototypes
 
 /*******************************************************************************
@@ -317,10 +308,7 @@ bool inicializarFsm(void)
 
 	iniciarRanking();
 
-	fijarTexto("MENU", POS_MSJ_MENU);
-	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
-	setMenu(menu, 5);
-	setOpcion(0);
+	ir_a_menu_ppal();
 
 	pthread_create(&tinput, NULL, threadInput, NULL);
 
@@ -387,7 +375,7 @@ static void *threadJuego(void* ptr){
 
 		actualizarInterfaz();
 
-		fixHighCpuUsage();
+		//fixHighCpuUsage();
 	}
 
 	pausarJuego();
@@ -406,10 +394,9 @@ static void *threadDisplayRanking(void* ptr)
 	while(p2CurrentState == viendo_ranking)
 	{
 		mostrarRanking();
-		fixHighCpuUsage();
 	}
 
-	finalizarRanking();
+	limpiarDisplay();
 
 	reconfigurarDisplayOFF();
 
@@ -425,7 +412,7 @@ static void *threadDisplayCreditos(void* ptr)
 	while(p2CurrentState == viendo_creditos)
 	{
 		mostrarCreditos();
-		fixHighCpuUsage();
+		//fixHighCpuUsage();
 	}
 
 	finalizarCreditos();
@@ -448,7 +435,7 @@ static void procesar_enter_menu(void){
 
 static void ir_a_menu_ppal(){
 	limpiarDisplay();
-	fijarTexto("MENU", POS_MSJ_MENU);
+	dejarTexto("MENU", POS_MSJ_MENU, true);
 	reproducirMusica(MUSICA_MENU_PPAL);
 	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
 	setMenu(menu, 5);
@@ -456,16 +443,17 @@ static void ir_a_menu_ppal(){
 }
 
 static void ir_a_viendo_ranking(){
+	limpiarDisplay();
 	reconfigurarDisplayOFF();
-	mostrarTexto("RANKING", POS_MSJ_RANKING);
+	mostrarTexto("RANKING", POS_CREDITOS);
 	reproducirMusica(MUSICA_RANKING);
 	pthread_create(&tdisplayranking, NULL, threadDisplayRanking, NULL);
 }
 
 static void ir_a_viendo_creditos(void)
 {
+	limpiarDisplay();
 	reconfigurarDisplayOFF();
-	mostrarTexto("CREDITOS", POS_MSJ_RANKING);
 	reproducirMusica(MUSICA_CREDITOS);
 	pthread_create(&tdisplaycreditos, NULL, threadDisplayCreditos, NULL);
 }
@@ -485,30 +473,18 @@ static void salir_del_juego(){
 static void procesar_enter_ranking(void){
 	pthread_join(tdisplayranking, NULL);
 	reconfigurarDisplayON();
-	reproducirMusica(MUSICA_MENU_PPAL);
-	limpiarDisplay();
-
-	fijarTexto("MENU", POS_MSJ_MENU);
-	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
-	setMenu(menu, 5);
-	setOpcion(0);
+	ir_a_menu_ppal();
 }
 
 static void procesar_enter_creditos(void)
 {
 	pthread_join(tdisplaycreditos, NULL);
 	reconfigurarDisplayON();
-	reproducirMusica(MUSICA_MENU_PPAL);
-	limpiarDisplay();
-
-	fijarTexto("MENU", POS_MSJ_MENU);
-	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
-	setMenu(menu, 5);
-	setOpcion(0);
+	ir_a_menu_ppal();
 }
 
 static void iniciar_juego(void){
-
+	limpiarDisplay();
 	char *nombreJugador = devolverNombre();
 	if(nombreJugador == NULL)
 	{
@@ -524,22 +500,17 @@ static void iniciar_juego(void){
 	{	
 		setNombre(nombreJugador);
 	}
+	if(verificarJugadorRanking(getNombre()))
+	{
+		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
+
+		printf("\n\nJugador detectado: %s %lld\n\n", getNombre(), getMaxPuntos());
+	}
 	
 	inicializarJuego();
 	reconfigurarDisplayOFF();
 
 	reproducirMusica(MUSICA_JUGANDO);
-
-	if(verificarJugadorRanking(getNombre()))
-	{
-		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
-
-		printf("\n\nJugador detectado: %s %ld\n\n", getNombre(), getMaxPuntos());
-	}
-	else
-	{
-		setMaxPuntos(0);
-	}
 
 	reiniciarNivel();
 	pthread_create(&tjuego, NULL, threadJuego, NULL);
@@ -548,11 +519,12 @@ static void iniciar_juego(void){
 static void ir_a_poniendo_nombre(){
 	nuevoNombre();
 	limpiarDisplay();
-	fijarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE);
+	dejarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE, true);
 }
 
 static void ir_a_seleccionando_dificultad(){
-	fijarTexto("DIFICULTAD", POS_MSJ_DIFICULTAD);
+	limpiarDisplay();
+	dejarTexto("DIFICULTAD", POS_MSJ_DIFICULTAD, true);
 	int menu[3] = {FACIL, NORMAL, DIFICIL};
 	setMenu(menu, 3);
 	setOpcion(0);
@@ -561,16 +533,15 @@ static void ir_a_seleccionando_dificultad(){
 static void procesar_enter_dificultad(void){
 	setDificultad(getOpcion());
 	reproducirEfecto(EFECTO_MENU_ENTER);
-	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
-	setMenu(menu, 5);
-	setOpcion(0);
+	ir_a_menu_ppal();
 }
 
 static void pausar(void){
+	limpiarDisplay();
 	pthread_join(tjuego, NULL);
 	reproducirMusica(MUSICA_MENU_PAUSA);
 	reconfigurarDisplayON();
-	fijarTexto("PAUSA", POS_MSJ_PAUSA);
+	dejarTexto("PAUSA", POS_MSJ_PAUSA, true);
 	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
 	setMenu(menu, 3);
 	setOpcion(0);
@@ -580,12 +551,15 @@ static void continuar(void){
 	limpiarDisplay();
 	reconfigurarDisplayOFF();
 	reproducirMusica(MUSICA_JUGANDO);
+	reanudarJuego();
 	pthread_create(&tjuego, NULL, threadJuego, NULL);
 }
 
 static void procesar_game_over(void){
 	sleep(1);
 	pthread_join(tjuego, NULL);
+
+	limpiarDisplay();
 
 	reproducirMusica(MUSICA_GAME_OVER);
 	reconfigurarDisplayON();
@@ -594,7 +568,7 @@ static void procesar_game_over(void){
 
 	if(jugador_puntos > getMaxPuntos())
 	{
-		printf("\n\nNew score para %s ~ Score nuevo: %ld ~ Score anterior: %ld\n\n", getNombre(), getPuntos(), getMaxPuntos());
+		printf("\n\nNew score para %s ~ Score nuevo: %lld ~ Score anterior: %lld\n\n", getNombre(), getPuntos(), getMaxPuntos());
 
 		reproducirEfecto(EFECTO_NUEVO_MAX_SCORE);
 
@@ -608,28 +582,5 @@ static void procesar_game_over(void){
 	limpiarDisplay();
 	setMenu(menu, 2);
 	setOpcion(0);
-}
-
-static void ulltoa(uint64_t num, char* str)
-{
-	uint64_t sum = num;
-	int i = 0;
-	int digit;
-	do
-	{
-		digit = sum % 10;
-		str[i++] = '0' + digit;
-		sum /= 10;
-	}while (sum);
-	str[i--] = '\0';
-
-	int j = 0;
-	char ch;
-	while(i > j)
-	{
-		ch = str[i];
-		str[i--] = str[j];
-		str[j++] = ch;
-	}
 }
 

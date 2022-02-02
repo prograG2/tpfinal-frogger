@@ -31,7 +31,7 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef uint16_t Matriz[CANT_FILAS];
+typedef uint16_t matriz_t[CANT_FILAS];
 
 
 /*******************************************************************************
@@ -50,14 +50,14 @@ typedef uint16_t Matriz[CANT_FILAS];
  * 
  * @param a 
  */
-void printMatriz(Matriz a);
+void printMatriz(matriz_t a);
 
 /**
  * @brief 
  * 
  * @param a 
  */
-void limpiarMatriz(Matriz a);
+void limpiarMatriz(matriz_t a);
 
 /**
  * @brief 
@@ -65,7 +65,33 @@ void limpiarMatriz(Matriz a);
  * @param destino 
  * @param desde 
  */
-void copiarMatriz(Matriz destino, Matriz desde);
+void copiarMatriz(matriz_t destino, matriz_t desde);
+
+
+/**
+ * @brief 
+ * 
+ * @param a 
+ * @param b 
+ */
+void matrizAnd(matriz_t a, matriz_t b);
+
+/**
+ * @brief 
+ * 
+ * @param a 
+ * @param b 
+ */
+void matrizOr(matriz_t a, matriz_t b);
+
+/**
+ * @brief 
+ * 
+ * @param a 
+ */
+void matrizNot(matriz_t a);
+
+void matrizXor(matriz_t a, matriz_t b);
 
 
 /*******************************************************************************
