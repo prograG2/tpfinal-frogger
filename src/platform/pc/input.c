@@ -114,21 +114,21 @@ event_t leerEntradas(void)
 						case ALLEGRO_KEY_9:
 							break;
 
-						case ALLEGRO_KEY_PAD_1:
+						case ALLEGRO_KEY_1:
 							game_data_add_score();
 							break;
 
-						case ALLEGRO_KEY_PAD_2:
+						case ALLEGRO_KEY_2:
 							retorno = GAME_OVER;
 							break;
 
-						case ALLEGRO_KEY_PAD_3:
+						case ALLEGRO_KEY_3:
 							//int i;
 							for(i = 0; i < MAX_GOALS; i++)
 								game_data_set_goal(i);
 							break;
 
-						case ALLEGRO_KEY_PAD_4:
+						case ALLEGRO_KEY_4:
 							game_data_reset_goals();
 							break;
 

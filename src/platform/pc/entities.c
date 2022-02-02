@@ -28,15 +28,16 @@
 #define LOGS_SPAWN_MIN			1
 #define LOGS_SPAWN_MAX			3
 #define LOGS_SPAWN_FRAMES		60
-#define LOGS_BASE_SPEED			2
+#define LOGS_BASE_SPEED			1
 #define LOGS_MAX_USED			7
 #define LOGS_EXTRA_SEPARATOR	LOG_W/2
 
-#define CARS_SPAWN_MIN			1
-#define CARS_SPAWN_MAX			4
+#define CARS_SPAWN_MIN			2
 #define CARS_SPAWN_FRAMES		60
-#define CARS_BASE_SPEED			2
-#define CARS_MAX_USED			7
+#define CARS_BASE_SPEED			1
+#define CARS_MAX_USED			15
+#define CAR_SPEED_INCREASE		2
+#define CAR_WAIT_INCREASE		1
 #define CARS_EXTRA_SEPARATOR	CAR_W*2
 
 #define TURTLES_MIN_PER_PACK	1
@@ -90,6 +91,7 @@ typedef struct
 	int dx;				//Velocidad del auto.
     CAR_TYPE type;		//Tipo de auto.
 	int length;			//Largo del auto.
+	int count;
 	bool fast;
     bool used;          //Marca disponibilidad en el array.
 } car_t;
@@ -321,6 +323,9 @@ static unsigned char normal_diff_lane;
 static unsigned char hard_diff_lane_1;
 static unsigned char hard_diff_lane_2;
 
+//Maximo de autos spawneados.
+
+static unsigned char cars_spawn_max;
 
 /*******************************************************************************
  *******************************************************************************
@@ -694,7 +699,8 @@ static void logs_update(void)
         {
 
 			//Asigno carril.
-			log[i].lane = lanes_logs[get_rand_between(0, LANES_LOG_TOTAL-1)];
+			char temp_rand_log_lane = get_rand_between(0, LANES_LOG_TOTAL-1);
+			log[i].lane = lanes_logs[temp_rand_log_lane];
 
 			//Coordenada 'y' en funcion del carril
 			log[i].y = CELL_H * log[i].lane + LOG_OFFSET_Y;
@@ -702,7 +708,7 @@ static void logs_update(void)
 			//Velocidad
 			//log[i].dx = lanes_logs[LANES_LOG_TOTAL-1] - log[i].lane + 1;
 			//log[i].dx = map_int(log[i].lane, 0, lanes_logs[LANES_LOG_TOTAL-1], 1, 3);
-			log[i].dx = LOGS_BASE_SPEED;
+			log[i].dx = log[i].lane - (temp_rand_log_lane + 2) + LOGS_BASE_SPEED;
 
 			//en pares...
 			if(!(log[i].lane % 2))
@@ -827,15 +833,18 @@ static void cars_init(void)
 	switch (game_data_get_diff())
 	{
 		case DIFFICULTIES_EASY:
+			cars_spawn_max = 3;
 			break;
 		
 		case DIFFICULTIES_NORMAL:
 			normal_diff_lane = get_rand_between(lanes_cars[0], lanes_cars[LANES_CAR_TOTAL - 1]);
+			cars_spawn_max = 4;
 			break;
 
 		case DIFFICULTIES_HARD:
 			hard_diff_lane_1 = get_rand_between(lanes_cars[0], lanes_cars[2]);
 			hard_diff_lane_2 = get_rand_between(lanes_cars[3], lanes_cars[4]);
+			cars_spawn_max = 5;
 			break;
 	}
 
@@ -843,8 +852,8 @@ static void cars_init(void)
 
 static void cars_update(void)
 {
-	//se busca spawnear entre CARS_SPAWN_MIN y CARS_SPAWN_MAX autos cada CARS_SPAWN_FRAMES frames
-	int new_quota = ((game_frames % CARS_SPAWN_FRAMES) ? 0 : get_rand_between(CARS_SPAWN_MIN, CARS_SPAWN_MAX));
+	//se busca spawnear entre CARS_SPAWN_MIN y cars_spawn_max autos cada CARS_SPAWN_FRAMES frames
+	int new_quota = ((game_frames % CARS_SPAWN_FRAMES) ? 0 : get_rand_between(CARS_SPAWN_MIN, cars_spawn_max));
 
 	int i, used;
 
@@ -887,6 +896,9 @@ static void cars_update(void)
                 default:
                     break;
             }
+
+			//Inicializo el contador;
+			car[i].count = 0;
 
 			//Inicializo el flag.
 			car[i].fast = 0;
@@ -950,12 +962,70 @@ static void cars_update(void)
 			{
 
 			}
-
         }
+
 
 		//si el auto esta usado...
 		else if(car[i].used)
 		{
+			//Carril con velocidad variable
+			if(car[i].count < CAR_WAIT_INCREASE)
+			{
+				switch (game_data_get_diff())
+				{
+					case DIFFICULTIES_EASY:
+						break;
+
+					case DIFFICULTIES_NORMAL:
+						if(car[i].lane == normal_diff_lane)
+						{
+							if(!(game_frames % FPS))
+							{
+								if(car[i].fast == 0)
+								{
+									car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED + CAR_SPEED_INCREASE;
+									if(car[i].lane % 2)
+										car[i].dx *= (-1);
+									car[i].fast = 1;
+								}
+								else
+								{
+									car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED;
+									if(car[i].lane % 2)
+										car[i].dx *= (-1);
+									car[i].fast = 0;
+								}
+							}
+						}
+						break;
+					case DIFFICULTIES_HARD:
+						if((car[i].lane == hard_diff_lane_1) || (car[i].lane == hard_diff_lane_2))
+						{
+							if(!(game_frames % FPS))
+							{
+								if(car[i].fast == 0)
+								{
+									car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED + CAR_SPEED_INCREASE;
+									if(car[i].lane % 2)
+										car[i].dx *= (-1);
+									car[i].fast = 1;
+								}
+								else
+								{
+									car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED;
+									if(car[i].lane % 2)
+										car[i].dx *= (-1);
+									car[i].fast = 0;
+								}
+							}
+						}
+					default:
+						break;
+				}
+			}
+			else
+				car[i].count++;
+
 			//Desplazamiento
 			car[i].x += car[i].dx;
 
@@ -972,65 +1042,6 @@ static void cars_update(void)
 		}
 
     }
-
-	for(i = 0; i < CARS_MAX_USED; i++)
-	{
-		if(car[i].used)
-		{
-			//Carril con velocidad variable
-			switch (game_data_get_diff())
-			{
-				case DIFFICULTIES_EASY:
-					break;
-
-				case DIFFICULTIES_NORMAL:
-					if(car[i].lane == normal_diff_lane)
-					{
-						if(!(game_frames % FPS))
-						{
-							if(car[i].fast == 0)
-							{
-								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED + 1;
-								if(car[i].lane % 2)
-									car[i].dx *= (-1);
-								car[i].fast = 1;
-							}
-							else
-							{
-								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED;
-								if(car[i].lane % 2)
-									car[i].dx *= (-1);
-								car[i].fast = 0;
-							}
-						}
-					}
-					break;
-				case DIFFICULTIES_HARD:
-					if((car[i].lane == hard_diff_lane_1) || (car[i].lane == hard_diff_lane_2))
-					{
-						if(!(game_frames % FPS))
-						{
-							if(car[i].fast == 0)
-							{
-								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED + 1;
-								if(car[i].lane % 2)
-									car[i].dx *= (-1);
-								car[i].fast = 1;
-							}
-							else
-							{
-								car[i].dx = car[i].lane - (MAX_LANES - LANES_CAR_TOTAL) + CARS_BASE_SPEED;
-								if(car[i].lane % 2)
-									car[i].dx *= (-1);
-								car[i].fast = 0;
-							}
-						}
-					}
-				default:
-					break;
-			}			
-		}
-	}
 }
 
 static void cars_draw()

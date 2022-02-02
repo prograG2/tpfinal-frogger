@@ -32,7 +32,7 @@
 #define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
 #define SCORE_PER_RUN		1000	//puntaje por completar una run
 
-#define INITIAL_RUN_TIME_LEFT   	15		
+#define INITIAL_RUN_TIME_LEFT   	30		
 
 #define EXTRA_TIME_PER_GOAL			10		//10s extras por llegar a una meta
 #define EXTRA_TIME_PER_BONUS_GOAL	15		//15s extras por llegar a una meta con fly
@@ -234,6 +234,13 @@ void game_data_update(void)
 		data.flag = DATA_FLAG_GAME_OVER;
 	}
 
+	//Las primeras 2 runs se reduce el timer en 5 segundos.
+	if(data.run.number <= 1)
+		new_run_time_left = INITIAL_RUN_TIME_LEFT - (5 * (data.run.number + 1));
+	
+	//Despues se reduce de a 2 segundos por run hasta llegar a 10 segundos.
+	else if(data.run.number <= 6)
+		new_run_time_left = INITIAL_RUN_TIME_LEFT - (2 * (data.run.number + 1));
 
 }
 
