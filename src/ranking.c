@@ -22,10 +22,6 @@
 
 //Largo maximo de una linea del txt
 #define MAX_LEN 100 
-//Largo maximo del nombre
-#define MAX_NAME_LEN 50
-//Largo maximo del score
-#define MAX_SCORE_LEN 50
 
 
 /*******************************************************************************
@@ -119,12 +115,9 @@ void iniciarRanking(void)
 		printf("Error opening ranking.txt");
 	}
 
-	if((handlerTemp = fopen(strTemp, "w")) == NULL)
-	{
-		printf("Error opening temp.txt");
-	}
-
 	recargarRanking();
+
+	fclose(handlerRanking);
 }
 
 void actualizarRanking(char *name, uint64_t score)
@@ -151,14 +144,14 @@ void actualizarRanking(char *name, uint64_t score)
 	if(!player_exists)
 	{
 		//Reservo memoria para un puntero
-		names = (char**)realloc(names, sizeof(char**) * (lineNumber + 1));
+		names = (char**)realloc(names, sizeof(char*) * (lineNumber + 1));
 		//Reservo memoria para el nombre
-		names[lineNumber] = (char*)calloc(MAX_NAME_LEN, sizeof(char));
+		names[lineNumber] = (char*)calloc(strlen(name), sizeof(char));
 		//Asigno nombre
 		strcpy(names[lineNumber], name);
 
 		//Reservo memoria para un score
-		scores = (uint64_t*)realloc(scores, sizeof(uint64_t*) * (lineNumber + 1));
+		scores = (uint64_t*)realloc(scores, sizeof(uint64_t) * (lineNumber + 1));
 		//Asigno score
 		scores[lineNumber] = score;
 
@@ -177,11 +170,9 @@ void desiniciarRanking(void)
 	int i;
 	for(i = 0; i < lineNumber; i++)
 		free(names[i]);
+
 	free(names);
 	
-	//Cierre de handlers
-	fclose(handlerRanking);
-	fclose(handlerTemp);
 }
 
 bool verificarJugadorRanking(char *name)
@@ -189,6 +180,7 @@ bool verificarJugadorRanking(char *name)
 	int i;
 	bool exists;
 
+	//Ranking vacio
 	if(!lineNumber)
 		return false;
 		
@@ -262,16 +254,16 @@ static void recargarRanking(void)
 		//Puntero al nombre
 		char * tempPtr = strtok(tempStr, " ");
 		//Reservo memoria para un puntero
-		names = (char**)realloc(names, sizeof(char**) * (lineNumber + 1));
+		names = (char**)realloc(names, sizeof(char*) * (lineNumber + 1));
 		//Reservo memoria para el nombre
-		names[lineNumber] = (char*)calloc(MAX_NAME_LEN, sizeof(char));
+		names[lineNumber] = (char*)calloc(strlen(tempPtr), sizeof(char));
 		//Copia nombre
 		strcpy(names[lineNumber], tempPtr); 
 
 		//Puntero al score
 		tempPtr = strtok(NULL, " ");
 		//Reservo memoria para un score
-		scores = (uint64_t*)realloc(scores, sizeof(uint64_t*) * (lineNumber + 1));
+		scores = (uint64_t*)realloc(scores, sizeof(uint64_t) * (lineNumber + 1));
 		//Copia score
 		scores[lineNumber] = strtoull(tempPtr, NULL, 10);
 		
@@ -312,6 +304,12 @@ static void writeRanking(void)
 {
 	int i;
 
+	//Crea archivo temporal
+	if((handlerTemp = fopen(strTemp, "w")) == NULL)
+	{
+		printf("Error opening temp.txt");
+	}
+
 	if(lineNumber)
 	{
 		//Copia lo nuevo en temp.txt
@@ -323,6 +321,8 @@ static void writeRanking(void)
 
 	remove(strRanking);
 	rename(strTemp, strRanking);
+
+	fclose(handlerTemp);
 }
 
 static void createRankingFile(void)

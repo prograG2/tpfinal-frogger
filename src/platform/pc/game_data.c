@@ -29,17 +29,13 @@
 #define MAX_LIVES           3
 
 #define SCORE_PER_GOAL		500		//puntaje por llegar a la meta
-#define SCORE_PER_GOAL_FLY	750		//puntaje por llegar a la meta con mosca
+#define SCORE_PER_GOAL_COIN	750		//puntaje por llegar a la meta con coin
 #define SCORE_PER_RUN		1000	//puntaje por completar una run
 
-<<<<<<< HEAD
 #define INITIAL_RUN_TIME_LEFT   	30		
-=======
-#define INITIAL_RUN_TIME_LEFT   	60		
->>>>>>> 525f131 (Feat: implementando sprite de muerte, e info emergente en el HUD)
 
 #define EXTRA_TIME_PER_GOAL			10		//10s extras por llegar a una meta
-#define EXTRA_TIME_PER_BONUS_GOAL	15		//15s extras por llegar a una meta con fly
+#define EXTRA_TIME_PER_BONUS_GOAL	15		//15s extras por llegar a una meta con coin
 
 #define TIME_LEFT_WARNING			10		//warning 10s antes del timeout
 
@@ -84,13 +80,6 @@ enum DATA_FLAGS
 	DATA_FLAG_GAME_OVER
 };
 
-static struct
-{
-	bool flag;
-	int value;
-	int timer;
-} hud_extra_stuff[HUD_EXTRAS_MAX];
-
 enum HUD_EXTRAS
 {
 	HUD_EXTRA_TIME,
@@ -98,6 +87,15 @@ enum HUD_EXTRAS
 	HUD_EXTRA_LIFE,
 	HUD_EXTRAS_MAX
 };
+
+static struct
+{
+	bool flag;
+	int value;
+	int timer;
+} hud_extra_stuff[HUD_EXTRAS_MAX];
+
+
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
@@ -141,11 +139,11 @@ static void draw_reached_goals(void);
 static void next_run(void);
 
 /**
- * @brief Cambia el tiempo inicial de una run nueva
+ * @brief Configura el HUD para mostrar mensaje emergente de tiempo ganado
  * 
- * @param time_left Tiempo inicial a setear
+ * @param extra Tiempo extra
  */
-static void set_new_run_time_left(int time_left);
+static void trigger_show_adding_time(int extra);
 
 
 /*******************************************************************************
@@ -292,7 +290,7 @@ void game_data_add_score(void)
 void game_data_add_score_bonus(void)
 {
 
-	data.score += SCORE_PER_GOAL_FLY;
+	data.score += SCORE_PER_GOAL_COIN;
 }
 
 void game_data_set_score_max(int score)
@@ -547,7 +545,7 @@ static void hud_draw(void)
 		"Time Left: %03d",
 		data.run.time_left);
 
-	if(hud_extra_stuff.time.flag)
+	if(hud_extra_stuff[HUD_EXTRA_TIME].flag)
 	{
 
 	}
@@ -603,11 +601,6 @@ static void next_run(void)
 	flag_low_time_warning = false;
 
 	game_data_reset_goals();
-}
-
-static void set_new_run_time_left(int time_left)
-{
-	new_run_time_left = time_left;
 }
 
 static void trigger_show_adding_time(int extra)

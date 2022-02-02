@@ -93,7 +93,7 @@ int game_data_get_score(void);
 void game_data_add_score(void);
 
 /**
- * @brief Agrega score por llegar a la meta con bonus (fly)
+ * @brief Agrega score por llegar a la meta con bonus (coins)
  * 
  */
 void game_data_add_score_bonus(void);
@@ -139,7 +139,7 @@ int game_data_get_run_time_left(void);
 void game_data_add_run_time_goal(void);
 
 /**
- * @brief Agrega tiempo (más) a la run por llegar a una meta con mosca
+ * @brief Agrega tiempo (más) a la run por llegar a una meta con coin
  * 
  */
 void game_data_add_run_time_goal_bonus(void);

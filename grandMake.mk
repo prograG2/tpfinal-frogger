@@ -151,10 +151,10 @@ clean:
 	$(RM) $(OBJ_DIR)/*.o
 	$(RM) $(EXTRA_DEPS)
 
-## Borra todos los objetos y el ejecutable.
+## Borra todos los objetos, el ejecutable y el ranking.
 .PHONY: cleaner
 cleaner: clean
-	$(RM) $(TARGET)
+	$(RM) $(BIN_DIR)/*
 
 # Reglas principales ~~~~~~~~~~~~~~~~~~~~~~~~~
 
