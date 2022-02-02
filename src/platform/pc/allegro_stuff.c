@@ -42,7 +42,6 @@
 #define SPRITE_HEART				"minecraft_heart"
 #define SPRITE_BACKGROUND			"sprite_background"
 #define SPRITE_CAR					"sprite_cars"
-#define SPRITE_FLY					"sprite_fly"
 #define SPRITE_FROG					"sprite_frog"
 #define SPRITE_LOG					"sprite_log"
 #define SPRITE_TURTLES				"sprite_turtles"
@@ -64,6 +63,9 @@
 #define SPRITE_NAME					"sprite_name"
 #define SPRITE_ICON					"icon"
 #define SPRITE_DEAD					"sprite_dead"
+#define SPRITE_BORDER				"sprite_border"
+#define SPRITE_SPLASH				"sprite_splash"
+#define SPRITE_COIN					"sprite_coin"
 
 //Extensiones
 #define EXTENSION_SOUND_SAMPLE		".wav"
@@ -130,6 +132,7 @@ typedef struct
 		ALLEGRO_SAMPLE* new_max_score;
 		ALLEGRO_SAMPLE* exiting;
 		ALLEGRO_SAMPLE* no_time;
+		ALLEGRO_SAMPLE* coin_drop;
 	} samples;
 
 } sounds_t;
@@ -737,6 +740,11 @@ void allegro_sound_play_effect_no_time(void)
 	al_play_sample(sounds.samples.no_time, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
+void allegro_sound_play_effect_coin_drop(void)
+{
+	al_play_sample(sounds.samples.coin_drop, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+}
+
 #pragma endregion allegro_sound_play_sample
 
 #pragma endregion allegro_sound
@@ -863,10 +871,6 @@ static void sprites_init(void)
 		sprites.turtle[i] = sprite_cut(sprites.turtle_uncut, temp_xy.x, temp_xy.y, TURTLE_SIDE, TURTLE_SIDE);
 	}
 
-	//el de la mosca
-	path = make_sprite_path(SPRITE_FLY, path);
-	sprites.fly = al_load_bitmap(path);
-
 	//corazon
 	path = make_sprite_path(SPRITE_HEART, path);
 	sprites.heart = al_load_bitmap(path);
@@ -954,6 +958,28 @@ static void sprites_init(void)
 	sprites.dead = al_load_bitmap(path);
 
 
+	path = make_sprite_path(SPRITE_COIN, path);
+	sprites.coin.uncut = al_load_bitmap(path);
+	for(i = 0; i < SPRITE_COIN_FRAMES; i++)
+	{
+		pair_xy_t coord = getXYFromCoinFrame(i);
+		sprites.coin.frame[i] = sprite_cut(sprites.coin.uncut, coord.x, coord.y, SPRITE_COIN_SIDE, SPRITE_COIN_SIDE);
+	}
+
+
+	path = make_sprite_path(SPRITE_SPLASH, path);
+	sprites.splash.uncut = al_load_bitmap(path);
+	for(i = 0; i < SPRITE_SPLASH_FRAMES; i++)
+	{
+		pair_xy_t coord = getXYFromSplashFrame(i);
+		sprites.splash.frame[i] = sprite_cut(sprites.splash.uncut, coord.x, coord.y, SPRITE_SPLASH_W, SPRITE_SPLASH_H);
+	}
+		
+
+	path = make_sprite_path(SPRITE_BORDER, path);
+	sprites.border = al_load_bitmap(path);
+
+
 	free(path);
 }
 
@@ -999,8 +1025,6 @@ static void sprites_deinit(void)
 	for(i = 0; i < TURTLE_FRAMES; i++)
 		al_destroy_bitmap(sprites.turtle[i]);
 
-	al_destroy_bitmap(sprites.fly);
-
 	al_destroy_bitmap(sprites.heart);
 
 	for(i = 0; i < MENU_WINDOW_MAX; i++)
@@ -1019,7 +1043,18 @@ static void sprites_deinit(void)
 	al_destroy_bitmap(sprites.name);
 
 	al_destroy_bitmap(sprites.icon);
+
+	al_destroy_bitmap(sprites.dead);
+
+	al_destroy_bitmap(sprites.coin.uncut);
+	for(i = 0; i < SPRITE_COIN_FRAMES; i++)
+		al_destroy_bitmap(sprites.coin.frame[i]);
+
+	al_destroy_bitmap(sprites.splash.uncut);
+	for(i = 0; i < SPRITE_SPLASH_FRAMES; i++)
+		al_destroy_bitmap(sprites.splash.frame[i]);
 	
+	al_destroy_bitmap(sprites.border);
 
 }
 
@@ -1057,13 +1092,16 @@ static void audio_init(void)
 				"effect_menu_enter sample");
 
 	must_init(init_sample(&sounds.samples.new_max_score, "new_max_score"),
-				"effect_new_max_score");
+				"effect_new_max_score sample");
 
 	must_init(init_sample(&sounds.samples.exiting, "saliendo"),
 				"effect_saliendo sample");
 
 	must_init(init_sample(&sounds.samples.no_time, "no_time"),
 				"effect_no_time sample");
+
+	must_init(init_sample(&sounds.samples.coin_drop, "coin_drop"),
+				"effect_coin_drop sample");
 		
 
 }
@@ -1083,6 +1121,7 @@ static void audio_deinit(void)
 	al_destroy_sample(sounds.samples.run_completed);
 	al_destroy_sample(sounds.samples.menu_enter);
 	al_destroy_sample(sounds.samples.no_time);
+	al_destroy_sample(sounds.samples.coin_drop);
 
 }
 

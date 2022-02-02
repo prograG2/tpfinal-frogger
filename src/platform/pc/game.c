@@ -221,6 +221,8 @@ void actualizarInterfaz(void)
 		entities_draw();
 		game_data_draw();
 
+		al_draw_bitmap(sprites.border, SPRITE_BORDER_START_X, SPRITE_BORDER_START_Y, 0);
+
 		al_flip_display();
 
 		allegro_set_var_redraw(false);

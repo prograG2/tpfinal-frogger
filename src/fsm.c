@@ -596,6 +596,8 @@ static void procesar_game_over(void){
 	{
 		printf("\n\nNew score para %s ~ Score nuevo: %ld ~ Score anterior: %ld\n\n", getNombre(), getPuntos(), getMaxPuntos());
 
+		reproducirEfecto(EFECTO_NUEVO_MAX_SCORE);
+
 		mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ_NEW_HI_SCORE);
 		setMaxPuntos(jugador_puntos);
 

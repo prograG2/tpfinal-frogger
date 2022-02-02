@@ -72,8 +72,6 @@ typedef struct
     ALLEGRO_BITMAP* turtle_uncut;
     ALLEGRO_BITMAP* turtle[TURTLE_FRAMES];
 
-    ALLEGRO_BITMAP* fly;
-
 	ALLEGRO_BITMAP* heart;
 
 	struct
@@ -90,6 +88,20 @@ typedef struct
 	ALLEGRO_BITMAP* icon;
 
 	ALLEGRO_BITMAP* dead;
+
+	struct
+	{
+		ALLEGRO_BITMAP* uncut;
+		ALLEGRO_BITMAP* frame[SPRITE_COIN_FRAMES];
+	} coin;
+
+	struct
+	{
+		ALLEGRO_BITMAP* uncut;
+		ALLEGRO_BITMAP* frame[SPRITE_SPLASH_FRAMES];
+	} splash;
+
+	ALLEGRO_BITMAP* border;
 
 } sprites_t;
 
@@ -422,6 +434,12 @@ void allegro_sound_play_effect_exiting(void);
  * 
  */
 void allegro_sound_play_effect_no_time(void);
+
+/**
+ * @brief Reproduce efecto `de moneda tirada`
+ * 
+ */
+void allegro_sound_play_effect_coin_drop(void);
 
 #pragma endregion allegro_sound_play_sample
 

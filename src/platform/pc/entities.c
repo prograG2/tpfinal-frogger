@@ -57,16 +57,19 @@
 #define TURTLES_WATER_FRAMES_MAX		100 //maximo "tiempo" bajo el agua
 #define TURTLES_EXTRA_SEPARATOR			TURTLE_SIDE*2
 
-#define FLY_SPAWN_FRAMES_MIN	300	//mínimo tiempo para respawnear mosca
-#define	FLY_SPAWN_FRAMES_MAX	600	//maximo tiempo para respawnear mosca
-#define FLY_DESPAWN_FRAMES_MIN	700	//mínimo tiempo para sacar mosca
-#define	FLY_DESPAWN_FRAMES_MAX	900	//maximo tiempo para sacar mosca
-#define FLY_FRAMES_TO_WARN_A	250	//frames previos al despawneo cuando empieza a titilar
-#define FLY_FRAMES_TO_WARN_B	100
-#define FLY_WARNING_FRAMES_A	20	//blink rate
-#define FLY_WARNING_FRAMES_B	10
+#define COIN_SPAWN_FRAMES_MIN	300	//mínimo tiempo para respawnear coin
+#define	COIN_SPAWN_FRAMES_MAX	600	//maximo tiempo para respawnear coin
+#define COIN_DESPAWN_FRAMES_MIN	700	//mínimo tiempo para sacar coin
+#define	COIN_DESPAWN_FRAMES_MAX	900	//maximo tiempo para sacar coin
+#define COIN_FRAME_RATE			10	//cada cuanto gira la coin		
+#define COIN_FRAMES_TO_WARN_A	250	//frames previos al despawneo cuando empieza a titilar
+#define COIN_FRAMES_TO_WARN_B	100
+#define COIN_WARNING_FRAMES_A	20	//blink rate
+#define COIN_WARNING_FRAMES_B	10
 
 #define SPRITE_DEAD_TIMEOUT		80	//frames que permanece en pantalla el sprite de muerte
+
+#define SPRITE_SPLASH_RATE		10	//cada cuanto avanza un frame la animacion
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -134,21 +137,14 @@ typedef struct
 	bool used;						//flag de usada o no
 	struct
 	{
+		unsigned int frame_cont;	//contador de frame a mostrar
 		unsigned int timeout;		//Para spawneo y despawneo
-		unsigned int blink_timer;	//Para titilar mosca antes de sacarla
+		unsigned int blink_timer;	//Para titilar coin antes de sacarla
 		unsigned int cont;			//contador interno de frames de juego ejecutados
 		bool flag;					//Para indicar si debe parpadear o no
 	} fx;
 		
-} fly_t;
-
-static struct
-{
-	bool flag;						//para indicar graficar
-	unsigned int timer;				//contador para permanecer en pantalla
-	unsigned int x;
-	unsigned int y;
-} sprite_dead;
+} coin_t;
 
 enum TURTLE_STATES
 {
@@ -158,7 +154,6 @@ enum TURTLE_STATES
 	TURTLE_STATE_GOING_UP
 };
 
-
 enum FROG_STATES
 {
 	FROG_STATE_ROAD,
@@ -166,11 +161,32 @@ enum FROG_STATES
 	FROG_STATE_LOG,
 	FROG_STATE_TURTLE,
 	FROG_STATE_GOAL,
-	FROG_STATE_GOAL_FLY,		//meta con mosca
+	FROG_STATE_GOAL_COIN,		//meta con coin
 	FROG_STATE_CRASH_CAR,
 	FROG_STATE_CRASH_WALL,
 	FROG_STATE_BOUNCING_WALL	//rebota contra algun borde
 };
+
+//Estructur para administrar el sprite de muerte
+static struct
+{
+	bool flag;						//para indicar graficar
+	unsigned int timer;				//contador para permanecer en pantalla
+	unsigned int x;
+	unsigned int y;
+} corpse_fx;
+
+
+//Estructura para administrar el efecto de caida en agua
+static struct
+{
+	bool flag;					//usado o no
+	unsigned int frame_cont;	//contador de frame a mostrar
+	unsigned int cont;			//contador de ejecucion
+	unsigned int x;				//X topleft
+	unsigned int y;				//Y topleft
+
+} splash_fx;
 
 
 /*******************************************************************************
@@ -257,22 +273,22 @@ static void turtles_update(void);
 static void turtles_draw(void);
 
 /**
- * @brief Inicializacion de mosca
+ * @brief Inicializacion de coin
  *
  */
-static void fly_init(void);
+static void coin_init(void);
 
 /**
- * @brief Actualizacion de mosca
+ * @brief Actualizacion de coin
  *
  */
-static void fly_update(void);
+static void coin_update(void);
 
 /**
- * @brief Dibujo de mosca
+ * @brief Dibujo de coin
  *
  */
-static void fly_draw(void);
+static void coin_draw(void);
 
 /**
  * @brief Alinea y centra la posición de la rana con las celdas del mapa, por desvios sobre troncos.
@@ -297,12 +313,44 @@ static void fix_frog_coord_y(void);
 static bool is_frog_in_goal(void);
 
 /**
- * @brief Configura el sprite de muerte para que se muestre
+ * @brief Configura sprite de muerte para que se muestre
  * 
- * @param x Coordenada topleft X para graficar
- * @param y Coordenara topleft Y para graficar
+ * @param x Coordenada topleft X de rana
+ * @param y Coordenada topleft Y de rana
  */
-static void set_sprite_dead(int x, int y);
+static void corpse_init(int x, int y);
+
+/**
+ * @brief Updates para sacar el sprite de muerte
+ * 
+ */
+static void corpse_update(void);
+
+/**
+ * @brief Dibuja el sprite de muerte
+ * 
+ */
+static void corpse_draw(void);
+
+/**
+ * @brief Configura sprites de splash para que se muestre
+ * 
+ * @param x Coordenada topleft X de rana
+ * @param y Coordenada topleft Y de rana
+ */
+static void splash_init(int x, int y);
+
+/**
+ * @brief Actualiza los frames del splash
+ * 
+ */
+static void splash_update(void);
+
+/**
+ * @brief Dibuja el splash
+ * 
+ */
+static void splash_draw(void);
 
 
 /*******************************************************************************
@@ -328,8 +376,8 @@ static car_t car[CARS_MAX_USED];
 //Array de paquetes de tortugas
 static turtle_pack_t turtle_pack[TURTLES_MAX_USED];
 
-//Mosca
-static fly_t fly;
+//Coin
+static coin_t coin;
 
 //Contador de frames ejecutados
 static unsigned long game_frames;
@@ -356,11 +404,13 @@ void entities_init(void)
 	logs_init();
 	cars_init();
 	turtles_init();
-	fly_init();
+	coin_init();
 
 	game_frames = 0;
 
-	sprite_dead.flag = false;
+	corpse_fx.flag = false;
+
+	splash_fx.flag = false;
 }
 
 void entities_update()
@@ -371,7 +421,10 @@ void entities_update()
 	logs_update();
 	cars_update();
 	turtles_update();
-	fly_update();
+	coin_update();
+
+	corpse_update();
+	splash_update();
 }
 
 void entities_draw()
@@ -379,20 +432,10 @@ void entities_draw()
 	logs_draw();
 	cars_draw();
 	turtles_draw();
-	fly_draw();
+	coin_draw();
 
-
-	if(sprite_dead.flag)
-	{
-		if(!(sprite_dead.timer++ % SPRITE_DEAD_TIMEOUT))
-			sprite_dead.flag = false;
-		else
-			al_draw_bitmap(sprites.dead, sprite_dead.x, sprite_dead.y, 0);
-
-	}
-	
-
-		//al_draw_bitmap(sprites.dead, 100, 100, 0);
+	splash_draw();
+	corpse_draw();
 
 	//"frog siempre a lo ultimo, para que se vea"
 	frog_draw();
@@ -496,20 +539,20 @@ static void frog_update(void)
 			{
 				frog.state = FROG_STATE_GOAL;
 
-				//colision con fly
-				if(fly.used)
+				//colision con coin
+				if(coin.used)
 				{
-					if(collideShort(	fly.x,
-										fly.y,
-										FLY_SIDE,
-										FLY_SIDE,
+					if(collideShort(	coin.x,
+										coin.y,
+										SPRITE_COIN_SIDE,
+										SPRITE_COIN_SIDE,
 										frog.x,
 										frog.y,
 										FROG_W,
 										FROG_H))
 					{
-						frog.state = FROG_STATE_GOAL_FLY;
-						fly.used = false;
+						frog.state = FROG_STATE_GOAL_COIN;
+						coin.used = false;
 					}
 				}
 
@@ -620,7 +663,7 @@ static void frog_update(void)
 			game_data_subtract_live();
 			allegro_sound_play_effect_drowned();
 
-			set_sprite_dead(frog.x, frog.y);
+			splash_init(frog.x, frog.y);
 
 			frog_init();
 			
@@ -630,9 +673,8 @@ static void frog_update(void)
 		case FROG_STATE_CRASH_CAR:
 			game_data_subtract_live();
 			allegro_sound_play_effect_crash();
-			
 
-			set_sprite_dead(frog.x, frog.y);
+			corpse_init(frog.x, frog.y);
 
 			frog_init();
 
@@ -641,6 +683,9 @@ static void frog_update(void)
 		case FROG_STATE_CRASH_WALL:
 			game_data_subtract_live();
 			allegro_sound_play_effect_crash();
+
+			corpse_init(frog.x, frog.y);
+
 			frog_init();
 
 			break;
@@ -649,14 +694,16 @@ static void frog_update(void)
 			game_data_add_run_time_goal();
 			game_data_add_score();
 			allegro_sound_play_effect_goal();
+			
 			frog_init();
 			
 			break;
 			
-		case FROG_STATE_GOAL_FLY:
+		case FROG_STATE_GOAL_COIN:
 			game_data_add_run_time_goal_bonus();
 			game_data_add_score_bonus();
 			allegro_sound_play_effect_bonus();
+
 			frog_init();
 
 			break;
@@ -740,7 +787,7 @@ static void logs_update(void)
         {
 
 			//Asigno carril.
-			char temp_rand_log_lane = get_rand_between(0, LANES_LOG_TOTAL-1);
+			int temp_rand_log_lane = get_rand_between(0, LANES_LOG_TOTAL-1);
 			log[i].lane = lanes_logs[temp_rand_log_lane];
 
 			//Coordenada 'y' en funcion del carril
@@ -1375,26 +1422,26 @@ static void turtles_draw(void)
 #endif
 }
 
-static void fly_init(void)
+static void coin_init(void)
 {
-	fly.used = false;
-	fly.y = CELL_H + FLY_OFFSET_XY + GOAL_ROW_OFFSET_Y_FIX;
+	coin.used = false;
+	coin.y = CELL_H + SPRITE_COIN_OFFSET_XY + GOAL_ROW_OFFSET_Y_FIX;
 
-	fly.fx.blink_timer = 0;
-	fly.fx.timeout = 0;
-	fly.fx.flag = false;
-	fly.fx.cont = 1;
+	coin.fx.blink_timer = 0;
+	coin.fx.timeout = 0;
+	coin.fx.flag = false;
+	coin.fx.cont = 1;
 }
 
-static void fly_update(void)
+static void coin_update(void)
 {
-	if(!fly.used)
+	if(!coin.used)
 	{
 		//si no esta inicializado, inicializo timeout para spawneo
-		if(!fly.fx.timeout)
-			fly.fx.timeout = get_rand_between(FLY_SPAWN_FRAMES_MIN, FLY_SPAWN_FRAMES_MAX);
+		if(!coin.fx.timeout)
+			coin.fx.timeout = get_rand_between(COIN_SPAWN_FRAMES_MIN, COIN_SPAWN_FRAMES_MAX);
 
-		if(!(fly.fx.cont % fly.fx.timeout))
+		if(!(coin.fx.cont % coin.fx.timeout))
 		{
 			//calculo de coordenada x para alguno de los puntos de llegada
 			int temp_goal = get_rand_between(0, MAX_GOALS - 1);
@@ -1402,13 +1449,17 @@ static void fly_update(void)
 			//si el goal está libre...
 			if(!game_data_get_goal_state(temp_goal))
 			{
-				fly.x = CELL_W * goal_cols[temp_goal] + FLY_OFFSET_XY;
+				allegro_sound_play_effect_coin_drop();
+				
+				coin.x = CELL_W * goal_cols[temp_goal] + SPRITE_COIN_OFFSET_XY - 1;
 				//marcado como usado
-				fly.used = true;
+				coin.used = true;
 				//desinicializo el timeout
-				fly.fx.timeout = 0;
-				fly.fx.blink_timer = 0;
-				fly.fx.cont = 1;
+				coin.fx.timeout = 0;
+
+				coin.fx.blink_timer = 0;
+				coin.fx.cont = 1;
+				coin.fx.frame_cont = 0;
 			}
 
 			//si no, cuando pasa otro timeout se intenta de nuevo
@@ -1424,62 +1475,68 @@ static void fly_update(void)
 	else
 	{
 		//timeout para despawneo
-		if(!fly.fx.timeout)
-			fly.fx.timeout = get_rand_between(FLY_DESPAWN_FRAMES_MIN, FLY_DESPAWN_FRAMES_MAX);
+		if(!coin.fx.timeout)
+			coin.fx.timeout = get_rand_between(COIN_DESPAWN_FRAMES_MIN, COIN_DESPAWN_FRAMES_MAX);
 
-		if(++fly.fx.blink_timer > fly.fx.timeout - FLY_FRAMES_TO_WARN_A)
+		if(++coin.fx.blink_timer > coin.fx.timeout - COIN_FRAMES_TO_WARN_A)
 		{
-			if(fly.fx.blink_timer > fly.fx.timeout - FLY_FRAMES_TO_WARN_B)
+			if(coin.fx.blink_timer > coin.fx.timeout - COIN_FRAMES_TO_WARN_B)
 			{
-				if(!(fly.fx.cont % FLY_WARNING_FRAMES_B))
-					fly.fx.flag = !fly.fx.flag;
+				if(!(coin.fx.cont % COIN_WARNING_FRAMES_B))
+					coin.fx.flag = !coin.fx.flag;
 			}
 			else
 			{
-				if(!(fly.fx.cont % FLY_WARNING_FRAMES_A))
-					fly.fx.flag = !fly.fx.flag;
+				if(!(coin.fx.cont % COIN_WARNING_FRAMES_A))
+					coin.fx.flag = !coin.fx.flag;
 			}
 
 		}
 
-		//si se puede despawnear
-		if(!(fly.fx.cont % fly.fx.timeout))
+		if(!(game_frames % COIN_FRAME_RATE))
 		{
-			//mosca no usada
-			fly.used = false;
+			if(++coin.fx.frame_cont == SPRITE_COIN_FRAMES)
+				coin.fx.frame_cont = 0;
+		}
+
+		//si se puede despawnear
+		if(!(coin.fx.cont % coin.fx.timeout))
+		{
+			//coin no usada
+			coin.used = false;
 
 			//desinicializo timeout
-			fly.fx.timeout = 0;
+			coin.fx.timeout = 0;
 
 			//saco el blinking
-			fly.fx.flag = false;
+			coin.fx.flag = false;
 
-			fly.fx.cont = 1;
+			coin.fx.cont = 1;
 		}
 	}
 
-	fly.fx.cont++;
+	coin.fx.cont++;
 
 }
 
-static void fly_draw(void)
+static void coin_draw(void)
 {
-	if(fly.used)
+	if(coin.used)
 	{
 		//Si no está el flag, dibujo sprite normalmente
-		if(!fly.fx.flag)
-			al_draw_bitmap(sprites.fly, fly.x, fly.y, 0);
+		if(!coin.fx.flag)
+			al_draw_bitmap(sprites.coin.frame[coin.fx.frame_cont], coin.x, coin.y, 0);
 
 	}
 
 #ifdef DEBUG_ENTITIES_TEXT	
 
 	//hitbox
-	allegro_draw_hitbox(fly.x, fly.y, FLY_SIDE, FLY_SIDE);
+	allegro_draw_hitbox(coin.x, coin.y, COIN_SIDE, COIN_SIDE);
 
 	//coordenadas
 	int space = 500;
-	al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "Mosca ~ X:%d Y:%d", fly.x, fly.y);
+	al_draw_textf(allegro_get_var_font(), al_map_rgb(200, 50, 50), 0, space, 0, "Coin ~ X:%d Y:%d", coin.x, coin.y);
 #endif
 }
 
@@ -1622,10 +1679,60 @@ static bool is_frog_in_goal(void)
 	return state;
 }
 
-static void set_sprite_dead(int x, int y)
+static void corpse_init(int x, int y)
 {
-	sprite_dead.flag = true;
-	sprite_dead.timer = 1;
-	sprite_dead.x = x - FROG_OFFSET_X + SPRITE_DEAD_OFFSET;
-	sprite_dead.y = y - FROG_OFFSET_Y + SPRITE_DEAD_OFFSET;
+	corpse_fx.flag = true;
+	corpse_fx.timer = 1;
+	corpse_fx.x = x - FROG_OFFSET_X + SPRITE_DEAD_OFFSET;
+	corpse_fx.y = y - FROG_OFFSET_Y + SPRITE_DEAD_OFFSET;
+}
+
+static void corpse_update(void)
+{
+	if(corpse_fx.flag)
+	{	
+		if(!(corpse_fx.timer++ % SPRITE_DEAD_TIMEOUT))
+			corpse_fx.flag = false;
+	}
+	
+}
+
+static void corpse_draw(void)
+{
+	if(corpse_fx.flag)
+		al_draw_bitmap(sprites.dead, corpse_fx.x, corpse_fx.y, 0);
+}
+
+static void splash_init(int x, int y)
+{
+	splash_fx.flag = true;
+	splash_fx.cont = 1;
+	splash_fx.frame_cont = 0;
+	splash_fx.x = x - FROG_OFFSET_X + SPRITE_SPLASH_OFFSET_X;
+	splash_fx.y = y - FROG_OFFSET_Y + SPRITE_SPLASH_OFFSET_Y;
+}
+
+static void splash_update(void)
+{
+	if(splash_fx.flag)
+	{
+		if(!(splash_fx.cont % SPRITE_SPLASH_RATE))
+		{
+			if(++splash_fx.frame_cont == SPRITE_SPLASH_FRAMES)
+			{
+				splash_fx.frame_cont = 0;
+				splash_fx.flag = false;
+			}
+				
+		}
+
+		splash_fx.cont++;
+	}
+}
+
+static void splash_draw(void)
+{
+	if(splash_fx.flag)
+		al_draw_bitmap(sprites.splash.frame[splash_fx.frame_cont], splash_fx.x, splash_fx.y, 0);
+
 }

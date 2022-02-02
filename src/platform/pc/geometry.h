@@ -96,16 +96,24 @@
 #define	TURTLE_SIDE								CELL_W
 #define TURTLE_FRAME_OFFSET_XY					(CELL_W/2 - TURTLE_SIDE/2)
 
-
-//Moscas
-#define	FLY_SIDE				30
-#define	FLY_OFFSET_XY			(CELL_W/2 - FLY_SIDE/2)
-
-
+//Corazon (vidas)
 #define SPRITE_SIZE_HEART	20	//cuadrado
 
 #define SPRITE_DEAD_SIZE	35	//cuadrado
 #define SPRITE_DEAD_OFFSET	(CELL_W/2 - SPRITE_DEAD_SIZE/2)
+
+#define SPRITE_COIN_FRAMES		6
+#define SPRITE_COIN_SIDE		24
+#define SPRITE_COIN_OFFSET_XY	(CELL_W/2 - SPRITE_COIN_SIDE/2)
+
+#define SPRITE_SPLASH_FRAMES	6
+#define SPRITE_SPLASH_W			98
+#define SPRITE_SPLASH_H			68
+#define SPRITE_SPLASH_OFFSET_X	(CELL_W/2 - SPRITE_SPLASH_W/2)
+#define SPRITE_SPLASH_OFFSET_Y	(CELL_W/2 - SPRITE_SPLASH_H/2)
+
+#define SPRITE_BORDER_START_X	0
+#define SPRITE_BORDER_START_Y	CELL_H
 
 #define MENU_OPTION_TOPLEFT_X 	45
 #define MENU_OPTION_TOPLEFT_Y	72
@@ -340,10 +348,25 @@ pair_xy_t getXYFromTurtleFrame(int frame);
  * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite del auto
  * 
  * @param frame Numero de frame (0 a CAR_TYPE_N - 1)
- * @return pair_xy_t PAr de coordenandas
+ * @return pair_xy_t Par de coordenandas
  */
 pair_xy_t getXYFromCarFrame(int frame);
 
+/**
+ * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de coin
+ * 
+ * @param frame Numero de frame (0 a SPRITE_COIN_FRAMES - 1)
+ * @return pair_xy_t Par de coordenandas
+ */
+pair_xy_t getXYFromCoinFrame(int frame);
+
+/**
+ * @brief Devuelve par de coordenadas xy topleft de un frame dado del sprite de splash
+ * 
+ * @param frame Numero de frame (0 a SPRITE_SPLASH_FRAMES - 1)
+ * @return pair_xy_t Par de coordenandas
+ */
+pair_xy_t getXYFromSplashFrame(int frame);
 
 /**
  * @brief Verifica si un numero coincide con alguno de un array dado (uints)
