@@ -1,12 +1,12 @@
 /**
  * @file nombre.c
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-01-22
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 /*******************************************************************************
@@ -20,47 +20,12 @@
 
 #include <string.h>
 
-
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-#define NAME_TOPLEFT_X 	55
-#define NAME_TOPLEFT_Y	312
 
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: unsigned int anio_actual;+
-
-
-/*******************************************************************************
- * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static void falta_envido (int);+
-
-
-/*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
-
-
-/*******************************************************************************
- * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static int temperaturas_actuales[4];+
-
+#define NAME_TOPLEFT_X 55
+#define NAME_TOPLEFT_Y 312
 
 /*******************************************************************************
  *******************************************************************************
@@ -70,66 +35,51 @@
 
 void nuevoNombre(void)
 {
-	allegro_clear_display();
+  allegro_clear_display();
 
-	game_data_clear_name();
-	game_data_set_score_max(0);
+  game_data_clear_name();
+  game_data_set_score_max(0);
 
-	/*cambiar por background correspondiente*/
-	al_draw_bitmap(sprites.name, 0, 0, 0);
-	
-	al_flip_display();
+  /*cambiar por background correspondiente*/
+  al_draw_bitmap(sprites.name, 0, 0, 0);
+
+  al_flip_display();
 }
 
 void subirLetra(void)
 {
-
 }
 
 void bajarLetra(void)
 {
-
 }
 
 void siguienteLetra(void)
 {
-
 }
 
 void agregarLetra(void)
 {
-	game_data_add_name_letter(allegro_get_last_key());
+  game_data_add_name_letter(allegro_get_last_key());
 
-	char *name  = game_data_get_name();
+  char *name = game_data_get_name();
 
-	allegro_clear_display();
+  allegro_clear_display();
 
-	/*cambiar por background correspondiente*/
-	al_draw_bitmap(sprites.name, 0, 0, 0);
+  /*cambiar por background correspondiente*/
+  al_draw_bitmap(sprites.name, 0, 0, 0);
 
-	al_draw_textf(allegro_get_var_font(), al_map_rgb(100,200,200), NAME_TOPLEFT_X, NAME_TOPLEFT_Y, 0,
-					"%s", name);
-		
-	al_flip_display();	
-	
+  al_draw_textf(allegro_get_var_font(), al_map_rgb(100, 200, 200), NAME_TOPLEFT_X, NAME_TOPLEFT_Y, 0,
+                "%s", name);
+
+  al_flip_display();
 }
 
 void subirNombre(void)
 {
-	
 }
 
-char* devolverNombre(void)
+char *devolverNombre(void)
 {
-	return game_data_get_name();
+  return game_data_get_name();
 }
-
-/*******************************************************************************
- *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
- *******************************************************************************
- ******************************************************************************/
-
-
-
- 

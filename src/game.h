@@ -39,7 +39,7 @@ void setNombre(char* nombre);
  * 
  * @param max 
  */
-void setMaxPuntos(uint64_t max);
+void setMaxPuntos(uintmax_t max);
 
 /**
  * @brief Setea la dificultad a usar
@@ -57,14 +57,6 @@ void setDificultad(int dif);
 bool tiempoRefrescoEntidades(void);
 
 /**
- * @brief  Chequea si hubo tiempo límite.
- * 
- * @return true 
- * @return false 
- */
-bool tiempoLimite(void);
-
-/**
  * @brief Devuelve el nombre del jugador
  * 
  * @return char* 
@@ -74,16 +66,16 @@ char* getNombre(void);
 /**
  * @brief Devuelve el puntaje del jugador
  * 
- * @return ulong 
+ * @return uintmax_t 
  */
-ulong getPuntos(void);
+uintmax_t getPuntos(void);
 
 /**
  * @brief Devuelve el puntaje máximo del jugador
  * 
- * @return ulong 
+ * @return uintmax_t 
  */
-ulong getMaxPuntos(void);
+uintmax_t getMaxPuntos(void);
 
 /**
  * @brief Devuelve el nivel//run del jugador

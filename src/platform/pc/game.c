@@ -1,12 +1,12 @@
 /**
  * @file game.c
  * @author your name (you@domain.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-01-22
- * 
+ *
  * @copyright Copyright (c) 2022
- * 
+ *
  */
 
 /*******************************************************************************
@@ -23,44 +23,10 @@
 #include "allegro_stuff.h"
 
 /*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: unsigned int anio_actual;+
-
-
-/*******************************************************************************
- * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static void falta_envido (int);+
-
-
-/*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
-
-
-/*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
 static bool next_run_flag = false;
-
 
 /*******************************************************************************
  *******************************************************************************
@@ -68,180 +34,157 @@ static bool next_run_flag = false;
  *******************************************************************************
  ******************************************************************************/
 
-void setNombre(char* nombre)
+void setNombre(char *nombre)
 {
-	game_data_overwrite_name(nombre);
+  game_data_overwrite_name(nombre);
 }
 
-void setMaxPuntos(uint64_t max)
+void setMaxPuntos(uintmax_t max)
 {
-	game_data_set_score_max(max);
+  game_data_set_score_max(max);
 }
 
-void setDificultad(int diff)				
+void setDificultad(int diff)
 {
-	switch (diff)
-	{
-		case 0:
-			game_data_set_diff(DIFFICULTIES_EASY);
-			break;
+  switch (diff)
+  {
+  case 0:
+    game_data_set_diff(DIFFICULTIES_EASY);
+    break;
 
-		case 1:
-			game_data_set_diff(DIFFICULTIES_NORMAL);
-			break;
-			
-		case 2:
-			game_data_set_diff(DIFFICULTIES_HARD);
+  case 1:
+    game_data_set_diff(DIFFICULTIES_NORMAL);
+    break;
 
-		default:
-			break;
-	}
+  case 2:
+    game_data_set_diff(DIFFICULTIES_HARD);
+
+  default:
+    break;
+  }
 }
 
 bool tiempoRefrescoEntidades(void)
 {
-	return allegro_get_var_redraw();
+  return allegro_get_var_redraw();
 }
 
-bool tiempoLimite(void)
+char *getNombre(void)
 {
-	return game_data_get_time_left_flag();
+  return game_data_get_name();
 }
 
-
-char* getNombre(void)
+uintmax_t getPuntos(void)
 {
-	return game_data_get_name();
+  return game_data_get_score();
 }
 
-ulong getPuntos(void)
+uintmax_t getMaxPuntos(void)
 {
-	return game_data_get_score();
-}
-
-ulong getMaxPuntos(void)
-{
-	return game_data_get_score_max();
+  return game_data_get_score_max();
 }
 
 int getNivel(void)
 {
-	return game_data_get_run_number();
+  return game_data_get_run_number();
 }
 
 void inicializarJuego(void)
 {
-	game_data_init();
-	entities_init();
+  game_data_init();
+  entities_init();
 
-	allegro_clear_display();
-	al_flip_display();
-
+  allegro_clear_display();
+  al_flip_display();
 }
 
 void pausarJuego(void)
 {
-
 }
 
 void reiniciarNivel(void)
 {
-	if(next_run_flag)
-	{
-		game_data_next_run();
-		next_run_flag = false;
-	}
+  if (next_run_flag)
+  {
+    game_data_next_run();
+    next_run_flag = false;
+  }
 }
 
 void refrescar(void)
 {
-	game_data_update();
-	entities_update();
+  game_data_update();
+  entities_update();
 
-	if(game_data_are_goals_full())
-	{
-		next_run_flag = true;
+  if (game_data_are_goals_full())
+  {
+    next_run_flag = true;
 
-		reproducirEfecto(EFECTO_NIVEL_COMPLETO);
-		reiniciarNivel();
-	}
+    reproducirEfecto(EFECTO_NIVEL_COMPLETO);
+    reiniciarNivel();
+  }
 
-	if(game_data_get_game_over_flag())
-		queueInsertar(GAME_OVER);
+  if (game_data_get_game_over_flag())
+    queueInsertar(GAME_OVER);
 }
 
 void moverAdelante(void)
 {
-	entities_move_frog(DIRECTION_UP);
+  entities_move_frog(DIRECTION_UP);
 }
 
 void moverAtras(void)
 {
-	entities_move_frog(DIRECTION_DOWN);
+  entities_move_frog(DIRECTION_DOWN);
 }
 
 void moverIzda(void)
 {
-	entities_move_frog(DIRECTION_LEFT);
+  entities_move_frog(DIRECTION_LEFT);
 }
 
 void moverDcha(void)
 {
-	entities_move_frog(DIRECTION_RIGHT);
+  entities_move_frog(DIRECTION_RIGHT);
 }
 
 void respawn(void)
 {
-
 }
-
 
 void actualizarInterfaz(void)
 {
-	if(allegro_get_last_key() == ALLEGRO_KEY_8 && !allegro_get_rick_flag())
-	{
-		allegro_rick_on();
-		allegro_set_rick_flag(true);	
-	}
-	
-	if(allegro_get_last_key() == ALLEGRO_KEY_9 && allegro_get_rick_flag())
-	{
-		allegro_rick_off();
-		allegro_set_rick_flag(false);
-	}
+  if (allegro_get_last_key() == ALLEGRO_KEY_8 && !allegro_get_rick_flag())
+  {
+    allegro_rick_on();
+    allegro_set_rick_flag(true);
+  }
 
-	if(allegro_get_var_redraw())
-	{
-		allegro_clear_display();
-		allegro_draw_background();
+  if (allegro_get_last_key() == ALLEGRO_KEY_9 && allegro_get_rick_flag())
+  {
+    allegro_rick_off();
+    allegro_set_rick_flag(false);
+  }
 
-		if(allegro_get_rick_flag())
-			allegro_rick_draw();
+  if (allegro_get_var_redraw())
+  {
+    allegro_clear_display();
+    allegro_draw_background();
 
-		entities_draw();
-		game_data_draw();
+    if (allegro_get_rick_flag())
+      allegro_rick_draw();
 
-		al_draw_bitmap(sprites.border, SPRITE_BORDER_START_X, SPRITE_BORDER_START_Y, 0);
+    entities_draw();
+    game_data_draw();
 
-		al_flip_display();
+    al_draw_bitmap(sprites.border, SPRITE_BORDER_START_X, SPRITE_BORDER_START_Y, 0);
 
-		allegro_set_var_redraw(false);
-	}
-	
+    al_flip_display();
+
+    allegro_set_var_redraw(false);
+  }
 }
 
 void reanudarJuego(void)
 {
-
 }
-
-
-/*******************************************************************************
- *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
- *******************************************************************************
- ******************************************************************************/
-
-
-
- 

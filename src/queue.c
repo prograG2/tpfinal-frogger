@@ -59,7 +59,6 @@ void queueInsertar(event_t nuevo)
 	node_t *temp = (node_t *)malloc(sizeof(node_t));
 
 	temp->data = nuevo;
-	//printf("%d\n", nuevo); //si se quita esto la queue funciona mal
 
 	if (front == NULL)
 	{
@@ -102,7 +101,6 @@ void destruirQueue(void)
 {
 	while (front != NULL)
 	{
-		//event_t evento_basura = queueSiguienteEvento();
 		queueSiguienteEvento();
 	}
 }

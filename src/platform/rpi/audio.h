@@ -33,30 +33,30 @@ extern "C"
 
 #include <SDL2/SDL.h>
 
-enum status
-{
+  enum status
+  {
     NO_INIT = 0,
     READY,
-};
+  };
 
-enum music_status
-{
-    STOPPED = READY+1,
+  enum music_status
+  {
+    STOPPED = READY + 1,
     PLAYING,
     PAUSED,
     FINISHED
-};
+  };
 
-/*
- * Queue structure for all loaded sounds
- *
- */
-typedef struct sound
-{
+  /*
+   * Queue structure for all loaded sounds
+   *
+   */
+  typedef struct sound
+  {
     uint32_t length;
     uint32_t lengthTrue;
-    uint8_t * bufferTrue;
-    uint8_t * buffer;
+    uint8_t *bufferTrue;
+    uint8_t *buffer;
     uint8_t loop;
     uint8_t fade;
     uint8_t free;
@@ -64,111 +64,111 @@ typedef struct sound
 
     SDL_AudioSpec audio;
 
-    struct sound * next;
-} Audio;
+    struct sound *next;
+  } Audio;
 
-/*
- * Create a Audio object
- *
- * @param filename      Filename for the WAVE file to load
- * @param loop          0 ends after playing once (sound), 1 repeats and fades when other music added (music)
- * @param volume        Volume, read playSound()
- *
- * @return returns a new Audio or NULL on failure, you must call freeAudio() on return Audio
- *
- */
-Audio * createAudio(const char * filename, uint8_t loop, int volume);
+  /*
+   * Create a Audio object
+   *
+   * @param filename      Filename for the WAVE file to load
+   * @param loop          0 ends after playing once (sound), 1 repeats and fades when other music added (music)
+   * @param volume        Volume, read playSound()
+   *
+   * @return returns a new Audio or NULL on failure, you must call freeAudio() on return Audio
+   *
+   */
+  Audio *createAudio(const char *filename, uint8_t loop, int volume);
 
-/*
- * Frees as many chained Audios as given
- *
- * @param audio     Chain of sounds to free
- *
- */
-void freeAudio(Audio * audio);
+  /*
+   * Frees as many chained Audios as given
+   *
+   * @param audio     Chain of sounds to free
+   *
+   */
+  void freeAudio(Audio *audio);
 
-/*
- * Returns the player status. Uses status enum.
- *
- */
-int playerStatus(void);
+  /*
+   * Returns the player status. Uses status enum.
+   *
+   */
+  int playerStatus(void);
 
-/*
- * Returns the music status. Uses music_status enum.
- * If the player is not initilized, returns STOPPED.
- */
-int musicStatus(void);
+  /*
+   * Returns the music status. Uses music_status enum.
+   * If the player is not initilized, returns STOPPED.
+   */
+  int musicStatus(void);
 
-/*
- * Play a wave file currently must be S16LE format 2 channel stereo
- *
- * @param filename      Filename to open, use getAbsolutePath
- * @param volume        Volume 0 - 128. SDL_MIX_MAXVOLUME constant for max volume
- *
- */
-void playSound(const char * filename, int volume);
+  /*
+   * Play a wave file currently must be S16LE format 2 channel stereo
+   *
+   * @param filename      Filename to open, use getAbsolutePath
+   * @param volume        Volume 0 - 128. SDL_MIX_MAXVOLUME constant for max volume
+   *
+   */
+  void playSound(const char *filename, int volume);
 
-/*
- * Plays a new music, only 1 at a time plays
- *
- * @param filename      Filename of the WAVE file to load
- * @param volume        Volume read playSound for moree
- * @return              Status using music_status enum.
- *
- */
-int playMusic(const char * filename, int volume);
+  /*
+   * Plays a new music, only 1 at a time plays
+   *
+   * @param filename      Filename of the WAVE file to load
+   * @param volume        Volume read playSound for moree
+   * @return              Status using music_status enum.
+   *
+   */
+  int playMusic(const char *filename, int volume);
 
-/*
- * Plays a sound from a createAudio object (clones), only 1 at a time plays
- * Advantage to this method is no more disk reads, only once, data is stored and constantly reused
- *
- * @param audio         Audio object to clone and use
- * @param volume        Volume read playSound for moree
- *
- */
-void playSoundFromMemory(Audio * audio, int volume);
+  /*
+   * Plays a sound from a createAudio object (clones), only 1 at a time plays
+   * Advantage to this method is no more disk reads, only once, data is stored and constantly reused
+   *
+   * @param audio         Audio object to clone and use
+   * @param volume        Volume read playSound for moree
+   *
+   */
+  void playSoundFromMemory(Audio *audio, int volume);
 
-/*
- * Plays a music from a createAudio object (clones), only 1 at a time plays
- * Advantage to this method is no more disk reads, only once, data is stored and constantly reused
- *
- * @param audio         Audio object to clone and use
- * @param volume        Volume read playSound for moree
- * @return              Status using music_status enum.
- *
- */
-int playMusicFromMemory(Audio * audio, int volume);
+  /*
+   * Plays a music from a createAudio object (clones), only 1 at a time plays
+   * Advantage to this method is no more disk reads, only once, data is stored and constantly reused
+   *
+   * @param audio         Audio object to clone and use
+   * @param volume        Volume read playSound for moree
+   * @return              Status using music_status enum.
+   *
+   */
+  int playMusicFromMemory(Audio *audio, int volume);
 
-/*
- * Free all audio related variables
- * Note, this needs to be run even if initAudio fails, because it frees the global audio device
- *
- */
-void endAudio(void);
+  /*
+   * Free all audio related variables
+   * Note, this needs to be run even if initAudio fails, because it frees the global audio device
+   *
+   */
+  void endAudio(void);
 
-/*
- * Initialize Audio Variable
- *
- * @return              Status using status enum.
- *
- */
-int initAudio(void);
+  /*
+   * Initialize Audio Variable
+   *
+   * @return              Status using status enum.
+   *
+   */
+  int initAudio(void);
 
-/*
- * Pause audio from playing
- *
- * @return              Status using music_status enum.
- *
- */
-int pauseAudio(void);
+  /*
+   * Pause audio from playing
+   *
+   * @return              Status using music_status enum.
+   *
+   */
+  int pauseAudio(void);
 
-/*
- * Unpause audio from playing
- *
- * @return              Status using music_status enum.
- *
- */
-int unpauseAudio(void);
+  /*
+   * Unpause audio from playing
+   *
+   * @return              Status using music_status enum.
+   *
+   */
+  int unpauseAudio(void);
 
 #ifdef __cplusplus
 }

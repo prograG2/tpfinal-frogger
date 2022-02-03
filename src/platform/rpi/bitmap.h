@@ -1,12 +1,8 @@
 /**
- * @file bitmap.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-22
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	bitmap.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * @brief 	Encabezado del archivo para manejo de matrices 16x16
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  */
 
 #ifndef _BITMAP_H_
@@ -18,7 +14,6 @@
 
 #include <stdint.h>
 
-
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -26,73 +21,68 @@
 #define CANT_FILAS 16
 #define CANT_COLUMNAS 16
 
-
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef uint16_t matriz_t[CANT_FILAS];
-
-
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
-
+typedef uint16_t matriz_t[CANT_FILAS]; //se define el tipo de dato para trabajar en el display, cada elemento del array es una fila
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
 /**
- * @brief 
- * 
- * @param a 
+ * @brief Imprime una matriz en consola (para debug)
+ *
+ * @param A
  */
-void printMatriz(matriz_t a);
+void printMatriz(matriz_t A);
 
 /**
- * @brief 
- * 
- * @param a 
+ * @brief Borra el contenido de una matriz
+ *
+ * @param A
  */
-void limpiarMatriz(matriz_t a);
+void limpiarMatriz(matriz_t A);
 
 /**
- * @brief 
- * 
- * @param destino 
- * @param desde 
+ * @brief Copia el contenido de una matriz en otra
+ *
+ * @param destino
+ * @param desde
  */
-void copiarMatriz(matriz_t destino, matriz_t desde);
-
+void copiarMatriz(matriz_t destino, const matriz_t desde);
 
 /**
- * @brief 
- * 
- * @param a 
- * @param b 
+ * @brief Dadas dos matrices A y B, se hará la operación "A &= B"
+ *
+ * @param A
+ * @param B
  */
-void matrizAnd(matriz_t a, matriz_t b);
+void matrizAnd(matriz_t A, matriz_t B);
 
 /**
- * @brief 
- * 
- * @param a 
- * @param b 
+ * @brief Dadas dos matrices A y B, se hará la operación "A |= B"
+ *
+ * @param A
+ * @param B
  */
-void matrizOr(matriz_t a, matriz_t b);
+void matrizOr(matriz_t A, matriz_t B);
 
 /**
- * @brief 
- * 
- * @param a 
+ * @brief Dadas una matriz A, se hará la operación "A = ~A"
+ *
+ * @param A
  */
-void matrizNot(matriz_t a);
+void matrizNot(matriz_t A);
 
-void matrizXor(matriz_t a, matriz_t b);
-
+/**
+ * @brief Dadas dos matrices A y B, se hará la operación "A ^= B"
+ * 
+ * @param A 
+ * @param B 
+ */
+void matrizXor(matriz_t A, matriz_t B);
 
 /*******************************************************************************
  ******************************************************************************/

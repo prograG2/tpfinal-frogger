@@ -25,6 +25,7 @@
 		"bitmap.h": "c",
 		"mensajes.h": "c",
 		"audio.h": "c",
-		"stdbool.h": "c"
+		"stdbool.h": "c",
+		"types.h": "c"
 	}
 }

@@ -1,12 +1,10 @@
 /**
  * @file entities.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-10
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @author AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * @brief
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 #ifndef _ENTITIES_H_
@@ -18,51 +16,31 @@
 
 #include <stdbool.h>
 
-
-/*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
-
-
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
 /**
  * @brief Inicializa las entidades
- * 
+ *
  */
 void entities_init(void);
 
 /**
  * @brief Actualiza las entidades
- * 
+ *
  */
 void entities_update(void);
 
 /**
  * @brief Dibuja las entidades
- * 
+ *
  */
 void entities_draw(void);
 
 /**
  * @brief Indica que la rana debe dar un salto en la direccion dada
- * 
+ *
  * @param direction enum DIRECTIONS
  */
 void entities_move_frog(unsigned char direction);

@@ -1,7 +1,7 @@
 /**
  * @file 	fsm.h
  * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
- * 			
+ *
  * @brief 	Header del modulo fsm.
  * 			Contiene los prototipos de funciones necesarias para iniciar la
  * 			fsm desde main.c
@@ -19,7 +19,6 @@
 
 #include "queue.h"
 #include <stdbool.h>
-
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -50,7 +49,6 @@ void fsm(event_t evento_actual);
  *
  */
 void fixHighCpuUsage(void);
-
 
 /*******************************************************************************
  ******************************************************************************/

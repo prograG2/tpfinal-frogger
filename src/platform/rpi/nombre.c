@@ -1,12 +1,8 @@
 /**
- * @file nombre.c
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-22
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	nombre.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * @brief 	Archivo para manejo de información en el ingreso del nombre
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  */
 
 /*******************************************************************************
@@ -17,39 +13,11 @@
 #include "mensajes.h"
 #include "../../display.h"
 
-
-/*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
 extern matriz_t disp_matriz;
-
-
-/*******************************************************************************
- * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static void falta_envido (int);+
-
-
-/*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
-
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -60,56 +28,51 @@ static char last;
 
 /*******************************************************************************
  *******************************************************************************
-						GLOBAL FUNCTION DEFINITIONS
+            GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
-void nuevoNombre(){
-	nombre = mensaje("A", POS_MSJ2, false);
-	last = 'A';
-	printRenglon(nombre.renglon);
-	copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
-	actualizarDisplay();
-}
-
-void subirLetra(){
-	if(--last < 'A')
-		last = 'Z';
-  	reemplazarUltLetraMensaje(last, &nombre);
-  	copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
-  	actualizarDisplay();
-}
-
-void bajarLetra(){
-  if(++last > 'Z')
-		last = 'A';
-  	reemplazarUltLetraMensaje(last, &nombre);
-  	copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
-  	actualizarDisplay();
-}
-
-void siguienteLetra(){
-	concatenarLetraMensaje(last, &nombre);
-
-	last = 'A';
+void nuevoNombre()
+{
+  nombre = mensaje("A", POS_MSJ2, false);
+  last = 'A';
+  printRenglon(nombre.renglon);
   copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
   actualizarDisplay();
 }
 
-void agregarLetra(void){
+void subirLetra()
+{
+  if (--last < 'A')
+    last = 'Z';
+  reemplazarUltLetraMensaje(last, &nombre);
+  copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+  actualizarDisplay();
 }
 
-char* devolverNombre(void){
-	return nombre.msj;
+void bajarLetra()
+{
+  if (++last > 'Z')
+    last = 'A';
+  reemplazarUltLetraMensaje(last, &nombre);
+  copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+  actualizarDisplay();
 }
 
+void siguienteLetra()
+{
+  concatenarLetraMensaje(last, &nombre);
 
-/*******************************************************************************
- *******************************************************************************
-						LOCAL FUNCTION DEFINITIONS
- *******************************************************************************
- ******************************************************************************/
+  last = 'A';
+  copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+  actualizarDisplay();
+}
 
+void agregarLetra(void)
+{
+}
 
-
- 
+char *devolverNombre(void)
+{
+  return nombre.msj;
+}
