@@ -1,8 +1,13 @@
-/***************************************************************************//**
-  @file     +Nombre del archivo (ej: template.c)+
-  @brief    +Descripcion del archivo+
-  @author   +Nombre del autor (ej: Salvador Allende)+
- ******************************************************************************/
+/**
+ * @file 	queue.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Source del modulo queue.
+ * 			Funciones para el manejo de la cola de eventos.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
+ */
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
@@ -15,27 +20,15 @@
 
 
 /*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
+
+//Estructura de la queue
 typedef struct nodeT
 {
 	event_t data;
 	struct nodeT *next;
-}node_t;
-
-
-
-/*******************************************************************************
- * VARIABLES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: unsigned int anio_actual;+
+} node_t;
 
 
 /*******************************************************************************
@@ -43,15 +36,10 @@ typedef struct nodeT
  ******************************************************************************/
 
 /**
- * @brief
+ * @brief Borra un elemento de la cola
  *
  */
-static void borrarElemento();
-
-
-/*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
+static void borrarElemento(void);
 
 
 /*******************************************************************************
@@ -60,61 +48,64 @@ static void borrarElemento();
 
 static node_t *front = NULL, *back = NULL;
 
-
 /*******************************************************************************
  *******************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
+
 void queueInsertar(event_t nuevo)
 {
-	node_t *temp = (node_t*)malloc(sizeof(node_t));
+	node_t *temp = (node_t *)malloc(sizeof(node_t));
 
 	temp->data = nuevo;
 	//printf("%d\n", nuevo); //si se quita esto la queue funciona mal
 
-	if (front ==  NULL)
+	if (front == NULL)
 	{
-	  front = temp;
-	  front->next = NULL;
+		front = temp;
+		front->next = NULL;
 	}
-	else if(back == NULL){
-	  back = temp;
-	  front->next = back;
-	  back->next = NULL;
+	else if (back == NULL)
+	{
+		back = temp;
+		front->next = back;
+		back->next = NULL;
 	}
 	else
 	{
-	  back->next = temp;
-	  back = back->next;
+		back->next = temp;
+		back = back->next;
 	}
 }
 
-
-int queueVacia()
+bool queueVacia(void)
 {
-  return front == NULL;
+	return front == NULL;
 }
 
-event_t queueSiguienteEvento()
+event_t queueSiguienteEvento(void)
 {
-  if (front == NULL){
-	return NADA;
-  }
-  else{
-	event_t r = front->data;
-	borrarElemento();
-	return r;
-  }
-}	
-
-void destruirQueue(){
-  while(front != NULL){
-	//event_t evento_basura = queueSiguienteEvento();
-	queueSiguienteEvento();
-  }
+	if (front == NULL)
+	{
+		return NADA;
+	}
+	else
+	{
+		event_t r = front->data;
+		borrarElemento();
+		return r;
+	}
 }
 
+void destruirQueue(void)
+{
+	while (front != NULL)
+	{
+		//event_t evento_basura = queueSiguienteEvento();
+		queueSiguienteEvento();
+	}
+}
 
 /*******************************************************************************
  *******************************************************************************
@@ -122,16 +113,18 @@ void destruirQueue(){
  *******************************************************************************
  ******************************************************************************/
 
-static void borrarElemento()
+static void borrarElemento(void)
 {
-  if(front != NULL){
-	node_t *temp = front;
-	front = front->next;
-	free(temp);
-	if(front == NULL){
-	  back = NULL;
+	if (front != NULL)
+	{
+		node_t *temp = front;
+		front = front->next;
+		free(temp);
+		if (front == NULL)
+		{
+			back = NULL;
+		}
 	}
-  }
 }
 
 /*
@@ -143,5 +136,3 @@ static void printQueue(){
   }
 }
 */
-
-

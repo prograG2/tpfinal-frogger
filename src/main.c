@@ -1,12 +1,12 @@
 /**
- * @file main.c
- * @author 
- * @brief Archivo principal del proyecto. Inicializa threads y la FSM.
- * @version 0.1
- * @date 2021-06-22
- * 
- * @copyright Copyright (c) 2021
- * 
+ * @file 	main.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Archivo principal.
+ * 			Inicia y pone a correr la maquian de estados (fsm).
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 /*******************************************************************************

@@ -1,12 +1,13 @@
 /**
- * @file display.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-22
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	display.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Header del modulo display
+ * 			Vinculo entre la fsm y las plataformas en lo que respecta
+ * 			a la visualizacion del juego.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 #ifndef _DISPLAY_H_
@@ -19,25 +20,25 @@
 #include <stdbool.h>
 
 
-
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_MSJ_NOMBRE, POS_MSJ_PASAR, POS_MSJ_PAUSA, POS_MSJ_NEW_HI_SCORE, POS_MSJ_GAME_OVER, POS_OPCION, POS_RANKING_2, POS_CREDITOS};
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
+//Posiciones de mensajes
+enum posiciones_mensajes
+{
+	POS_MSJ_MENU,
+	POS_MSJ_DIFICULTAD,
+	POS_MSJ_RANKING,
+	POS_MSJ_NOMBRE,
+	POS_MSJ_PASAR,
+	POS_MSJ_PAUSA,
+	POS_MSJ_NEW_HI_SCORE,
+	POS_MSJ_GAME_OVER,
+	POS_OPCION,
+	POS_RANKING_2,
+	POS_CREDITOS
+};
 
 
 /*******************************************************************************
@@ -45,48 +46,41 @@ enum posiciones_mensajes{POS_MSJ_MENU, POS_MSJ_DIFICULTAD, POS_MSJ_RANKING, POS_
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief Inicializa el display de la plataforma
  * 
- * @return int 
+ * @return true Exito
+ * @return false Error
  */
-int iniciarDisplay();
+bool iniciarDisplay();
 
 /**
- * @brief 
+ * @brief Actualiza el display de la plataforma
  * 
  */
 void actualizarDisplay();
 
 /**
- * @brief 
+ * @brief Limpia el display de la plataforma
  * 
  */
 void limpiarDisplay();
 
 /**
- * @brief 
+ * @brief Muestra un texto dado en una posicion dada
  * 
- * @param txt 
- * @param pos 
+ * @param txt Texto
+ * @param pos Posicion
  */
 void mostrarTexto(char* txt, int pos);
 
 /**
- * @brief 
+ * @brief Fija un texto dado en una posicion dada.
  * 
  * @param txt 
  * @param pos 
+ * @param repetir 
  */
 void dejarTexto(char* txt, int pos, bool repetir);
-
-/**
- * @brief 
- * 
- * @param posicion 
- * @param nombre 
- * @param puntos 
- */
-void mostrarPosicion(char* posicion, char* nombre, char* puntos);
 
 /**
  * @brief Inicia muestreo de ranking en la plataforma
@@ -116,19 +110,19 @@ void cargarCreditos(void);
 void mostrarCreditos(void);
 
 /**
- * @brief Construct a new finalizar Creditos object
+ * @brief Finaliza la visualización de créditos
  * 
  */
 void finalizarCreditos(void);
 
 /**
- * @brief Construct a new reconfigurar Display object
+ * @brief Reconfigura el display de la plataforma y lo habilita.
  * 
  */
 void reconfigurarDisplayON(void);
 
 /**
- * @brief 
+ * @brief Reconfigura el display de la plataforma y lo deshabilita.
  * 
  */
 void reconfigurarDisplayOFF(void);

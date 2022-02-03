@@ -1,8 +1,13 @@
-/***************************************************************************//**
-  @file     +Nombre del archivo (ej: template.c)+
-  @brief    +Descripcion del archivo+
-  @author   +Nombre del autor (ej: Salvador Allende)+
- ******************************************************************************/
+/**
+ * @file 	fsm.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Source del modulo fsm.
+ * 			Administra la máquina de estados, siendo el engine del juego.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
+ */
 
 /*******************************************************************************
  * INCLUDE HEADER FILES
@@ -16,7 +21,6 @@
 #include "input.h"
 #include "nombre.h"
 #include "sound.h"
-
 #include "ranking.h"
 
 #include <stdio.h>
@@ -31,6 +35,13 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
+//Codigo para indicar que se llego al final de la tabla de estados
+#define FIN_TABLA 0xFF
+
+//Para offsetear estados relativos al menu
+#define CTE_OPCION 100
+
+//Delay en us que fixea consumo de CPU
 #define FIX_CPU_USAGE_SLEEP_US		500
 
 
@@ -38,10 +49,15 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
+typedef struct state_diagram_edge STATE;
 
-/*******************************************************************************
- * VARIABLES WITH GLOBAL SCOPE
- ******************************************************************************/
+//Estructura genérica de un estado de la FSM.
+struct state_diagram_edge
+{
+	event_t evento;
+	STATE *proximo_estado;
+	void (*p_rut_accion)(void);
+};
 
 
 #pragma region privatePrototypes
@@ -50,120 +66,128 @@
  ******************************************************************************/
 
 /**
- * @brief
+ * @brief	Thread que se ejecuta desde el inicio de la fsm hasta el cierre
+ * 			del programa. Analiza constantemente las entradas externas.
  *
  * @return void*
  */
 static void* threadInput(void* ptr);
 
 /**
- * @brief
+ * @brief	Thread sobre el cual corre el juego en sí, luego de ingresar
+ * 			el nombre.
  *
  * @return void*
  */
 static void* threadJuego(void* ptr);
 
 /**
- * @brief
+ * @brief	Thread que se ejecuta al estar mostrando el ranking.
  *
  * @return void*
  */
 static void* threadDisplayRanking(void* ptr);
 
 /**
- * @brief
+ * @brief	Thread que se ejecuta al estar mostrando los creditos.
  *
- * @param ptr
  * @return void*
  */
 static void* threadDisplayCreditos(void* ptr);
 
 /**
- * @brief Rutina que hace nada.
+ * @brief	Rutina que hace nada. Para mantener la estructura
+ * 			de la fsm.
  *
  */
 static void do_nothing(void);
 
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al presionar enter.
  *
  */
 static void procesar_enter_menu(void);
 
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al ir al menu principal.
  *
  */
 static void ir_a_menu_ppal(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al pasar a ingresar nombre.
  *
  */
 static void ir_a_poniendo_nombre(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al pasar a seleccionar dificultad.
  *
  */
 static void ir_a_seleccionando_dificultad(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al pasar a ver ranking.
  *
  */
 static void ir_a_viendo_ranking(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al pasar a ver creditos.
  *
  */
 static void ir_a_viendo_creditos(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al finalizar el programa.
  *
  */
 static void salir_del_juego(void);
 
 /**
- * @brief Set the dificultad object
+ * @brief 	Rutina que se ejecuta al seleccionar una dificultad.
  *
  */
 static void procesar_enter_dificultad(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al presionar enter en el ranking.
  *
  */
 static void procesar_enter_ranking(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al presionar enter en los creditos.
  *
  */
 static void procesar_enter_creditos(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al iniciar el juego en sí.
  *
  */
 static void iniciar_juego(void);
 
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al pausar el juego.
  *
  */
 static void pausar(void);
+
 /**
- * @brief
+ * @brief	Rutina que se ejecuta al continuar el juego luego
+ * 			de una pausa.
  *
  */
 static void continuar(void);
 
 /**
- * @brief
+ * @brief	Rutina que se ejecuta cuando se pierde el juego.
  *
  */
 static void procesar_game_over(void);
 
 #pragma endregion privatePrototypes
-
-/*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
 
 
 /*******************************************************************************
@@ -173,7 +197,7 @@ static void procesar_game_over(void);
 //Puntero al estado actual
 static STATE* p2CurrentState = NULL;
 
-//threads a implementar
+//Threads implementados
 static pthread_t tinput, tjuego, tdisplayranking, tdisplaycreditos;
 
 
@@ -289,6 +313,7 @@ STATE en_game_over_esperando_opcion[]=
 };
 #pragma endregion FSM STATES
 
+
 /*******************************************************************************
  *******************************************************************************
 						GLOBAL FUNCTION DEFINITIONS
@@ -349,10 +374,13 @@ void fixHighCpuUsage(void)
  *******************************************************************************
  ******************************************************************************/
 
-static void* threadInput(void* ptr){
-	while(p2CurrentState){
+static void* threadInput(void* ptr)
+{
+	while(p2CurrentState)
+	{
 		event_t entrada = leerEntradas();
-		if(entrada != NADA){
+		if(entrada != NADA)
+		{
 			queueInsertar(entrada);
 		}
 
@@ -362,7 +390,8 @@ static void* threadInput(void* ptr){
 	return NULL;
 }
 
-static void *threadJuego(void* ptr){
+static void *threadJuego(void* ptr)
+{
 
 	reconfigurarDisplayON();
 
@@ -427,13 +456,15 @@ static void do_nothing(void)
 }
 
 
-static void procesar_enter_menu(void){
+static void procesar_enter_menu(void)
+{
 	limpiarDisplay();
 	reproducirEfecto(EFECTO_MENU_ENTER);
 	queueInsertar(CTE_OPCION+getOpcion());
 }
 
-static void ir_a_menu_ppal(){
+static void ir_a_menu_ppal()
+{
 	limpiarDisplay();
 	dejarTexto("MENU", POS_MSJ_MENU, true);
 	reproducirMusica(MUSICA_MENU_PPAL);
@@ -442,7 +473,8 @@ static void ir_a_menu_ppal(){
 	setOpcion(0);
 }
 
-static void ir_a_viendo_ranking(){
+static void ir_a_viendo_ranking()
+{
 	limpiarDisplay();
 	reconfigurarDisplayOFF();
 	mostrarTexto("RANKING", POS_CREDITOS);
@@ -458,7 +490,8 @@ static void ir_a_viendo_creditos(void)
 	pthread_create(&tdisplaycreditos, NULL, threadDisplayCreditos, NULL);
 }
 
-static void salir_del_juego(){
+static void salir_del_juego()
+{
 	pthread_join(tinput, NULL);
 	pausarMusica();
 	//reproducirEfecto(EFECTO_SALIENDO);
@@ -470,7 +503,8 @@ static void salir_del_juego(){
 	queueInsertar(SALIR);
 }
 
-static void procesar_enter_ranking(void){
+static void procesar_enter_ranking(void)
+{
 	pthread_join(tdisplayranking, NULL);
 	reconfigurarDisplayON();
 	ir_a_menu_ppal();
@@ -483,7 +517,8 @@ static void procesar_enter_creditos(void)
 	ir_a_menu_ppal();
 }
 
-static void iniciar_juego(void){
+static void iniciar_juego(void)
+{
 	limpiarDisplay();
 	char *nombreJugador = devolverNombre();
 	if(nombreJugador == NULL)
@@ -500,6 +535,7 @@ static void iniciar_juego(void){
 	{	
 		setNombre(nombreJugador);
 	}
+
 	if(verificarJugadorRanking(getNombre()))
 	{
 		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
@@ -516,13 +552,15 @@ static void iniciar_juego(void){
 	pthread_create(&tjuego, NULL, threadJuego, NULL);
 }
 
-static void ir_a_poniendo_nombre(){
+static void ir_a_poniendo_nombre()
+{
 	limpiarDisplay();
 	nuevoNombre();
 	dejarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE, true);
 }
 
-static void ir_a_seleccionando_dificultad(){
+static void ir_a_seleccionando_dificultad()
+{
 	limpiarDisplay();
 	dejarTexto("DIFICULTAD", POS_MSJ_DIFICULTAD, true);
 	int menu[3] = {FACIL, NORMAL, DIFICIL};
@@ -530,13 +568,15 @@ static void ir_a_seleccionando_dificultad(){
 	setOpcion(0);
 }
 
-static void procesar_enter_dificultad(void){
+static void procesar_enter_dificultad(void)
+{
 	setDificultad(getOpcion());
 	reproducirEfecto(EFECTO_MENU_ENTER);
 	ir_a_menu_ppal();
 }
 
-static void pausar(void){
+static void pausar(void)
+{
 	limpiarDisplay();
 	pthread_join(tjuego, NULL);
 	reproducirMusica(MUSICA_MENU_PAUSA);
@@ -547,7 +587,8 @@ static void pausar(void){
 	setOpcion(0);
 }
 
-static void continuar(void){
+static void continuar(void)
+{
 	limpiarDisplay();
 	reconfigurarDisplayOFF();
 	reproducirMusica(MUSICA_JUGANDO);
@@ -555,8 +596,8 @@ static void continuar(void){
 	pthread_create(&tjuego, NULL, threadJuego, NULL);
 }
 
-static void procesar_game_over(void){
-	sleep(1);
+static void procesar_game_over(void)
+{
 	pthread_join(tjuego, NULL);
 
 	limpiarDisplay();
@@ -577,6 +618,7 @@ static void procesar_game_over(void){
 
 		actualizarRanking(getNombre(), getMaxPuntos());
 	}
+
 	mostrarTexto("FIN DEL JUEGO", POS_MSJ_GAME_OVER);
 	int menu[2] = {REINICIAR, SALIRTXT};
 	limpiarDisplay();

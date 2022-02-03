@@ -1,12 +1,13 @@
 /**
- * @file ranking.c
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-30
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	ranking.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Source del modulo ranking.
+ * 			Funciones de interaccion con el ranking de jugadores.
+ * 			Permite trabajar con el txt correspondiente fácilmente,
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 /*******************************************************************************
@@ -22,18 +23,6 @@
 
 //Largo maximo de una linea del txt
 #define MAX_LEN 100 
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLES WITH GLOBAL SCOPE
- ******************************************************************************/
-
 
 
 /*******************************************************************************
@@ -63,13 +52,6 @@ static void writeRanking(void);
  * 
  */
 static void createRankingFile(void);
-
-
-/*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
 
 
 /*******************************************************************************

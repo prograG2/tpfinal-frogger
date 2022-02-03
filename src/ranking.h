@@ -1,12 +1,13 @@
 /**
- * @file ranking.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-30
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	ranking.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Header del modulo ranking.
+ * 			Prototipos de funciones de interaccion con el ranking de jugadores.
+ * 			Permite trabajar con el txt correspondiente fácilmente,
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 #ifndef _RANKING_H_

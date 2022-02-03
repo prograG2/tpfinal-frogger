@@ -71,7 +71,7 @@ static int credits_scroll_cont;
  *******************************************************************************
  ******************************************************************************/
 
-int iniciarDisplay()
+bool iniciarDisplay()
 {
 	if (pthread_mutex_init(&lock, NULL) != 0)
         return 1;
@@ -99,11 +99,6 @@ void mostrarTexto(char* txt, int pos)
 void dejarTexto(char* txt, int pos, bool repetir)
 {
 
-}
-
-void mostrarPosicion(char* posicion, char* nombre, char* puntos)
-{
-	printf("Posicion: %s ~ Nombre: %s ~ Score: %s\n", posicion, nombre, puntos);
 }
 
 void cargarRanking(void)

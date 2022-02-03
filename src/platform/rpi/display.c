@@ -87,7 +87,7 @@ static char *creditos_cadenas[] = {"PROGRAMACION TPF 2021 1C", "FROGGER", "AUTOR
  *******************************************************************************
  ******************************************************************************/
 
-int iniciarDisplay()
+bool iniciarDisplay()
 {
 	if (pthread_mutex_init(&lock, NULL) != 0)
     {

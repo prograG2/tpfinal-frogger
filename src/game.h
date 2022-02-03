@@ -1,12 +1,13 @@
 /**
- * @file game.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-22
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	game.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Header del modulo game
+ * 			Vinculo entre la fsm y las plataformas en lo que respecta
+ * 			a la informacion del jugador y el progreso del juego.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 #ifndef _GAME_H_
@@ -20,31 +21,13 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-/*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
-
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
 /**
- * @brief Set the Nombre object
+ * @brief Confirma el nombre del jugador
  * 
  * @param nombre 
  */
@@ -52,21 +35,21 @@ void setNombre(char* nombre);
 
 
 /**
- * @brief Set the Max Puntos object
+ * @brief Setea los puntos maximos del jugador
  * 
  * @param max 
  */
 void setMaxPuntos(uint64_t max);
 
 /**
- * @brief Set the Dificultad object
+ * @brief Setea la dificultad a usar
  * 
  * @param dif 
  */
 void setDificultad(int dif);
 
 /**
- * @brief 
+ * @brief Chequea si es tiempo de refrescar entidades según la plataforma
  * 
  * @return true 
  * @return false 
@@ -74,7 +57,7 @@ void setDificultad(int dif);
 bool tiempoRefrescoEntidades(void);
 
 /**
- * @brief  
+ * @brief  Chequea si hubo tiempo límite.
  * 
  * @return true 
  * @return false 
@@ -82,103 +65,101 @@ bool tiempoRefrescoEntidades(void);
 bool tiempoLimite(void);
 
 /**
- * @brief Get the Nombre object
+ * @brief Devuelve el nombre del jugador
  * 
  * @return char* 
  */
 char* getNombre(void);
 
 /**
- * @brief Get the Puntos object
+ * @brief Devuelve el puntaje del jugador
  * 
  * @return ulong 
  */
 ulong getPuntos(void);
 
 /**
- * @brief Get the Max Puntos object
+ * @brief Devuelve el puntaje máximo del jugador
  * 
  * @return ulong 
  */
 ulong getMaxPuntos(void);
 
-
 /**
- * @brief Get the Nivel object
+ * @brief Devuelve el nivel//run del jugador
  * 
  * @return int 
  */
 int getNivel(void);
 
 /**
- * @brief 
+ * @brief Rutina que se ejecuta al comenzar a jugar, luego de ingresar el nombre
  * 
  */
 void inicializarJuego(void);
 
 /**
- * @brief 
+ * @brief Configuraciones para reiniciar el nivel
  * 
  */
 void reiniciarNivel(void);
 
 /**
- * @brief 
+ * @brief Pausa el juego
  * 
  */
-
 void pausarJuego(void);
 
 /**
- * @brief 
+ * @brief Saca el juego de pausa
  * 
  */
 void reanudarJuego(void);
 
 /**
- * @brief 
+ * @brief Actualizaciones relativas a actualizar las entidades
  * 
  */
 void refrescar(void);
 
 /**
- * @brief 
+ * @brief Avanza el jugador
  * 
  */
 void moverAdelante(void);
 
 /**
- * @brief 
+ * @brief Retrocede el jugador
  * 
  */
 void moverAtras(void);
 
 /**
- * @brief 
+ * @brief Mueve el jugador a la izquierda
  * 
  */
 void moverIzda(void);
 
 /**
- * @brief 
+ * @brief Mueve el jugador a la derecha
  * 
  */
 void moverDcha(void);
 
 /**
- * @brief 
+ * @brief Respawnea el jugador
  * 
  */
 void respawn(void);
 
 /**
- * @brief 
+ * @brief Resta una vida
  * 
  */
 void perderVida(void);
 
 /**
- * @brief 
+ * @brief Actualizaciones relativas a lo visual
  * 
  */
 void actualizarInterfaz(void);

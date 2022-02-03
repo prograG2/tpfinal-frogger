@@ -1,12 +1,12 @@
 /**
- * @file menu.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-22
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	game.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Header del modulo genérico menu.
+ * 			Prototipos de funciones de interaccion con el menu del juego.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 #ifndef _MENU_H_
@@ -20,22 +20,22 @@
 
 
 /*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-enum textos_menu{JUGAR = 0, DIFICULTAD, RANKING, CREDITOS, SALIRTXT, CONTINUAR, REINICIAR, FACIL, NORMAL, DIFICIL};
-
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
+enum textos_menu
+{
+	JUGAR = 0,
+	DIFICULTAD,
+	RANKING,
+	CREDITOS,
+	SALIRTXT,
+	CONTINUAR,
+	REINICIAR,
+	FACIL,
+	NORMAL,
+	DIFICIL
+};
 
 
 /*******************************************************************************
@@ -43,47 +43,47 @@ enum textos_menu{JUGAR = 0, DIFICULTAD, RANKING, CREDITOS, SALIRTXT, CONTINUAR, 
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief Inicia el menu
  * 
  */
 void iniciarMenu(void);
 
 /**
- * @brief 
+ * @brief Destruye del menu
  * 
  */
 void destruirMenu(void);
 
 /**
- * @brief Set the Menu object
+ * @brief Selecciona un menu
  * 
- * @param a 
- * @param size 
+ * @param a Puntero a textos del menu
+ * @param size Opciones del menu
  */
 void setMenu(int* a, unsigned int size);
 
 /**
- * @brief Set the Opcion object
+ * @brief Selecciona una opcion del menu
  * 
- * @param opc 
+ * @param opc Opcion a seleccionar
  */
 void setOpcion(int opc);
 
 /**
- * @brief Get the Opcion object
+ * @brief Devuelve la opcion actual del menu
  * 
- * @return int 
+ * @return int Opcion seleccionada actualmente
  */
 int getOpcion(void);
 
 /**
- * @brief 
+ * @brief Selecciona la opcion superior a la actual
  * 
  */
 void subirOpcion(void);
 
 /**
- * @brief 
+ * @brief Selecciona la opcion inferior a la actual
  * 
  */
 void bajarOpcion(void);

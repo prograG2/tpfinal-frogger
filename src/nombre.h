@@ -1,40 +1,17 @@
 /**
- * @file nombre.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-22
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	nombre.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Header del modulo genérico nombre.
+ * 			Prototipos de funciones de relacionadas al ingreso del nombre
+ * 			del jugador.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 #ifndef _NOMBRE_H_
 #define _NOMBRE_H_
-
-/*******************************************************************************
- * INCLUDE HEADER FILES
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
 
 
 /*******************************************************************************
@@ -42,31 +19,31 @@
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief Se ejecuta una vez al ingresar a poner un nuevo nombre.
  * 
  */
 void nuevoNombre(void);
 
 /**
- * @brief 
+ * @brief Selecciona la siguiente letra superior
  * 
  */
 void subirLetra(void);
 
 /**
- * @brief 
+ * @brief Selecciona la letra inferior
  * 
  */
 void bajarLetra(void);
 
 /**
- * @brief 
+ * @brief Confirma la letra y pasa a seleccionar la siguiente
  * 
  */
 void siguienteLetra(void);
 
 /**
- * @brief 
+ * @brief Confirma la letra
  * 
  */
 void agregarLetra(void);
@@ -78,11 +55,12 @@ void agregarLetra(void);
 void subirNombre(void);
 
 /**
- * @brief 
+ * @brief Devuelve puntero al nombre
  * 
- * @return char* 
+ * @return char* Puntero al nombre
  */
 char* devolverNombre(void);
+
 
 /*******************************************************************************
  ******************************************************************************/

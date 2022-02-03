@@ -1,12 +1,13 @@
 /**
- * @file sound.h
- * @author your name (you@domain.com)
- * @brief 
- * @version 0.1
- * @date 2022-01-27
- * 
- * @copyright Copyright (c) 2022
- * 
+ * @file 	sound.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ * 			
+ * @brief 	Header del modulo sound
+ * 			Vinculo entre la fsm y las plataformas en lo que respecta
+ * 			al sonido.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
  */
 
 #ifndef _SOUND_H_
@@ -20,15 +21,10 @@
 
 
 /*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
+//Musicas a usar
 enum musica
 {	
 	MUSICA_MENU_PPAL,
@@ -40,6 +36,7 @@ enum musica
 	SIZEOF_MUSICA
 };
 
+//Efectos a usar
 enum efectos
 {	
 	EFECTO_SELECCION,
@@ -56,53 +53,45 @@ enum efectos
 	SIZEOF_EFECTOS
 };
 
-/*******************************************************************************
- * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
- ******************************************************************************/
-
-// +ej: extern unsigned int anio_actual;+
-
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
 /**
- * @brief 
+ * @brief Inicializa el sonido de la plataforma
  * 
- * @return true 
- * @return false 
+ * @return true Exito
+ * @return false Error
  */
 bool iniciarSonido(void);
 
 /**
- * @brief 
+ * @brief Desinicializa el sonido de la plataforma
  * 
  */
 void destruirSonido(void);
 
 
 /**
- * @brief 
+ * @brief Pausa la musica actual
  * 
  */
 void pausarMusica(void);
 
 /**
- * @brief 
+ * @brief Pone a reproducir una musica dada
  * 
- * @param
+ * @param int enum musica
  */
 void reproducirMusica(int musica);
 
 /**
- * @brief 
+ * @brief Pone a reproducir un efecto dado
  * 
- * @param
+ * @param int num efectos
  */
 void reproducirEfecto(int efecto);
-
-
 
 
 /*******************************************************************************
