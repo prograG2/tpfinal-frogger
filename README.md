@@ -122,11 +122,14 @@ This is an example of how to list things you need to use the software and how to
 * <a href="https://github.com/liballeg/allegro_wiki/wiki">allegro5</a>
   * Arch Linux
 	```sh
+	sudo pacman -Syu
 	sudo pacman -S allegro
 	```
   * Ubuntu 18.04+
 	```sh
-	sudo apt-get install liballegro*5.2 liballegro*5-dev 
+	sudo apt-get update
+	sudo add-apt-repository ppa:allegro/5.2
+	sudo apt-get install liballegro*5.2 liballegro*5-dev
 	```
 
 #### RPi

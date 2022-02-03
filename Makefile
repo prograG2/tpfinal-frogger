@@ -138,7 +138,7 @@ RM	= rm -f
 
 ## Compila y linkea todo el proyecto.
 .PHONY: all
-all: $(TARGET)
+all: $(dummy_bin_folder) $(dummy_obj_folder) $(TARGET)
 
 ## Compila, linkea y ejecuta el proyecto.
 .PHONY: run
