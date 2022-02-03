@@ -43,8 +43,8 @@
 typedef struct
 {
   int lives;
-  int score;
-  int score_max;
+  unsigned long long score;
+  unsigned long long score_max;
 
   struct
   {
@@ -156,10 +156,10 @@ static int last_loop_time;
 static int new_run_time_left;
 
 // Auxiliar para mostrar el score gradualmente en el HUD
-static int score_display;
+static unsigned long long score_display;
 
 // Score maximo no actualizado en game over
-static int max_score_no_updated;
+static unsigned long long max_score_no_updated;
 
 /*******************************************************************************
  *******************************************************************************
@@ -245,7 +245,7 @@ void game_data_subtract_live(void)
   data.lives--;
 }
 
-int game_data_get_score(void)
+unsigned long long game_data_get_score(void)
 {
   return (data.score);
 }
@@ -262,12 +262,12 @@ void game_data_add_score_bonus(void)
   data.score += SCORE_PER_GOAL_COIN;
 }
 
-void game_data_set_score_max(int score)
+void game_data_set_score_max(unsigned long long score)
 {
   data.score_max = score;
 }
 
-int game_data_get_score_max(void)
+unsigned long long game_data_get_score_max(void)
 {
   return data.score_max;
 }
@@ -406,7 +406,7 @@ bool game_data_are_goals_full(void)
   return state;
 }
 
-int game_data_get_old_max_score(void)
+unsigned long long game_data_get_old_max_score(void)
 {
   return max_score_no_updated;
 }
@@ -476,7 +476,7 @@ static void hud_draw(void)
       text_color, // Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
       1, 1,       // Arriba a la izquierda.
       0,
-      "Score: %06d", // 6 cifras (por ahi es mucho).
+      "Score: %06lld", // 6 cifras (por ahi es mucho).
       score_display);
 
   // Dibuja el numero de vuelta.

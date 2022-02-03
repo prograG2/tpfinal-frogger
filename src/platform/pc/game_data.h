@@ -69,7 +69,7 @@ void game_data_subtract_live(void);
  *
  * @return int
  */
-int game_data_get_score(void);
+unsigned long long game_data_get_score(void);
 
 /**
  * @brief Agrega score por llegar a la meta
@@ -88,14 +88,14 @@ void game_data_add_score_bonus(void);
  *
  * @param score
  */
-void game_data_set_score_max(int score);
+void game_data_set_score_max(unsigned long long score);
 
 /**
  * @brief Devuelve el score maximo del jugador actual
  *
- * @return int Score maximo
+ * @return unsigned long long Score maximo
  */
-int game_data_get_score_max(void);
+unsigned long long game_data_get_score_max(void);
 
 /**
  * @brief Devuelve el numero de run
@@ -232,9 +232,9 @@ bool game_data_are_goals_full(void);
 /**
  * @brief Devuelve el score maximo sin actualizar al terminar el juego
  *
- * @return int
+ * @return unsigned long long
  */
-int game_data_get_old_max_score(void);
+unsigned long long game_data_get_old_max_score(void);
 
 /*******************************************************************************
  ******************************************************************************/
