@@ -126,10 +126,10 @@ void cargarRanking(void)
 
 		al_draw_textf(	allegro_get_var_font(),
 						al_map_rgb(255,255,255),
-						250,
+						400,
 						100 + i*20,
 						0,
-						"%lld", scores[i]);
+						"%ld", scores[i]);
 	}
 	al_flip_display();
 	
@@ -137,6 +137,7 @@ void cargarRanking(void)
 
 void mostrarRanking(void)
 {
+
 }
 
 void cargarCreditos(void)

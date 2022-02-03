@@ -200,11 +200,11 @@ void setDificultad(int dificultad){
 char* getNombre(){
 	return jugador.nombre;
 }
-uint64_t getPuntos(){
+ulong getPuntos(){
 	return jugador.puntos;
 }
 
-uint64_t getMaxPuntos(){
+ulong getMaxPuntos(){
 	return jugador.max_puntos;
 }
 

@@ -89,13 +89,13 @@ FILE *handlerTemp = NULL;
 //Punteros a nombres
 static char **names = NULL; 
 //Puntero a scores
-static uint64_t *scores = NULL;
+static ulong *scores = NULL;
 
 //String temporal
 static char tempStr[MAX_LEN];
 
 //Contador de lineas del txt
-static unsigned int lineNumber = 0;
+static uint lineNumber = 0;
 
 
 /*******************************************************************************
@@ -120,7 +120,7 @@ void iniciarRanking(void)
 	fclose(handlerRanking);
 }
 
-void actualizarRanking(char *name, uint64_t score)
+void actualizarRanking(char *name, ulong score)
 {
 	int i;
 	bool player_exists;
@@ -151,7 +151,7 @@ void actualizarRanking(char *name, uint64_t score)
 		strcpy(names[lineNumber], name);
 
 		//Reservo memoria para un score
-		scores = (uint64_t*)realloc(scores, sizeof(uint64_t) * (lineNumber + 1));
+		scores = (ulong*)realloc(scores, sizeof(ulong) * (lineNumber + 1));
 		//Asigno score
 		scores[lineNumber] = score;
 
@@ -195,7 +195,7 @@ bool verificarJugadorRanking(char *name)
 	return exists;
 }
 
-uint64_t getJugadorRankingPuntos(char *name)
+ulong getJugadorRankingPuntos(char *name)
 {
 	int i;
 	bool exists;
@@ -219,7 +219,7 @@ uint64_t getJugadorRankingPuntos(char *name)
 	return score;
 }
 
-int getRankingLineas(void)
+uint getRankingLineas(void)
 {
 	return lineNumber;
 }
@@ -229,7 +229,7 @@ char **getRankingNombres(void)
 	return names;
 }
 
-uint64_t *getRankingPuntos(void)
+ulong *getRankingPuntos(void)
 {
 	return scores;
 }
@@ -263,9 +263,9 @@ static void recargarRanking(void)
 		//Puntero al score
 		tempPtr = strtok(NULL, " ");
 		//Reservo memoria para un score
-		scores = (uint64_t*)realloc(scores, sizeof(uint64_t) * (lineNumber + 1));
+		scores = (ulong*)realloc(scores, sizeof(ulong) * (lineNumber + 1));
 		//Copia score
-		scores[lineNumber] = strtoull(tempPtr, NULL, 10);
+		scores[lineNumber] = strtoul(tempPtr, NULL, 10);
 		
         lineNumber++;
 	}
@@ -315,7 +315,7 @@ static void writeRanking(void)
 		//Copia lo nuevo en temp.txt
 		for(i = 0; i < lineNumber; i++)
 		{
-			fprintf(handlerTemp, "%s %lld\n", names[i], scores[i]); 
+			fprintf(handlerTemp, "%s %ld\n", names[i], scores[i]); 
 		}
 	}
 

@@ -114,12 +114,12 @@ char* getNombre(void)
 	return game_data_get_name();
 }
 
-uint64_t getPuntos(void)
+ulong getPuntos(void)
 {
 	return game_data_get_score();
 }
 
-uint64_t getMaxPuntos(void)
+ulong getMaxPuntos(void)
 {
 	return game_data_get_score_max();
 }
@@ -230,9 +230,9 @@ void actualizarInterfaz(void)
 	
 }
 
-void imprimirMapa(void)
+void reanudarJuego(void)
 {
-	
+
 }
 
 

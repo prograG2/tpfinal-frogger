@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 #include <stdbool.h>
-
+#include <stdlib.h>
 #include <stdint.h>
 
 /*******************************************************************************
@@ -91,16 +91,16 @@ char* getNombre(void);
 /**
  * @brief Get the Puntos object
  * 
- * @return uint64_t 
+ * @return ulong 
  */
-uint64_t getPuntos(void);
+ulong getPuntos(void);
 
 /**
  * @brief Get the Max Puntos object
  * 
- * @return uint64_t 
+ * @return ulong 
  */
-uint64_t getMaxPuntos(void);
+ulong getMaxPuntos(void);
 
 
 /**
@@ -129,6 +129,10 @@ void reiniciarNivel(void);
 
 void pausarJuego(void);
 
+/**
+ * @brief 
+ * 
+ */
 void reanudarJuego(void);
 
 /**
@@ -178,12 +182,6 @@ void perderVida(void);
  * 
  */
 void actualizarInterfaz(void);
-
-/**
- * @brief 
- * 
- */
-void imprimirMapa(void);
 
 
 /*******************************************************************************

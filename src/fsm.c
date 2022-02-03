@@ -504,7 +504,7 @@ static void iniciar_juego(void){
 	{
 		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
 
-		printf("\n\nJugador detectado: %s %lld\n\n", getNombre(), getMaxPuntos());
+		printf("\n\nJugador detectado: %s %ld\n\n", getNombre(), getMaxPuntos());
 	}
 	
 	inicializarJuego();
@@ -568,7 +568,7 @@ static void procesar_game_over(void){
 
 	if(jugador_puntos > getMaxPuntos())
 	{
-		printf("\n\nNew score para %s ~ Score nuevo: %lld ~ Score anterior: %lld\n\n", getNombre(), getPuntos(), getMaxPuntos());
+		printf("\n\nNew score para %s ~ Score nuevo: %ld ~ Score anterior: %ld\n\n", getNombre(), getPuntos(), getMaxPuntos());
 
 		reproducirEfecto(EFECTO_NUEVO_MAX_SCORE);
 

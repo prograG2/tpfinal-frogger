@@ -79,16 +79,16 @@ bool verificarJugadorRanking(char *name);
  * @brief Devuelve el puntaje de un jugador dado
  * 
  * @param name Nombre del jugador
- * @return uint64_t Score
+ * @return ulong Score
  */
-uint64_t getJugadorRankingPuntos(char *name);
+ulong getJugadorRankingPuntos(char *name);
 
 /**
  * @brief Devuelve cantidad de renglones del ranking
  * 
  * @return int Renglones
  */
-int getRankingLineas(void);
+uint getRankingLineas(void);
 
 /**
  * @brief Devuelve array de nombres de jugadores
@@ -102,7 +102,7 @@ char **getRankingNombres(void);
  * 
  * @return uint64_t* 
  */
-uint64_t *getRankingPuntos(void);
+ulong *getRankingPuntos(void);
 
 
 /*******************************************************************************
