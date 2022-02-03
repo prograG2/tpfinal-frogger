@@ -218,11 +218,6 @@ void reiniciarNivel(){
 }
 
 void respawn(){
-	if(!jugador.agua){
-    	jugador.jugador_1 = 0b0000000010000000;
-    	jugador.jugador_2 = 0b0000000100000000;
-		jugador.posicion_oeste = 7;
-	}
 	jugador.posicion_sur = CANT_FILAS-1;
 
 	limpiarMapa();
@@ -231,6 +226,8 @@ void respawn(){
 		moverCarrriles(4);
 		spawnearAutos();
 	}
+
+	actualizarMapa();
 }
 
 void moverAdelante(){

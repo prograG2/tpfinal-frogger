@@ -375,7 +375,7 @@ static void *threadJuego(void* ptr){
 
 		actualizarInterfaz();
 
-		//fixHighCpuUsage();
+		fixHighCpuUsage();
 	}
 
 	pausarJuego();
@@ -412,7 +412,7 @@ static void *threadDisplayCreditos(void* ptr)
 	while(p2CurrentState == viendo_creditos)
 	{
 		mostrarCreditos();
-		//fixHighCpuUsage();
+		fixHighCpuUsage();
 	}
 
 	finalizarCreditos();
