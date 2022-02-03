@@ -45,7 +45,7 @@ void iniciarRanking(void);
  * @param name Nombre del jugador
  * @param score Puntos del jugador
  */
-void actualizarRanking(char *name, uintmax_t score);
+void actualizarRanking(char *name, unsigned long long score);
 
 /**
  * @brief Desinicializa el sistema de ranking, actualizando el archivo correspondiente
@@ -66,9 +66,9 @@ bool verificarJugadorRanking(char *name);
  * @brief Devuelve el puntaje de un jugador dado
  *
  * @param name Nombre del jugador
- * @return uintmax_t Score
+ * @return unsigned long long Score
  */
-uintmax_t getJugadorRankingPuntos(char *name);
+unsigned long long getJugadorRankingPuntos(char *name);
 
 /**
  * @brief Devuelve cantidad de renglones del ranking
@@ -87,9 +87,9 @@ char **getRankingNombres(void);
 /**
  * @brief Devuelve array de puntos de jugadores
  *
- * @return uintmax_t*
+ * @return unsigned long long*
  */
-uintmax_t *getRankingPuntos(void);
+unsigned long long *getRankingPuntos(void);
 
 /*******************************************************************************
  ******************************************************************************/

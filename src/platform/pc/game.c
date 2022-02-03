@@ -39,7 +39,7 @@ void setNombre(char *nombre)
   game_data_overwrite_name(nombre);
 }
 
-void setMaxPuntos(uintmax_t max)
+void setMaxPuntos(unsigned long long max)
 {
   game_data_set_score_max(max);
 }
@@ -74,12 +74,12 @@ char *getNombre(void)
   return game_data_get_name();
 }
 
-uintmax_t getPuntos(void)
+unsigned long long getPuntos(void)
 {
   return game_data_get_score();
 }
 
-uintmax_t getMaxPuntos(void)
+unsigned long long getMaxPuntos(void)
 {
   return game_data_get_score_max();
 }

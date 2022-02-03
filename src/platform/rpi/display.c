@@ -49,7 +49,7 @@ matriz_t disp_matriz;
  */
 static void *threadTextoDisplay(void *ptr);
 static void *threadPresentacion(void *ptr);
-static void ulltoa(uintmax_t num, char *str);
+static void ulltoa(unsigned long long num, char *str);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -68,7 +68,7 @@ static bool thread_encendido, thread_presentacion_encendido;
 
 static int lines, i;
 static char **names;
-static uintmax_t *scores;
+static unsigned long long *scores;
 
 static char *creditos_cadenas[] = {"PROGRAMACION TPF 2021 1C", "FROGGER", "AUTORES", "ALEJANDRO HEIR", "FRANCO AGGRIPINO", "MATIAS ALVAREZ", "TOMAS CASTRO"};
 
@@ -278,9 +278,9 @@ static void *threadPresentacion(void *ptr)
   return NULL;
 }
 
-static void ulltoa(uintmax_t num, char *str)
+static void ulltoa(unsigned long long num, char *str)
 {
-  uintmax_t sum = num;
+  unsigned long long sum = num;
   int i = 0;
   int digit;
   do

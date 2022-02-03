@@ -68,7 +68,7 @@ FILE *handlerTemp = NULL;
 // Punteros a nombres
 static char **names = NULL;
 // Puntero a scores
-static uintmax_t *scores = NULL;
+static unsigned long long *scores = NULL;
 
 // String temporal
 static char tempStr[MAX_LEN];
@@ -98,7 +98,7 @@ void iniciarRanking(void)
   fclose(handlerRanking);
 }
 
-void actualizarRanking(char *name, uintmax_t score)
+void actualizarRanking(char *name, unsigned long long score)
 {
   int i;
   bool player_exists;
@@ -129,7 +129,7 @@ void actualizarRanking(char *name, uintmax_t score)
     strcpy(names[lineNumber], name);
 
     // Reservo memoria para un score
-    scores = (uintmax_t *)realloc(scores, sizeof(uintmax_t) * (lineNumber + 1));
+    scores = (unsigned long long *)realloc(scores, sizeof(unsigned long long) * (lineNumber + 1));
     // Asigno score
     scores[lineNumber] = score;
 
@@ -171,11 +171,11 @@ bool verificarJugadorRanking(char *name)
   return exists;
 }
 
-uintmax_t getJugadorRankingPuntos(char *name)
+unsigned long long getJugadorRankingPuntos(char *name)
 {
   int i;
   bool exists;
-  uintmax_t score;
+  unsigned long long score;
 
   for (i = 0, exists = false; i < lineNumber && !exists; i++)
   {
@@ -204,7 +204,7 @@ char **getRankingNombres(void)
   return names;
 }
 
-uintmax_t *getRankingPuntos(void)
+unsigned long long *getRankingPuntos(void)
 {
   return scores;
 }
@@ -237,7 +237,7 @@ static void recargarRanking(void)
     // Puntero al score
     tempPtr = strtok(NULL, " ");
     // Reservo memoria para un score
-    scores = (uintmax_t *)realloc(scores, sizeof(uintmax_t) * (lineNumber + 1));
+    scores = (unsigned long long *)realloc(scores, sizeof(unsigned long long) * (lineNumber + 1));
     // Copia score
     scores[lineNumber] = strtoul(tempPtr, NULL, 10);
 
@@ -248,7 +248,7 @@ static void recargarRanking(void)
 static void ordenarRanking(void)
 {
   int i, j;
-  uintmax_t tempScore;
+  unsigned long long tempScore;
 
   for (i = 0; i < (lineNumber - 1); i++)
   {

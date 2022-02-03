@@ -73,7 +73,7 @@ void cargarRanking(void)
 
   int lines = getRankingLineas();
   char **names = getRankingNombres();
-  uintmax_t *scores = getRankingPuntos();
+  unsigned long long *scores = getRankingPuntos();
 
   allegro_clear_display();
   for (i = 0; i < lines; i++)

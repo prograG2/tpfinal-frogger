@@ -46,8 +46,8 @@ static struct
   uint16_t ranas;
   uint16_t jugador_1;
   uint16_t jugador_2;
-  uintmax_t puntos;
-  uintmax_t max_puntos;
+  unsigned long long puntos;
+  unsigned long long max_puntos;
   bool jugando;
   bool agua;
   bool refresco_jugador;
@@ -109,7 +109,7 @@ void setNombre(char *nombre)
   strcpy(juego.nombre_jugador, nombre);
 }
 
-void setMaxPuntos(uintmax_t max)
+void setMaxPuntos(unsigned long long max)
 {
   juego.max_puntos = max;
 }
@@ -196,12 +196,12 @@ char *getNombre()
 {
   return juego.nombre_jugador;
 }
-uintmax_t getPuntos()
+unsigned long long getPuntos()
 {
   return juego.puntos;
 }
 
-uintmax_t getMaxPuntos()
+unsigned long long getMaxPuntos()
 {
   return juego.max_puntos;
 }

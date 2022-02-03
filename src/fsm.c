@@ -497,26 +497,14 @@ static void iniciar_juego(void)
 	limpiarDisplay();
 	char *nombreJugador = devolverNombre();
 	if (nombreJugador == NULL)
-	{
-		// Nombre default por si no se ingresó uno.
 		setNombre(DEFAULT_PLAYER_NAME);
-	}
 	else if (nombreJugador[0] == 0)
-	{
-		// Nombre default por si no se ingresó uno.
 		setNombre(DEFAULT_PLAYER_NAME);
-	}
 	else
-	{
 		setNombre(nombreJugador);
-	}
 
 	if (verificarJugadorRanking(getNombre()))
-	{
 		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
-
-		printf("\n\nJugador detectado: %s %lld\n\n", getNombre(), getMaxPuntos());
-	}
 
 	inicializarJuego();
 	reconfigurarDisplayOFF();
@@ -580,12 +568,10 @@ static void procesar_game_over(void)
 	reproducirMusica(MUSICA_GAME_OVER);
 	reconfigurarDisplayON();
 
-	uintmax_t jugador_puntos = getPuntos();
+	unsigned long long jugador_puntos = getPuntos();
 
 	if (jugador_puntos > getMaxPuntos())
 	{
-		printf("\n\nNew score para %s ~ Score nuevo: %lld ~ Score anterior: %lld\n\n", getNombre(), getPuntos(), getMaxPuntos());
-
 		reproducirEfecto(EFECTO_NUEVO_MAX_SCORE);
 
 		mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ_NEW_HI_SCORE);

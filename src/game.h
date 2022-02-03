@@ -39,7 +39,7 @@ void setNombre(char* nombre);
  * 
  * @param max 
  */
-void setMaxPuntos(uintmax_t max);
+void setMaxPuntos(unsigned long long max);
 
 /**
  * @brief Setea la dificultad a usar
@@ -66,16 +66,16 @@ char* getNombre(void);
 /**
  * @brief Devuelve el puntaje del jugador
  * 
- * @return uintmax_t 
+ * @return unsigned long long 
  */
-uintmax_t getPuntos(void);
+unsigned long long getPuntos(void);
 
 /**
  * @brief Devuelve el puntaje máximo del jugador
  * 
- * @return uintmax_t 
+ * @return unsigned long long 
  */
-uintmax_t getMaxPuntos(void);
+unsigned long long getMaxPuntos(void);
 
 /**
  * @brief Devuelve el nivel//run del jugador
