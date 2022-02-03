@@ -65,10 +65,11 @@ static char last;
  ******************************************************************************/
 
 void nuevoNombre(){
-	nombre = mensaje("", POS_MSJ2, false);
+	nombre = mensaje("A", POS_MSJ2, false);
 	last = 'A';
-	concatenarLetraMensaje(last, &nombre);
-
+	printRenglon(nombre.renglon);
+	copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+	actualizarDisplay();
 }
 
 void subirLetra(){
@@ -80,19 +81,19 @@ void subirLetra(){
 }
 
 void bajarLetra(){
-  if(++last < 'A')
-		last = 'Z';
+  if(++last > 'Z')
+		last = 'A';
   	reemplazarUltLetraMensaje(last, &nombre);
   	copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
   	actualizarDisplay();
 }
 
 void siguienteLetra(){
-	last = 'A';
 	concatenarLetraMensaje(last, &nombre);
+
+	last = 'A';
   copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
   actualizarDisplay();
-  //printf("%d\n", ++i);
 }
 
 void agregarLetra(void){

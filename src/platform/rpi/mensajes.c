@@ -302,19 +302,19 @@ void concatenarLetraMensaje(char c, mensaje_t *msj){
     (msj->msj)[msj->index++] = c;
     (msj->msj)[msj->index] = '\0';
     msj->longitud++;
+    msj->j += getLongitud(c) + 1;
 
     int ancho = 5; //debo considerar el peor caso por si después se va a reemplazar la letra
 
-    while(CANT_COLUMNAS - msj->j - ancho - 6 < 0){ //el margen estará antes
+    while(CANT_COLUMNAS - msj->j - ancho < 0){ //el margen estará antes
         renglonShiftIzq(msj->renglon, 1);
         msj->j--;
     }
 
     renglon_t letra;
-    charARenglon(c, letra);
+    charARenglon('A', letra);
     renglonShiftDer(letra, msj->j);
     renglonOr(msj->renglon, letra);
-    msj->j += ancho + 1;
 }
 
 void reemplazarUltLetraMensaje(char c, mensaje_t *msj){

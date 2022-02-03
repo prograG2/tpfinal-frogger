@@ -517,8 +517,8 @@ static void iniciar_juego(void){
 }
 
 static void ir_a_poniendo_nombre(){
-	nuevoNombre();
 	limpiarDisplay();
+	nuevoNombre();
 	dejarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE, true);
 }
 

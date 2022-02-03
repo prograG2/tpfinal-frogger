@@ -63,7 +63,7 @@ static void ulltoa(uint64_t num, char* str);
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
+static const clock_t TIEMPO_SLEEP_DISPLAY = CLOCKS_PER_SEC >> 2;
 
 
 /*******************************************************************************
@@ -135,7 +135,7 @@ void mostrarTexto(char* txt, int pos)
     int posicion = CASTEAR_POSICION(pos);
 	mensaje_t msj = mensaje(txt, posicion, false);
     while(!renglonIzquierdoLibre(&msj)){
-        usleep(SLEEP_CLOCKS);
+        usleep(TIEMPO_SLEEP_DISPLAY);
         moverMensaje(&msj);
         copiarMatrizRenglon(disp_matriz, msj.renglon, msj.posicion);
         actualizarDisplay();
@@ -244,7 +244,7 @@ void reconfigurarDisplayOFF(void)
 
 static void* threadTextoDisplay(void* ptr){
     while(thread_encendido && (texto1.habilitacion || texto2.habilitacion || texto3.habilitacion)){
-        usleep(SLEEP_CLOCKS);
+        usleep(TIEMPO_SLEEP_DISPLAY);
         if(texto1.habilitacion){
             moverMensaje(&texto1);
             copiarMatrizRenglon(disp_matriz, texto1.renglon, POS_MSJ1);
@@ -275,7 +275,7 @@ static void* threadPresentacion(void* ptr){
         else
             matrizOr(disp_matriz, letra_matriz);
         actualizarDisplay();
-        usleep(SLEEP_CLOCKS);
+        usleep(TIEMPO_SLEEP_DISPLAY);
     }
 
     thread_presentacion_encendido = false;

@@ -34,25 +34,37 @@
 #define POS_AUTOS_INICIO 4
 #define POS_AUTOS_FIN 13
 #define CANT_CARRILES 5
+#define L_MAX 64
 
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
+union{
+	uint32_t completo;
+	struct{
+		uint16_t derecho;
+		uint16_t izquierdo;
+	};
+}carril[CANT_CARRILES];
+
+matriz_t mapa;
+
+bool refresco_autos = false;
+
+clock_t tiempo_refresco_autos;
+
 static struct{
-    char nombre[L_MAX];
+	char nombre[L_MAX];
     int dificultad;
     int niv_actual;
     int posicion_sur;
     int posicion_oeste;
-	int timeout_ref;
-	int timeout_cnt;
     uint16_t vidas;
     uint16_t ranas;
     uint16_t jugador_1;
     uint16_t jugador_2;
-    uint16_t tiempo_bits;
     uint64_t puntos;
     uint64_t max_puntos;
 	bool jugando;
@@ -60,18 +72,11 @@ static struct{
 	bool refresco;
 	bool timeout;
     clock_t tiempo;
+	clock_t tiempo_inicio;
 	clock_t tiempo_referencia;
-	union
-	{
-		uint32_t completo;
-		struct{
-			uint16_t derecho;
-			uint16_t izquierdo;
-		};
-	}carril[CANT_CARRILES];
-	matriz_t mapa;
 } jugador;
 
+static clock_t tiempo_refresco_jugador = CLOCKS_PER_SEC >> 1;
 
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
@@ -98,11 +103,11 @@ void reiniciarTimer();
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-static pthread_t ttiempo;
-
-static int frac, acc;
+static pthread_t ttiempo, tjugador, tautos;
 
 static void* threadTiempo(void* ptr);
+static void* threadJugador(void* ptr);
+static void* threadAutos(void* ptr);
 
 
 /*******************************************************************************
@@ -120,68 +125,66 @@ void setMaxPuntos(uint64_t max){
 }
 
 void limpiarMapa(){
-	for(int i=0; i< CANT_CARRILES; i++)
-		jugador.carril[i].completo = 0;
-	limpiarMatriz(jugador.mapa);
+	
+
+
 }
 
 void moverCarrriles(int x){
 	for(int i=0; i<5; i++)
-		jugador.carril[i].completo <<= x;
+		carril[i].completo <<= x;
 }
 
 void spawnearAutos(){
 	int i;
 		for(i=0; i<5; i++){
         	if(jugador.agua){
-            	if(!(jugador.carril[i].completo & 0b1111111111) && !(rand() % 10))
-                	jugador.carril[i].completo |= 0b111111;
-            	else if(!(jugador.carril[i].completo & 0b111111111111) && !(rand() % 20))
-                	jugador.carril[i].completo |= 0b11111111;
+            	if(!(carril[i].completo & 0b1111111111) && !(rand() % 10))
+                	carril[i].completo |= 0b111111;
+            	else if(!(carril[i].completo & 0b111111111111) && !(rand() % 20))
+                	carril[i].completo |= 0b11111111;
     		}
         	else{
-            	if(!(jugador.carril[i].completo & 0b111111) && !(rand() % 10))
-            		jugador.carril[i].completo |= 0b11;
-            	else if(!(jugador.carril[i].completo & 0b11111111) && !(rand() % 20))
-                	jugador.carril[i].completo |= 0b1111;
+            	if(!(carril[i].completo & 0b111111) && !(rand() % 10))
+            		carril[i].completo |= 0b11;
+            	else if(!(carril[i].completo & 0b11111111) && !(rand() % 20))
+                	carril[i].completo |= 0b1111;
         	}
 		}
 }
 
 void actualizarMapa(){
 	if(jugador.agua){
-		disp_matriz[2] = jugador.ranas;
-		disp_matriz[3] = jugador.ranas;
+		mapa[2] = jugador.ranas;
+		mapa[3] = jugador.ranas;
 	}
 	else{
-		disp_matriz[2] = 0;
-		disp_matriz[3] = 0;
+		mapa[2] = 0;
+		mapa[3] = 0;
 	}
 	for(int i=0; i<5; i++){
-		jugador.mapa[POS_AUTOS_INICIO+2*i] = jugador.carril[i].izquierdo;
-		jugador.mapa[POS_AUTOS_INICIO+2*i+1] = jugador.carril[i].izquierdo;
+		mapa[POS_AUTOS_INICIO+2*i] = carril[i].izquierdo;
+		mapa[POS_AUTOS_INICIO+2*i+1] = carril[i].izquierdo;
 	}
 }
 
 void refrescar(){
-	static bool refresco_autos = 0;
-
-	uint16_t tmp = jugador.jugador_1;
-	jugador.jugador_1 = jugador.jugador_2;
-	jugador.jugador_2 = tmp;
-
 	if(refresco_autos){
 		moverCarrriles(1);
 		spawnearAutos();
+		refresco_autos = false;
 	}
-	
-	refresco_autos = !refresco_autos;
-	jugador.refresco = false;
+	if(jugador.refresco){
+		uint16_t tmp = jugador.jugador_1;
+		jugador.jugador_1 = jugador.jugador_2;
+		jugador.jugador_2 = tmp;
+		jugador.refresco = false;
+	}
 }
 
 bool tiempoRefrescoEntidades(void)
 {
-	return jugador.refresco;
+	return jugador.refresco || refresco_autos;
 }
 
 bool tiempoLimite(void)
@@ -219,8 +222,15 @@ void reiniciarNivel(){
 
 void respawn(){
 	jugador.posicion_sur = CANT_FILAS-1;
+	if(!jugador.agua){
+		jugador.jugador_1 = 0b0000000100000000;
+		jugador.jugador_2 = 0b0000000010000000;
+		jugador.posicion_oeste = 7;
+	}
 
-	limpiarMapa();
+	for(int i=0; i< CANT_CARRILES; i++)
+		carril[i].completo = 0;
+	limpiarMatriz(mapa);
 
 	for(int i = 0; i < 10 ; i++){
 		moverCarrriles(4);
@@ -235,13 +245,11 @@ void moverAdelante(){
 		jugador.posicion_sur--;
     if(jugador.posicion_sur == 3){
         if(!jugador.agua){
-		jugador.agua = true;
-		respawn();
+			jugador.agua = true;
+			respawn();
 		}
 		else{
-			//printf("Agregando rana\n");
 			jugador.ranas |= jugador.jugador_1 | jugador.jugador_2;
-			//printf("%d\n", jugador.ranas);
 			if(jugador.ranas == 0b1111111111111111){
 				jugador.timeout = true;
 				jugador.niv_actual++;
@@ -300,33 +308,38 @@ void inicializarJuego()
 }
 
 void reiniciarTimer(){
-	jugador.tiempo = 0;
-	jugador.tiempo_bits = 0b1111111111111111;
-	jugador.tiempo_referencia = 0;
-	jugador.timeout_cnt = 0;
-	jugador.timeout_ref = 2*60*(1-0.05*(jugador.dificultad));
-	frac = jugador.timeout_ref / 16;
-	acc = frac;
+	jugador.tiempo_inicio = CLOCKS_PER_SEC*60 - (jugador.dificultad-jugador.niv_actual);
+	jugador.tiempo = jugador.tiempo_inicio;
+	jugador.tiempo_referencia = jugador.tiempo_inicio;
+	tiempo_refresco_autos = CLOCKS_PER_SEC*(1-0.125*(jugador.dificultad-jugador.niv_actual-1));
 	jugador.timeout = false;
 }
 
 void pausarJuego(){
 	jugador.jugando = false;
 	pthread_join(ttiempo, NULL);
+	pthread_join(tautos, NULL);
+	pthread_join(tjugador, NULL);
 }
 
 void actualizarInterfaz(){
 	actualizarMapa();
-	copiarMatriz(disp_matriz, jugador.mapa);
+	copiarMatriz(disp_matriz, mapa);
     disp_matriz[0] = jugador.vidas;
-    disp_matriz[1] = jugador.tiempo_bits;
+	clock_t frac = jugador.tiempo_inicio >> 4, aux = jugador.tiempo;
+	disp_matriz[1] = 0;
+	while(aux > 0){
+		disp_matriz[1] <<= 1;
+		disp_matriz[1] |= 1;
+		aux -= frac;
+	}
 
     disp_matriz[(jugador.posicion_sur)-1] |= jugador.jugador_1;
     disp_matriz[jugador.posicion_sur] |= jugador.jugador_2;
 
 	actualizarDisplay();
 
-	if((jugador.mapa[(jugador.posicion_sur)-1]) & jugador.jugador_1 || (jugador.mapa[(jugador.posicion_sur)]) & jugador.jugador_2  || jugador.timeout)
+	if((mapa[(jugador.posicion_sur)-1]) & jugador.jugador_1 || (mapa[(jugador.posicion_sur)]) & jugador.jugador_2  || jugador.timeout)
 		perderVida();
 		
 }
@@ -335,6 +348,8 @@ void reanudarJuego(void)
 {
 	jugador.jugando = true;
 	pthread_create(&ttiempo, NULL, threadTiempo, NULL);
+	pthread_create(&tjugador, NULL, threadJugador, NULL);
+	pthread_create(&tautos, NULL, threadAutos, NULL);
 }
 
 
@@ -345,24 +360,14 @@ void reanudarJuego(void)
  ******************************************************************************/
 
 static void* threadTiempo(void* ptr){
-	clock_t ref = clock() - jugador.tiempo_referencia;
+	clock_t ref = clock();
 	while(jugador.jugando){
 		if(!(jugador.timeout)){
-			jugador.tiempo = clock() - ref;
-			if(jugador.tiempo >= SLEEP_CLOCKS){
-				jugador.tiempo = 0;
-				jugador.refresco = true;
-				jugador.timeout = ++(jugador.timeout_cnt)  >= jugador.timeout_ref;
-				if(jugador.timeout_cnt >= acc){
-					acc += frac;
-					jugador.tiempo_bits >>= 1;
-				}
-				jugador.tiempo_referencia = 0;
-				ref = clock();
-			}
+			jugador.tiempo = jugador.tiempo_referencia - (clock() - ref);
+			jugador.timeout = jugador.tiempo <= 0;
 		}
 		else{
-			ref = clock() - jugador.tiempo_referencia;
+			ref = clock();
 		}
 	}
 
@@ -370,4 +375,29 @@ static void* threadTiempo(void* ptr){
 	
 	return NULL;
 }
- 
+
+static void* threadAutos(void* ptr){
+	clock_t ref = clock();
+	while(jugador.jugando){
+		if(!jugador.timeout && !refresco_autos){
+			refresco_autos = (clock()-ref) > tiempo_refresco_autos;
+		}
+		else{
+			ref = clock();
+		}
+	}
+	return NULL;
+}
+
+static void* threadJugador(void* ptr){
+	clock_t ref = clock();
+	while(jugador.jugando){
+		if(!jugador.timeout && !jugador.refresco){
+			jugador.refresco = (clock()-ref) > tiempo_refresco_jugador;
+		}
+		else{
+			ref = clock();
+		}
+	}
+	return NULL;
+}

@@ -16,7 +16,6 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-#include "rpiconsts.h"
 #include "bitmap.h"
 
 #include <stdint.h>
@@ -31,7 +30,7 @@
 #define POS_MSJ1 2
 #define POS_MSJ2 9
 #define POS_MSJ3 5
-
+#define L_MAX 64
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
