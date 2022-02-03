@@ -40,12 +40,14 @@ _OBJS_PC 		= allegro_stuff.o entities.o game_data.o geometry.o
 _OBJS_PC		+= $(_OBJS_GENERIC)
 OBJS_PC			= $(patsubst %.o,$(OBJ_DIR)/%_PC.o,$(_OBJS_PC))
 _OBJS_PC_ALGIF 	= algif.o bitmap.o gif.o lzw.o
-ALGIF_OBJS		= $(patsubst %.o,$(OBJ_DIR)/%_PC_ALGIF.o,$(_OBJS_PC_ALGIF))
+OBJS_PC_ALGIF	= $(patsubst %.o,$(OBJ_DIR)/%_PC_ALGIF.o,$(_OBJS_PC_ALGIF))
 
 # Objetos especificos RPI
-_OBJS_RPI	= bitmap.o mensajes.o
-_OBJS_RPI	+= $(_OBJS_GENERIC)
-OBJS_RPI	= $(patsubst %.o,$(OBJ_DIR)/%_RPI.o,$(_OBJS_RPI))
+_OBJS_RPI		= bitmap.o mensajes.o
+_OBJS_RPI		+= $(_OBJS_GENERIC)
+OBJS_RPI		= $(patsubst %.o,$(OBJ_DIR)/%_RPI.o,$(_OBJS_RPI))
+_OBJS_RPI_SDL2	= audio.c
+OBJS_RPI_SDL2	= $(patsubst %.o,$(OBJ_DIR)/%_RPI_SDL2.o,$(_OBJS_RPI_SDL2))
 
 # Objetos a usar. Se preinicializa con los principales.
 OBJS 		= $(OBJS_MAIN)
@@ -64,7 +66,7 @@ LIBS_PC		= `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives
 LIBS_PC 	+= -L$(LIB_DIR) -lalgif
 
 # RPI
-LIBS_RPI	=  -L$(LIB_DIR) -lrpiutils -lSDL2
+LIBS_RPI	=  -L$(LIB_DIR) -lrpiutils -L$(LIB_DIR) -lsimpleSDL2audio -lSDL2
 
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -94,7 +96,7 @@ endif
 arch		= $(shell uname -m)
 ifeq ($(arch), armv7l)
 PLATFORM	= RPI
-EXTRA_DEPS	=
+EXTRA_DEPS	= $(LIB_DIR)/libsimpleSDL2audio.a
 else
 PLATFORM 	= PC
 EXTRA_DEPS	= $(LIB_DIR)/libalgif.a
@@ -115,7 +117,7 @@ LIBS		+= $(LIBS_$(PLATFORM))
 
 # Other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Crea directorio de objetos y ejecutable si no estan creados
+# Crea directorio de objetos, ejecutable y bibliotecas, si no están creados.
 dummy_obj_folder = $(shell mkdir -p $(OBJ_DIR))
 dummy_bin_folder = $(shell mkdir -p $(BIN_DIR))
 
@@ -221,8 +223,8 @@ $(OBJ_DIR)/geometry_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,geometry.c geometry.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
-$(LIB_DIR)/libalgif.a: $(ALGIF_OBJS)
-	ar -rc $@ $(ALGIF_OBJS)
+$(LIB_DIR)/libalgif.a: $(OBJS_PC_ALGIF)
+	ar -rc $@ $(OBJS_PC_ALGIF)
 	ranlib $@
 
 $(OBJ_DIR)/algif_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/algif.c)
@@ -258,7 +260,7 @@ $(OBJ_DIR)/menu_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,menu.c) $(patsubst %,$(SRC_
 $(OBJ_DIR)/nombre_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,nombre.c) $(patsubst %,$(SRC_DIR)/%,nombre.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/sound_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,sound.c audio.h) $(patsubst %,$(SRC_DIR)/%,sound.h)
+$(OBJ_DIR)/sound_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,sound.c simpleSDL2audio/audio.h) $(patsubst %,$(SRC_DIR)/%,sound.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
@@ -266,6 +268,14 @@ $(OBJ_DIR)/bitmap_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,bitmap.c bitmap.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/mensajes_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,mensajes.c mensajes.h)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+
+$(LIB_DIR)/libsimpleSDL2audio.a: $(OBJS_RPI_SDL2)
+	ar -rc $@ $(OBJS_RPI_SDL2)
+	ranlib $@
+
+$(OBJ_DIR)/audio_RPI_SDL2.o: $(patsubst %,$(SRC_RPI_DIR)/%,simpleSDL2audio5/audio.c simpleSDL2audio5/audio.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Compilacion de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -278,7 +288,7 @@ $(OBJ_DIR)/mensajes_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,mensajes.c mensajes.h)
 
 ## Compila (sin linkear) todos los objetos de PC
 .PHONY: compile-pc
-compile-pc: $(OBJS_PC) $(ALGIF_OBJS)
+compile-pc: $(OBJS_PC) $(OBJS_PC_ALGIF)
 
 ## Compila (sin linkear) todos los objetos de RPI
 .PHONY: compile-rpi

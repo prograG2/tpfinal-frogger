@@ -10,7 +10,7 @@
  ******************************************************************************/
 
 #include "../../sound.h"
-#include "audio.h"
+#include "simpleSDL2audio/audio.h"
 
 #include <stdio.h>
 
@@ -56,12 +56,21 @@ static Audio *musica[SIZEOF_MUSICA], *efectos[SIZEOF_EFECTOS];
 
 bool iniciarSonido(void)
 {
+	if(SDL_Init(SDL_INIT_AUDIO) < 0)
+	{
+		return 1; 
+	}
+
+	initAudio();
+
+	/*
   if (initAudio() == NO_INIT)
   {
     printf("Audio not initilized.\n");
     endAudio();
     return false;
   }
+	*/
   int i;
   for (i = 0; i < SIZEOF_MUSICA; i++)
     musica[i] = createAudio(archivos_musica[i], 1, SDL_MIX_MAXVOLUME);
@@ -78,6 +87,8 @@ void destruirSonido(void)
     freeAudio(musica[i]);
   for (i = 0; i < SIZEOF_EFECTOS; i++)
     freeAudio(efectos[i]);
+
+	SDL_Quit();
 }
 
 void pausarMusica(void)
