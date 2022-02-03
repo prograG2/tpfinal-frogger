@@ -175,7 +175,16 @@ bool renglonIzquierdoLibre(mensaje_t *msj)
 
 void charARenglon(char c, renglon_t r)
 {
-  int indice = getLongitud(c);
+  int indice;
+
+  if (c == ' ' || !c)
+    indice = INDEX_ESPACIO;
+  else if ('0' <= c && c <= '9')
+    indice = INDEX_CERO + c - '0';
+  else if ('A' <= c && c <= 'Z')
+    indice = c - 'A';
+  else
+    indice = INDEX_FULL;
 
   for (int i = 0; i < TAM_RENGLON; i++)
   {

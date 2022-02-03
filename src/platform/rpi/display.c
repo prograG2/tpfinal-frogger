@@ -162,16 +162,21 @@ void dejarTexto(char *txt, int pos, bool repetir)
 
 void cargarRanking(void)
 {
-  lines = getRankingLineas();
-  names = getRankingNombres();
-  scores = getRankingPuntos();
-  i = 0;
   borrarRenglon(texto2.renglon);
+  lines = getRankingLineas();
+  if (lines <= 0)
+    dejarTexto("NINGUNA PARTIDA COMPLETADA AUN", POS_MSJ2, true);
+  else
+  {
+    names = getRankingNombres();
+    scores = getRankingPuntos();
+    i = 0;
+  }
 }
 
 void mostrarRanking(void)
 {
-  if (renglonIzquierdoLibre(&texto2))
+  if (renglonIzquierdoLibre(&texto2) && lines > 0)
   { // si se acabó lo que tenía para mostrar abajo, busco la siguiente posición
     renglon_t r = {0};
     uintARenglon(i + 1, r);
