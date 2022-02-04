@@ -221,6 +221,7 @@ STATE en_menu_ppal[] =
 				{ENTER, menu_ppal_esperando_opcion, procesar_enter_menu},
 				{ARRIBA, en_menu_ppal, subirOpcion},
 				{ABAJO, en_menu_ppal, bajarOpcion},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, en_menu_ppal, do_nothing}};
 
 STATE menu_ppal_esperando_opcion[] =
@@ -239,16 +240,19 @@ STATE seleccionando_dificultad[] =
 				{ENTER, en_menu_ppal, procesar_enter_dificultad},
 				{ARRIBA, seleccionando_dificultad, subirOpcion},
 				{ABAJO, seleccionando_dificultad, bajarOpcion},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, seleccionando_dificultad, do_nothing}};
 
 STATE viendo_ranking[] =
 		{
 				{ENTER, en_menu_ppal, procesar_enter_ranking},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, viendo_ranking, do_nothing}};
 
 STATE viendo_creditos[] =
 		{
 				{ENTER, en_menu_ppal, procesar_enter_creditos},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, viendo_creditos, do_nothing}};
 
 STATE poniendo_nombre[] =
@@ -258,6 +262,7 @@ STATE poniendo_nombre[] =
 				{ARRIBA, poniendo_nombre, subirLetra},
 				{ABAJO, poniendo_nombre, bajarLetra},
 				{DCHA, poniendo_nombre, siguienteLetra},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, poniendo_nombre, agregarLetra} // Si no coincide el evento con ninguna de las teclas previas, se toam como si se apretase una letra
 };
 
@@ -269,6 +274,7 @@ STATE jugando[] =
 				{ABAJO, jugando, moverAtras},
 				{IZDA, jugando, moverIzda},
 				{DCHA, jugando, moverDcha},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, jugando, do_nothing}};
 
 STATE en_pausa[] =
@@ -276,6 +282,7 @@ STATE en_pausa[] =
 				{ENTER, en_pausa_esperando_opcion, procesar_enter_menu},
 				{ARRIBA, en_pausa, subirOpcion},
 				{ABAJO, en_pausa, bajarOpcion},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, en_pausa, do_nothing}};
 
 STATE en_pausa_esperando_opcion[] =
@@ -290,6 +297,7 @@ STATE en_game_over[] =
 				{ENTER, en_game_over_esperando_opcion, procesar_enter_menu},
 				{ARRIBA, en_game_over, subirOpcion},
 				{ABAJO, en_game_over, bajarOpcion},
+				{FORCE_SALIR, NULL, salir_del_juego},
 				{FIN_TABLA, en_game_over, do_nothing}};
 
 STATE en_game_over_esperando_opcion[] =

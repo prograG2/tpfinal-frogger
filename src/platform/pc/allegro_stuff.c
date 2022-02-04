@@ -337,7 +337,9 @@ void allegro_deinits(void)
   sprites_deinit();
   audio_deinit();
   al_destroy_font(allegro_vars.font);
-  al_destroy_display(allegro_vars.disp);
+
+	//al_destroy_display(allegro_vars.disp);
+
   al_destroy_timer(allegro_vars.timer);
   al_destroy_event_queue(allegro_vars.queue);
 }
