@@ -16,13 +16,12 @@
 #include "queue.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-// Estructura de la queue
+// Estructura del nodo
 typedef struct nodeT
 {
     event_t data;
@@ -121,13 +120,3 @@ static void borrarElemento(void)
         }
     }
 }
-
-/*
-static void printQueue(){
-  node_t *temp = front;
-  while(temp != back){
-    printf("%d, ", temp->data);
-    temp = temp->next;
-  }
-}
-*/

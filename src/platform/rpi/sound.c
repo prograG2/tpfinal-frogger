@@ -12,8 +12,6 @@
 #include "../../sound.h"
 #include "simpleSDL2audio/audio.h"
 
-#include <stdio.h>
-
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/

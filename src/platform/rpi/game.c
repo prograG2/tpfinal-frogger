@@ -18,7 +18,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <pthread.h>
 #include <time.h>
 
@@ -303,15 +302,13 @@ void moverDcha()
 
 void perderVida()
 {
-    juego.agua && !juego.timeout ? reproducirEfecto(EFECTO_AHOGADO) : reproducirEfecto(EFECTO_IMPACTO);
+    juego.agua ? reproducirEfecto(EFECTO_AHOGADO) : reproducirEfecto(EFECTO_IMPACTO);
     juego.agua = false;
     juego.vidas <<= 1;
     if (!juego.vidas)
         queueInsertar(GAME_OVER);
     else
         respawn();
-
-    reiniciarTimer();
 }
 
 void inicializarJuego()
@@ -323,12 +320,12 @@ void inicializarJuego()
 
 void reiniciarTimer()
 {
-    juego.tiempo_inicio = CLOCKS_PER_SEC * (200 - (2*juego.dificultad + juego.niv_actual));
+    juego.tiempo_inicio = CLOCKS_PER_SEC * (100 - (2*(juego.dificultad + juego.niv_actual)));
     juego.tiempo = juego.tiempo_inicio;
     juego.tiempo_referencia = juego.tiempo_inicio;
-    juego.tiempo_refresco_autos = CLOCKS_PER_SEC * (1 - 0.125 * (2*juego.dificultad + juego.niv_actual - 1));
+    juego.tiempo_refresco_autos = CLOCKS_PER_SEC * (1 - 0.25 * (2*(juego.dificultad + juego.niv_actual - 1)));
     juego.tiempo_refresco_jugador = CLOCKS_PER_SEC >> 1;
-    juego.tiempo_alerta = CLOCKS_PER_SEC * 30;
+    juego.tiempo_alerta = CLOCKS_PER_SEC * 15;
     juego.refresco_autos = false;
     juego.refresco_jugador = false;
     juego.timeout = false;

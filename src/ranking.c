@@ -51,6 +51,15 @@ static void writeRanking(void);
  */
 static void createRankingFile(void);
 
+/**
+ * @brief Realoca memoria, verificando si fue posible hacerlo
+ *
+ * @param p puntero a memoria sin realocar(puede ser nulo)
+ * @param n cantidad de bytes que se desean en el nuevo array
+ * @return void* puntero a memoria realocada
+ */
+static void *realocar(void *p, size_t n);
+
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -89,9 +98,7 @@ void iniciarRanking(void)
     createRankingFile();
 
     if ((handlerRanking = fopen(strRanking, "r")) == NULL)
-    {
         printf("Error opening ranking.txt");
-    }
 
     recargarRanking();
 
@@ -101,36 +108,32 @@ void iniciarRanking(void)
 void actualizarRanking(char *name, unsigned long long score)
 {
     int i;
-    bool player_exists;
+    bool player_exists = false;
 
-    // Veo si el jugador esta en el ranking
-    for (i = 0, player_exists = false; i < lineNumber && !player_exists; i++)
+    if (lineNumber)
     {
-        if (!lineNumber)
-            break;
-
-        // Si el nombre coincide...
-        if (strcmp(names[i], name) == 0)
+        // Veo si el jugador esta en el ranking
+        for (i = 0; i < lineNumber && !player_exists; i++)
         {
-            // Actualiza el score
-            scores[i] = score;
-            player_exists = true;
+
+            // Si el nombre coincide...
+            if (strcmp(names[i], name) == 0)
+            {
+                // Actualiza el score
+                scores[i] = score;
+                player_exists = true;
+            }
         }
     }
 
     // Si el jugador no existe en el ranking, lo agrego al final
     if (!player_exists)
     {
-        // Reservo memoria para un puntero
-        names = (char **)realloc(names, sizeof(char *) * (lineNumber + 1));
-        // Reservo memoria para el nombre
-        names[lineNumber] = (char *)calloc(strlen(name), sizeof(char));
-        // Asigno nombre
+        names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));
+        names[lineNumber] = (char *)realocar(NULL, strlen(name) * sizeof(char));
         strcpy(names[lineNumber], name);
 
-        // Reservo memoria para un score
-        scores = (unsigned long long *)realloc(scores, sizeof(unsigned long long) * (lineNumber + 1));
-        // Asigno score
+        scores = (unsigned long long *)realocar(scores, sizeof(unsigned long long) * (lineNumber + 1));
         scores[lineNumber] = score;
 
         lineNumber++;
@@ -154,19 +157,14 @@ void desiniciarRanking(void)
 
 bool verificarJugadorRanking(char *name)
 {
-    int i;
-    bool exists;
-
     // Ranking vacio
     if (!lineNumber)
         return false;
 
+    int i;
+    bool exists;
     for (i = 0, exists = false; i < lineNumber && !exists; i++)
-    {
-        // Si el nombre coincide...
-        if (strcmp(names[i], name) == 0)
-            exists = true;
-    }
+        exists = strcmp(names[i], name) == 0;
 
     return exists;
 }
@@ -175,7 +173,7 @@ unsigned long long getJugadorRankingPuntos(char *name)
 {
     int i;
     bool exists;
-    unsigned long long score;
+    unsigned long long score = 0;
 
     for (i = 0, exists = false; i < lineNumber && !exists; i++)
     {
@@ -187,9 +185,6 @@ unsigned long long getJugadorRankingPuntos(char *name)
             exists = true;
         }
     }
-
-    if (!exists)
-        score = 0;
 
     return score;
 }
@@ -221,24 +216,20 @@ static void recargarRanking(void)
 
     while (fgets(tempStr, MAX_LEN, handlerRanking) != NULL)
     {
-        // Remove the trailing newline character
-        if (strchr(tempStr, '\n'))
-            tempStr[strlen(tempStr) - 1] = '\0';
+        char *p = strchr(tempStr, '\n');
+        while (p != NULL)
+        {
+            *p = '\0'; // Saco todos los saltos de linea
+            p = strchr(tempStr, '\n');
+        }
 
-        // Puntero al nombre
-        char *tempPtr = strtok(tempStr, " ");
-        // Reservo memoria para un puntero
-        names = (char **)realloc(names, sizeof(char *) * (lineNumber + 1));
-        // Reservo memoria para el nombre
-        names[lineNumber] = (char *)calloc(strlen(tempPtr), sizeof(char));
-        // Copia nombre
+        char *tempPtr = strtok(tempStr, " ");                                       // Apunto al nombre
+        names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));        // Reservo memoria para un puntero
+        names[lineNumber] = (char *)realocar(NULL, strlen(tempPtr) * sizeof(char)); // Reservo memoria para el nombre
         strcpy(names[lineNumber], tempPtr);
 
-        // Puntero al score
-        tempPtr = strtok(NULL, " ");
-        // Reservo memoria para un score
-        scores = (unsigned long long *)realloc(scores, sizeof(unsigned long long) * (lineNumber + 1));
-        // Copia score
+        tempPtr = strtok(NULL, " ");                                                                    // Apunto a los puntos
+        scores = (unsigned long long *)realocar(scores, sizeof(unsigned long long) * (lineNumber + 1)); // Reservo memoria para un score
         scores[lineNumber] = strtoul(tempPtr, NULL, 10);
 
         lineNumber++;
@@ -279,17 +270,13 @@ static void writeRanking(void)
 
     // Crea archivo temporal
     if ((handlerTemp = fopen(strTemp, "w")) == NULL)
-    {
         printf("Error opening temp.txt");
-    }
 
     if (lineNumber)
     {
         // Copia lo nuevo en temp.txt
         for (i = 0; i < lineNumber; i++)
-        {
             fprintf(handlerTemp, "%s %lld\n", names[i], scores[i]);
-        }
     }
 
     remove(strRanking);
@@ -307,4 +294,16 @@ static void createRankingFile(void)
         printf("Error creando %s", strRanking);
     }
     fclose(pFile);
+}
+
+static void *realocar(void *p, size_t n)
+{
+    void *aux = realloc(p, n);
+    if (aux == NULL)
+    {
+        perror("Error en ranking.c al realocar memoria\n");
+        free(p);
+        exit(2);
+    }
+    return aux;
 }

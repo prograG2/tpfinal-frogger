@@ -40,7 +40,13 @@ static char *menu_textos[] = {"JUGAR", "DIFICULTAD", "RANKING", "CREDITOS", "SAL
 
 void setMenu(int *a, unsigned int size)
 {
-    menu.menu_actual = realloc(menu.menu_actual, size * sizeof(int));
+    int *aux = realloc(menu.menu_actual, size * sizeof(int));
+    if(aux == NULL){
+        free(menu.menu_actual);
+        exit(1);
+    }
+
+    menu.menu_actual = aux;
     int i;
     for (i = 0; i < size; i++)
     {
