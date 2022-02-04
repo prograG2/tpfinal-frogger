@@ -48,6 +48,7 @@ _OBJS_RPI		+= $(_OBJS_GENERIC)
 OBJS_RPI		= $(patsubst %.o,$(OBJ_DIR)/%_RPI.o,$(_OBJS_RPI))
 _OBJS_RPI_SDL2	= audio.o
 OBJS_RPI_SDL2	= $(patsubst %.o,$(OBJ_DIR)/%_RPI_SDL2.o,$(_OBJS_RPI_SDL2))
+OBJS_RPI 		+= $(OBJS_RPI_SDL2)
 
 # Objetos a usar. Se preinicializa con los principales.
 OBJS 		= $(OBJS_MAIN)
@@ -66,7 +67,7 @@ LIBS_PC		= `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives
 LIBS_PC 	+= -L$(LIB_DIR) -lalgif
 
 # RPI
-LIBS_RPI	=  -L$(LIB_DIR) -lrpiutils -L$(LIB_DIR) -lsimpleSDL2audio -lSDL2
+LIBS_RPI	=  -L$(LIB_DIR) -lrpiutils -lSDL2
 
 # Libraries stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -96,7 +97,7 @@ endif
 arch		= $(shell uname -m)
 ifeq ($(arch), armv7l)
 PLATFORM	= RPI
-EXTRA_DEPS	= $(LIB_DIR)/libsimpleSDL2audio.a
+EXTRA_DEPS	= 
 else
 PLATFORM 	= PC
 EXTRA_DEPS	= $(LIB_DIR)/libalgif.a
@@ -270,10 +271,6 @@ $(OBJ_DIR)/bitmap_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,bitmap.c bitmap.h)
 $(OBJ_DIR)/mensajes_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,mensajes.c mensajes.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-
-$(LIB_DIR)/libsimpleSDL2audio.a: $(OBJS_RPI_SDL2)
-	ar -rc $@ $(OBJS_RPI_SDL2)
-	ranlib $@
 
 $(OBJ_DIR)/audio_RPI_SDL2.o: $(patsubst %,$(SRC_RPI_DIR)/%,simpleSDL2audio/audio.c simpleSDL2audio/audio.h)
 	$(CC) $(CFLAGS) -c $< -o $@

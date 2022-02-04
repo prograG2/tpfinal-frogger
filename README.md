@@ -232,7 +232,9 @@ Project Link: [https://github.com/prograG2/tpfinal-frogger](https://github.com/p
   * Menú principal: [VipeorofVic](https://www.youtube.com/watch?v=iXHix_kdJWI&t=101s), Dark Souls III - Main Theme - 8 Bit Revision
   * Ranking: [Jaxxtir](https://www.youtube.com/watch?v=ykt-5q13GGs), GTA San Andreas Theme - 8 Bit Remix
   * Créditos: [8 Bit Universe](https://www.youtube.com/watch?v=kRkBnSbwvk8), Curb Your Enthusiasm Theme - 8 Bit
-  * Partida: [Super Jumbo Trainer 98](https://www.youtube.com/watch?v=t4xAVyQ3LpY&t=107s), Frogger (Arcade) Stage Theme Extended
+  * Partida:
+    * PC: [Super Jumbo Trainer 98](https://www.youtube.com/watch?v=t4xAVyQ3LpY&t=107s), Frogger (Arcade) Stage Theme Extended
+    * RPi: Venetian Snares, Sajtban
   * Menú de pausa: [Retro Game Audio](https://soundcloud.com/retrogameaudio/firelink-shrine-nes-famicom), Dark Souls - Firelink Shrine (NES/ Famicom + VRC6 audio)
   * Menú de game over: [MB Music](https://www.youtube.com/watch?v=br3OzOrARh4), Game Over (8-Bit Music)
 * [Simple SDL2 Audio](https://github.com/jakebesworth/Simple-SDL2-Audio)

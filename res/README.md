@@ -1,4 +1,4 @@
-# Directorio */res* (resources)
+# Directorio `/res` (resources)
 
 Contiene imágenes, sonidos y otros **recursos externos** necesarios para el programa principal.
 
