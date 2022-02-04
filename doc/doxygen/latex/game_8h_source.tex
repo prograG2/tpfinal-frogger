@@ -1,0 +1,69 @@
+\hypertarget{game_8h_source}{}\doxysection{game.\+h}
+\label{game_8h_source}\index{src/game.h@{src/game.h}}
+\mbox{\hyperlink{game_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef \_GAME\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define \_GAME\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{17 \textcolor{comment}{ * INCLUDE HEADER FILES}}
+\DoxyCodeLine{18 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <stdlib.h>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{26 \textcolor{comment}{ * FUNCTION PROTOTYPES WITH GLOBAL SCOPE}}
+\DoxyCodeLine{27 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{34 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a75aa47fac1447fe8deb230d2cbfe18f7}{setNombre}}(\textcolor{keywordtype}{char}* nombre);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{42 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_ad3d942b9b39f8908b9c716fee6160d75}{setMaxPuntos}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} max);}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{49 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a7abcfa420a77ec43d704616e3ea6ee92}{setDificultad}}(\textcolor{keywordtype}{int} dif);}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{57 \textcolor{keywordtype}{bool} \mbox{\hyperlink{game_8h_ade342ea5c0d3d98f0bb31cc1279e5345}{tiempoRefrescoEntidades}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{64 \textcolor{keywordtype}{char}* \mbox{\hyperlink{game_8h_aaa6e8a891c2ce0e21c6b9c1fdb8667a0}{getNombre}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{71 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} \mbox{\hyperlink{game_8h_a4ca316cfca7f9158755735ab06d72e58}{getPuntos}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{78 \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} \mbox{\hyperlink{game_8h_a62f7fd08861833f383d62f3309fb65a3}{getMaxPuntos}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{85 \textcolor{keywordtype}{int} \mbox{\hyperlink{game_8h_ac08601703b67368c78d4a55dcf6cd95f}{getNivel}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{91 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a37fc0b574086b97d2b016282a6d07a8f}{inicializarJuego}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{97 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a3286a8e2295e3200a7e7a631e2082534}{reiniciarNivel}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{103 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a7e062693f0f4ee5650b280474808c343}{pausarJuego}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{109 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a194669122fe9edc8705ae4a9d0f44dbd}{reanudarJuego}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{115 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_af627356cc5139fae23807deda8710baf}{refrescar}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{121 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a1cf0080232103f3af30c51968ef3f437}{moverAdelante}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{127 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a138bb74c542a634e4687f7a0ba645389}{moverAtras}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{133 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a69286ed389d28e8ff7af13e73df1fc95}{moverIzda}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{139 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_ac1573bd2714f9178990d444df5aad4ac}{moverDcha}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{145 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a93e0b6632d2e5d5f1e77cdf4579ece9e}{respawn}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{151 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_a7a5e1e9438e77152debc4c581e77373c}{perderVida}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{157 \textcolor{keywordtype}{void} \mbox{\hyperlink{game_8h_ae0aeb27b0fb144e267bc208e6f58ecb4}{actualizarInterfaz}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{161 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_GAME\_H\_}}
+
+\end{DoxyCode}

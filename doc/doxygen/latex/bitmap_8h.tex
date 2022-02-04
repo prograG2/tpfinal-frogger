@@ -1,0 +1,167 @@
+\hypertarget{bitmap_8h}{}\doxysection{src/platform/rpi/bitmap.h File Reference}
+\label{bitmap_8h}\index{src/platform/rpi/bitmap.h@{src/platform/rpi/bitmap.h}}
+
+
+Encabezado del archivo para manejo de matrices 16x16.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{bitmap_8h_a4bfeb09abf979ad4184ebbe27a433c23}\label{bitmap_8h_a4bfeb09abf979ad4184ebbe27a433c23}} 
+\#define {\bfseries CANT\+\_\+\+FILAS}~16
+\item 
+\mbox{\Hypertarget{bitmap_8h_ac76b4615eb041c30442838400472b592}\label{bitmap_8h_ac76b4615eb041c30442838400472b592}} 
+\#define {\bfseries CANT\+\_\+\+COLUMNAS}~16
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{bitmap_8h_a97f9a9ff8f565a69e510f76799caf60d}\label{bitmap_8h_a97f9a9ff8f565a69e510f76799caf60d}} 
+typedef uint16\+\_\+t {\bfseries matriz\+\_\+t}\mbox{[}CANT\+\_\+\+FILAS\mbox{]}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{bitmap_8h_af00ee794b3526c7110699bd3b3fed06d}{print\+Matriz}} (matriz\+\_\+t A)
+\begin{DoxyCompactList}\small\item\em Imprime una matriz en consola (para debug) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bitmap_8h_a09d2d1d18a49f30840865bb809e08611}{limpiar\+Matriz}} (matriz\+\_\+t A)
+\begin{DoxyCompactList}\small\item\em Borra el contenido de una matriz. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bitmap_8h_a09ab4ab47594eb5b47deba06e24bfa6b}{copiar\+Matriz}} (matriz\+\_\+t destino, const matriz\+\_\+t desde)
+\begin{DoxyCompactList}\small\item\em Copia el contenido de una matriz en otra. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bitmap_8h_ad70868ab149c2d9681108f22ad407cb1}{matriz\+And}} (matriz\+\_\+t A, matriz\+\_\+t B)
+\begin{DoxyCompactList}\small\item\em Dadas dos matrices A y B, se hará la operación \char`\"{}\+A \&= B\char`\"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bitmap_8h_a98d1322d3d23644c2d10f5d3a7d5852a}{matriz\+Or}} (matriz\+\_\+t A, matriz\+\_\+t B)
+\begin{DoxyCompactList}\small\item\em Dadas dos matrices A y B, se hará la operación \char`\"{}\+A $\vert$= B\char`\"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bitmap_8h_a8d1dc0fdfa3f792554541a68d1e1f997}{matriz\+Not}} (matriz\+\_\+t A)
+\begin{DoxyCompactList}\small\item\em Dadas una matriz A, se hará la operación \char`\"{}\+A = $\sim$\+A\char`\"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{bitmap_8h_af2332175bdf040f398f69a1285486b3d}{matriz\+Xor}} (matriz\+\_\+t A, matriz\+\_\+t B)
+\begin{DoxyCompactList}\small\item\em Dadas dos matrices A y B, se hará la operación \char`\"{}\+A $^\wedge$= B\char`\"{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encabezado del archivo para manejo de matrices 16x16. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{bitmap_8h_a09ab4ab47594eb5b47deba06e24bfa6b}\label{bitmap_8h_a09ab4ab47594eb5b47deba06e24bfa6b}} 
+\index{bitmap.h@{bitmap.h}!copiarMatriz@{copiarMatriz}}
+\index{copiarMatriz@{copiarMatriz}!bitmap.h@{bitmap.h}}
+\doxysubsubsection{\texorpdfstring{copiarMatriz()}{copiarMatriz()}}
+{\footnotesize\ttfamily void copiar\+Matriz (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{destino,  }\item[{const matriz\+\_\+t}]{desde }\end{DoxyParamCaption})}
+
+
+
+Copia el contenido de una matriz en otra. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em destino} & \\
+\hline
+{\em desde} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{bitmap_8h_a09d2d1d18a49f30840865bb809e08611}\label{bitmap_8h_a09d2d1d18a49f30840865bb809e08611}} 
+\index{bitmap.h@{bitmap.h}!limpiarMatriz@{limpiarMatriz}}
+\index{limpiarMatriz@{limpiarMatriz}!bitmap.h@{bitmap.h}}
+\doxysubsubsection{\texorpdfstring{limpiarMatriz()}{limpiarMatriz()}}
+{\footnotesize\ttfamily void limpiar\+Matriz (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{A }\end{DoxyParamCaption})}
+
+
+
+Borra el contenido de una matriz. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{bitmap_8h_ad70868ab149c2d9681108f22ad407cb1}\label{bitmap_8h_ad70868ab149c2d9681108f22ad407cb1}} 
+\index{bitmap.h@{bitmap.h}!matrizAnd@{matrizAnd}}
+\index{matrizAnd@{matrizAnd}!bitmap.h@{bitmap.h}}
+\doxysubsubsection{\texorpdfstring{matrizAnd()}{matrizAnd()}}
+{\footnotesize\ttfamily void matriz\+And (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{A,  }\item[{matriz\+\_\+t}]{B }\end{DoxyParamCaption})}
+
+
+
+Dadas dos matrices A y B, se hará la operación \char`\"{}\+A \&= B\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & \\
+\hline
+{\em B} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{bitmap_8h_a8d1dc0fdfa3f792554541a68d1e1f997}\label{bitmap_8h_a8d1dc0fdfa3f792554541a68d1e1f997}} 
+\index{bitmap.h@{bitmap.h}!matrizNot@{matrizNot}}
+\index{matrizNot@{matrizNot}!bitmap.h@{bitmap.h}}
+\doxysubsubsection{\texorpdfstring{matrizNot()}{matrizNot()}}
+{\footnotesize\ttfamily void matriz\+Not (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{A }\end{DoxyParamCaption})}
+
+
+
+Dadas una matriz A, se hará la operación \char`\"{}\+A = $\sim$\+A\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{bitmap_8h_a98d1322d3d23644c2d10f5d3a7d5852a}\label{bitmap_8h_a98d1322d3d23644c2d10f5d3a7d5852a}} 
+\index{bitmap.h@{bitmap.h}!matrizOr@{matrizOr}}
+\index{matrizOr@{matrizOr}!bitmap.h@{bitmap.h}}
+\doxysubsubsection{\texorpdfstring{matrizOr()}{matrizOr()}}
+{\footnotesize\ttfamily void matriz\+Or (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{A,  }\item[{matriz\+\_\+t}]{B }\end{DoxyParamCaption})}
+
+
+
+Dadas dos matrices A y B, se hará la operación \char`\"{}\+A $\vert$= B\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & \\
+\hline
+{\em B} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{bitmap_8h_af2332175bdf040f398f69a1285486b3d}\label{bitmap_8h_af2332175bdf040f398f69a1285486b3d}} 
+\index{bitmap.h@{bitmap.h}!matrizXor@{matrizXor}}
+\index{matrizXor@{matrizXor}!bitmap.h@{bitmap.h}}
+\doxysubsubsection{\texorpdfstring{matrizXor()}{matrizXor()}}
+{\footnotesize\ttfamily void matriz\+Xor (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{A,  }\item[{matriz\+\_\+t}]{B }\end{DoxyParamCaption})}
+
+
+
+Dadas dos matrices A y B, se hará la operación \char`\"{}\+A $^\wedge$= B\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & \\
+\hline
+{\em B} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{bitmap_8h_af00ee794b3526c7110699bd3b3fed06d}\label{bitmap_8h_af00ee794b3526c7110699bd3b3fed06d}} 
+\index{bitmap.h@{bitmap.h}!printMatriz@{printMatriz}}
+\index{printMatriz@{printMatriz}!bitmap.h@{bitmap.h}}
+\doxysubsubsection{\texorpdfstring{printMatriz()}{printMatriz()}}
+{\footnotesize\ttfamily void print\+Matriz (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{A }\end{DoxyParamCaption})}
+
+
+
+Imprime una matriz en consola (para debug) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & \\
+\hline
+\end{DoxyParams}

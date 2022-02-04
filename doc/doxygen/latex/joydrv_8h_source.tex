@@ -1,0 +1,56 @@
+\hypertarget{joydrv_8h_source}{}\doxysection{joydrv.\+h}
+\label{joydrv_8h_source}\index{src/platform/rpi/joydrv.h@{src/platform/rpi/joydrv.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef JOYDRV\_H}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define JOYDRV\_H}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{16 \textcolor{comment}{ * INCLUDE HEADER FILES}}
+\DoxyCodeLine{17 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{22 \textcolor{comment}{ * CONSTANT AND MACRO DEFINITIONS USING \#DEFINE}}
+\DoxyCodeLine{23 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{comment}{// Las coordenadas del joystick varían entre -\/128 y 127 para cada coordenada}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define JOY\_MAX\_POS 127}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define JOY\_MAX\_NEG -\/128}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{30 \textcolor{comment}{ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS}}
+\DoxyCodeLine{31 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{34 \{}
+\DoxyCodeLine{35   int8\_t x;}
+\DoxyCodeLine{36   int8\_t y;}
+\DoxyCodeLine{37 \} \mbox{\hyperlink{structjcoord__t}{jcoord\_t}};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{typedef} \textcolor{keyword}{enum}}
+\DoxyCodeLine{40 \{}
+\DoxyCodeLine{41   J\_NOPRESS,}
+\DoxyCodeLine{42   J\_PRESS}
+\DoxyCodeLine{43 \} jswitch\_t;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{46 \textcolor{comment}{ * FUNCTION PROTOTYPES WITH GLOBAL SCOPE}}
+\DoxyCodeLine{47 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{52 \textcolor{keywordtype}{void} joy\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{57 \textcolor{keywordtype}{int} joy\_update(\textcolor{keywordtype}{void}); \textcolor{comment}{// void}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{63 \mbox{\hyperlink{structjcoord__t}{jcoord\_t}} joy\_get\_coord(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{69 jswitch\_t joy\_get\_switch(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{72 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// JOYDRV\_H}}
+
+\end{DoxyCode}

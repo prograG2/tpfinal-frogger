@@ -1,0 +1,44 @@
+\hypertarget{input_8h}{}\doxysection{src/input.h File Reference}
+\label{input_8h}\index{src/input.h@{src/input.h}}
+
+
+Header del modulo input Vinculo entre la fsm y las plataformas en lo que respecta al manejo de acciones externas.  
+
+
+{\ttfamily \#include \char`\"{}queue.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{input_8h_a6dc4294fb3a9a2f4b841fd3a06c977a8}\label{input_8h_a6dc4294fb3a9a2f4b841fd3a06c977a8}} 
+void {\bfseries iniciar\+Entradas} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa las entradas de la plataforma. \end{DoxyCompactList}\item 
+event\+\_\+t \mbox{\hyperlink{input_8h_a00a7fc2554f79ded421daa9ed9cb8b02}{leer\+Entradas}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve una entrada válida. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header del modulo input Vinculo entre la fsm y las plataformas en lo que respecta al manejo de acciones externas. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{input_8h_a00a7fc2554f79ded421daa9ed9cb8b02}\label{input_8h_a00a7fc2554f79ded421daa9ed9cb8b02}} 
+\index{input.h@{input.h}!leerEntradas@{leerEntradas}}
+\index{leerEntradas@{leerEntradas}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{leerEntradas()}{leerEntradas()}}
+{\footnotesize\ttfamily event\+\_\+t leer\+Entradas (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve una entrada válida. 
+
+\begin{DoxyReturn}{Returns}
+event\+\_\+t enum eventos\+\_\+tecla 
+\end{DoxyReturn}

@@ -1,0 +1,91 @@
+\hypertarget{rpi_2menu_8c}{}\doxysection{src/platform/rpi/menu.c File Reference}
+\label{rpi_2menu_8c}\index{src/platform/rpi/menu.c@{src/platform/rpi/menu.c}}
+
+
+Archivo para manejo de los menús en RPI.  
+
+
+{\ttfamily \#include \char`\"{}../../menu.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../display.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../sound.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rpi_2menu_8c_a77e4a9608f1bac62690d0c018d17a484}{set\+Menu}} (int $\ast$a, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Selecciona un menu. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{rpi_2menu_8c_a8123dad63d0c67cc9de3c9a13b4437c4}{set\+Opcion}} (int opc)
+\begin{DoxyCompactList}\small\item\em Selecciona una opcion del menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{rpi_2menu_8c_a893e486c21596ccea1217a4e4633bc64}{get\+Opcion}} ()
+\begin{DoxyCompactList}\small\item\em Devuelve la opcion actual del menu. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2menu_8c_a22de4179c092051f02133ab2382416d4}\label{rpi_2menu_8c_a22de4179c092051f02133ab2382416d4}} 
+void {\bfseries subir\+Opcion} ()
+\begin{DoxyCompactList}\small\item\em Selecciona la opcion superior a la actual. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2menu_8c_a4f24742a23ab01bac41907deb50ccc9f}\label{rpi_2menu_8c_a4f24742a23ab01bac41907deb50ccc9f}} 
+void {\bfseries bajar\+Opcion} ()
+\begin{DoxyCompactList}\small\item\em Selecciona la opcion inferior a la actual. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2menu_8c_a2311af40e30459172b0fa90ac0bf6030}\label{rpi_2menu_8c_a2311af40e30459172b0fa90ac0bf6030}} 
+void {\bfseries iniciar\+Menu} ()
+\begin{DoxyCompactList}\small\item\em Inicia el menu. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2menu_8c_a166afc891637fc32c4e0a6305a8f71d3}\label{rpi_2menu_8c_a166afc891637fc32c4e0a6305a8f71d3}} 
+void {\bfseries destruir\+Menu} ()
+\begin{DoxyCompactList}\small\item\em Destruye del menu. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Archivo para manejo de los menús en RPI. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{rpi_2menu_8c_a893e486c21596ccea1217a4e4633bc64}\label{rpi_2menu_8c_a893e486c21596ccea1217a4e4633bc64}} 
+\index{menu.c@{menu.c}!getOpcion@{getOpcion}}
+\index{getOpcion@{getOpcion}!menu.c@{menu.c}}
+\doxysubsubsection{\texorpdfstring{getOpcion()}{getOpcion()}}
+{\footnotesize\ttfamily int get\+Opcion (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve la opcion actual del menu. 
+
+\begin{DoxyReturn}{Returns}
+int Opcion seleccionada actualmente 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rpi_2menu_8c_a77e4a9608f1bac62690d0c018d17a484}\label{rpi_2menu_8c_a77e4a9608f1bac62690d0c018d17a484}} 
+\index{menu.c@{menu.c}!setMenu@{setMenu}}
+\index{setMenu@{setMenu}!menu.c@{menu.c}}
+\doxysubsubsection{\texorpdfstring{setMenu()}{setMenu()}}
+{\footnotesize\ttfamily void set\+Menu (\begin{DoxyParamCaption}\item[{int $\ast$}]{a,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Selecciona un menu. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Puntero a textos del menu \\
+\hline
+{\em size} & Opciones del menu \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{rpi_2menu_8c_a8123dad63d0c67cc9de3c9a13b4437c4}\label{rpi_2menu_8c_a8123dad63d0c67cc9de3c9a13b4437c4}} 
+\index{menu.c@{menu.c}!setOpcion@{setOpcion}}
+\index{setOpcion@{setOpcion}!menu.c@{menu.c}}
+\doxysubsubsection{\texorpdfstring{setOpcion()}{setOpcion()}}
+{\footnotesize\ttfamily void set\+Opcion (\begin{DoxyParamCaption}\item[{int}]{opc }\end{DoxyParamCaption})}
+
+
+
+Selecciona una opcion del menu. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em opc} & Opcion a seleccionar \\
+\hline
+\end{DoxyParams}

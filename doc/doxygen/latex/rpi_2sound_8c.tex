@@ -1,0 +1,93 @@
+\hypertarget{rpi_2sound_8c}{}\doxysection{src/platform/rpi/sound.c File Reference}
+\label{rpi_2sound_8c}\index{src/platform/rpi/sound.c@{src/platform/rpi/sound.c}}
+
+
+Archivo para manejo del sonido en RPI.  
+
+
+{\ttfamily \#include \char`\"{}../../sound.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}simple\+SDL2audio/audio.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{rpi_2sound_8c_a235a97c2d5edd7a2b9cf2e212c8fc2e6}\label{rpi_2sound_8c_a235a97c2d5edd7a2b9cf2e212c8fc2e6}} 
+\#define {\bfseries MUSICA\+\_\+\+DIR}~\char`\"{}../res/sounds/streams\char`\"{}
+\item 
+\mbox{\Hypertarget{rpi_2sound_8c_a5dcaf946377d87358e2baf36b387825f}\label{rpi_2sound_8c_a5dcaf946377d87358e2baf36b387825f}} 
+\#define {\bfseries EFECTOS\+\_\+\+DIR}~\char`\"{}../res/sounds/samples\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{rpi_2sound_8c_ac5e9e1c460298cd8dc75ff458d89671e}{iniciar\+Sonido}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa el sonido de la plataforma. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2sound_8c_aa69bcb29ac1bdebb93f8a17775e3ceea}\label{rpi_2sound_8c_aa69bcb29ac1bdebb93f8a17775e3ceea}} 
+void {\bfseries destruir\+Sonido} (void)
+\begin{DoxyCompactList}\small\item\em Desinicializa el sonido de la plataforma. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2sound_8c_ad7bb39ef91596fd47111b1952595a84a}\label{rpi_2sound_8c_ad7bb39ef91596fd47111b1952595a84a}} 
+void {\bfseries pausar\+Musica} (void)
+\begin{DoxyCompactList}\small\item\em Pausa la musica actual. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{rpi_2sound_8c_a181e58a009b778e1360eec32bf2ae124}{reproducir\+Musica}} (int m)
+\begin{DoxyCompactList}\small\item\em Pone a reproducir una musica dada. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{rpi_2sound_8c_a980b931e0d30c48734fb1da0c7b4ce29}{reproducir\+Efecto}} (int e)
+\begin{DoxyCompactList}\small\item\em Pone a reproducir un efecto dado. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Archivo para manejo del sonido en RPI. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{rpi_2sound_8c_ac5e9e1c460298cd8dc75ff458d89671e}\label{rpi_2sound_8c_ac5e9e1c460298cd8dc75ff458d89671e}} 
+\index{sound.c@{sound.c}!iniciarSonido@{iniciarSonido}}
+\index{iniciarSonido@{iniciarSonido}!sound.c@{sound.c}}
+\doxysubsubsection{\texorpdfstring{iniciarSonido()}{iniciarSonido()}}
+{\footnotesize\ttfamily bool iniciar\+Sonido (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa el sonido de la plataforma. 
+
+\begin{DoxyReturn}{Returns}
+true Exito 
+
+false Error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rpi_2sound_8c_a980b931e0d30c48734fb1da0c7b4ce29}\label{rpi_2sound_8c_a980b931e0d30c48734fb1da0c7b4ce29}} 
+\index{sound.c@{sound.c}!reproducirEfecto@{reproducirEfecto}}
+\index{reproducirEfecto@{reproducirEfecto}!sound.c@{sound.c}}
+\doxysubsubsection{\texorpdfstring{reproducirEfecto()}{reproducirEfecto()}}
+{\footnotesize\ttfamily void reproducir\+Efecto (\begin{DoxyParamCaption}\item[{int}]{efecto }\end{DoxyParamCaption})}
+
+
+
+Pone a reproducir un efecto dado. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & num efectos \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{rpi_2sound_8c_a181e58a009b778e1360eec32bf2ae124}\label{rpi_2sound_8c_a181e58a009b778e1360eec32bf2ae124}} 
+\index{sound.c@{sound.c}!reproducirMusica@{reproducirMusica}}
+\index{reproducirMusica@{reproducirMusica}!sound.c@{sound.c}}
+\doxysubsubsection{\texorpdfstring{reproducirMusica()}{reproducirMusica()}}
+{\footnotesize\ttfamily void reproducir\+Musica (\begin{DoxyParamCaption}\item[{int}]{musica }\end{DoxyParamCaption})}
+
+
+
+Pone a reproducir una musica dada. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & enum musica \\
+\hline
+\end{DoxyParams}

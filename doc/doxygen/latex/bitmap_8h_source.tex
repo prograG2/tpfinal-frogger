@@ -1,0 +1,51 @@
+\hypertarget{bitmap_8h_source}{}\doxysection{bitmap.\+h}
+\label{bitmap_8h_source}\index{src/platform/rpi/bitmap.h@{src/platform/rpi/bitmap.h}}
+\mbox{\hyperlink{bitmap_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef \_BITMAP\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define \_BITMAP\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{12 \textcolor{comment}{ * INCLUDE HEADER FILES}}
+\DoxyCodeLine{13 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{18 \textcolor{comment}{ * CONSTANT AND MACRO DEFINITIONS USING \#DEFINE}}
+\DoxyCodeLine{19 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define CANT\_FILAS 16}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define CANT\_COLUMNAS 16}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{25 \textcolor{comment}{ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS}}
+\DoxyCodeLine{26 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{typedef} uint16\_t matriz\_t[CANT\_FILAS]; \textcolor{comment}{//se define el tipo de dato para trabajar en el display, cada elemento del array es una fila}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{31 \textcolor{comment}{ * FUNCTION PROTOTYPES WITH GLOBAL SCOPE}}
+\DoxyCodeLine{32 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{39 \textcolor{keywordtype}{void} \mbox{\hyperlink{bitmap_8h_af00ee794b3526c7110699bd3b3fed06d}{printMatriz}}(matriz\_t A);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{46 \textcolor{keywordtype}{void} \mbox{\hyperlink{bitmap_8h_a09d2d1d18a49f30840865bb809e08611}{limpiarMatriz}}(matriz\_t A);}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{54 \textcolor{keywordtype}{void} \mbox{\hyperlink{bitmap_8h_a09ab4ab47594eb5b47deba06e24bfa6b}{copiarMatriz}}(matriz\_t destino, \textcolor{keyword}{const} matriz\_t desde);}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{62 \textcolor{keywordtype}{void} \mbox{\hyperlink{bitmap_8h_ad70868ab149c2d9681108f22ad407cb1}{matrizAnd}}(matriz\_t A, matriz\_t B);}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{70 \textcolor{keywordtype}{void} \mbox{\hyperlink{bitmap_8h_a98d1322d3d23644c2d10f5d3a7d5852a}{matrizOr}}(matriz\_t A, matriz\_t B);}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{77 \textcolor{keywordtype}{void} \mbox{\hyperlink{bitmap_8h_a8d1dc0fdfa3f792554541a68d1e1f997}{matrizNot}}(matriz\_t A);}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{85 \textcolor{keywordtype}{void} \mbox{\hyperlink{bitmap_8h_af2332175bdf040f398f69a1285486b3d}{matrizXor}}(matriz\_t A, matriz\_t B);}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{88 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_BITMAP\_H\_}}
+
+\end{DoxyCode}

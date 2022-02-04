@@ -1,0 +1,85 @@
+\hypertarget{algif_8h}{}\doxysection{src/platform/pc/algif5/algif.h File Reference}
+\label{algif_8h}\index{src/platform/pc/algif5/algif.h@{src/platform/pc/algif5/algif.h}}
+
+
+Header para el uso de la libreria algif (algif5 is a gif loading library for Allegro 5)  
+
+
+{\ttfamily \#include $<$allegro5/allegro5.\+h$>$}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_a_l_g_i_f___r_g_b}{ALGIF\+\_\+\+RGB}}
+\item 
+struct \mbox{\hyperlink{struct_a_l_g_i_f___p_a_l_e_t_t_e}{ALGIF\+\_\+\+PALETTE}}
+\item 
+struct \mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\+\_\+\+BITMAP}}
+\item 
+struct \mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}}
+\item 
+struct \mbox{\hyperlink{struct_a_l_g_i_f___f_r_a_m_e}{ALGIF\+\_\+\+FRAME}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{algif_8h_a530b526533e2164795ca79abec9885cb}\label{algif_8h_a530b526533e2164795ca79abec9885cb}} 
+typedef struct \mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} {\bfseries ALGIF\+\_\+\+ANIMATION}
+\item 
+\mbox{\Hypertarget{algif_8h_aba4c4f9bad9c68f3a1d547a09b66db0f}\label{algif_8h_aba4c4f9bad9c68f3a1d547a09b66db0f}} 
+typedef struct \mbox{\hyperlink{struct_a_l_g_i_f___f_r_a_m_e}{ALGIF\+\_\+\+FRAME}} {\bfseries ALGIF\+\_\+\+FRAME}
+\item 
+\mbox{\Hypertarget{algif_8h_a7ff959b6c50854c6a95c5a3e5d1d07ba}\label{algif_8h_a7ff959b6c50854c6a95c5a3e5d1d07ba}} 
+typedef struct \mbox{\hyperlink{struct_a_l_g_i_f___p_a_l_e_t_t_e}{ALGIF\+\_\+\+PALETTE}} {\bfseries ALGIF\+\_\+\+PALETTE}
+\item 
+\mbox{\Hypertarget{algif_8h_ac30f0d56ffed59b13a7845692e38c0b0}\label{algif_8h_ac30f0d56ffed59b13a7845692e38c0b0}} 
+typedef struct \mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\+\_\+\+BITMAP}} {\bfseries ALGIF\+\_\+\+BITMAP}
+\item 
+\mbox{\Hypertarget{algif_8h_abcd22d2bb503fb5bc2144e1970f6d9bf}\label{algif_8h_abcd22d2bb503fb5bc2144e1970f6d9bf}} 
+typedef struct \mbox{\hyperlink{struct_a_l_g_i_f___r_g_b}{ALGIF\+\_\+\+RGB}} {\bfseries ALGIF\+\_\+\+RGB}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{algif_8h_a7d18ebc00ba93ddf3869be683ec1590d}\label{algif_8h_a7d18ebc00ba93ddf3869be683ec1590d}} 
+\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$ {\bfseries algif\+\_\+load\+\_\+raw} (ALLEGRO\+\_\+\+FILE $\ast$file)
+\item 
+\mbox{\Hypertarget{algif_8h_ab0bfd14a699d7d9901d3107ad1fcae13}\label{algif_8h_ab0bfd14a699d7d9901d3107ad1fcae13}} 
+\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$ {\bfseries algif\+\_\+load\+\_\+animation\+\_\+f} (ALLEGRO\+\_\+\+FILE $\ast$file)
+\item 
+\mbox{\Hypertarget{algif_8h_ab42680c106144a769a8fcf10ef29a4a6}\label{algif_8h_ab42680c106144a769a8fcf10ef29a4a6}} 
+\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$ {\bfseries algif\+\_\+load\+\_\+animation} (char const $\ast$filename)
+\item 
+\mbox{\Hypertarget{algif_8h_a2773a1b184c8218469b4527c93b422d5}\label{algif_8h_a2773a1b184c8218469b4527c93b422d5}} 
+void {\bfseries algif\+\_\+render\+\_\+frame} (\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$gif, int frame, int xpos, int ypos)
+\item 
+\mbox{\Hypertarget{algif_8h_a2300f4f64d2cc24fefbd77cb6a586fc9}\label{algif_8h_a2300f4f64d2cc24fefbd77cb6a586fc9}} 
+void {\bfseries algif\+\_\+destroy\+\_\+animation} (\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$gif)
+\item 
+\mbox{\Hypertarget{algif_8h_aac308cdf048b2c5210b88e69da3e5ba7}\label{algif_8h_aac308cdf048b2c5210b88e69da3e5ba7}} 
+\mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\+\_\+\+BITMAP}} $\ast$ {\bfseries algif\+\_\+create\+\_\+bitmap} (int w, int h)
+\item 
+\mbox{\Hypertarget{algif_8h_a2a5a82f50d2c014f87985dd0840a22fe}\label{algif_8h_a2a5a82f50d2c014f87985dd0840a22fe}} 
+void {\bfseries algif\+\_\+destroy\+\_\+bitmap} (\mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\+\_\+\+BITMAP}} $\ast$bitmap)
+\item 
+\mbox{\Hypertarget{algif_8h_a402ed5778f346117ca734b52032f9946}\label{algif_8h_a402ed5778f346117ca734b52032f9946}} 
+void {\bfseries algif\+\_\+blit} (\mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\+\_\+\+BITMAP}} $\ast$from, \mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\+\_\+\+BITMAP}} $\ast$to, int xf, int yf, int xt, int yt, int w, int h)
+\item 
+\mbox{\Hypertarget{algif_8h_ae24d24a49ffd88a3c4b0198a46ba73a4}\label{algif_8h_ae24d24a49ffd88a3c4b0198a46ba73a4}} 
+ALLEGRO\+\_\+\+BITMAP $\ast$ {\bfseries algif\+\_\+get\+\_\+bitmap} (\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$gif, double seconds)
+\item 
+\mbox{\Hypertarget{algif_8h_ac8522ba5972bb457f38a5f2623d9b536}\label{algif_8h_ac8522ba5972bb457f38a5f2623d9b536}} 
+ALLEGRO\+\_\+\+BITMAP $\ast$ {\bfseries algif\+\_\+get\+\_\+frame\+\_\+bitmap} (\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$gif, int i)
+\item 
+\mbox{\Hypertarget{algif_8h_add9608008dfba9fa1ed501d2ee5b2384}\label{algif_8h_add9608008dfba9fa1ed501d2ee5b2384}} 
+double {\bfseries algif\+\_\+get\+\_\+frame\+\_\+duration} (\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\+\_\+\+ANIMATION}} $\ast$gif, int i)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header para el uso de la libreria algif (algif5 is a gif loading library for Allegro 5) 
+
+\begin{DoxyAuthor}{Author}
+allefant (\href{https://github.com/allefant}{\texttt{ https\+://github.\+com/allefant}}) \begin{DoxyVerb}    https://github.com/allefant/algif5
+\end{DoxyVerb}
+ 
+\end{DoxyAuthor}

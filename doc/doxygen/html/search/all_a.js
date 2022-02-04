@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['main_2ec_0',['main.c',['../main_8c.html',1,'']]],
+  ['mapint_1',['mapInt',['../geometry_8c.html#a3f7d90ce92b61ea95cbc489b2e2b9ca0',1,'mapInt(int source, int min_in, int max_in, int min_out, int max_out):&#160;geometry.c'],['../geometry_8h.html#a3f7d90ce92b61ea95cbc489b2e2b9ca0',1,'mapInt(int source, int min_in, int max_in, int min_out, int max_out):&#160;geometry.c']]],
+  ['matchuint_2',['matchUint',['../geometry_8c.html#a52c61f88ca078b5753a04eb4325caa56',1,'matchUint(unsigned int val, const unsigned int *array):&#160;geometry.c'],['../geometry_8h.html#a52c61f88ca078b5753a04eb4325caa56',1,'matchUint(unsigned int val, const unsigned int *array):&#160;geometry.c']]],
+  ['matrizand_3',['matrizAnd',['../rpi_2bitmap_8c.html#af78c50da49dd0f4bac25181c7d03e563',1,'matrizAnd(matriz_t a, matriz_t b):&#160;bitmap.c'],['../bitmap_8h.html#ad70868ab149c2d9681108f22ad407cb1',1,'matrizAnd(matriz_t A, matriz_t B):&#160;bitmap.c']]],
+  ['matriznot_4',['matrizNot',['../rpi_2bitmap_8c.html#a17661eed5dafdd9c90f2808975e73c4f',1,'matrizNot(matriz_t a):&#160;bitmap.c'],['../bitmap_8h.html#a8d1dc0fdfa3f792554541a68d1e1f997',1,'matrizNot(matriz_t A):&#160;bitmap.c']]],
+  ['matrizor_5',['matrizOr',['../bitmap_8h.html#a98d1322d3d23644c2d10f5d3a7d5852a',1,'matrizOr(matriz_t A, matriz_t B):&#160;bitmap.c'],['../rpi_2bitmap_8c.html#a42bf655217003a9f3c17289b509b4820',1,'matrizOr(matriz_t a, matriz_t b):&#160;bitmap.c']]],
+  ['matrizxor_6',['matrizXor',['../bitmap_8h.html#af2332175bdf040f398f69a1285486b3d',1,'matrizXor(matriz_t A, matriz_t B):&#160;bitmap.c'],['../rpi_2bitmap_8c.html#a4c8a12d72d78214cc67f19eed50fa2a0',1,'matrizXor(matriz_t a, matriz_t b):&#160;bitmap.c']]],
+  ['mensaje_7',['Mensaje',['../struct_mensaje.html',1,'']]],
+  ['mensaje_8',['mensaje',['../mensajes_8h.html#a26832d26256d07b035a793e557b9b515',1,'mensaje(char *msj, int pos, bool repetir):&#160;mensajes.c'],['../mensajes_8c.html#a26832d26256d07b035a793e557b9b515',1,'mensaje(char *msj, int pos, bool repetir):&#160;mensajes.c']]],
+  ['mensajes_2ec_9',['mensajes.c',['../mensajes_8c.html',1,'']]],
+  ['mensajes_2eh_10',['mensajes.h',['../mensajes_8h.html',1,'']]],
+  ['menu_2ec_11',['menu.c',['../rpi_2menu_8c.html',1,'(Global Namespace)'],['../pc_2menu_8c.html',1,'(Global Namespace)']]],
+  ['menu_5ft_12',['menu_t',['../structmenu__t.html',1,'']]],
+  ['mostrarcreditos_13',['mostrarCreditos',['../display_8h.html#a2ec4770c30559239ec0d118de3800af8',1,'mostrarCreditos(void):&#160;display.c'],['../pc_2display_8c.html#a2ec4770c30559239ec0d118de3800af8',1,'mostrarCreditos(void):&#160;display.c']]],
+  ['mostrarranking_14',['mostrarRanking',['../display_8h.html#af884aef51e8e3eab31dcda31ef49dd92',1,'mostrarRanking(void):&#160;display.c'],['../pc_2display_8c.html#af884aef51e8e3eab31dcda31ef49dd92',1,'mostrarRanking(void):&#160;display.c']]],
+  ['mostrartexto_15',['mostrarTexto',['../display_8h.html#a0e5c0febd986123030923c38a811c765',1,'mostrarTexto(char *txt, int pos):&#160;display.c'],['../pc_2display_8c.html#a0e5c0febd986123030923c38a811c765',1,'mostrarTexto(char *txt, int pos):&#160;display.c']]],
+  ['moveradelante_16',['moverAdelante',['../game_8h.html#a1cf0080232103f3af30c51968ef3f437',1,'moverAdelante(void):&#160;game.c'],['../pc_2game_8c.html#a1cf0080232103f3af30c51968ef3f437',1,'moverAdelante(void):&#160;game.c'],['../rpi_2game_8c.html#a96b729224041ea4106bb445db009335a',1,'moverAdelante():&#160;game.c']]],
+  ['moveratras_17',['moverAtras',['../rpi_2game_8c.html#ac41871ac5f7358e8a5d6a8f4c552445c',1,'moverAtras():&#160;game.c'],['../pc_2game_8c.html#a138bb74c542a634e4687f7a0ba645389',1,'moverAtras(void):&#160;game.c'],['../game_8h.html#a138bb74c542a634e4687f7a0ba645389',1,'moverAtras(void):&#160;game.c']]],
+  ['moverdcha_18',['moverDcha',['../game_8h.html#ac1573bd2714f9178990d444df5aad4ac',1,'moverDcha(void):&#160;game.c'],['../pc_2game_8c.html#ac1573bd2714f9178990d444df5aad4ac',1,'moverDcha(void):&#160;game.c'],['../rpi_2game_8c.html#adb6e0f15f9bad4ee8059b3adb9f9cad4',1,'moverDcha():&#160;game.c']]],
+  ['moverizda_19',['moverIzda',['../game_8h.html#a69286ed389d28e8ff7af13e73df1fc95',1,'moverIzda(void):&#160;game.c'],['../pc_2game_8c.html#a69286ed389d28e8ff7af13e73df1fc95',1,'moverIzda(void):&#160;game.c'],['../rpi_2game_8c.html#acda5bb4b2affa7bce1fa3750dc170380',1,'moverIzda():&#160;game.c']]],
+  ['movermensaje_20',['moverMensaje',['../mensajes_8c.html#abb519c0e2af153c0d2398213c6838578',1,'moverMensaje(mensaje_t *msj):&#160;mensajes.c'],['../mensajes_8h.html#abb519c0e2af153c0d2398213c6838578',1,'moverMensaje(mensaje_t *msj):&#160;mensajes.c']]],
+  ['must_5finit_21',['must_init',['../allegro__stuff_8c.html#ac87abc5a9c31dbef8419df7468e3ecfa',1,'must_init(bool test, const char *description):&#160;allegro_stuff.c'],['../allegro__stuff_8h.html#ac87abc5a9c31dbef8419df7468e3ecfa',1,'must_init(bool test, const char *description):&#160;allegro_stuff.c']]]
+];

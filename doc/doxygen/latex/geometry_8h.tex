@@ -1,0 +1,715 @@
+\hypertarget{geometry_8h}{}\doxysection{src/platform/pc/geometry.h File Reference}
+\label{geometry_8h}\index{src/platform/pc/geometry.h@{src/platform/pc/geometry.h}}
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{geometry_8h_a78f89e91b5365676ca7a0d937946b854}\label{geometry_8h_a78f89e91b5365676ca7a0d937946b854}} 
+\#define {\bfseries DISPLAY\+\_\+W}~690
+\item 
+\mbox{\Hypertarget{geometry_8h_a895152e89a26d775212c88dafb8c50ca}\label{geometry_8h_a895152e89a26d775212c88dafb8c50ca}} 
+\#define {\bfseries DISPLAY\+\_\+H}~644
+\item 
+\mbox{\Hypertarget{geometry_8h_a3cfd3aa62338d12609f6d65bce97e9cd}\label{geometry_8h_a3cfd3aa62338d12609f6d65bce97e9cd}} 
+\#define {\bfseries ROWS}~14
+\item 
+\mbox{\Hypertarget{geometry_8h_ab59ad2ee1a48b83c2eef1f019ed8cc48}\label{geometry_8h_ab59ad2ee1a48b83c2eef1f019ed8cc48}} 
+\#define {\bfseries COLS}~15
+\item 
+\mbox{\Hypertarget{geometry_8h_a36e1292dd9af86d5b74a92b4a1bad9ba}\label{geometry_8h_a36e1292dd9af86d5b74a92b4a1bad9ba}} 
+\#define {\bfseries CELL\+\_\+H}~46
+\item 
+\mbox{\Hypertarget{geometry_8h_a62e411b54d9f4d5512576d69c1831ee9}\label{geometry_8h_a62e411b54d9f4d5512576d69c1831ee9}} 
+\#define {\bfseries CELL\+\_\+W}~46
+\item 
+\mbox{\Hypertarget{geometry_8h_a4446d06b311733b037c79c73d05d7166}\label{geometry_8h_a4446d06b311733b037c79c73d05d7166}} 
+\#define {\bfseries MAX\+\_\+\+LANES}~(ROWS -\/ 1)
+\item 
+\mbox{\Hypertarget{geometry_8h_abfe86bb4d7bf8e2a29c14102257dd397}\label{geometry_8h_abfe86bb4d7bf8e2a29c14102257dd397}} 
+\#define {\bfseries LANES\+\_\+\+CAR\+\_\+\+TOTAL}~5
+\item 
+\mbox{\Hypertarget{geometry_8h_a4e8fb29ad7ba0bb0d23110d9dd539f8f}\label{geometry_8h_a4e8fb29ad7ba0bb0d23110d9dd539f8f}} 
+\#define {\bfseries LANES\+\_\+\+LOG\+\_\+\+TOTAL}~3
+\item 
+\mbox{\Hypertarget{geometry_8h_a036cefb957499f32b4bf92ccc0fcfc19}\label{geometry_8h_a036cefb957499f32b4bf92ccc0fcfc19}} 
+\#define {\bfseries LANES\+\_\+\+TURTLE\+\_\+\+TOTAL}~2
+\item 
+\mbox{\Hypertarget{geometry_8h_a4a3deba9646337395340f350966c7423}\label{geometry_8h_a4a3deba9646337395340f350966c7423}} 
+\#define {\bfseries CELL\+\_\+\+TOPLEFT\+\_\+X}~0
+\item 
+\mbox{\Hypertarget{geometry_8h_a52cdf7607ea2342dc681cc8eb1fd06a3}\label{geometry_8h_a52cdf7607ea2342dc681cc8eb1fd06a3}} 
+\#define {\bfseries CELL\+\_\+\+TOPLEFT\+\_\+Y}~0
+\item 
+\mbox{\Hypertarget{geometry_8h_ae80ac5fdc089ae6da33954a12c9c6c17}\label{geometry_8h_ae80ac5fdc089ae6da33954a12c9c6c17}} 
+\#define {\bfseries CELL\+\_\+\+START\+\_\+X}~(CELL\+\_\+\+TOPLEFT\+\_\+X + CELL\+\_\+W $\ast$ ((COLS -\/ 1) / 2))
+\item 
+\mbox{\Hypertarget{geometry_8h_a1a3c5fbc4777a31c30fd4cba552a9dd5}\label{geometry_8h_a1a3c5fbc4777a31c30fd4cba552a9dd5}} 
+\#define {\bfseries CELL\+\_\+\+START\+\_\+Y}~(CELL\+\_\+\+TOPLEFT\+\_\+Y + CELL\+\_\+H $\ast$ (ROWS -\/ 1))
+\item 
+\mbox{\Hypertarget{geometry_8h_a9cc0c3097330e20a5329c60f7cd93b3d}\label{geometry_8h_a9cc0c3097330e20a5329c60f7cd93b3d}} 
+\#define {\bfseries FROG\+\_\+W}~30
+\item 
+\mbox{\Hypertarget{geometry_8h_a56471431099527c37fa36a405d628842}\label{geometry_8h_a56471431099527c37fa36a405d628842}} 
+\#define {\bfseries FROG\+\_\+H}~30
+\item 
+\mbox{\Hypertarget{geometry_8h_a55e1746975a3eb50cec3a6e7c292c614}\label{geometry_8h_a55e1746975a3eb50cec3a6e7c292c614}} 
+\#define {\bfseries FROG\+\_\+\+OFFSET\+\_\+X}~(CELL\+\_\+W / 2 -\/ FROG\+\_\+W / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_a9add11f74cbd04b5bbe5515234dc74c6}\label{geometry_8h_a9add11f74cbd04b5bbe5515234dc74c6}} 
+\#define {\bfseries FROG\+\_\+\+OFFSET\+\_\+Y}~(CELL\+\_\+H / 2 -\/ FROG\+\_\+H / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_a7952a5d87e0927908c3fc4dfad28512b}\label{geometry_8h_a7952a5d87e0927908c3fc4dfad28512b}} 
+\#define {\bfseries CELL\+\_\+\+START\+\_\+\+FROG\+\_\+X}~(CELL\+\_\+\+START\+\_\+X + FROG\+\_\+\+OFFSET\+\_\+X)
+\item 
+\mbox{\Hypertarget{geometry_8h_a07f11138f5faf11eccfc48a9f3c5f2b5}\label{geometry_8h_a07f11138f5faf11eccfc48a9f3c5f2b5}} 
+\#define {\bfseries CELL\+\_\+\+START\+\_\+\+FROG\+\_\+Y}~(CELL\+\_\+\+START\+\_\+Y + FROG\+\_\+\+OFFSET\+\_\+Y)
+\item 
+\mbox{\Hypertarget{geometry_8h_a383613d34ba288cfc4f2813eb5d498b8}\label{geometry_8h_a383613d34ba288cfc4f2813eb5d498b8}} 
+\#define {\bfseries FROG\+\_\+\+FRAMES}~8
+\item 
+\mbox{\Hypertarget{geometry_8h_a82a656a563ee44a830c759a42aa6e901}\label{geometry_8h_a82a656a563ee44a830c759a42aa6e901}} 
+\#define {\bfseries SPRITE\+\_\+\+SIZE\+\_\+\+FROG\+\_\+\+STATIC\+\_\+H}~FROG\+\_\+H
+\item 
+\mbox{\Hypertarget{geometry_8h_aebf2de108c06e4665ffd1276392608d1}\label{geometry_8h_aebf2de108c06e4665ffd1276392608d1}} 
+\#define {\bfseries SPRITE\+\_\+\+SIZE\+\_\+\+FROG\+\_\+\+STATIC\+\_\+W}~FROG\+\_\+W
+\item 
+\mbox{\Hypertarget{geometry_8h_ac80a940064a1573ba75e46a5ac658b96}\label{geometry_8h_ac80a940064a1573ba75e46a5ac658b96}} 
+\#define {\bfseries SPRITE\+\_\+\+SIZE\+\_\+\+FROG\+\_\+\+DYNAMIC\+\_\+\+LONG}~46
+\item 
+\mbox{\Hypertarget{geometry_8h_a6cf3bbd699340ef82d329e8cb8ee418e}\label{geometry_8h_a6cf3bbd699340ef82d329e8cb8ee418e}} 
+\#define {\bfseries SPRITE\+\_\+\+SIZE\+\_\+\+FROG\+\_\+\+DYNAMIC\+\_\+\+SHORT}~FROG\+\_\+W
+\item 
+\mbox{\Hypertarget{geometry_8h_a246848e184a465658b4bab12b0736379}\label{geometry_8h_a246848e184a465658b4bab12b0736379}} 
+\#define {\bfseries STEP\+\_\+\+FULL\+\_\+\+SIZE}~CELL\+\_\+H
+\item 
+\mbox{\Hypertarget{geometry_8h_a65ae212bf8be93de1ef8a39f7a4c0fec}\label{geometry_8h_a65ae212bf8be93de1ef8a39f7a4c0fec}} 
+\#define {\bfseries STEP\+\_\+\+RATIO}~(CELL\+\_\+H / 3)
+\item 
+\mbox{\Hypertarget{geometry_8h_a0127037d505849aa3602d4dcf3fb56d1}\label{geometry_8h_a0127037d505849aa3602d4dcf3fb56d1}} 
+\#define {\bfseries STEP\+\_\+\+FRACTION\+\_\+\+SIZE}~(STEP\+\_\+\+FULL\+\_\+\+SIZE / STEP\+\_\+\+RATIO)
+\item 
+\mbox{\Hypertarget{geometry_8h_ad59a8f3007072f3dbbd42fe8f9cde25e}\label{geometry_8h_ad59a8f3007072f3dbbd42fe8f9cde25e}} 
+\#define {\bfseries FROG\+\_\+\+MAX\+\_\+X}~(DISPLAY\+\_\+W -\/ (CELL\+\_\+W -\/ FROG\+\_\+\+OFFSET\+\_\+X))
+\item 
+\mbox{\Hypertarget{geometry_8h_a5874ffb3cbd4baca3a218aca9ce50792}\label{geometry_8h_a5874ffb3cbd4baca3a218aca9ce50792}} 
+\#define {\bfseries FROG\+\_\+\+MAX\+\_\+Y}~(DISPLAY\+\_\+H -\/ (CELL\+\_\+H -\/ FROG\+\_\+\+OFFSET\+\_\+Y))
+\item 
+\mbox{\Hypertarget{geometry_8h_ae9dff7c437990c054b19910fa40ad94c}\label{geometry_8h_ae9dff7c437990c054b19910fa40ad94c}} 
+\#define {\bfseries FROG\+\_\+\+MIN\+\_\+X}~(CELL\+\_\+\+TOPLEFT\+\_\+X + FROG\+\_\+\+OFFSET\+\_\+X)
+\item 
+\mbox{\Hypertarget{geometry_8h_a81261faa3730dcdc770e3ea848c46eda}\label{geometry_8h_a81261faa3730dcdc770e3ea848c46eda}} 
+\#define {\bfseries FROG\+\_\+\+MIN\+\_\+Y}~(CELL\+\_\+\+TOPLEFT\+\_\+Y + FROG\+\_\+\+OFFSET\+\_\+Y + CELL\+\_\+H)
+\item 
+\mbox{\Hypertarget{geometry_8h_aaaba5194b3317413a645288d9cc901a6}\label{geometry_8h_aaaba5194b3317413a645288d9cc901a6}} 
+\#define {\bfseries LOG\+\_\+W}~(4 $\ast$ CELL\+\_\+W)
+\item 
+\mbox{\Hypertarget{geometry_8h_a234718feb78dab9dbe22c4ec6950efc8}\label{geometry_8h_a234718feb78dab9dbe22c4ec6950efc8}} 
+\#define {\bfseries LOG\+\_\+H}~40
+\item 
+\mbox{\Hypertarget{geometry_8h_a4e97516f6a9378b5a58230a08604458b}\label{geometry_8h_a4e97516f6a9378b5a58230a08604458b}} 
+\#define {\bfseries LOG\+\_\+\+OFFSET\+\_\+X}~0
+\item 
+\mbox{\Hypertarget{geometry_8h_a502699a413bec3ca9ab9c94212bf04fb}\label{geometry_8h_a502699a413bec3ca9ab9c94212bf04fb}} 
+\#define {\bfseries LOG\+\_\+\+OFFSET\+\_\+Y}~(CELL\+\_\+H / 2 -\/ LOG\+\_\+H / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_a8a45b828aa43985d70b2c7f9a2b7b56b}\label{geometry_8h_a8a45b828aa43985d70b2c7f9a2b7b56b}} 
+\#define {\bfseries CAR\+\_\+W}~CELL\+\_\+W + 26
+\item 
+\mbox{\Hypertarget{geometry_8h_a62b23669979c3548b87d3e864b6defa1}\label{geometry_8h_a62b23669979c3548b87d3e864b6defa1}} 
+\#define {\bfseries CAR\+\_\+\+TRUCK\+\_\+\+FIRE\+\_\+W}~(3 $\ast$ CELL\+\_\+W)
+\item 
+\mbox{\Hypertarget{geometry_8h_aaeb44381a5008b00dc2f826f5770cae9}\label{geometry_8h_aaeb44381a5008b00dc2f826f5770cae9}} 
+\#define {\bfseries CAR\+\_\+\+TRUCK\+\_\+W}~(4 $\ast$ CELL\+\_\+W)
+\item 
+\mbox{\Hypertarget{geometry_8h_a5dde2c81b843da60ed61c1806484bf1d}\label{geometry_8h_a5dde2c81b843da60ed61c1806484bf1d}} 
+\#define {\bfseries CAR\+\_\+H}~40
+\item 
+\mbox{\Hypertarget{geometry_8h_ada6c5a5773ef3573c284f76a671959f5}\label{geometry_8h_ada6c5a5773ef3573c284f76a671959f5}} 
+\#define {\bfseries CAR\+\_\+\+OFFSET\+\_\+X}~0
+\item 
+\mbox{\Hypertarget{geometry_8h_aabd0cf74c6cf01cacbeac377e3472432}\label{geometry_8h_aabd0cf74c6cf01cacbeac377e3472432}} 
+\#define {\bfseries CAR\+\_\+\+OFFSET\+\_\+Y}~(CELL\+\_\+H / 2 -\/ CAR\+\_\+H / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_a2da8814d3b471b1a1f1b41904a43351b}\label{geometry_8h_a2da8814d3b471b1a1f1b41904a43351b}} 
+\#define {\bfseries TURTLE\+\_\+\+FRAMES}~11
+\item 
+\mbox{\Hypertarget{geometry_8h_a01f7ea080256374465b4738d65343669}\label{geometry_8h_a01f7ea080256374465b4738d65343669}} 
+\#define {\bfseries TURTLE\+\_\+\+SIDE}~CELL\+\_\+W
+\item 
+\mbox{\Hypertarget{geometry_8h_a2d9453c8fc849496c357aeb6e7ba3f13}\label{geometry_8h_a2d9453c8fc849496c357aeb6e7ba3f13}} 
+\#define {\bfseries TURTLE\+\_\+\+FRAME\+\_\+\+OFFSET\+\_\+\+XY}~(CELL\+\_\+W / 2 -\/ TURTLE\+\_\+\+SIDE / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_affaac00c4c7997b05ec544c7333d7e7c}\label{geometry_8h_affaac00c4c7997b05ec544c7333d7e7c}} 
+\#define {\bfseries SPRITE\+\_\+\+SIZE\+\_\+\+HEART}~20
+\item 
+\mbox{\Hypertarget{geometry_8h_ab47c0646de756a271a193b68ae997c94}\label{geometry_8h_ab47c0646de756a271a193b68ae997c94}} 
+\#define {\bfseries SPRITE\+\_\+\+DEAD\+\_\+\+SIZE}~35
+\item 
+\mbox{\Hypertarget{geometry_8h_a2886916f80bf7fb70b8d7e54c2ec7c2e}\label{geometry_8h_a2886916f80bf7fb70b8d7e54c2ec7c2e}} 
+\#define {\bfseries SPRITE\+\_\+\+DEAD\+\_\+\+OFFSET}~(CELL\+\_\+W / 2 -\/ SPRITE\+\_\+\+DEAD\+\_\+\+SIZE / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_a1f2da791440e7c22326efbdd88749b73}\label{geometry_8h_a1f2da791440e7c22326efbdd88749b73}} 
+\#define {\bfseries SPRITE\+\_\+\+COIN\+\_\+\+FRAMES}~6
+\item 
+\mbox{\Hypertarget{geometry_8h_ae35064f804c534a05420f2678930b3d1}\label{geometry_8h_ae35064f804c534a05420f2678930b3d1}} 
+\#define {\bfseries SPRITE\+\_\+\+COIN\+\_\+\+SIDE}~24
+\item 
+\mbox{\Hypertarget{geometry_8h_a3d0a3f7e9becc488a4d7f3514147f9e2}\label{geometry_8h_a3d0a3f7e9becc488a4d7f3514147f9e2}} 
+\#define {\bfseries SPRITE\+\_\+\+COIN\+\_\+\+OFFSET\+\_\+\+XY}~(CELL\+\_\+W / 2 -\/ SPRITE\+\_\+\+COIN\+\_\+\+SIDE / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_aeddc8da5e092e3f4f81699767414ae81}\label{geometry_8h_aeddc8da5e092e3f4f81699767414ae81}} 
+\#define {\bfseries SPRITE\+\_\+\+SPLASH\+\_\+\+FRAMES}~6
+\item 
+\mbox{\Hypertarget{geometry_8h_affc6c397f19498f961ae8893e8bcb26f}\label{geometry_8h_affc6c397f19498f961ae8893e8bcb26f}} 
+\#define {\bfseries SPRITE\+\_\+\+SPLASH\+\_\+W}~98
+\item 
+\mbox{\Hypertarget{geometry_8h_a529451cab3e54e82eed1e29192e96faf}\label{geometry_8h_a529451cab3e54e82eed1e29192e96faf}} 
+\#define {\bfseries SPRITE\+\_\+\+SPLASH\+\_\+H}~68
+\item 
+\mbox{\Hypertarget{geometry_8h_a9e8e3e039b7e10d052ff4167875db641}\label{geometry_8h_a9e8e3e039b7e10d052ff4167875db641}} 
+\#define {\bfseries SPRITE\+\_\+\+SPLASH\+\_\+\+OFFSET\+\_\+X}~(CELL\+\_\+W / 2 -\/ SPRITE\+\_\+\+SPLASH\+\_\+W / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_a01d98be0a6246e50054e89a97864d60c}\label{geometry_8h_a01d98be0a6246e50054e89a97864d60c}} 
+\#define {\bfseries SPRITE\+\_\+\+SPLASH\+\_\+\+OFFSET\+\_\+Y}~(CELL\+\_\+W / 2 -\/ SPRITE\+\_\+\+SPLASH\+\_\+H / 2)
+\item 
+\mbox{\Hypertarget{geometry_8h_abd02908b3408f42cffbbf97133fc2d9f}\label{geometry_8h_abd02908b3408f42cffbbf97133fc2d9f}} 
+\#define {\bfseries SPRITE\+\_\+\+BORDER\+\_\+\+START\+\_\+X}~0
+\item 
+\mbox{\Hypertarget{geometry_8h_aa23af9a35c675a2df52ea2cca0a58078}\label{geometry_8h_aa23af9a35c675a2df52ea2cca0a58078}} 
+\#define {\bfseries SPRITE\+\_\+\+BORDER\+\_\+\+START\+\_\+Y}~CELL\+\_\+H
+\item 
+\mbox{\Hypertarget{geometry_8h_a3c6e3d084fb11ce0a95375bfff6ae1ef}\label{geometry_8h_a3c6e3d084fb11ce0a95375bfff6ae1ef}} 
+\#define {\bfseries MENU\+\_\+\+OPTION\+\_\+\+TOPLEFT\+\_\+X}~45
+\item 
+\mbox{\Hypertarget{geometry_8h_ada0db0c2d094c3f19baa62be05f18b18}\label{geometry_8h_ada0db0c2d094c3f19baa62be05f18b18}} 
+\#define {\bfseries MENU\+\_\+\+OPTION\+\_\+\+TOPLEFT\+\_\+Y}~72
+\item 
+\mbox{\Hypertarget{geometry_8h_ac46038cca506e8dc6e3a64f50ebf333d}\label{geometry_8h_ac46038cca506e8dc6e3a64f50ebf333d}} 
+\#define {\bfseries MENU\+\_\+\+OPTION\+\_\+\+DELTA\+\_\+Y}~100
+\item 
+\mbox{\Hypertarget{geometry_8h_ab0b29fc7a4de85d5b3f13d3cd72cb0b6}\label{geometry_8h_ab0b29fc7a4de85d5b3f13d3cd72cb0b6}} 
+\#define {\bfseries MENU\+\_\+\+OPTION\+\_\+W}~600
+\item 
+\mbox{\Hypertarget{geometry_8h_a0d420e07d7bc5cb245e9c9a9c7959a0a}\label{geometry_8h_a0d420e07d7bc5cb245e9c9a9c7959a0a}} 
+\#define {\bfseries MENU\+\_\+\+OPTION\+\_\+H}~75
+\item 
+\mbox{\Hypertarget{geometry_8h_a6c49b3fa3cf221cda70b82edd2c8225c}\label{geometry_8h_a6c49b3fa3cf221cda70b82edd2c8225c}} 
+\#define {\bfseries CREDITS\+\_\+\+SCREEN\+\_\+\+LENGTH}~2576
+\item 
+\mbox{\Hypertarget{geometry_8h_a3400fb0727ddcc6953a010602bbc0af1}\label{geometry_8h_a3400fb0727ddcc6953a010602bbc0af1}} 
+\#define {\bfseries CREDITS\+\_\+\+SCREEN\+\_\+\+START}~0
+\item 
+\mbox{\Hypertarget{geometry_8h_a6b76ab355e1a86e76aae5c528db06d55}\label{geometry_8h_a6b76ab355e1a86e76aae5c528db06d55}} 
+\#define {\bfseries CREDITS\+\_\+\+SCREEN\+\_\+\+FINAL}~(CREDITS\+\_\+\+SCREEN\+\_\+\+LENGTH -\/ DISPLAY\+\_\+H)
+\item 
+\mbox{\Hypertarget{geometry_8h_a6f88861cd4631762b3a4bf10ff6d175a}\label{geometry_8h_a6f88861cd4631762b3a4bf10ff6d175a}} 
+\#define {\bfseries INSERTION\+\_\+\+FACTOR}~(double)0.\+5
+\item 
+\mbox{\Hypertarget{geometry_8h_af73c3a885416b88a88cbe58ae5fba067}\label{geometry_8h_af73c3a885416b88a88cbe58ae5fba067}} 
+\#define {\bfseries GOAL\+\_\+\+ROW\+\_\+\+OFFSET\+\_\+\+Y\+\_\+\+FIX}~5
+\item 
+\mbox{\Hypertarget{geometry_8h_a6842541fec8938ef0e4558e6fb9dd586}\label{geometry_8h_a6842541fec8938ef0e4558e6fb9dd586}} 
+\#define {\bfseries GOAL\+\_\+\+ROW\+\_\+\+MARGIN\+\_\+\+TO\+\_\+\+REACH}~5
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{geometry_8h_a3e2ad527248a22034bbb70adf683e96e}\label{geometry_8h_a3e2ad527248a22034bbb70adf683e96e}} 
+typedef enum CAR\+\_\+\+TYPE {\bfseries CAR\+\_\+\+TYPE}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{geometry_8h_aaa7f4cd787b87d5aade7b60fc3213f1e}\label{geometry_8h_aaa7f4cd787b87d5aade7b60fc3213f1e}} 
+enum {\bfseries GOALS} \{ \newline
+{\bfseries GOAL\+\_\+\+LEFT}
+, {\bfseries GOAL\+\_\+\+LEFT\+\_\+\+MID}
+, {\bfseries GOAL\+\_\+\+MID}
+, {\bfseries GOAL\+\_\+\+RIGHT\+\_\+\+MID}
+, \newline
+{\bfseries GOAL\+\_\+\+RIGHT}
+, {\bfseries MAX\+\_\+\+GOALS}
+ \}
+\item 
+\mbox{\Hypertarget{geometry_8h_a11d70815e8abca537df14986dfe9c81d}\label{geometry_8h_a11d70815e8abca537df14986dfe9c81d}} 
+enum {\bfseries DIRECTIONS} \{ \newline
+{\bfseries DIRECTION\+\_\+\+NONE}
+, {\bfseries DIRECTION\+\_\+\+UP}
+, {\bfseries DIRECTION\+\_\+\+RIGHT}
+, {\bfseries DIRECTION\+\_\+\+LEFT}
+, \newline
+{\bfseries DIRECTION\+\_\+\+DOWN}
+ \}
+\item 
+\mbox{\Hypertarget{geometry_8h_a5b87126b1c16d8b0f25e34afcc952e2b}\label{geometry_8h_a5b87126b1c16d8b0f25e34afcc952e2b}} 
+enum {\bfseries MENU\+\_\+\+STATES} \{ \newline
+{\bfseries MENU\+\_\+\+STATE\+\_\+\+OPCION\+\_\+0}
+, {\bfseries MENU\+\_\+\+STATE\+\_\+\+OPCION\+\_\+1}
+, {\bfseries MENU\+\_\+\+STATE\+\_\+\+OPCION\+\_\+2}
+, {\bfseries MENU\+\_\+\+STATE\+\_\+\+OPCION\+\_\+3}
+, \newline
+{\bfseries MENU\+\_\+\+STATE\+\_\+\+OPCION\+\_\+4}
+, {\bfseries MENU\+\_\+\+STATE\+\_\+\+MAX}
+ \}
+\item 
+\mbox{\Hypertarget{geometry_8h_adce4f3d8a68f3b8b04a7f8667312fb99}\label{geometry_8h_adce4f3d8a68f3b8b04a7f8667312fb99}} 
+enum {\bfseries MENU\+\_\+\+WINDOWS} \{ \newline
+{\bfseries MENU\+\_\+\+WINDOW\+\_\+\+HOME}
+, {\bfseries MENU\+\_\+\+WINDOW\+\_\+\+DIFFICULTY}
+, {\bfseries MENU\+\_\+\+WINDOW\+\_\+\+PAUSE}
+, {\bfseries MENU\+\_\+\+WINDOW\+\_\+\+GAME\+\_\+\+OVER}
+, \newline
+{\bfseries MENU\+\_\+\+WINDOW\+\_\+\+MAX}
+ \}
+\item 
+\mbox{\Hypertarget{geometry_8h_a64941c114f1920b3654b7cad52c00d43}\label{geometry_8h_a64941c114f1920b3654b7cad52c00d43}} 
+enum {\bfseries CAR\+\_\+\+TYPE} \{ \newline
+{\bfseries CAR\+\_\+\+BLUE} = 0
+, {\bfseries CAR\+\_\+\+POLICE}
+, {\bfseries CAR\+\_\+\+YELLOW}
+, {\bfseries TRUCK\+\_\+\+FIRE}
+, \newline
+{\bfseries TRUCK}
+, {\bfseries CAR\+\_\+\+TYPE\+\_\+N}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{geometry_8h_a035fad6dbdbb3a984081367c42de7f6f}{get\+\_\+rand\+\_\+between}} (int low, int high)
+\begin{DoxyCompactList}\small\item\em Devuelve un randon entre dos numeros dados. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{geometry_8h_a012330be2a5e103c48c17d2919332f6a}{collide}} (int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
+\begin{DoxyCompactList}\small\item\em Comprueba colición de hitboxes rectangulares. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{geometry_8h_a1e334de02e45f7b540ca8f05f112368e}{collide\+Short}} (int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
+\begin{DoxyCompactList}\small\item\em Similar a \textquotesingle{}collide\textquotesingle{}, pero pide ancho y alto en vez de segundas coordenadas. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{geometry_8h_a8bb1a355852d180340d27afef5b858a9}{inside}} (int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
+\begin{DoxyCompactList}\small\item\em Detecta si un rectángulo está dentro de otro. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{geometry_8h_acee5713af4dee4e3d7755cd6ce1c5877}{inside\+Short}} (int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
+\begin{DoxyCompactList}\small\item\em Similar a \textquotesingle{}inside\textquotesingle{}, pero pide ancho y alto en vez de segundas coordenadas. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{geometry_8h_aa19723df611a0bf33f4c2f0606112362}{inside\+Short\+Scaled}} (int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh, float scale)
+\begin{DoxyCompactList}\small\item\em Similar a \textquotesingle{}inside\+Short\textquotesingle{}, pero permite setear cuan dentro debe estar una box dentro de la otra para tomarla como tal. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{geometry_8h_a3f7d90ce92b61ea95cbc489b2e2b9ca0}{map\+Int}} (int source, int min\+\_\+in, int max\+\_\+in, int min\+\_\+out, int max\+\_\+out)
+\begin{DoxyCompactList}\small\item\em Toma un valor comprendido dentro de un rango (in) y lo devuelve (mapea) a otro rango (out) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} \mbox{\hyperlink{geometry_8h_a66915c9f3ed952c6c5c4a684e4e4e039}{get\+XYFrom\+Frog\+Frame}} (int frame)
+\begin{DoxyCompactList}\small\item\em Devuelve par de coordenadas xy topleft de un frame dado del sprite de la rana. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} \mbox{\hyperlink{geometry_8h_ada2d65319406710a7aed6fec242e9cc2}{get\+XYFrom\+Turtle\+Frame}} (int frame)
+\begin{DoxyCompactList}\small\item\em Devuelve par de coordenadas xy topleft de un frame dado del sprite de la tortuga. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} \mbox{\hyperlink{geometry_8h_a56443935d34a8a9ebaa19c50c7ed157e}{get\+XYFrom\+Car\+Frame}} (int frame)
+\begin{DoxyCompactList}\small\item\em Devuelve par de coordenadas xy topleft de un frame dado del sprite del auto. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} \mbox{\hyperlink{geometry_8h_a67cb3f04775eb3bde5ad1e1119446a34}{get\+XYFrom\+Coin\+Frame}} (int frame)
+\begin{DoxyCompactList}\small\item\em Devuelve par de coordenadas xy topleft de un frame dado del sprite de coin. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} \mbox{\hyperlink{geometry_8h_ada9fad387dbee9d680cef1e2e64db11a}{get\+XYFrom\+Splash\+Frame}} (int frame)
+\begin{DoxyCompactList}\small\item\em Devuelve par de coordenadas xy topleft de un frame dado del sprite de splash. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{geometry_8h_a52c61f88ca078b5753a04eb4325caa56}{match\+Uint}} (unsigned int val, const unsigned int $\ast$array)
+\begin{DoxyCompactList}\small\item\em Verifica si un numero coincide con alguno de un array dado (uints) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const unsigned int \mbox{\hyperlink{geometry_8h_a3ef536b3430cfc9e7a4fae1f3c83aadb}{lanes\+\_\+logs}} \mbox{[}LANES\+\_\+\+LOG\+\_\+\+TOTAL\mbox{]}
+\begin{DoxyCompactList}\small\item\em Filas para troncos, referenciadas a 0. \end{DoxyCompactList}\item 
+const unsigned int \mbox{\hyperlink{geometry_8h_a2be8fa038d6d703c71d3c7320f8b1537}{lanes\+\_\+turtles}} \mbox{[}LANES\+\_\+\+TURTLE\+\_\+\+TOTAL\mbox{]}
+\begin{DoxyCompactList}\small\item\em Filas para tortugas, referenciadas a 0. \end{DoxyCompactList}\item 
+const unsigned int \mbox{\hyperlink{geometry_8h_a928b4f03665f6193217bbec03942e79b}{lanes\+\_\+cars}} \mbox{[}LANES\+\_\+\+CAR\+\_\+\+TOTAL\mbox{]}
+\begin{DoxyCompactList}\small\item\em Filas para autos, referenciadas a 0. \end{DoxyCompactList}\item 
+const unsigned int \mbox{\hyperlink{geometry_8h_ab135658db295596a14c91011c0f5831b}{goal\+\_\+cols}} \mbox{[}MAX\+\_\+\+GOALS\mbox{]}
+\begin{DoxyCompactList}\small\item\em Columnas para puntos de llegada, referenciadas a 0. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+your name (\href{mailto:you@domain.com}{\texttt{ you@domain.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2022-\/01-\/10
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{geometry_8h_a012330be2a5e103c48c17d2919332f6a}\label{geometry_8h_a012330be2a5e103c48c17d2919332f6a}} 
+\index{geometry.h@{geometry.h}!collide@{collide}}
+\index{collide@{collide}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{collide()}{collide()}}
+{\footnotesize\ttfamily bool collide (\begin{DoxyParamCaption}\item[{int}]{ax1,  }\item[{int}]{ay1,  }\item[{int}]{ax2,  }\item[{int}]{ay2,  }\item[{int}]{bx1,  }\item[{int}]{by1,  }\item[{int}]{bx2,  }\item[{int}]{by2 }\end{DoxyParamCaption})}
+
+
+
+Comprueba colición de hitboxes rectangulares. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ax1} & topleft corner de a (x) \\
+\hline
+{\em ay1} & topleft corner de a (y) \\
+\hline
+{\em ax2} & bottomright corner de a (x) \\
+\hline
+{\em ay2} & bottomright corner de a (y) \\
+\hline
+{\em bx1} & topleft corner de b (x) \\
+\hline
+{\em by1} & topleft corner de b (y) \\
+\hline
+{\em bx2} & bottomright corner de b (x) \\
+\hline
+{\em by2} & bottomright corner de b (y) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Colisión 
+
+false No colisión 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a1e334de02e45f7b540ca8f05f112368e}\label{geometry_8h_a1e334de02e45f7b540ca8f05f112368e}} 
+\index{geometry.h@{geometry.h}!collideShort@{collideShort}}
+\index{collideShort@{collideShort}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{collideShort()}{collideShort()}}
+{\footnotesize\ttfamily bool collide\+Short (\begin{DoxyParamCaption}\item[{int}]{ax,  }\item[{int}]{ay,  }\item[{int}]{aw,  }\item[{int}]{ah,  }\item[{int}]{bx,  }\item[{int}]{by,  }\item[{int}]{bw,  }\item[{int}]{bh }\end{DoxyParamCaption})}
+
+
+
+Similar a \textquotesingle{}collide\textquotesingle{}, pero pide ancho y alto en vez de segundas coordenadas. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ax} & topleft corner x de a \\
+\hline
+{\em ay} & topleft corner y de a \\
+\hline
+{\em aw} & ancho de a \\
+\hline
+{\em ah} & alto de a \\
+\hline
+{\em bx} & topleft corner x de b \\
+\hline
+{\em by} & topleft corner y de b \\
+\hline
+{\em bw} & ancho de b \\
+\hline
+{\em bh} & alto de b \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Colision 
+
+false No colision 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a035fad6dbdbb3a984081367c42de7f6f}\label{geometry_8h_a035fad6dbdbb3a984081367c42de7f6f}} 
+\index{geometry.h@{geometry.h}!get\_rand\_between@{get\_rand\_between}}
+\index{get\_rand\_between@{get\_rand\_between}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{get\_rand\_between()}{get\_rand\_between()}}
+{\footnotesize\ttfamily int get\+\_\+rand\+\_\+between (\begin{DoxyParamCaption}\item[{int}]{low,  }\item[{int}]{high }\end{DoxyParamCaption})}
+
+
+
+Devuelve un randon entre dos numeros dados. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em low} & Valor inferior \\
+\hline
+{\em high} & Valor superior \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Valor random 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a56443935d34a8a9ebaa19c50c7ed157e}\label{geometry_8h_a56443935d34a8a9ebaa19c50c7ed157e}} 
+\index{geometry.h@{geometry.h}!getXYFromCarFrame@{getXYFromCarFrame}}
+\index{getXYFromCarFrame@{getXYFromCarFrame}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{getXYFromCarFrame()}{getXYFromCarFrame()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} get\+XYFrom\+Car\+Frame (\begin{DoxyParamCaption}\item[{int}]{frame }\end{DoxyParamCaption})}
+
+
+
+Devuelve par de coordenadas xy topleft de un frame dado del sprite del auto. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & Numero de frame (0 a CAR\+\_\+\+TYPE\+\_\+N -\/ 1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} Par de coordenandas 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a67cb3f04775eb3bde5ad1e1119446a34}\label{geometry_8h_a67cb3f04775eb3bde5ad1e1119446a34}} 
+\index{geometry.h@{geometry.h}!getXYFromCoinFrame@{getXYFromCoinFrame}}
+\index{getXYFromCoinFrame@{getXYFromCoinFrame}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{getXYFromCoinFrame()}{getXYFromCoinFrame()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} get\+XYFrom\+Coin\+Frame (\begin{DoxyParamCaption}\item[{int}]{frame }\end{DoxyParamCaption})}
+
+
+
+Devuelve par de coordenadas xy topleft de un frame dado del sprite de coin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & Numero de frame (0 a SPRITE\+\_\+\+COIN\+\_\+\+FRAMES -\/ 1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} Par de coordenandas 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a66915c9f3ed952c6c5c4a684e4e4e039}\label{geometry_8h_a66915c9f3ed952c6c5c4a684e4e4e039}} 
+\index{geometry.h@{geometry.h}!getXYFromFrogFrame@{getXYFromFrogFrame}}
+\index{getXYFromFrogFrame@{getXYFromFrogFrame}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{getXYFromFrogFrame()}{getXYFromFrogFrame()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} get\+XYFrom\+Frog\+Frame (\begin{DoxyParamCaption}\item[{int}]{frame }\end{DoxyParamCaption})}
+
+
+
+Devuelve par de coordenadas xy topleft de un frame dado del sprite de la rana. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & Numero de frame (0 a FROG\+\_\+\+FRAMES -\/ 1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} Par de coordenadas 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_ada9fad387dbee9d680cef1e2e64db11a}\label{geometry_8h_ada9fad387dbee9d680cef1e2e64db11a}} 
+\index{geometry.h@{geometry.h}!getXYFromSplashFrame@{getXYFromSplashFrame}}
+\index{getXYFromSplashFrame@{getXYFromSplashFrame}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{getXYFromSplashFrame()}{getXYFromSplashFrame()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} get\+XYFrom\+Splash\+Frame (\begin{DoxyParamCaption}\item[{int}]{frame }\end{DoxyParamCaption})}
+
+
+
+Devuelve par de coordenadas xy topleft de un frame dado del sprite de splash. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & Numero de frame (0 a SPRITE\+\_\+\+SPLASH\+\_\+\+FRAMES -\/ 1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} Par de coordenandas 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_ada2d65319406710a7aed6fec242e9cc2}\label{geometry_8h_ada2d65319406710a7aed6fec242e9cc2}} 
+\index{geometry.h@{geometry.h}!getXYFromTurtleFrame@{getXYFromTurtleFrame}}
+\index{getXYFromTurtleFrame@{getXYFromTurtleFrame}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{getXYFromTurtleFrame()}{getXYFromTurtleFrame()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} get\+XYFrom\+Turtle\+Frame (\begin{DoxyParamCaption}\item[{int}]{frame }\end{DoxyParamCaption})}
+
+
+
+Devuelve par de coordenadas xy topleft de un frame dado del sprite de la tortuga. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frame} & Numero de frame (0 a TURTLE\+\_\+\+FRAMES -\/ 1) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structpair__xy__t}{pair\+\_\+xy\+\_\+t}} Par de coordenadas 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a8bb1a355852d180340d27afef5b858a9}\label{geometry_8h_a8bb1a355852d180340d27afef5b858a9}} 
+\index{geometry.h@{geometry.h}!inside@{inside}}
+\index{inside@{inside}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{inside()}{inside()}}
+{\footnotesize\ttfamily bool inside (\begin{DoxyParamCaption}\item[{int}]{ax1,  }\item[{int}]{ay1,  }\item[{int}]{ax2,  }\item[{int}]{ay2,  }\item[{int}]{bx1,  }\item[{int}]{by1,  }\item[{int}]{bx2,  }\item[{int}]{by2 }\end{DoxyParamCaption})}
+
+
+
+Detecta si un rectángulo está dentro de otro. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ax1} & topleft corner de big (x) \\
+\hline
+{\em ay1} & topleft corner de big (y) \\
+\hline
+{\em ax2} & bottomright corner de big (x) \\
+\hline
+{\em ay2} & bottomright corner de big (y) \\
+\hline
+{\em bx1} & topleft corner de small (x) \\
+\hline
+{\em by1} & topleft corner de small (y) \\
+\hline
+{\em bx2} & bottomright corner de small (x) \\
+\hline
+{\em by2} & bottomright corner de small (y) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Está dentro 
+
+false Está fuera 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_acee5713af4dee4e3d7755cd6ce1c5877}\label{geometry_8h_acee5713af4dee4e3d7755cd6ce1c5877}} 
+\index{geometry.h@{geometry.h}!insideShort@{insideShort}}
+\index{insideShort@{insideShort}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{insideShort()}{insideShort()}}
+{\footnotesize\ttfamily bool inside\+Short (\begin{DoxyParamCaption}\item[{int}]{ax,  }\item[{int}]{ay,  }\item[{int}]{aw,  }\item[{int}]{ah,  }\item[{int}]{bx,  }\item[{int}]{by,  }\item[{int}]{bw,  }\item[{int}]{bh }\end{DoxyParamCaption})}
+
+
+
+Similar a \textquotesingle{}inside\textquotesingle{}, pero pide ancho y alto en vez de segundas coordenadas. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ax} & topleft corner x de big \\
+\hline
+{\em ay} & topleft corner y de big \\
+\hline
+{\em aw} & ancho de big \\
+\hline
+{\em ah} & alto de big \\
+\hline
+{\em bx} & topleft corner x de big \\
+\hline
+{\em by} & topleft corner y de big \\
+\hline
+{\em bw} & ancho de big \\
+\hline
+{\em bh} & alto de big \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Esta dentro 
+
+false Esta fuera 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_aa19723df611a0bf33f4c2f0606112362}\label{geometry_8h_aa19723df611a0bf33f4c2f0606112362}} 
+\index{geometry.h@{geometry.h}!insideShortScaled@{insideShortScaled}}
+\index{insideShortScaled@{insideShortScaled}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{insideShortScaled()}{insideShortScaled()}}
+{\footnotesize\ttfamily bool inside\+Short\+Scaled (\begin{DoxyParamCaption}\item[{int}]{ax,  }\item[{int}]{ay,  }\item[{int}]{aw,  }\item[{int}]{ah,  }\item[{int}]{bx,  }\item[{int}]{by,  }\item[{int}]{bw,  }\item[{int}]{bh,  }\item[{float}]{scale }\end{DoxyParamCaption})}
+
+
+
+Similar a \textquotesingle{}inside\+Short\textquotesingle{}, pero permite setear cuan dentro debe estar una box dentro de la otra para tomarla como tal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ax} & topleft corner x de big \\
+\hline
+{\em ay} & topleft corner y de big \\
+\hline
+{\em aw} & ancho de big \\
+\hline
+{\em ah} & alto de big \\
+\hline
+{\em bx} & topleft corner x de big \\
+\hline
+{\em by} & topleft corner y de big \\
+\hline
+{\em bw} & ancho de big \\
+\hline
+{\em bh} & alto de big \\
+\hline
+{\em scale} & Factor de insercion. Entre 0.\+0 (nada metido) y 1.\+0 (completamente metido). Otro valor devuelve false \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a3f7d90ce92b61ea95cbc489b2e2b9ca0}\label{geometry_8h_a3f7d90ce92b61ea95cbc489b2e2b9ca0}} 
+\index{geometry.h@{geometry.h}!mapInt@{mapInt}}
+\index{mapInt@{mapInt}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{mapInt()}{mapInt()}}
+{\footnotesize\ttfamily int map\+Int (\begin{DoxyParamCaption}\item[{int}]{source,  }\item[{int}]{min\+\_\+in,  }\item[{int}]{max\+\_\+in,  }\item[{int}]{min\+\_\+out,  }\item[{int}]{max\+\_\+out }\end{DoxyParamCaption})}
+
+
+
+Toma un valor comprendido dentro de un rango (in) y lo devuelve (mapea) a otro rango (out) 
+
+@source \href{https://stackoverflow.com/questions/5731863/mapping-a-numeric-range-onto-another}{\texttt{ https\+://stackoverflow.\+com/questions/5731863/mapping-\/a-\/numeric-\/range-\/onto-\/another}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em source} & Valor a mapear \\
+\hline
+{\em min\+\_\+in} & Limite inferior del rango de entrada \\
+\hline
+{\em max\+\_\+in} & Límite superior del rango de entrada \\
+\hline
+{\em min\+\_\+out} & Límite inferior del rango de salida \\
+\hline
+{\em max\+\_\+out} & Límite superior del rango de salida \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Valor mapeado 
+\end{DoxyReturn}
+\mbox{\Hypertarget{geometry_8h_a52c61f88ca078b5753a04eb4325caa56}\label{geometry_8h_a52c61f88ca078b5753a04eb4325caa56}} 
+\index{geometry.h@{geometry.h}!matchUint@{matchUint}}
+\index{matchUint@{matchUint}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{matchUint()}{matchUint()}}
+{\footnotesize\ttfamily bool match\+Uint (\begin{DoxyParamCaption}\item[{unsigned int}]{val,  }\item[{const unsigned int $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Verifica si un numero coincide con alguno de un array dado (uints) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & Numero a verificar \\
+\hline
+{\em array} & Array de numeros \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Existe 
+
+false No existe 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{geometry_8h_ab135658db295596a14c91011c0f5831b}\label{geometry_8h_ab135658db295596a14c91011c0f5831b}} 
+\index{geometry.h@{geometry.h}!goal\_cols@{goal\_cols}}
+\index{goal\_cols@{goal\_cols}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{goal\_cols}{goal\_cols}}
+{\footnotesize\ttfamily const unsigned int goal\+\_\+cols\mbox{[}MAX\+\_\+\+GOALS\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Columnas para puntos de llegada, referenciadas a 0. 
+
+Columnas para puntos de llegada, referenciadas a 0. \mbox{\Hypertarget{geometry_8h_a928b4f03665f6193217bbec03942e79b}\label{geometry_8h_a928b4f03665f6193217bbec03942e79b}} 
+\index{geometry.h@{geometry.h}!lanes\_cars@{lanes\_cars}}
+\index{lanes\_cars@{lanes\_cars}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{lanes\_cars}{lanes\_cars}}
+{\footnotesize\ttfamily const unsigned int lanes\+\_\+cars\mbox{[}LANES\+\_\+\+CAR\+\_\+\+TOTAL\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Filas para autos, referenciadas a 0. 
+
+Filas para autos, referenciadas a 0. \mbox{\Hypertarget{geometry_8h_a3ef536b3430cfc9e7a4fae1f3c83aadb}\label{geometry_8h_a3ef536b3430cfc9e7a4fae1f3c83aadb}} 
+\index{geometry.h@{geometry.h}!lanes\_logs@{lanes\_logs}}
+\index{lanes\_logs@{lanes\_logs}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{lanes\_logs}{lanes\_logs}}
+{\footnotesize\ttfamily const unsigned int lanes\+\_\+logs\mbox{[}LANES\+\_\+\+LOG\+\_\+\+TOTAL\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Filas para troncos, referenciadas a 0. 
+
+Filas para troncos, referenciadas a 0. \mbox{\Hypertarget{geometry_8h_a2be8fa038d6d703c71d3c7320f8b1537}\label{geometry_8h_a2be8fa038d6d703c71d3c7320f8b1537}} 
+\index{geometry.h@{geometry.h}!lanes\_turtles@{lanes\_turtles}}
+\index{lanes\_turtles@{lanes\_turtles}!geometry.h@{geometry.h}}
+\doxysubsubsection{\texorpdfstring{lanes\_turtles}{lanes\_turtles}}
+{\footnotesize\ttfamily const unsigned int lanes\+\_\+turtles\mbox{[}LANES\+\_\+\+TURTLE\+\_\+\+TOTAL\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Filas para tortugas, referenciadas a 0. 
+
+Filas para tortugas, referenciadas a 0. 

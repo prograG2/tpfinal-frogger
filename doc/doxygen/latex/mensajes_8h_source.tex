@@ -1,0 +1,106 @@
+\hypertarget{mensajes_8h_source}{}\doxysection{mensajes.\+h}
+\label{mensajes_8h_source}\index{src/platform/rpi/mensajes.h@{src/platform/rpi/mensajes.h}}
+\mbox{\hyperlink{mensajes_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#ifndef \_MENSAJES\_H\_}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#define \_MENSAJES\_H\_}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{12 \textcolor{comment}{ * INCLUDE HEADER FILES}}
+\DoxyCodeLine{13 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{bitmap_8h}{bitmap.h}}"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{21 \textcolor{comment}{ * CONSTANT AND MACRO DEFINITIONS USING \#DEFINE}}
+\DoxyCodeLine{22 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define TAM\_RENGLON 5}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#define POS\_MSJ1 2}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define POS\_MSJ2 9}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define POS\_MSJ3 5}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define L\_MAX 64}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{32 \textcolor{comment}{ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS}}
+\DoxyCodeLine{33 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{34 \textcolor{keyword}{typedef} \textcolor{keyword}{union}}
+\DoxyCodeLine{35 \{}
+\DoxyCodeLine{36   uint32\_t completo;}
+\DoxyCodeLine{37   \textcolor{keyword}{struct}}
+\DoxyCodeLine{38   \{}
+\DoxyCodeLine{39     uint16\_t mitad\_der;}
+\DoxyCodeLine{40     uint16\_t mitad\_izq;}
+\DoxyCodeLine{41   \};}
+\DoxyCodeLine{42 \} \mbox{\hyperlink{unionrenglon__t}{renglon\_t}}[5];}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_mensaje}{Mensaje}}}
+\DoxyCodeLine{45 \{}
+\DoxyCodeLine{46   \textcolor{keywordtype}{char} msj[L\_MAX];}
+\DoxyCodeLine{47   \textcolor{keywordtype}{int} posicion;}
+\DoxyCodeLine{48   \textcolor{keywordtype}{int} index;}
+\DoxyCodeLine{49   \textcolor{keywordtype}{int} longitud;}
+\DoxyCodeLine{50   \textcolor{keywordtype}{int} j;}
+\DoxyCodeLine{51   \textcolor{keywordtype}{bool} habilitacion;}
+\DoxyCodeLine{52   \textcolor{keywordtype}{bool} mover\_texto;}
+\DoxyCodeLine{53   \textcolor{keywordtype}{bool} repetir\_msj;}
+\DoxyCodeLine{54   \mbox{\hyperlink{unionrenglon__t}{renglon\_t}} renglon;}
+\DoxyCodeLine{55 \} \mbox{\hyperlink{struct_mensaje}{mensaje\_t}};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{58 \textcolor{comment}{ * VARIABLE PROTOTYPES WITH GLOBAL SCOPE}}
+\DoxyCodeLine{59 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{comment}{// +ej: extern unsigned int anio\_actual;+}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{64 \textcolor{comment}{ * FUNCTION PROTOTYPES WITH GLOBAL SCOPE}}
+\DoxyCodeLine{65 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{72 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_a2f58578a7699a7eecbce9b71d8aeaf69}{printRenglon}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r);}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{79 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_ae3e9e63d1095bfea3d571e196f70e89b}{borrarRenglon}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{87 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_ac415371f421b67aeba1e94c0a6976bae}{renglonShiftDer}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r, uint16\_t s);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{95 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_a6f626c90c3e8a9bc94cf32e24ce70bf4}{renglonShiftIzq}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r, uint16\_t s);}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{103 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_aed436c656f219dcec2db953a764e0900}{renglonOr}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r, \mbox{\hyperlink{unionrenglon__t}{renglon\_t}} s);}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{111 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_abd1a361742ac596964a6ffe69d370aab}{renglonAnd}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r, \mbox{\hyperlink{unionrenglon__t}{renglon\_t}} s);}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{118 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_abc5bc59bfd58f95321603a95c316b7a5}{renglonNot}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{126 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_aa22b72176547e22f830e4e3aacea1f99}{copiarRenglon}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r1, \textcolor{keyword}{const} \mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r2);}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{135 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_a96c5be4a6e4632d6d22e8ef6f84e4649}{copiarMatrizRenglon}}(matriz\_t m, \textcolor{keyword}{const} \mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r, \textcolor{keywordtype}{int} pos);}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{144 \textcolor{keywordtype}{bool} \mbox{\hyperlink{mensajes_8h_a9af9072acf8b9a91fe1a2b17f8b39687}{renglonIzquierdoLibre}}(\mbox{\hyperlink{struct_mensaje}{mensaje\_t}} *msj);}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{152 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_a899069bf67fd3e55b05d98d2bf118329}{charARenglon}}(\textcolor{keywordtype}{char} c, \mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{162 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_ad53bd57aaa56fa70a390e90b5a6042a5}{charAMatriz}}(\textcolor{keywordtype}{char} c, matriz\_t m, \textcolor{keyword}{const} \textcolor{keywordtype}{int} coord[]);}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{170 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_acd6b704f87d6c62c6b31928c729f1dd8}{uintARenglon}}(uint16\_t n, \mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r); \textcolor{comment}{// copia un número a renglon hasta que se acabe el número o el renglon (lo 1 q ocurra)}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{179 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_af04d64e21168e39cb3827f94f9f8ad28}{reemplazarLetra}}(\mbox{\hyperlink{unionrenglon__t}{renglon\_t}} r, \textcolor{keywordtype}{char} c, \textcolor{keywordtype}{int} j);}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{189 \mbox{\hyperlink{struct_mensaje}{mensaje\_t}} \mbox{\hyperlink{mensajes_8h_a26832d26256d07b035a793e557b9b515}{mensaje}}(\textcolor{keywordtype}{char} *msj, \textcolor{keywordtype}{int} pos, \textcolor{keywordtype}{bool} repetir);}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{196 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_abb519c0e2af153c0d2398213c6838578}{moverMensaje}}(\mbox{\hyperlink{struct_mensaje}{mensaje\_t}} *msj);}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{204 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_a9ba9d226b08485e2aa001615883b7e54}{concatenarLetraMensaje}}(\textcolor{keywordtype}{char} c, \mbox{\hyperlink{struct_mensaje}{mensaje\_t}} *msj);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{212 \textcolor{keywordtype}{void} \mbox{\hyperlink{mensajes_8h_a3e01d46bc378fef264ee37bfb725eebf}{reemplazarUltLetraMensaje}}(\textcolor{keywordtype}{char} c, \mbox{\hyperlink{struct_mensaje}{mensaje\_t}} *msj);}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{215 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_MENSAJES\_H\_}}
+
+\end{DoxyCode}

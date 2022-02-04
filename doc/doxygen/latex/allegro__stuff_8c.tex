@@ -1,0 +1,577 @@
+\hypertarget{allegro__stuff_8c}{}\doxysection{src/platform/pc/allegro\+\_\+stuff.c File Reference}
+\label{allegro__stuff_8c}\index{src/platform/pc/allegro\_stuff.c@{src/platform/pc/allegro\_stuff.c}}
+{\ttfamily \#include \char`\"{}allegro\+\_\+stuff.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}./algif5/algif.\+h\char`\"{}}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structallegro__t}{allegro\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structsounds__t}{sounds\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a33f4fac49f2a5e27e2857eb27f054510}\label{allegro__stuff_8c_a33f4fac49f2a5e27e2857eb27f054510}} 
+\#define {\bfseries FONT\+\_\+\+HEIGHT}~16
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a725ac53b58b7ae97eeaf412bea6ac072}\label{allegro__stuff_8c_a725ac53b58b7ae97eeaf412bea6ac072}} 
+\#define {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+FILE\+\_\+\+CREDITS}~\char`\"{}credits\+\_\+theme\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a90280c02be2b8043972494cf37c824bf}\label{allegro__stuff_8c_a90280c02be2b8043972494cf37c824bf}} 
+\#define {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+FILE\+\_\+\+MAIN}~\char`\"{}main\+\_\+menu\+\_\+theme\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a2a85132f7ab86f7b13d4eff1ea733cac}\label{allegro__stuff_8c_a2a85132f7ab86f7b13d4eff1ea733cac}} 
+\#define {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+FILE\+\_\+\+PAUSE}~\char`\"{}pause\+\_\+menu\+\_\+theme\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a18619217d3825d2aa7b93bd9103e3056}\label{allegro__stuff_8c_a18619217d3825d2aa7b93bd9103e3056}} 
+\#define {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+FILE\+\_\+\+PLAYING}~\char`\"{}playing\+\_\+theme\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a0b0831dcec5ec41bdd37776606000119}\label{allegro__stuff_8c_a0b0831dcec5ec41bdd37776606000119}} 
+\#define {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+FILE\+\_\+\+RANKING}~\char`\"{}ranking\+\_\+theme\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a337dfa33bd3de3a3f169e2fad1d876f3}\label{allegro__stuff_8c_a337dfa33bd3de3a3f169e2fad1d876f3}} 
+\#define {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+FILE\+\_\+\+RICK}~\char`\"{}rick\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_afae1bb7a26ecc72bbb33d63693c49528}\label{allegro__stuff_8c_afae1bb7a26ecc72bbb33d63693c49528}} 
+\#define {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+FILE\+\_\+\+GAME\+\_\+\+OVER}~\char`\"{}game\+\_\+over\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a19e4da8e1178005bc0efb24a9dddc70e}\label{allegro__stuff_8c_a19e4da8e1178005bc0efb24a9dddc70e}} 
+\#define {\bfseries FONT\+\_\+\+FILE\+\_\+\+NAME}~\char`\"{}Public\+Pixel.\+ttf\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_afe18aa9760e76c77e4152fb8ac6894aa}\label{allegro__stuff_8c_afe18aa9760e76c77e4152fb8ac6894aa}} 
+\#define {\bfseries SPRITE\+\_\+\+HEART}~\char`\"{}minecraft\+\_\+heart\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a2c444da0adeb98c82c42d5666dd35e28}\label{allegro__stuff_8c_a2c444da0adeb98c82c42d5666dd35e28}} 
+\#define {\bfseries SPRITE\+\_\+\+BACKGROUND}~\char`\"{}sprite\+\_\+background\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a320aa8d6f541c06acca446d66c2bede8}\label{allegro__stuff_8c_a320aa8d6f541c06acca446d66c2bede8}} 
+\#define {\bfseries SPRITE\+\_\+\+CAR}~\char`\"{}sprite\+\_\+cars\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a56aa85d5c59149288573d46472a580d3}\label{allegro__stuff_8c_a56aa85d5c59149288573d46472a580d3}} 
+\#define {\bfseries SPRITE\+\_\+\+FROG}~\char`\"{}sprite\+\_\+frog\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a452fdff9b7b51c8e14718fccb9b5face}\label{allegro__stuff_8c_a452fdff9b7b51c8e14718fccb9b5face}} 
+\#define {\bfseries SPRITE\+\_\+\+LOG}~\char`\"{}sprite\+\_\+log\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac89f99dc44437bb748ec4a8289c00ad6}\label{allegro__stuff_8c_ac89f99dc44437bb748ec4a8289c00ad6}} 
+\#define {\bfseries SPRITE\+\_\+\+TURTLES}~\char`\"{}sprite\+\_\+turtles\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a8c413a24a9380b59cf80cdb8a2600718}\label{allegro__stuff_8c_a8c413a24a9380b59cf80cdb8a2600718}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+HOME\+\_\+\+BACK}~\char`\"{}sprite\+\_\+menu\+\_\+home\+\_\+background\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a60a0e4733950585c42e30dad0e3ffcf1}\label{allegro__stuff_8c_a60a0e4733950585c42e30dad0e3ffcf1}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+HOME}~\char`\"{}sprite\+\_\+menu\+\_\+home\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a541eaa1970bd2c4044abbc29302e981c}\label{allegro__stuff_8c_a541eaa1970bd2c4044abbc29302e981c}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+DIFF\+\_\+\+BACK}~\char`\"{}sprite\+\_\+menu\+\_\+diff\+\_\+background\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a5e8c0a925ccffa8dbfbda3990274abba}\label{allegro__stuff_8c_a5e8c0a925ccffa8dbfbda3990274abba}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+DIFF}~\char`\"{}sprite\+\_\+menu\+\_\+diff\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a0aaeb7b4ba42bc1406290703290f44c4}\label{allegro__stuff_8c_a0aaeb7b4ba42bc1406290703290f44c4}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+PAUSE\+\_\+\+BACK}~\char`\"{}sprite\+\_\+menu\+\_\+pause\+\_\+background\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ad7477e560b735aefc2f8efe28262c6c7}\label{allegro__stuff_8c_ad7477e560b735aefc2f8efe28262c6c7}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+PAUSE}~\char`\"{}sprite\+\_\+menu\+\_\+pause\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a05b211f0ccde9ae0c50c324489f914a3}\label{allegro__stuff_8c_a05b211f0ccde9ae0c50c324489f914a3}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+GAME\+\_\+\+OVER\+\_\+\+BACK}~\char`\"{}sprite\+\_\+menu\+\_\+gameover\+\_\+background\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_af55864302026841df1769fe4764fc8dd}\label{allegro__stuff_8c_af55864302026841df1769fe4764fc8dd}} 
+\#define {\bfseries SPRITE\+\_\+\+MENU\+\_\+\+GAME\+\_\+\+OVER}~\char`\"{}sprite\+\_\+menu\+\_\+gameover\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_af9d26453b9454ad2542887e3fbe4753c}\label{allegro__stuff_8c_af9d26453b9454ad2542887e3fbe4753c}} 
+\#define {\bfseries SPRITE\+\_\+\+CREDITS}~\char`\"{}sprite\+\_\+credits\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a92438ab966b6d57377579b3f127288e1}\label{allegro__stuff_8c_a92438ab966b6d57377579b3f127288e1}} 
+\#define {\bfseries SPRITE\+\_\+\+NAME}~\char`\"{}sprite\+\_\+name\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aa0d614f4b3ebde4fd215d682d10b54fc}\label{allegro__stuff_8c_aa0d614f4b3ebde4fd215d682d10b54fc}} 
+\#define {\bfseries SPRITE\+\_\+\+ICON}~\char`\"{}icon\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a7f7be09bea6fa302b599d876e2e9c73f}\label{allegro__stuff_8c_a7f7be09bea6fa302b599d876e2e9c73f}} 
+\#define {\bfseries SPRITE\+\_\+\+DEAD}~\char`\"{}sprite\+\_\+dead\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_adb98999ce4d95a057030d51aef63352d}\label{allegro__stuff_8c_adb98999ce4d95a057030d51aef63352d}} 
+\#define {\bfseries SPRITE\+\_\+\+BORDER}~\char`\"{}sprite\+\_\+border\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a88611d4e960c1cd3f4c1a871d7218e78}\label{allegro__stuff_8c_a88611d4e960c1cd3f4c1a871d7218e78}} 
+\#define {\bfseries SPRITE\+\_\+\+SPLASH}~\char`\"{}sprite\+\_\+splash\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a45788c46e9a79419cf27baad637d5320}\label{allegro__stuff_8c_a45788c46e9a79419cf27baad637d5320}} 
+\#define {\bfseries SPRITE\+\_\+\+COIN}~\char`\"{}sprite\+\_\+coin\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a18f55784a3fee512bedd70926eb2d113}\label{allegro__stuff_8c_a18f55784a3fee512bedd70926eb2d113}} 
+\#define {\bfseries EXTENSION\+\_\+\+SOUND\+\_\+\+SAMPLE}~\char`\"{}.wav\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ad3be367703eb7374a654b478a5b13d96}\label{allegro__stuff_8c_ad3be367703eb7374a654b478a5b13d96}} 
+\#define {\bfseries EXTENSION\+\_\+\+SOUND\+\_\+\+STREAM}~\char`\"{}.opus\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a0da48a8c4b273a52cfb82649e8bd886f}\label{allegro__stuff_8c_a0da48a8c4b273a52cfb82649e8bd886f}} 
+\#define {\bfseries EXTENSION\+\_\+\+SPRITES}~\char`\"{}.png\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac91cde53f3afbe148e2a5b2f54406c2e}\label{allegro__stuff_8c_ac91cde53f3afbe148e2a5b2f54406c2e}} 
+\#define {\bfseries PATH\+\_\+\+SOUND\+\_\+\+STREAMS}~\char`\"{}../res/sounds/streams/\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a7fad66499e15524c7511b3cc2f3de2bc}\label{allegro__stuff_8c_a7fad66499e15524c7511b3cc2f3de2bc}} 
+\#define {\bfseries PATH\+\_\+\+SOUND\+\_\+\+SAMPLES}~\char`\"{}../res/sounds/samples/\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a199cf4c93f17e6d825bc8030e487abe1}\label{allegro__stuff_8c_a199cf4c93f17e6d825bc8030e487abe1}} 
+\#define {\bfseries PATH\+\_\+\+FONTS}~\char`\"{}../res/fonts/\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_acb7c70d98eff0985b8e372a68e482f6b}\label{allegro__stuff_8c_acb7c70d98eff0985b8e372a68e482f6b}} 
+\#define {\bfseries PATH\+\_\+\+SPRITES}~\char`\"{}../res/sprites/\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a5678493460ddde2bdc4fd7d45f58b278}\label{allegro__stuff_8c_a5678493460ddde2bdc4fd7d45f58b278}} 
+\#define {\bfseries PATH\+\_\+\+GIFS}~\char`\"{}../res/gifs/\char`\"{}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac40025ea1283ce1141f83e41a9f796b7}\label{allegro__stuff_8c_ac40025ea1283ce1141f83e41a9f796b7}} 
+\#define {\bfseries GLOBAL\+\_\+\+STREAM\+\_\+\+VOLUME}~(double)0.\+5
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a269a3cdb615659bf92092f0fc3571169}\label{allegro__stuff_8c_a269a3cdb615659bf92092f0fc3571169}} 
+enum {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+STATES} \{ {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+STATE\+\_\+\+NO\+\_\+\+INIT}
+, {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+STATE\+\_\+\+INIT}
+, {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+STATE\+\_\+\+PAUSE}
+, {\bfseries SOUND\+\_\+\+STREAM\+\_\+\+STATE\+\_\+\+PLAY}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{allegro__stuff_8c_ac87abc5a9c31dbef8419df7468e3ecfa}{must\+\_\+init}} (bool test, const char $\ast$description)
+\begin{DoxyCompactList}\small\item\em Inicializa \char`\"{}cosas\char`\"{}, y sale del programa si hay problemas, avisando dónde estuvo. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a1238ee5a3383a4c69d6cdbc23d24bab7}\label{allegro__stuff_8c_a1238ee5a3383a4c69d6cdbc23d24bab7}} 
+void {\bfseries allegro\+\_\+inits} (void)
+\begin{DoxyCompactList}\small\item\em Inicializaciones de allegro. Si algo falla, lo notifica por consola y finaliza el programa. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aa241d340b2c4a970ec4933e58245f578}\label{allegro__stuff_8c_aa241d340b2c4a970ec4933e58245f578}} 
+void {\bfseries allegro\+\_\+deinits} (void)
+\begin{DoxyCompactList}\small\item\em Desinicializaciones de allegro. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac7efe12fc2933bf4ff67a9b6906d555c}\label{allegro__stuff_8c_ac7efe12fc2933bf4ff67a9b6906d555c}} 
+void {\bfseries allegro\+\_\+reinit\+\_\+display} (void)
+\begin{DoxyCompactList}\small\item\em Reinicializa el display de allegro. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aedb5feb052ec309ec38857dc77d75495}\label{allegro__stuff_8c_aedb5feb052ec309ec38857dc77d75495}} 
+void {\bfseries allegro\+\_\+deinit\+\_\+display} (void)
+\begin{DoxyCompactList}\small\item\em Desinicializa el display. \end{DoxyCompactList}\item 
+unsigned char \mbox{\hyperlink{allegro__stuff_8c_aaf639aa72ffd644f87ccb8d2abef5fc0}{allegro\+\_\+get\+\_\+last\+\_\+key}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve la ultima tecla presionada registrada. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{allegro__stuff_8c_a3a125a6e164729a4d19015ea85b4475f}{allegro\+\_\+set\+\_\+last\+\_\+key}} (unsigned char allegro\+\_\+key\+\_\+code)
+\begin{DoxyCompactList}\small\item\em Setea una ultima tecla presionada. \end{DoxyCompactList}\item 
+ALLEGRO\+\_\+\+EVENT\+\_\+\+TYPE \mbox{\hyperlink{allegro__stuff_8c_a6f391daf9fc1e812fa716fa75939b802}{allegro\+\_\+wait\+\_\+for\+\_\+event}} (void)
+\begin{DoxyCompactList}\small\item\em Espera a que ocurra un evento y lo devuelve. \end{DoxyCompactList}\item 
+ALLEGRO\+\_\+\+EVENT $\ast$ \mbox{\hyperlink{allegro__stuff_8c_a8391364d5345b132a96d3511f7ec350a}{allegro\+\_\+get\+\_\+next\+\_\+event}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve el proximo evento de la cola, si es que existe. De no haber, devuele false. \end{DoxyCompactList}\item 
+ALLEGRO\+\_\+\+EVENT \mbox{\hyperlink{allegro__stuff_8c_a595aa7d6b7fba33bbc90a2f29621543a}{allegro\+\_\+get\+\_\+var\+\_\+event}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve el evento de allegro. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{allegro__stuff_8c_a161719d2d50ef2c2c29b2119ec0b8dd6}{allegro\+\_\+get\+\_\+var\+\_\+done}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve flag de finalización del programa. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{allegro__stuff_8c_aec4819e92163d724347057ff1c002147}{allegro\+\_\+get\+\_\+var\+\_\+redraw}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve flag de renderización. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{allegro__stuff_8c_a6abced624bcac1e064d777c011a70600}{allegro\+\_\+set\+\_\+var\+\_\+done}} (bool state)
+\begin{DoxyCompactList}\small\item\em Setea flag de finalización del programa. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{allegro__stuff_8c_a27a3924bc9d474b9374b8e6e9a26f749}{allegro\+\_\+set\+\_\+var\+\_\+redraw}} (bool state)
+\begin{DoxyCompactList}\small\item\em Setea flag de renderizacion. \end{DoxyCompactList}\item 
+ALLEGRO\+\_\+\+FONT $\ast$ \mbox{\hyperlink{allegro__stuff_8c_a1a53ac15b3d7f21e07a670ab9982cd2f}{allegro\+\_\+get\+\_\+var\+\_\+font}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve la fuente de allegro. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{allegro__stuff_8c_a37e8b9192d3caaaccb4d3175af4e0e69}{allegro\+\_\+get\+\_\+var\+\_\+font\+\_\+h}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve el alto de un caracter de la funete usada. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{allegro__stuff_8c_a852eab9fe418b70f59d4db770c1cc47a}{allegro\+\_\+get\+\_\+var\+\_\+font\+\_\+w}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve ancho de un caracter de la fuente usada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac6a70c758b9bfd3678054ff78acfb57a}\label{allegro__stuff_8c_ac6a70c758b9bfd3678054ff78acfb57a}} 
+void {\bfseries allegro\+\_\+clear\+\_\+display} (void)
+\begin{DoxyCompactList}\small\item\em Pone negro el display. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a47da949669d3bfd38ddb9abac1fe2dc1}\label{allegro__stuff_8c_a47da949669d3bfd38ddb9abac1fe2dc1}} 
+void {\bfseries allegro\+\_\+draw\+\_\+background} (void)
+\begin{DoxyCompactList}\small\item\em Dibuja la imagen de fondo. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{allegro__stuff_8c_a31ac04b61e4206d4719802413795970d}{allegro\+\_\+draw\+\_\+menu\+\_\+background}} (int window)
+\begin{DoxyCompactList}\small\item\em Dibuja imagen de fondo de un menu dado (sin highlight en ninguna opcion) \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{allegro__stuff_8c_a97f28112d10bf8f9862e2248de455c77}{allegro\+\_\+is\+\_\+event\+\_\+queue\+Vacia}} (void)
+\begin{DoxyCompactList}\small\item\em Informa si al cola de eventos está vacía o no. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_add03c2fdc0aa9ccacbcb85d3d5d21fb5}\label{allegro__stuff_8c_add03c2fdc0aa9ccacbcb85d3d5d21fb5}} 
+ALLEGRO\+\_\+\+EVENT\+\_\+\+QUEUE $\ast$ {\bfseries allegro\+\_\+get\+\_\+event\+\_\+queue} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve puntero a la cola de eventos. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{allegro__stuff_8c_a9d60411c83f723470a167fe68689de78}{allegro\+\_\+set\+\_\+var\+\_\+event}} (ALLEGRO\+\_\+\+EVENT event)
+\begin{DoxyCompactList}\small\item\em Carga un evento de allegro. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a4adecd33c91d13d953958002818693fb}\label{allegro__stuff_8c_a4adecd33c91d13d953958002818693fb}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+credits} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona musica de creditos. Comienza pausada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a0ced814ed5f3fd1241b20d0041aa737a}\label{allegro__stuff_8c_a0ced814ed5f3fd1241b20d0041aa737a}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+main\+\_\+menu} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona musica de menu. Comienza pausada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aabe2e765655d5e02add3961f19c6e8ed}\label{allegro__stuff_8c_aabe2e765655d5e02add3961f19c6e8ed}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+pause\+\_\+menu} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona musica de pausa. Comienza pausada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac877cb9f1588505e3e0ea90d12a5c692}\label{allegro__stuff_8c_ac877cb9f1588505e3e0ea90d12a5c692}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+ranking} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona musica de ranking. Comienza pausada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a135c356bb04f9071a3a93f61dd331afb}\label{allegro__stuff_8c_a135c356bb04f9071a3a93f61dd331afb}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+playing} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona musica de jugando. Comienza pausada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a6045fb87f61f6a833a5589482145d468}\label{allegro__stuff_8c_a6045fb87f61f6a833a5589482145d468}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+rick} (void)
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aa40a771350b5ce824cbaec8f49756da3}\label{allegro__stuff_8c_aa40a771350b5ce824cbaec8f49756da3}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+game\+\_\+over} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona musica de game over. Comienza pausada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aec4d31d606124d5272c6d47950341e82}\label{allegro__stuff_8c_aec4d31d606124d5272c6d47950341e82}} 
+void {\bfseries allegro\+\_\+sound\+\_\+toggle\+\_\+stream} (void)
+\begin{DoxyCompactList}\small\item\em Cambia estado de reproduccion de la musica actual, si hay alguna seleccionada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a733d6f9cccbbf2ecfcac1ff09c43a33c}\label{allegro__stuff_8c_a733d6f9cccbbf2ecfcac1ff09c43a33c}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+stream} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce la musica actual, si hay alguna seleccionada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a56ca5c763acc3a5a059b1affa2a3a12f}\label{allegro__stuff_8c_a56ca5c763acc3a5a059b1affa2a3a12f}} 
+void {\bfseries allegro\+\_\+sound\+\_\+pause\+\_\+stream} (void)
+\begin{DoxyCompactList}\small\item\em Pausa la musica actual, si hay alguna seleccionada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_abd8d5abc409e38d6b245d69150a42405}\label{allegro__stuff_8c_abd8d5abc409e38d6b245d69150a42405}} 
+void {\bfseries allegro\+\_\+sound\+\_\+restart\+\_\+stream} (void)
+\begin{DoxyCompactList}\small\item\em Reinicia la musica actual, si hay alguna seleccionada. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a20f15899a674d8316e515c9dae161768}\label{allegro__stuff_8c_a20f15899a674d8316e515c9dae161768}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+gain\+\_\+up} (void)
+\begin{DoxyCompactList}\small\item\em Aumenta en 0.\+1 la ganancia de stream. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a61fa9160dee392c9ebc7de89d37face7}\label{allegro__stuff_8c_a61fa9160dee392c9ebc7de89d37face7}} 
+void {\bfseries allegro\+\_\+sound\+\_\+set\+\_\+stream\+\_\+gain\+\_\+down} (void)
+\begin{DoxyCompactList}\small\item\em Reduce en 0.\+1 la ganancia de stream. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aaa790f116adcacb3bf8fae5220b8c3d3}\label{allegro__stuff_8c_aaa790f116adcacb3bf8fae5220b8c3d3}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+bonus} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de bonus. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a064b6ba232c351e136964d06a8fd19f9}\label{allegro__stuff_8c_a064b6ba232c351e136964d06a8fd19f9}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+click} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de click (seleccion de menu//aceptar//etc.) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ad1a560058667c8757d32221ca00e0731}\label{allegro__stuff_8c_ad1a560058667c8757d32221ca00e0731}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+crash} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de choque. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_af7564ab0b5907de1f4371fbbcccc591c}\label{allegro__stuff_8c_af7564ab0b5907de1f4371fbbcccc591c}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+drowned} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de ahogado (toco agua) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a9fa9d28706714c9b520bf2d9b687c76a}\label{allegro__stuff_8c_a9fa9d28706714c9b520bf2d9b687c76a}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+goal} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de \textquotesingle{}llego a la meta\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aeb202f07508451bdd3540a11d06291cf}\label{allegro__stuff_8c_aeb202f07508451bdd3540a11d06291cf}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+jump} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de salto. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_abcde0aea03e0229e42e58dd1ebd825b3}\label{allegro__stuff_8c_abcde0aea03e0229e42e58dd1ebd825b3}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+low\+\_\+time} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de \textquotesingle{}queda poco tiempo\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aac04b56dd2d68ab4aecab4cb4bc84ec3}\label{allegro__stuff_8c_aac04b56dd2d68ab4aecab4cb4bc84ec3}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+run\+\_\+completed} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de \textquotesingle{}run completada\textquotesingle{} (llego 5 veces a la meta) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a930d040dc1ce196e3e7ca6fba3642e89}\label{allegro__stuff_8c_a930d040dc1ce196e3e7ca6fba3642e89}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+menu\+\_\+enter} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de \textquotesingle{}menu enter\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a0eea1cffb65f9d0bf95f48a2121399b6}\label{allegro__stuff_8c_a0eea1cffb65f9d0bf95f48a2121399b6}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+new\+\_\+max\+\_\+score} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de \textquotesingle{}new\+\_\+max\+\_\+score\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aec546f0ab77e7eb4d5efd6207ccec7d7}\label{allegro__stuff_8c_aec546f0ab77e7eb4d5efd6207ccec7d7}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+exiting} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de \textquotesingle{}saliendo\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a0979e92b2f52feb3a34756975b744081}\label{allegro__stuff_8c_a0979e92b2f52feb3a34756975b744081}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+no\+\_\+time} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto de \textquotesingle{}sin tiempo\textquotesingle{}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a33448777e284a8bfc7a7f649bb10172e}\label{allegro__stuff_8c_a33448777e284a8bfc7a7f649bb10172e}} 
+void {\bfseries allegro\+\_\+sound\+\_\+play\+\_\+effect\+\_\+coin\+\_\+drop} (void)
+\begin{DoxyCompactList}\small\item\em Reproduce efecto {\ttfamily de moneda tirada} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{allegro__stuff_8c_a776a51c49b40cdffe2e9fd894e0820b9}{allegro\+\_\+draw\+\_\+hitbox}} (int x, int y, int w, int h)
+\begin{DoxyCompactList}\small\item\em Dibuja un contorno rectangular. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac893331ca1b80e7b3310956dbf82cf11}\label{allegro__stuff_8c_ac893331ca1b80e7b3310956dbf82cf11}} 
+void {\bfseries allegro\+\_\+rick\+\_\+on} (void)
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_ac344f595eb5efe2f87936f2746ffb1b8}\label{allegro__stuff_8c_ac344f595eb5efe2f87936f2746ffb1b8}} 
+bool {\bfseries allegro\+\_\+get\+\_\+rick\+\_\+flag} (void)
+\item 
+void \mbox{\hyperlink{allegro__stuff_8c_a2e2b4b592e50caa3fe07055c1232200d}{allegro\+\_\+set\+\_\+rick\+\_\+flag}} (bool state)
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aeb8f4c24e2aafd0d3074ee8a09042b3f}\label{allegro__stuff_8c_aeb8f4c24e2aafd0d3074ee8a09042b3f}} 
+void {\bfseries allegro\+\_\+rick\+\_\+off} (void)
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_aa8f3771862b9224ae62fa5eb60a44541}\label{allegro__stuff_8c_aa8f3771862b9224ae62fa5eb60a44541}} 
+void {\bfseries allegro\+\_\+rick\+\_\+draw} (void)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{allegro__stuff_8c_a1c2c711d78f2f0d878756dc84e064047}\label{allegro__stuff_8c_a1c2c711d78f2f0d878756dc84e064047}} 
+\mbox{\hyperlink{structsprites__t}{sprites\+\_\+t}} {\bfseries sprites}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+your name (\href{mailto:you@domain.com}{\texttt{ you@domain.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2022-\/01-\/10
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{allegro__stuff_8c_a776a51c49b40cdffe2e9fd894e0820b9}\label{allegro__stuff_8c_a776a51c49b40cdffe2e9fd894e0820b9}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_draw\_hitbox@{allegro\_draw\_hitbox}}
+\index{allegro\_draw\_hitbox@{allegro\_draw\_hitbox}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_draw\_hitbox()}{allegro\_draw\_hitbox()}}
+{\footnotesize\ttfamily void allegro\+\_\+draw\+\_\+hitbox (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h }\end{DoxyParamCaption})}
+
+
+
+Dibuja un contorno rectangular. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Topleft x \\
+\hline
+{\em y} & Topleft y \\
+\hline
+{\em w} & Ancho \\
+\hline
+{\em h} & Largo \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{allegro__stuff_8c_a31ac04b61e4206d4719802413795970d}\label{allegro__stuff_8c_a31ac04b61e4206d4719802413795970d}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_draw\_menu\_background@{allegro\_draw\_menu\_background}}
+\index{allegro\_draw\_menu\_background@{allegro\_draw\_menu\_background}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_draw\_menu\_background()}{allegro\_draw\_menu\_background()}}
+{\footnotesize\ttfamily void allegro\+\_\+draw\+\_\+menu\+\_\+background (\begin{DoxyParamCaption}\item[{int}]{window }\end{DoxyParamCaption})}
+
+
+
+Dibuja imagen de fondo de un menu dado (sin highlight en ninguna opcion) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & enum MENU\+\_\+\+WINDOWS \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{allegro__stuff_8c_aaf639aa72ffd644f87ccb8d2abef5fc0}\label{allegro__stuff_8c_aaf639aa72ffd644f87ccb8d2abef5fc0}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_last\_key@{allegro\_get\_last\_key}}
+\index{allegro\_get\_last\_key@{allegro\_get\_last\_key}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_last\_key()}{allegro\_get\_last\_key()}}
+{\footnotesize\ttfamily unsigned char allegro\+\_\+get\+\_\+last\+\_\+key (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve la ultima tecla presionada registrada. 
+
+\begin{DoxyReturn}{Returns}
+unsigned char ALLEGRO\+\_\+\+KEY\+\_\+\+CODE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a8391364d5345b132a96d3511f7ec350a}\label{allegro__stuff_8c_a8391364d5345b132a96d3511f7ec350a}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_next\_event@{allegro\_get\_next\_event}}
+\index{allegro\_get\_next\_event@{allegro\_get\_next\_event}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_next\_event()}{allegro\_get\_next\_event()}}
+{\footnotesize\ttfamily ALLEGRO\+\_\+\+EVENT $\ast$ allegro\+\_\+get\+\_\+next\+\_\+event (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve el proximo evento de la cola, si es que existe. De no haber, devuele false. 
+
+\begin{DoxyReturn}{Returns}
+ALLEGRO\+\_\+\+EVENT$\ast$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a161719d2d50ef2c2c29b2119ec0b8dd6}\label{allegro__stuff_8c_a161719d2d50ef2c2c29b2119ec0b8dd6}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_var\_done@{allegro\_get\_var\_done}}
+\index{allegro\_get\_var\_done@{allegro\_get\_var\_done}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_var\_done()}{allegro\_get\_var\_done()}}
+{\footnotesize\ttfamily bool allegro\+\_\+get\+\_\+var\+\_\+done (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve flag de finalización del programa. 
+
+\begin{DoxyReturn}{Returns}
+true Finaliza 
+
+false No finaliza 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a595aa7d6b7fba33bbc90a2f29621543a}\label{allegro__stuff_8c_a595aa7d6b7fba33bbc90a2f29621543a}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_var\_event@{allegro\_get\_var\_event}}
+\index{allegro\_get\_var\_event@{allegro\_get\_var\_event}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_var\_event()}{allegro\_get\_var\_event()}}
+{\footnotesize\ttfamily ALLEGRO\+\_\+\+EVENT allegro\+\_\+get\+\_\+var\+\_\+event (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve el evento de allegro. 
+
+\begin{DoxyReturn}{Returns}
+ALLEGRO\+\_\+\+EVENT 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a1a53ac15b3d7f21e07a670ab9982cd2f}\label{allegro__stuff_8c_a1a53ac15b3d7f21e07a670ab9982cd2f}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_var\_font@{allegro\_get\_var\_font}}
+\index{allegro\_get\_var\_font@{allegro\_get\_var\_font}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_var\_font()}{allegro\_get\_var\_font()}}
+{\footnotesize\ttfamily ALLEGRO\+\_\+\+FONT $\ast$ allegro\+\_\+get\+\_\+var\+\_\+font (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve la fuente de allegro. 
+
+\begin{DoxyReturn}{Returns}
+ALLEGRO\+\_\+\+FONT 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a37e8b9192d3caaaccb4d3175af4e0e69}\label{allegro__stuff_8c_a37e8b9192d3caaaccb4d3175af4e0e69}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_var\_font\_h@{allegro\_get\_var\_font\_h}}
+\index{allegro\_get\_var\_font\_h@{allegro\_get\_var\_font\_h}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_var\_font\_h()}{allegro\_get\_var\_font\_h()}}
+{\footnotesize\ttfamily int allegro\+\_\+get\+\_\+var\+\_\+font\+\_\+h (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve el alto de un caracter de la funete usada. 
+
+\begin{DoxyReturn}{Returns}
+int alto 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a852eab9fe418b70f59d4db770c1cc47a}\label{allegro__stuff_8c_a852eab9fe418b70f59d4db770c1cc47a}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_var\_font\_w@{allegro\_get\_var\_font\_w}}
+\index{allegro\_get\_var\_font\_w@{allegro\_get\_var\_font\_w}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_var\_font\_w()}{allegro\_get\_var\_font\_w()}}
+{\footnotesize\ttfamily int allegro\+\_\+get\+\_\+var\+\_\+font\+\_\+w (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve ancho de un caracter de la fuente usada. 
+
+\begin{DoxyReturn}{Returns}
+int ancho 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_aec4819e92163d724347057ff1c002147}\label{allegro__stuff_8c_aec4819e92163d724347057ff1c002147}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_get\_var\_redraw@{allegro\_get\_var\_redraw}}
+\index{allegro\_get\_var\_redraw@{allegro\_get\_var\_redraw}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_get\_var\_redraw()}{allegro\_get\_var\_redraw()}}
+{\footnotesize\ttfamily bool allegro\+\_\+get\+\_\+var\+\_\+redraw (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve flag de renderización. 
+
+\begin{DoxyReturn}{Returns}
+true Renderiza 
+
+false No renderiza 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a97f28112d10bf8f9862e2248de455c77}\label{allegro__stuff_8c_a97f28112d10bf8f9862e2248de455c77}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_is\_event\_queueVacia@{allegro\_is\_event\_queueVacia}}
+\index{allegro\_is\_event\_queueVacia@{allegro\_is\_event\_queueVacia}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_is\_event\_queueVacia()}{allegro\_is\_event\_queueVacia()}}
+{\footnotesize\ttfamily bool allegro\+\_\+is\+\_\+event\+\_\+queue\+Vacia (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Informa si al cola de eventos está vacía o no. 
+
+\begin{DoxyReturn}{Returns}
+true Vacía 
+
+false No vacía 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_a3a125a6e164729a4d19015ea85b4475f}\label{allegro__stuff_8c_a3a125a6e164729a4d19015ea85b4475f}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_set\_last\_key@{allegro\_set\_last\_key}}
+\index{allegro\_set\_last\_key@{allegro\_set\_last\_key}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_set\_last\_key()}{allegro\_set\_last\_key()}}
+{\footnotesize\ttfamily void allegro\+\_\+set\+\_\+last\+\_\+key (\begin{DoxyParamCaption}\item[{unsigned char}]{allegro\+\_\+key\+\_\+code }\end{DoxyParamCaption})}
+
+
+
+Setea una ultima tecla presionada. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em allegro\+\_\+key\+\_\+code} & ALLEGRO\+\_\+\+KEY\+\_\+\+CODE \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{allegro__stuff_8c_a2e2b4b592e50caa3fe07055c1232200d}\label{allegro__stuff_8c_a2e2b4b592e50caa3fe07055c1232200d}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_set\_rick\_flag@{allegro\_set\_rick\_flag}}
+\index{allegro\_set\_rick\_flag@{allegro\_set\_rick\_flag}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_set\_rick\_flag()}{allegro\_set\_rick\_flag()}}
+{\footnotesize\ttfamily void allegro\+\_\+set\+\_\+rick\+\_\+flag (\begin{DoxyParamCaption}\item[{bool}]{state }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{allegro__stuff_8c_a6abced624bcac1e064d777c011a70600}\label{allegro__stuff_8c_a6abced624bcac1e064d777c011a70600}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_set\_var\_done@{allegro\_set\_var\_done}}
+\index{allegro\_set\_var\_done@{allegro\_set\_var\_done}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_set\_var\_done()}{allegro\_set\_var\_done()}}
+{\footnotesize\ttfamily void allegro\+\_\+set\+\_\+var\+\_\+done (\begin{DoxyParamCaption}\item[{bool}]{state }\end{DoxyParamCaption})}
+
+
+
+Setea flag de finalización del programa. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & true or false \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{allegro__stuff_8c_a9d60411c83f723470a167fe68689de78}\label{allegro__stuff_8c_a9d60411c83f723470a167fe68689de78}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_set\_var\_event@{allegro\_set\_var\_event}}
+\index{allegro\_set\_var\_event@{allegro\_set\_var\_event}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_set\_var\_event()}{allegro\_set\_var\_event()}}
+{\footnotesize\ttfamily void allegro\+\_\+set\+\_\+var\+\_\+event (\begin{DoxyParamCaption}\item[{ALLEGRO\+\_\+\+EVENT}]{event }\end{DoxyParamCaption})}
+
+
+
+Carga un evento de allegro. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{allegro__stuff_8c_a27a3924bc9d474b9374b8e6e9a26f749}\label{allegro__stuff_8c_a27a3924bc9d474b9374b8e6e9a26f749}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_set\_var\_redraw@{allegro\_set\_var\_redraw}}
+\index{allegro\_set\_var\_redraw@{allegro\_set\_var\_redraw}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_set\_var\_redraw()}{allegro\_set\_var\_redraw()}}
+{\footnotesize\ttfamily void allegro\+\_\+set\+\_\+var\+\_\+redraw (\begin{DoxyParamCaption}\item[{bool}]{state }\end{DoxyParamCaption})}
+
+
+
+Setea flag de renderizacion. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & true or false \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{allegro__stuff_8c_a6f391daf9fc1e812fa716fa75939b802}\label{allegro__stuff_8c_a6f391daf9fc1e812fa716fa75939b802}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!allegro\_wait\_for\_event@{allegro\_wait\_for\_event}}
+\index{allegro\_wait\_for\_event@{allegro\_wait\_for\_event}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{allegro\_wait\_for\_event()}{allegro\_wait\_for\_event()}}
+{\footnotesize\ttfamily ALLEGRO\+\_\+\+EVENT\+\_\+\+TYPE allegro\+\_\+wait\+\_\+for\+\_\+event (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Espera a que ocurra un evento y lo devuelve. 
+
+\begin{DoxyReturn}{Returns}
+ALLEGRO\+\_\+\+EVENT\+\_\+\+TYPE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{allegro__stuff_8c_ac87abc5a9c31dbef8419df7468e3ecfa}\label{allegro__stuff_8c_ac87abc5a9c31dbef8419df7468e3ecfa}} 
+\index{allegro\_stuff.c@{allegro\_stuff.c}!must\_init@{must\_init}}
+\index{must\_init@{must\_init}!allegro\_stuff.c@{allegro\_stuff.c}}
+\doxysubsubsection{\texorpdfstring{must\_init()}{must\_init()}}
+{\footnotesize\ttfamily void must\+\_\+init (\begin{DoxyParamCaption}\item[{bool}]{test,  }\item[{const char $\ast$}]{description }\end{DoxyParamCaption})}
+
+
+
+Inicializa \char`\"{}cosas\char`\"{}, y sale del programa si hay problemas, avisando dónde estuvo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em test} & Handler//booleano con status de la inicialización. \\
+\hline
+{\em description} & String con la descripción/nombre de la \char`\"{}cosa\char`\"{} a inicializar. \\
+\hline
+\end{DoxyParams}

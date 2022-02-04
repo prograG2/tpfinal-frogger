@@ -1,0 +1,84 @@
+\hypertarget{algif_8h_source}{}\doxysection{algif.\+h}
+\label{algif_8h_source}\index{src/platform/pc/algif5/algif.h@{src/platform/pc/algif5/algif.h}}
+\mbox{\hyperlink{algif_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef \_GIF\_H\_}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define \_GIF\_H\_}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <allegro5/allegro5.h>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{16 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20   \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} \mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}};}
+\DoxyCodeLine{21   \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___f_r_a_m_e}{ALGIF\_FRAME}} \mbox{\hyperlink{struct_a_l_g_i_f___f_r_a_m_e}{ALGIF\_FRAME}};}
+\DoxyCodeLine{22   \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___p_a_l_e_t_t_e}{ALGIF\_PALETTE}} \mbox{\hyperlink{struct_a_l_g_i_f___p_a_l_e_t_t_e}{ALGIF\_PALETTE}};}
+\DoxyCodeLine{23   \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}} \mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}};}
+\DoxyCodeLine{24   \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___r_g_b}{ALGIF\_RGB}} \mbox{\hyperlink{struct_a_l_g_i_f___r_g_b}{ALGIF\_RGB}};}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26   \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___r_g_b}{ALGIF\_RGB}}}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28     uint8\_t r, g, b;}
+\DoxyCodeLine{29   \};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___p_a_l_e_t_t_e}{ALGIF\_PALETTE}}}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33     \textcolor{keywordtype}{int} colors\_count;}
+\DoxyCodeLine{34     \mbox{\hyperlink{struct_a_l_g_i_f___r_g_b}{ALGIF\_RGB}} colors[256];}
+\DoxyCodeLine{35   \};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}}}
+\DoxyCodeLine{38   \{}
+\DoxyCodeLine{39     \textcolor{keywordtype}{int} w, h;}
+\DoxyCodeLine{40     uint8\_t *data;}
+\DoxyCodeLine{41   \};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}}}
+\DoxyCodeLine{44   \{}
+\DoxyCodeLine{45     \textcolor{keywordtype}{int} width, height;}
+\DoxyCodeLine{46     \textcolor{keywordtype}{int} frames\_count;}
+\DoxyCodeLine{47     \textcolor{keywordtype}{int} background\_index;}
+\DoxyCodeLine{48     \textcolor{keywordtype}{int} loop; \textcolor{comment}{/* -\/1 = no, 0 = forever, 1..65535 = that many times */}}
+\DoxyCodeLine{49     \mbox{\hyperlink{struct_a_l_g_i_f___p_a_l_e_t_t_e}{ALGIF\_PALETTE}} palette;}
+\DoxyCodeLine{50     \mbox{\hyperlink{struct_a_l_g_i_f___f_r_a_m_e}{ALGIF\_FRAME}} *frames;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{keywordtype}{int} duration;}
+\DoxyCodeLine{53     ALLEGRO\_BITMAP *store;}
+\DoxyCodeLine{54   \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56   \textcolor{keyword}{struct }\mbox{\hyperlink{struct_a_l_g_i_f___f_r_a_m_e}{ALGIF\_FRAME}}}
+\DoxyCodeLine{57   \{}
+\DoxyCodeLine{58     \mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}} *bitmap\_8\_bit;}
+\DoxyCodeLine{59     \mbox{\hyperlink{struct_a_l_g_i_f___p_a_l_e_t_t_e}{ALGIF\_PALETTE}} palette;}
+\DoxyCodeLine{60     \textcolor{keywordtype}{int} xoff, yoff;}
+\DoxyCodeLine{61     \textcolor{keywordtype}{int} duration;        \textcolor{comment}{/* in 1/100th seconds */}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{int} disposal\_method; \textcolor{comment}{/* 0 = don't care, 1 = keep, 2 = background, 3 = previous */}}
+\DoxyCodeLine{63     \textcolor{keywordtype}{int} transparent\_index;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     ALLEGRO\_BITMAP *rendered;}
+\DoxyCodeLine{66   \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *algif\_load\_raw(ALLEGRO\_FILE *file);}
+\DoxyCodeLine{69   \mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *algif\_load\_animation\_f(ALLEGRO\_FILE *file);}
+\DoxyCodeLine{70   \mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *algif\_load\_animation(\textcolor{keywordtype}{char} \textcolor{keyword}{const} *filename);}
+\DoxyCodeLine{71   \textcolor{keywordtype}{void} algif\_render\_frame(\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *gif, \textcolor{keywordtype}{int} frame, \textcolor{keywordtype}{int} xpos, \textcolor{keywordtype}{int} ypos);}
+\DoxyCodeLine{72   \textcolor{keywordtype}{void} algif\_destroy\_animation(\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *gif);}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   \mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}} *algif\_create\_bitmap(\textcolor{keywordtype}{int} w, \textcolor{keywordtype}{int} h);}
+\DoxyCodeLine{75   \textcolor{keywordtype}{void} algif\_destroy\_bitmap(\mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}} *bitmap);}
+\DoxyCodeLine{76   \textcolor{keywordtype}{void} algif\_blit(\mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}} *from, \mbox{\hyperlink{struct_a_l_g_i_f___b_i_t_m_a_p}{ALGIF\_BITMAP}} *to, \textcolor{keywordtype}{int} xf, \textcolor{keywordtype}{int} yf, \textcolor{keywordtype}{int} xt, \textcolor{keywordtype}{int} yt,}
+\DoxyCodeLine{77                   \textcolor{keywordtype}{int} w, \textcolor{keywordtype}{int} h);}
+\DoxyCodeLine{78   ALLEGRO\_BITMAP *algif\_get\_bitmap(\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *gif, \textcolor{keywordtype}{double} seconds);}
+\DoxyCodeLine{79   ALLEGRO\_BITMAP *algif\_get\_frame\_bitmap(\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *gif, \textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{80   \textcolor{keywordtype}{double} algif\_get\_frame\_duration(\mbox{\hyperlink{struct_a_l_g_i_f___a_n_i_m_a_t_i_o_n}{ALGIF\_ANIMATION}} *gif, \textcolor{keywordtype}{int} i);}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{83 \}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//\_GIF\_H\_}}
+
+\end{DoxyCode}

@@ -1,0 +1,149 @@
+\hypertarget{audio_8h_source}{}\doxysection{audio.\+h}
+\label{audio_8h_source}\index{src/platform/rpi/simpleSDL2audio/audio.h@{src/platform/rpi/simpleSDL2audio/audio.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Simple-\/SDL2-\/Audio}}
+\DoxyCodeLine{3 \textcolor{comment}{ *}}
+\DoxyCodeLine{4 \textcolor{comment}{ * Copyright 2016 Jake Besworth}}
+\DoxyCodeLine{5 \textcolor{comment}{ *}}
+\DoxyCodeLine{6 \textcolor{comment}{ * Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{7 \textcolor{comment}{ * you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{8 \textcolor{comment}{ * You may obtain a copy of the License at}}
+\DoxyCodeLine{9 \textcolor{comment}{ *}}
+\DoxyCodeLine{10 \textcolor{comment}{ *     http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{11 \textcolor{comment}{ *}}
+\DoxyCodeLine{12 \textcolor{comment}{ * Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{13 \textcolor{comment}{ * distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{14 \textcolor{comment}{ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{15 \textcolor{comment}{ * See the License for the specific language governing permissions and}}
+\DoxyCodeLine{16 \textcolor{comment}{ * limitations under the License.}}
+\DoxyCodeLine{17 \textcolor{comment}{ *}}
+\DoxyCodeLine{18 \textcolor{comment}{ */}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{comment}{/*}}
+\DoxyCodeLine{21 \textcolor{comment}{ * audio.h}}
+\DoxyCodeLine{22 \textcolor{comment}{ *}}
+\DoxyCodeLine{23 \textcolor{comment}{ * All audio related functions go here}}
+\DoxyCodeLine{24 \textcolor{comment}{ *}}
+\DoxyCodeLine{25 \textcolor{comment}{ */}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#ifndef SIMPLE\_AUDIO\_}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define SIMPLE\_AUDIO\_}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{30 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{31 \{}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <SDL2/SDL.h>}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{comment}{/*}}
+\DoxyCodeLine{37 \textcolor{comment}{ * Queue structure for all loaded sounds}}
+\DoxyCodeLine{38 \textcolor{comment}{ *}}
+\DoxyCodeLine{39 \textcolor{comment}{ */}}
+\DoxyCodeLine{40 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\mbox{\hyperlink{structsound}{sound}}}
+\DoxyCodeLine{41 \{}
+\DoxyCodeLine{42     uint32\_t length;}
+\DoxyCodeLine{43     uint32\_t lengthTrue;}
+\DoxyCodeLine{44     uint8\_t * bufferTrue;}
+\DoxyCodeLine{45     uint8\_t * buffer;}
+\DoxyCodeLine{46     uint8\_t loop;}
+\DoxyCodeLine{47     uint8\_t fade;}
+\DoxyCodeLine{48     uint8\_t free;}
+\DoxyCodeLine{49     uint8\_t volume;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51     SDL\_AudioSpec audio;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{keyword}{struct }\mbox{\hyperlink{structsound}{sound}} * next;}
+\DoxyCodeLine{54 \} \mbox{\hyperlink{structsound}{Audio}};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{comment}{/*}}
+\DoxyCodeLine{57 \textcolor{comment}{ * Create a Audio object}}
+\DoxyCodeLine{58 \textcolor{comment}{ *}}
+\DoxyCodeLine{59 \textcolor{comment}{ * @param filename      Filename for the WAVE file to load}}
+\DoxyCodeLine{60 \textcolor{comment}{ * @param loop          0 ends after playing once (sound), 1 repeats and fades when other music added (music)}}
+\DoxyCodeLine{61 \textcolor{comment}{ * @param volume        Volume, read playSound()}}
+\DoxyCodeLine{62 \textcolor{comment}{ *}}
+\DoxyCodeLine{63 \textcolor{comment}{ * @return returns a new Audio or NULL on failure, you must call freeAudio() on return Audio}}
+\DoxyCodeLine{64 \textcolor{comment}{ *}}
+\DoxyCodeLine{65 \textcolor{comment}{ */}}
+\DoxyCodeLine{66 \mbox{\hyperlink{structsound}{Audio}} * createAudio(\textcolor{keyword}{const} \textcolor{keywordtype}{char} * filename, uint8\_t loop, \textcolor{keywordtype}{int} volume);}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{comment}{/*}}
+\DoxyCodeLine{69 \textcolor{comment}{ * Frees as many chained Audios as given}}
+\DoxyCodeLine{70 \textcolor{comment}{ *}}
+\DoxyCodeLine{71 \textcolor{comment}{ * @param audio     Chain of sounds to free}}
+\DoxyCodeLine{72 \textcolor{comment}{ *}}
+\DoxyCodeLine{73 \textcolor{comment}{ */}}
+\DoxyCodeLine{74 \textcolor{keywordtype}{void} freeAudio(\mbox{\hyperlink{structsound}{Audio}} * audio);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{comment}{/*}}
+\DoxyCodeLine{77 \textcolor{comment}{ * Play a wave file currently must be S16LE format 2 channel stereo}}
+\DoxyCodeLine{78 \textcolor{comment}{ *}}
+\DoxyCodeLine{79 \textcolor{comment}{ * @param filename      Filename to open, use getAbsolutePath}}
+\DoxyCodeLine{80 \textcolor{comment}{ * @param volume        Volume 0 -\/ 128. SDL\_MIX\_MAXVOLUME constant for max volume}}
+\DoxyCodeLine{81 \textcolor{comment}{ *}}
+\DoxyCodeLine{82 \textcolor{comment}{ */}}
+\DoxyCodeLine{83 \textcolor{keywordtype}{void} playSound(\textcolor{keyword}{const} \textcolor{keywordtype}{char} * filename, \textcolor{keywordtype}{int} volume);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{comment}{/*}}
+\DoxyCodeLine{86 \textcolor{comment}{ * Plays a new music, only 1 at a time plays}}
+\DoxyCodeLine{87 \textcolor{comment}{ *}}
+\DoxyCodeLine{88 \textcolor{comment}{ * @param filename      Filename of the WAVE file to load}}
+\DoxyCodeLine{89 \textcolor{comment}{ * @param volume        Volume read playSound for moree}}
+\DoxyCodeLine{90 \textcolor{comment}{ *}}
+\DoxyCodeLine{91 \textcolor{comment}{ */}}
+\DoxyCodeLine{92 \textcolor{keywordtype}{void} playMusic(\textcolor{keyword}{const} \textcolor{keywordtype}{char} * filename, \textcolor{keywordtype}{int} volume);}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 \textcolor{comment}{/*}}
+\DoxyCodeLine{95 \textcolor{comment}{ * Plays a sound from a createAudio object (clones), only 1 at a time plays}}
+\DoxyCodeLine{96 \textcolor{comment}{ * Advantage to this method is no more disk reads, only once, data is stored and constantly reused}}
+\DoxyCodeLine{97 \textcolor{comment}{ *}}
+\DoxyCodeLine{98 \textcolor{comment}{ * @param audio         Audio object to clone and use}}
+\DoxyCodeLine{99 \textcolor{comment}{ * @param volume        Volume read playSound for moree}}
+\DoxyCodeLine{100 \textcolor{comment}{ *}}
+\DoxyCodeLine{101 \textcolor{comment}{ */}}
+\DoxyCodeLine{102 \textcolor{keywordtype}{void} playSoundFromMemory(\mbox{\hyperlink{structsound}{Audio}} * audio, \textcolor{keywordtype}{int} volume);}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{comment}{/*}}
+\DoxyCodeLine{105 \textcolor{comment}{ * Plays a music from a createAudio object (clones), only 1 at a time plays}}
+\DoxyCodeLine{106 \textcolor{comment}{ * Advantage to this method is no more disk reads, only once, data is stored and constantly reused}}
+\DoxyCodeLine{107 \textcolor{comment}{ *}}
+\DoxyCodeLine{108 \textcolor{comment}{ * @param audio         Audio object to clone and use}}
+\DoxyCodeLine{109 \textcolor{comment}{ * @param volume        Volume read playSound for moree}}
+\DoxyCodeLine{110 \textcolor{comment}{ *}}
+\DoxyCodeLine{111 \textcolor{comment}{ */}}
+\DoxyCodeLine{112 \textcolor{keywordtype}{void} playMusicFromMemory(\mbox{\hyperlink{structsound}{Audio}} * audio, \textcolor{keywordtype}{int} volume);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{comment}{/*}}
+\DoxyCodeLine{115 \textcolor{comment}{ * Free all audio related variables}}
+\DoxyCodeLine{116 \textcolor{comment}{ * Note, this needs to be run even if initAudio fails, because it frees the global audio device}}
+\DoxyCodeLine{117 \textcolor{comment}{ *}}
+\DoxyCodeLine{118 \textcolor{comment}{ */}}
+\DoxyCodeLine{119 \textcolor{keywordtype}{void} endAudio(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{comment}{/*}}
+\DoxyCodeLine{122 \textcolor{comment}{ * Initialize Audio Variable}}
+\DoxyCodeLine{123 \textcolor{comment}{ *}}
+\DoxyCodeLine{124 \textcolor{comment}{ */}}
+\DoxyCodeLine{125 \textcolor{keywordtype}{void} initAudio(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{comment}{/*}}
+\DoxyCodeLine{128 \textcolor{comment}{ * Pause audio from playing}}
+\DoxyCodeLine{129 \textcolor{comment}{ *}}
+\DoxyCodeLine{130 \textcolor{comment}{ */}}
+\DoxyCodeLine{131 \textcolor{keywordtype}{void} pauseAudio(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{comment}{/*}}
+\DoxyCodeLine{134 \textcolor{comment}{ * Unpause audio from playing}}
+\DoxyCodeLine{135 \textcolor{comment}{ *}}
+\DoxyCodeLine{136 \textcolor{comment}{ */}}
+\DoxyCodeLine{137 \textcolor{keywordtype}{void} unpauseAudio(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{140 \}}
+\DoxyCodeLine{141 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

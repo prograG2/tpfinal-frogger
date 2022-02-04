@@ -1,0 +1,154 @@
+\hypertarget{display_8h}{}\doxysection{src/display.h File Reference}
+\label{display_8h}\index{src/display.h@{src/display.h}}
+
+
+Header del modulo display Vinculo entre la fsm y las plataformas en lo que respecta a la visualizacion del juego.  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{display_8h_a8aaeebcb37aabffa7b594ab4dcc64bb2}\label{display_8h_a8aaeebcb37aabffa7b594ab4dcc64bb2}} 
+enum {\bfseries posiciones\+\_\+mensajes} \{ \newline
+{\bfseries POS\+\_\+\+MSJ\+\_\+\+MENU}
+, {\bfseries POS\+\_\+\+MSJ\+\_\+\+DIFICULTAD}
+, {\bfseries POS\+\_\+\+MSJ\+\_\+\+RANKING}
+, {\bfseries POS\+\_\+\+MSJ\+\_\+\+NOMBRE}
+, \newline
+{\bfseries POS\+\_\+\+MSJ\+\_\+\+PASAR}
+, {\bfseries POS\+\_\+\+MSJ\+\_\+\+PAUSA}
+, {\bfseries POS\+\_\+\+MSJ\+\_\+\+NEW\+\_\+\+HI\+\_\+\+SCORE}
+, {\bfseries POS\+\_\+\+MSJ\+\_\+\+GAME\+\_\+\+OVER}
+, \newline
+{\bfseries POS\+\_\+\+OPCION}
+, {\bfseries POS\+\_\+\+RANKING\+\_\+2}
+, {\bfseries POS\+\_\+\+CREDITOS}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{display_8h_a2bc11efa3c5316e38d9dcca6a55204cd}{iniciar\+Display}} ()
+\begin{DoxyCompactList}\small\item\em Inicializa el display de la plataforma. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{display_8h_a04b3b47bb517f5686df6c7145ed2e347}\label{display_8h_a04b3b47bb517f5686df6c7145ed2e347}} 
+void {\bfseries actualizar\+Display} ()
+\begin{DoxyCompactList}\small\item\em Actualiza el display de la plataforma. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{display_8h_a32d6e765c04d752208416f4610537eb7}\label{display_8h_a32d6e765c04d752208416f4610537eb7}} 
+void {\bfseries limpiar\+Display} ()
+\begin{DoxyCompactList}\small\item\em Limpia el display de la plataforma. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{display_8h_a0e5c0febd986123030923c38a811c765}{mostrar\+Texto}} (char $\ast$txt, int pos)
+\begin{DoxyCompactList}\small\item\em Muestra un texto dado en una posicion dada (retiene el flujo) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{display_8h_a773f78c4b58b3623d2f337ba3762c9b7}{dejar\+Texto}} (char $\ast$txt, int pos, bool repetir)
+\begin{DoxyCompactList}\small\item\em Deja el texto en la posición data (no retiene) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{display_8h_a0021914e934ff8c08f78862583411920}{cargar\+Ranking}} (void)
+\begin{DoxyCompactList}\small\item\em Inicia muestreo de ranking en la plataforma. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{display_8h_af884aef51e8e3eab31dcda31ef49dd92}\label{display_8h_af884aef51e8e3eab31dcda31ef49dd92}} 
+void {\bfseries mostrar\+Ranking} (void)
+\begin{DoxyCompactList}\small\item\em Bucle que muestra el ranking. Finaliza desde dentro, y hace que finalice el thread de ranking. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{display_8h_a8f779bbf15535e096107e9c867fe7c7b}\label{display_8h_a8f779bbf15535e096107e9c867fe7c7b}} 
+void {\bfseries cargar\+Creditos} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa los cretidos en la plataforma. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{display_8h_a2ec4770c30559239ec0d118de3800af8}{mostrar\+Creditos}} (void)
+\begin{DoxyCompactList}\small\item\em Bucle que muestra los creditos. Finaliza desde dentro, y hace que finalice el thread de ranking. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{display_8h_a9a29108e4fde1f61cc02ff5bdb9059f2}\label{display_8h_a9a29108e4fde1f61cc02ff5bdb9059f2}} 
+void {\bfseries reconfigurar\+Display\+ON} (void)
+\begin{DoxyCompactList}\small\item\em Reconfigura el display de la plataforma y lo habilita. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{display_8h_a22262829ad1b9385791777024797e007}\label{display_8h_a22262829ad1b9385791777024797e007}} 
+void {\bfseries reconfigurar\+Display\+OFF} (void)
+\begin{DoxyCompactList}\small\item\em Reconfigura el display de la plataforma y lo deshabilita. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header del modulo display Vinculo entre la fsm y las plataformas en lo que respecta a la visualizacion del juego. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{display_8h_a0021914e934ff8c08f78862583411920}\label{display_8h_a0021914e934ff8c08f78862583411920}} 
+\index{display.h@{display.h}!cargarRanking@{cargarRanking}}
+\index{cargarRanking@{cargarRanking}!display.h@{display.h}}
+\doxysubsubsection{\texorpdfstring{cargarRanking()}{cargarRanking()}}
+{\footnotesize\ttfamily void cargar\+Ranking (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicia muestreo de ranking en la plataforma. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em txt} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{display_8h_a773f78c4b58b3623d2f337ba3762c9b7}\label{display_8h_a773f78c4b58b3623d2f337ba3762c9b7}} 
+\index{display.h@{display.h}!dejarTexto@{dejarTexto}}
+\index{dejarTexto@{dejarTexto}!display.h@{display.h}}
+\doxysubsubsection{\texorpdfstring{dejarTexto()}{dejarTexto()}}
+{\footnotesize\ttfamily void dejar\+Texto (\begin{DoxyParamCaption}\item[{char $\ast$}]{txt,  }\item[{int}]{pos,  }\item[{bool}]{repetir }\end{DoxyParamCaption})}
+
+
+
+Deja el texto en la posición data (no retiene) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em txt} & \\
+\hline
+{\em pos} & \\
+\hline
+{\em repetir} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{display_8h_a2bc11efa3c5316e38d9dcca6a55204cd}\label{display_8h_a2bc11efa3c5316e38d9dcca6a55204cd}} 
+\index{display.h@{display.h}!iniciarDisplay@{iniciarDisplay}}
+\index{iniciarDisplay@{iniciarDisplay}!display.h@{display.h}}
+\doxysubsubsection{\texorpdfstring{iniciarDisplay()}{iniciarDisplay()}}
+{\footnotesize\ttfamily bool iniciar\+Display (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa el display de la plataforma. 
+
+\begin{DoxyReturn}{Returns}
+true Exito 
+
+false Error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{display_8h_a2ec4770c30559239ec0d118de3800af8}\label{display_8h_a2ec4770c30559239ec0d118de3800af8}} 
+\index{display.h@{display.h}!mostrarCreditos@{mostrarCreditos}}
+\index{mostrarCreditos@{mostrarCreditos}!display.h@{display.h}}
+\doxysubsubsection{\texorpdfstring{mostrarCreditos()}{mostrarCreditos()}}
+{\footnotesize\ttfamily void mostrar\+Creditos (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Bucle que muestra los creditos. Finaliza desde dentro, y hace que finalice el thread de ranking. 
+
+\begin{DoxyReturn}{Returns}
+true No finaliz 
+
+false Finaliza 
+\end{DoxyReturn}
+\mbox{\Hypertarget{display_8h_a0e5c0febd986123030923c38a811c765}\label{display_8h_a0e5c0febd986123030923c38a811c765}} 
+\index{display.h@{display.h}!mostrarTexto@{mostrarTexto}}
+\index{mostrarTexto@{mostrarTexto}!display.h@{display.h}}
+\doxysubsubsection{\texorpdfstring{mostrarTexto()}{mostrarTexto()}}
+{\footnotesize\ttfamily void mostrar\+Texto (\begin{DoxyParamCaption}\item[{char $\ast$}]{txt,  }\item[{int}]{pos }\end{DoxyParamCaption})}
+
+
+
+Muestra un texto dado en una posicion dada (retiene el flujo) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em txt} & Texto \\
+\hline
+{\em pos} & Posicion \\
+\hline
+\end{DoxyParams}

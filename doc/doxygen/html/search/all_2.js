@@ -1,0 +1,15 @@
+var searchData=
+[
+  ['car_5ft_0',['car_t',['../structcar__t.html',1,'']]],
+  ['cargarcreditos_1',['cargarCreditos',['../display_8h.html#a8f779bbf15535e096107e9c867fe7c7b',1,'cargarCreditos(void):&#160;display.c'],['../pc_2display_8c.html#a8f779bbf15535e096107e9c867fe7c7b',1,'cargarCreditos(void):&#160;display.c']]],
+  ['cargarranking_2',['cargarRanking',['../display_8h.html#a0021914e934ff8c08f78862583411920',1,'cargarRanking(void):&#160;display.c'],['../pc_2display_8c.html#a0021914e934ff8c08f78862583411920',1,'cargarRanking(void):&#160;display.c']]],
+  ['charamatriz_3',['charAMatriz',['../mensajes_8c.html#ad53bd57aaa56fa70a390e90b5a6042a5',1,'charAMatriz(char c, matriz_t m, const int coord[]):&#160;mensajes.c'],['../mensajes_8h.html#ad53bd57aaa56fa70a390e90b5a6042a5',1,'charAMatriz(char c, matriz_t m, const int coord[]):&#160;mensajes.c']]],
+  ['chararenglon_4',['charARenglon',['../mensajes_8c.html#a899069bf67fd3e55b05d98d2bf118329',1,'charARenglon(char c, renglon_t r):&#160;mensajes.c'],['../mensajes_8h.html#a899069bf67fd3e55b05d98d2bf118329',1,'charARenglon(char c, renglon_t r):&#160;mensajes.c']]],
+  ['coin_5ft_5',['coin_t',['../structcoin__t.html',1,'']]],
+  ['collide_6',['collide',['../geometry_8h.html#a012330be2a5e103c48c17d2919332f6a',1,'collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2):&#160;geometry.c'],['../geometry_8c.html#a012330be2a5e103c48c17d2919332f6a',1,'collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2):&#160;geometry.c']]],
+  ['collideshort_7',['collideShort',['../geometry_8c.html#a1e334de02e45f7b540ca8f05f112368e',1,'collideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh):&#160;geometry.c'],['../geometry_8h.html#a1e334de02e45f7b540ca8f05f112368e',1,'collideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh):&#160;geometry.c']]],
+  ['concatenarletramensaje_8',['concatenarLetraMensaje',['../mensajes_8c.html#a9ba9d226b08485e2aa001615883b7e54',1,'concatenarLetraMensaje(char c, mensaje_t *msj):&#160;mensajes.c'],['../mensajes_8h.html#a9ba9d226b08485e2aa001615883b7e54',1,'concatenarLetraMensaje(char c, mensaje_t *msj):&#160;mensajes.c']]],
+  ['copiarmatriz_9',['copiarMatriz',['../rpi_2bitmap_8c.html#a09ab4ab47594eb5b47deba06e24bfa6b',1,'copiarMatriz(matriz_t destino, const matriz_t desde):&#160;bitmap.c'],['../bitmap_8h.html#a09ab4ab47594eb5b47deba06e24bfa6b',1,'copiarMatriz(matriz_t destino, const matriz_t desde):&#160;bitmap.c']]],
+  ['copiarmatrizrenglon_10',['copiarMatrizRenglon',['../mensajes_8c.html#a96c5be4a6e4632d6d22e8ef6f84e4649',1,'copiarMatrizRenglon(matriz_t m, const renglon_t r, int pos):&#160;mensajes.c'],['../mensajes_8h.html#a96c5be4a6e4632d6d22e8ef6f84e4649',1,'copiarMatrizRenglon(matriz_t m, const renglon_t r, int pos):&#160;mensajes.c']]],
+  ['copiarrenglon_11',['copiarRenglon',['../mensajes_8c.html#aa22b72176547e22f830e4e3aacea1f99',1,'copiarRenglon(renglon_t r1, const renglon_t r2):&#160;mensajes.c'],['../mensajes_8h.html#aa22b72176547e22f830e4e3aacea1f99',1,'copiarRenglon(renglon_t r1, const renglon_t r2):&#160;mensajes.c']]]
+];

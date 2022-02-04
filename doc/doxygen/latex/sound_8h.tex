@@ -1,0 +1,115 @@
+\hypertarget{sound_8h}{}\doxysection{src/sound.h File Reference}
+\label{sound_8h}\index{src/sound.h@{src/sound.h}}
+
+
+Header del modulo sound Vinculo entre la fsm y las plataformas en lo que respecta al sonido.  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{sound_8h_ac5870c00e77c46fbf137a5ffdc893728}\label{sound_8h_ac5870c00e77c46fbf137a5ffdc893728}} 
+enum {\bfseries musica} \{ \newline
+{\bfseries MUSICA\+\_\+\+MENU\+\_\+\+PPAL}
+, {\bfseries MUSICA\+\_\+\+RANKING}
+, {\bfseries MUSICA\+\_\+\+CREDITOS}
+, {\bfseries MUSICA\+\_\+\+JUGANDO}
+, \newline
+{\bfseries MUSICA\+\_\+\+MENU\+\_\+\+PAUSA}
+, {\bfseries MUSICA\+\_\+\+GAME\+\_\+\+OVER}
+, {\bfseries SIZEOF\+\_\+\+MUSICA}
+ \}
+\item 
+\mbox{\Hypertarget{sound_8h_ab3c189684beac49fcc530a4b668e9d72}\label{sound_8h_ab3c189684beac49fcc530a4b668e9d72}} 
+enum {\bfseries efectos} \{ \newline
+{\bfseries EFECTO\+\_\+\+SELECCION}
+, {\bfseries EFECTO\+\_\+\+SALTO}
+, {\bfseries EFECTO\+\_\+\+IMPACTO}
+, {\bfseries EFECTO\+\_\+\+AHOGADO}
+, \newline
+{\bfseries EFECTO\+\_\+\+POCO\+\_\+\+TIEMPO}
+, {\bfseries EFECTO\+\_\+\+META}
+, {\bfseries EFECTO\+\_\+\+NIVEL\+\_\+\+COMPLETO}
+, {\bfseries EFECTO\+\_\+\+NUEVO\+\_\+\+MAX\+\_\+\+SCORE}
+, \newline
+{\bfseries EFECTO\+\_\+\+MENU\+\_\+\+ENTER}
+, {\bfseries EFECTO\+\_\+\+SALIENDO}
+, {\bfseries EFECTO\+\_\+\+SIN\+\_\+\+TIEMPO}
+, {\bfseries SIZEOF\+\_\+\+EFECTOS}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{sound_8h_ac5e9e1c460298cd8dc75ff458d89671e}{iniciar\+Sonido}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa el sonido de la plataforma. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sound_8h_aa69bcb29ac1bdebb93f8a17775e3ceea}\label{sound_8h_aa69bcb29ac1bdebb93f8a17775e3ceea}} 
+void {\bfseries destruir\+Sonido} (void)
+\begin{DoxyCompactList}\small\item\em Desinicializa el sonido de la plataforma. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{sound_8h_ad7bb39ef91596fd47111b1952595a84a}\label{sound_8h_ad7bb39ef91596fd47111b1952595a84a}} 
+void {\bfseries pausar\+Musica} (void)
+\begin{DoxyCompactList}\small\item\em Pausa la musica actual. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sound_8h_ae02381bca1f488143001805790850e96}{reproducir\+Musica}} (int musica)
+\begin{DoxyCompactList}\small\item\em Pone a reproducir una musica dada. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sound_8h_a019cf3b8ec367f09f1651d36237d3e65}{reproducir\+Efecto}} (int efecto)
+\begin{DoxyCompactList}\small\item\em Pone a reproducir un efecto dado. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header del modulo sound Vinculo entre la fsm y las plataformas en lo que respecta al sonido. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sound_8h_ac5e9e1c460298cd8dc75ff458d89671e}\label{sound_8h_ac5e9e1c460298cd8dc75ff458d89671e}} 
+\index{sound.h@{sound.h}!iniciarSonido@{iniciarSonido}}
+\index{iniciarSonido@{iniciarSonido}!sound.h@{sound.h}}
+\doxysubsubsection{\texorpdfstring{iniciarSonido()}{iniciarSonido()}}
+{\footnotesize\ttfamily bool iniciar\+Sonido (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa el sonido de la plataforma. 
+
+\begin{DoxyReturn}{Returns}
+true Exito 
+
+false Error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sound_8h_a019cf3b8ec367f09f1651d36237d3e65}\label{sound_8h_a019cf3b8ec367f09f1651d36237d3e65}} 
+\index{sound.h@{sound.h}!reproducirEfecto@{reproducirEfecto}}
+\index{reproducirEfecto@{reproducirEfecto}!sound.h@{sound.h}}
+\doxysubsubsection{\texorpdfstring{reproducirEfecto()}{reproducirEfecto()}}
+{\footnotesize\ttfamily void reproducir\+Efecto (\begin{DoxyParamCaption}\item[{int}]{efecto }\end{DoxyParamCaption})}
+
+
+
+Pone a reproducir un efecto dado. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & num efectos \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sound_8h_ae02381bca1f488143001805790850e96}\label{sound_8h_ae02381bca1f488143001805790850e96}} 
+\index{sound.h@{sound.h}!reproducirMusica@{reproducirMusica}}
+\index{reproducirMusica@{reproducirMusica}!sound.h@{sound.h}}
+\doxysubsubsection{\texorpdfstring{reproducirMusica()}{reproducirMusica()}}
+{\footnotesize\ttfamily void reproducir\+Musica (\begin{DoxyParamCaption}\item[{int}]{musica }\end{DoxyParamCaption})}
+
+
+
+Pone a reproducir una musica dada. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & enum musica \\
+\hline
+\end{DoxyParams}

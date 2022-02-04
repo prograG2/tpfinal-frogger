@@ -1,0 +1,396 @@
+\hypertarget{mensajes_8c}{}\doxysection{src/platform/rpi/mensajes.c File Reference}
+\label{mensajes_8c}\index{src/platform/rpi/mensajes.c@{src/platform/rpi/mensajes.c}}
+
+
+Permite codificar strings en formato renglon para mostrar en display.  
+
+
+{\ttfamily \#include \char`\"{}mensajes.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{mensajes_8c_a7222c936166d43b37e713841caacaafc}\label{mensajes_8c_a7222c936166d43b37e713841caacaafc}} 
+\#define {\bfseries INDEX\+\_\+\+ESPACIO}~26
+\item 
+\mbox{\Hypertarget{mensajes_8c_a6e4cae9427d277f9129e869cb5137d6c}\label{mensajes_8c_a6e4cae9427d277f9129e869cb5137d6c}} 
+\#define {\bfseries INDEX\+\_\+\+CERO}~27
+\item 
+\mbox{\Hypertarget{mensajes_8c_aaa0f3580f1a1f00be77bb3ff3b63663b}\label{mensajes_8c_aaa0f3580f1a1f00be77bb3ff3b63663b}} 
+\#define {\bfseries INDEX\+\_\+\+FULL}~37
+\item 
+\mbox{\Hypertarget{mensajes_8c_a7cdfc6b2854304bd354359ff4e489851}\label{mensajes_8c_a7cdfc6b2854304bd354359ff4e489851}} 
+\#define {\bfseries CANT\+\_\+\+SIMBOLOS}~38
+\item 
+\mbox{\Hypertarget{mensajes_8c_ab3fdd503c1379eb1e9be9758f2458b19}\label{mensajes_8c_ab3fdd503c1379eb1e9be9758f2458b19}} 
+\#define {\bfseries PEDIR\+\_\+\+FULL}~-\/1
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{mensajes_8c_a2f58578a7699a7eecbce9b71d8aeaf69}{print\+Renglon}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r)
+\begin{DoxyCompactList}\small\item\em imprime dos renglon en consola (para debuggear) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_ae3e9e63d1095bfea3d571e196f70e89b}{borrar\+Renglon}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r)
+\begin{DoxyCompactList}\small\item\em elimina el contenido del Renglon \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_ac415371f421b67aeba1e94c0a6976bae}{renglon\+Shift\+Der}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r, uint16\+\_\+t s)
+\begin{DoxyCompactList}\small\item\em Desplaza a la derecha el contenido de un Renglon. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_a6f626c90c3e8a9bc94cf32e24ce70bf4}{renglon\+Shift\+Izq}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r, uint16\+\_\+t s)
+\begin{DoxyCompactList}\small\item\em Desplaza a la izquierda el contenido de un Renglon. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_aed436c656f219dcec2db953a764e0900}{renglon\+Or}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r, \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} s)
+\begin{DoxyCompactList}\small\item\em Se ejecuta la operación \char`\"{}r $\vert$= s\char`\"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_abd1a361742ac596964a6ffe69d370aab}{renglon\+And}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r, \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} s)
+\begin{DoxyCompactList}\small\item\em Se ejecuta la operación \char`\"{}r \&= s\char`\"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_abc5bc59bfd58f95321603a95c316b7a5}{renglon\+Not}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r)
+\begin{DoxyCompactList}\small\item\em Se invierte el contenido del Renglon (se obtiene el complemento) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_aa22b72176547e22f830e4e3aacea1f99}{copiar\+Renglon}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r1, const \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r2)
+\begin{DoxyCompactList}\small\item\em copia el contenido de r2 en r1 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_a96c5be4a6e4632d6d22e8ef6f84e4649}{copiar\+Matriz\+Renglon}} (matriz\+\_\+t m, const \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r, int pos)
+\begin{DoxyCompactList}\small\item\em copia un Renglon sobre una Matriz a partir de una fila especificada \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{mensajes_8c_a9af9072acf8b9a91fe1a2b17f8b39687}{renglon\+Izquierdo\+Libre}} (\mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$msj)
+\begin{DoxyCompactList}\small\item\em indica si la parte izquierda del renglón de un mensaje está vacía \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_a899069bf67fd3e55b05d98d2bf118329}{char\+ARenglon}} (char c, \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r)
+\begin{DoxyCompactList}\small\item\em Convierte un caracter a Renglon, ubicándolo en el extremo izquierdo del Renglon. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_ad53bd57aaa56fa70a390e90b5a6042a5}{char\+AMatriz}} (char c, matriz\+\_\+t m, const int coord\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Escribe un caracter en una matriz, a partir de las posiciones (x,y) (Extremo superior izdo) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_acd6b704f87d6c62c6b31928c729f1dd8}{uint\+ARenglon}} (uint16\+\_\+t n, \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r)
+\begin{DoxyCompactList}\small\item\em Convierte un entero no signado a Renglon, ubicándolo en el extremo izquierdo del renglon. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_af04d64e21168e39cb3827f94f9f8ad28}{reemplazar\+Letra}} (\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}} r, char c, int j)
+\begin{DoxyCompactList}\small\item\em (re)escribe sobre el Renglon un caracter dado a partir de la columna j \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} \mbox{\hyperlink{mensajes_8c_a26832d26256d07b035a793e557b9b515}{mensaje}} (char $\ast$msj, int pos, bool repetir)
+\begin{DoxyCompactList}\small\item\em constructor de la variable mensaje\+\_\+t \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_abb519c0e2af153c0d2398213c6838578}{mover\+Mensaje}} (\mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$msj)
+\begin{DoxyCompactList}\small\item\em desplaza el contenido del Renglon doble hacia la izquierda \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_a9ba9d226b08485e2aa001615883b7e54}{concatenar\+Letra\+Mensaje}} (char c, \mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$msj)
+\begin{DoxyCompactList}\small\item\em agrega una letra al string del mensaje y también al renglon \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mensajes_8c_a3e01d46bc378fef264ee37bfb725eebf}{reemplazar\+Ult\+Letra\+Mensaje}} (char c, \mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$msj)
+\begin{DoxyCompactList}\small\item\em reemplaza la última letra en el string del mensaje y también del renglon \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Permite codificar strings en formato renglon para mostrar en display. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{mensajes_8c_ae3e9e63d1095bfea3d571e196f70e89b}\label{mensajes_8c_ae3e9e63d1095bfea3d571e196f70e89b}} 
+\index{mensajes.c@{mensajes.c}!borrarRenglon@{borrarRenglon}}
+\index{borrarRenglon@{borrarRenglon}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{borrarRenglon()}{borrarRenglon()}}
+{\footnotesize\ttfamily void borrar\+Renglon (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r }\end{DoxyParamCaption})}
+
+
+
+elimina el contenido del Renglon 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Renglon a limpiar \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_ad53bd57aaa56fa70a390e90b5a6042a5}\label{mensajes_8c_ad53bd57aaa56fa70a390e90b5a6042a5}} 
+\index{mensajes.c@{mensajes.c}!charAMatriz@{charAMatriz}}
+\index{charAMatriz@{charAMatriz}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{charAMatriz()}{charAMatriz()}}
+{\footnotesize\ttfamily void char\+AMatriz (\begin{DoxyParamCaption}\item[{char}]{c,  }\item[{matriz\+\_\+t}]{m,  }\item[{const int}]{coord\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Escribe un caracter en una matriz, a partir de las posiciones (x,y) (Extremo superior izdo) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & caracter \\
+\hline
+{\em m} & Matriz \\
+\hline
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a899069bf67fd3e55b05d98d2bf118329}\label{mensajes_8c_a899069bf67fd3e55b05d98d2bf118329}} 
+\index{mensajes.c@{mensajes.c}!charARenglon@{charARenglon}}
+\index{charARenglon@{charARenglon}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{charARenglon()}{charARenglon()}}
+{\footnotesize\ttfamily void char\+ARenglon (\begin{DoxyParamCaption}\item[{char}]{c,  }\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r }\end{DoxyParamCaption})}
+
+
+
+Convierte un caracter a Renglon, ubicándolo en el extremo izquierdo del Renglon. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & caracter \\
+\hline
+{\em r} & Renglon \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a9ba9d226b08485e2aa001615883b7e54}\label{mensajes_8c_a9ba9d226b08485e2aa001615883b7e54}} 
+\index{mensajes.c@{mensajes.c}!concatenarLetraMensaje@{concatenarLetraMensaje}}
+\index{concatenarLetraMensaje@{concatenarLetraMensaje}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{concatenarLetraMensaje()}{concatenarLetraMensaje()}}
+{\footnotesize\ttfamily void concatenar\+Letra\+Mensaje (\begin{DoxyParamCaption}\item[{char}]{c,  }\item[{\mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$}]{msj }\end{DoxyParamCaption})}
+
+
+
+agrega una letra al string del mensaje y también al renglon 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & \\
+\hline
+{\em msj} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a96c5be4a6e4632d6d22e8ef6f84e4649}\label{mensajes_8c_a96c5be4a6e4632d6d22e8ef6f84e4649}} 
+\index{mensajes.c@{mensajes.c}!copiarMatrizRenglon@{copiarMatrizRenglon}}
+\index{copiarMatrizRenglon@{copiarMatrizRenglon}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{copiarMatrizRenglon()}{copiarMatrizRenglon()}}
+{\footnotesize\ttfamily void copiar\+Matriz\+Renglon (\begin{DoxyParamCaption}\item[{matriz\+\_\+t}]{m,  }\item[{const \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r,  }\item[{int}]{pos }\end{DoxyParamCaption})}
+
+
+
+copia un Renglon sobre una Matriz a partir de una fila especificada 
+
+
+\begin{DoxyParams}{Parameters}
+{\em m} & Matriz destino \\
+\hline
+{\em r} & Renglon origen \\
+\hline
+{\em pos} & Fila de inicio \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_aa22b72176547e22f830e4e3aacea1f99}\label{mensajes_8c_aa22b72176547e22f830e4e3aacea1f99}} 
+\index{mensajes.c@{mensajes.c}!copiarRenglon@{copiarRenglon}}
+\index{copiarRenglon@{copiarRenglon}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{copiarRenglon()}{copiarRenglon()}}
+{\footnotesize\ttfamily void copiar\+Renglon (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r1,  }\item[{const \mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r2 }\end{DoxyParamCaption})}
+
+
+
+copia el contenido de r2 en r1 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r1} & Renglon destino \\
+\hline
+{\em r2} & Renglon origen \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a26832d26256d07b035a793e557b9b515}\label{mensajes_8c_a26832d26256d07b035a793e557b9b515}} 
+\index{mensajes.c@{mensajes.c}!mensaje@{mensaje}}
+\index{mensaje@{mensaje}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{mensaje()}{mensaje()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} mensaje (\begin{DoxyParamCaption}\item[{char $\ast$}]{msj,  }\item[{int}]{pos,  }\item[{bool}]{repetir }\end{DoxyParamCaption})}
+
+
+
+constructor de la variable mensaje\+\_\+t 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msj} & String que se desea convertir a mensaje \\
+\hline
+{\em pos} & fila sobre la que se deberá mostrar en display \\
+\hline
+{\em repetir} & si se repetirá una vez terminado de mostrar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mensaje\+\_\+t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{mensajes_8c_abb519c0e2af153c0d2398213c6838578}\label{mensajes_8c_abb519c0e2af153c0d2398213c6838578}} 
+\index{mensajes.c@{mensajes.c}!moverMensaje@{moverMensaje}}
+\index{moverMensaje@{moverMensaje}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{moverMensaje()}{moverMensaje()}}
+{\footnotesize\ttfamily void mover\+Mensaje (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$}]{msj }\end{DoxyParamCaption})}
+
+
+
+desplaza el contenido del Renglon doble hacia la izquierda 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msj} & puntero a la variable mensaje\+\_\+t \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a2f58578a7699a7eecbce9b71d8aeaf69}\label{mensajes_8c_a2f58578a7699a7eecbce9b71d8aeaf69}} 
+\index{mensajes.c@{mensajes.c}!printRenglon@{printRenglon}}
+\index{printRenglon@{printRenglon}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{printRenglon()}{printRenglon()}}
+{\footnotesize\ttfamily void print\+Renglon (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r }\end{DoxyParamCaption})}
+
+
+
+imprime dos renglon en consola (para debuggear) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & renglon a imprimir \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_af04d64e21168e39cb3827f94f9f8ad28}\label{mensajes_8c_af04d64e21168e39cb3827f94f9f8ad28}} 
+\index{mensajes.c@{mensajes.c}!reemplazarLetra@{reemplazarLetra}}
+\index{reemplazarLetra@{reemplazarLetra}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{reemplazarLetra()}{reemplazarLetra()}}
+{\footnotesize\ttfamily void reemplazar\+Letra (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r,  }\item[{char}]{c,  }\item[{int}]{j }\end{DoxyParamCaption})}
+
+
+
+(re)escribe sobre el Renglon un caracter dado a partir de la columna j 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Renglon \\
+\hline
+{\em c} & caracter \\
+\hline
+{\em j} & columna sobre la que se quiere escribir \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a3e01d46bc378fef264ee37bfb725eebf}\label{mensajes_8c_a3e01d46bc378fef264ee37bfb725eebf}} 
+\index{mensajes.c@{mensajes.c}!reemplazarUltLetraMensaje@{reemplazarUltLetraMensaje}}
+\index{reemplazarUltLetraMensaje@{reemplazarUltLetraMensaje}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{reemplazarUltLetraMensaje()}{reemplazarUltLetraMensaje()}}
+{\footnotesize\ttfamily void reemplazar\+Ult\+Letra\+Mensaje (\begin{DoxyParamCaption}\item[{char}]{c,  }\item[{\mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$}]{msj }\end{DoxyParamCaption})}
+
+
+
+reemplaza la última letra en el string del mensaje y también del renglon 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & \\
+\hline
+{\em msj} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_abd1a361742ac596964a6ffe69d370aab}\label{mensajes_8c_abd1a361742ac596964a6ffe69d370aab}} 
+\index{mensajes.c@{mensajes.c}!renglonAnd@{renglonAnd}}
+\index{renglonAnd@{renglonAnd}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{renglonAnd()}{renglonAnd()}}
+{\footnotesize\ttfamily void renglon\+And (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r,  }\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{s }\end{DoxyParamCaption})}
+
+
+
+Se ejecuta la operación \char`\"{}r \&= s\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & primer operando AND \\
+\hline
+{\em s} & segundo operando AND \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a9af9072acf8b9a91fe1a2b17f8b39687}\label{mensajes_8c_a9af9072acf8b9a91fe1a2b17f8b39687}} 
+\index{mensajes.c@{mensajes.c}!renglonIzquierdoLibre@{renglonIzquierdoLibre}}
+\index{renglonIzquierdoLibre@{renglonIzquierdoLibre}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{renglonIzquierdoLibre()}{renglonIzquierdoLibre()}}
+{\footnotesize\ttfamily bool renglon\+Izquierdo\+Libre (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_mensaje}{mensaje\+\_\+t}} $\ast$}]{msj }\end{DoxyParamCaption})}
+
+
+
+indica si la parte izquierda del renglón de un mensaje está vacía 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Renglon a chequear \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{mensajes_8c_abc5bc59bfd58f95321603a95c316b7a5}\label{mensajes_8c_abc5bc59bfd58f95321603a95c316b7a5}} 
+\index{mensajes.c@{mensajes.c}!renglonNot@{renglonNot}}
+\index{renglonNot@{renglonNot}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{renglonNot()}{renglonNot()}}
+{\footnotesize\ttfamily void renglon\+Not (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r }\end{DoxyParamCaption})}
+
+
+
+Se invierte el contenido del Renglon (se obtiene el complemento) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Renglon a invertir \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_aed436c656f219dcec2db953a764e0900}\label{mensajes_8c_aed436c656f219dcec2db953a764e0900}} 
+\index{mensajes.c@{mensajes.c}!renglonOr@{renglonOr}}
+\index{renglonOr@{renglonOr}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{renglonOr()}{renglonOr()}}
+{\footnotesize\ttfamily void renglon\+Or (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r,  }\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{s }\end{DoxyParamCaption})}
+
+
+
+Se ejecuta la operación \char`\"{}r $\vert$= s\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & primer operando OR \\
+\hline
+{\em s} & segundo operando OR \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_ac415371f421b67aeba1e94c0a6976bae}\label{mensajes_8c_ac415371f421b67aeba1e94c0a6976bae}} 
+\index{mensajes.c@{mensajes.c}!renglonShiftDer@{renglonShiftDer}}
+\index{renglonShiftDer@{renglonShiftDer}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{renglonShiftDer()}{renglonShiftDer()}}
+{\footnotesize\ttfamily void renglon\+Shift\+Der (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r,  }\item[{uint16\+\_\+t}]{s }\end{DoxyParamCaption})}
+
+
+
+Desplaza a la derecha el contenido de un Renglon. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Renglon a desplazar \\
+\hline
+{\em s} & cantidad de espacios \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_a6f626c90c3e8a9bc94cf32e24ce70bf4}\label{mensajes_8c_a6f626c90c3e8a9bc94cf32e24ce70bf4}} 
+\index{mensajes.c@{mensajes.c}!renglonShiftIzq@{renglonShiftIzq}}
+\index{renglonShiftIzq@{renglonShiftIzq}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{renglonShiftIzq()}{renglonShiftIzq()}}
+{\footnotesize\ttfamily void renglon\+Shift\+Izq (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r,  }\item[{uint16\+\_\+t}]{s }\end{DoxyParamCaption})}
+
+
+
+Desplaza a la izquierda el contenido de un Renglon. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & Renglon a desplazar \\
+\hline
+{\em s} & cantidad de espacios \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{mensajes_8c_acd6b704f87d6c62c6b31928c729f1dd8}\label{mensajes_8c_acd6b704f87d6c62c6b31928c729f1dd8}} 
+\index{mensajes.c@{mensajes.c}!uintARenglon@{uintARenglon}}
+\index{uintARenglon@{uintARenglon}!mensajes.c@{mensajes.c}}
+\doxysubsubsection{\texorpdfstring{uintARenglon()}{uintARenglon()}}
+{\footnotesize\ttfamily void uint\+ARenglon (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{n,  }\item[{\mbox{\hyperlink{unionrenglon__t}{renglon\+\_\+t}}}]{r }\end{DoxyParamCaption})}
+
+
+
+Convierte un entero no signado a Renglon, ubicándolo en el extremo izquierdo del renglon. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & entero no signado de 16 bits \\
+\hline
+{\em r} & Renglon \\
+\hline
+\end{DoxyParams}

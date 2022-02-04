@@ -1,0 +1,67 @@
+\hypertarget{sound_8h_source}{}\doxysection{sound.\+h}
+\label{sound_8h_source}\index{src/sound.h@{src/sound.h}}
+\mbox{\hyperlink{sound_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef \_SOUND\_H\_}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define \_SOUND\_H\_}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{17 \textcolor{comment}{ * INCLUDE HEADER FILES}}
+\DoxyCodeLine{18 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{23 \textcolor{comment}{ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS}}
+\DoxyCodeLine{24 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{comment}{// Musicas a usar}}
+\DoxyCodeLine{27 \textcolor{keyword}{enum} musica}
+\DoxyCodeLine{28 \{}
+\DoxyCodeLine{29   MUSICA\_MENU\_PPAL,}
+\DoxyCodeLine{30   MUSICA\_RANKING,}
+\DoxyCodeLine{31   MUSICA\_CREDITOS,}
+\DoxyCodeLine{32   MUSICA\_JUGANDO,}
+\DoxyCodeLine{33   MUSICA\_MENU\_PAUSA,}
+\DoxyCodeLine{34   MUSICA\_GAME\_OVER,}
+\DoxyCodeLine{35   SIZEOF\_MUSICA}
+\DoxyCodeLine{36 \};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{comment}{// Efectos a usar}}
+\DoxyCodeLine{39 \textcolor{keyword}{enum} efectos}
+\DoxyCodeLine{40 \{}
+\DoxyCodeLine{41   EFECTO\_SELECCION,}
+\DoxyCodeLine{42   EFECTO\_SALTO,}
+\DoxyCodeLine{43   EFECTO\_IMPACTO,}
+\DoxyCodeLine{44   EFECTO\_AHOGADO,}
+\DoxyCodeLine{45   EFECTO\_POCO\_TIEMPO,}
+\DoxyCodeLine{46   EFECTO\_META,}
+\DoxyCodeLine{47   EFECTO\_NIVEL\_COMPLETO,}
+\DoxyCodeLine{48   EFECTO\_NUEVO\_MAX\_SCORE,}
+\DoxyCodeLine{49   EFECTO\_MENU\_ENTER,}
+\DoxyCodeLine{50   EFECTO\_SALIENDO,}
+\DoxyCodeLine{51   EFECTO\_SIN\_TIEMPO,}
+\DoxyCodeLine{52   SIZEOF\_EFECTOS}
+\DoxyCodeLine{53 \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{56 \textcolor{comment}{ * FUNCTION PROTOTYPES WITH GLOBAL SCOPE}}
+\DoxyCodeLine{57 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{65 \textcolor{keywordtype}{bool} \mbox{\hyperlink{sound_8h_ac5e9e1c460298cd8dc75ff458d89671e}{iniciarSonido}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{71 \textcolor{keywordtype}{void} \mbox{\hyperlink{sound_8h_aa69bcb29ac1bdebb93f8a17775e3ceea}{destruirSonido}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{77 \textcolor{keywordtype}{void} \mbox{\hyperlink{sound_8h_ad7bb39ef91596fd47111b1952595a84a}{pausarMusica}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{84 \textcolor{keywordtype}{void} \mbox{\hyperlink{sound_8h_ae02381bca1f488143001805790850e96}{reproducirMusica}}(\textcolor{keywordtype}{int} musica);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{91 \textcolor{keywordtype}{void} \mbox{\hyperlink{sound_8h_a019cf3b8ec367f09f1651d36237d3e65}{reproducirEfecto}}(\textcolor{keywordtype}{int} efecto);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{comment}{/*******************************************************************************}}
+\DoxyCodeLine{94 \textcolor{comment}{ ******************************************************************************/}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// \_SOUND\_H\_}}
+
+\end{DoxyCode}

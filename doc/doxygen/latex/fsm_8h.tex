@@ -1,0 +1,76 @@
+\hypertarget{fsm_8h}{}\doxysection{src/fsm.h File Reference}
+\label{fsm_8h}\index{src/fsm.h@{src/fsm.h}}
+
+
+Header del modulo fsm. Contiene los prototipos de funciones necesarias para iniciar la fsm desde \mbox{\hyperlink{main_8c}{main.\+c}}.  
+
+
+{\ttfamily \#include \char`\"{}queue.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{fsm_8h_ab28bf0307c4cbce988898bc0c9ac3f36}{inicializar\+Fsm}} (void)
+\begin{DoxyCompactList}\small\item\em Inicializa la FSM, notificando si tuvo exito. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fsm_8h_ab5967802af47fb701d690f801f2f81f2}{fsm}} (event\+\_\+t evento\+\_\+actual)
+\begin{DoxyCompactList}\small\item\em Intérprete de la FSM. Se encarga de hacer correr la FSM a partir de un estado y evento dados. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fsm_8h_a3d4d9cd1579a3ad2c1278398e0be1c21}{fix\+High\+Cpu\+Usage}} (void)
+\begin{DoxyCompactList}\small\item\em Fixea consumo elevado de cpu en el while loop principal. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header del modulo fsm. Contiene los prototipos de funciones necesarias para iniciar la fsm desde \mbox{\hyperlink{main_8c}{main.\+c}}. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{fsm_8h_a3d4d9cd1579a3ad2c1278398e0be1c21}\label{fsm_8h_a3d4d9cd1579a3ad2c1278398e0be1c21}} 
+\index{fsm.h@{fsm.h}!fixHighCpuUsage@{fixHighCpuUsage}}
+\index{fixHighCpuUsage@{fixHighCpuUsage}!fsm.h@{fsm.h}}
+\doxysubsubsection{\texorpdfstring{fixHighCpuUsage()}{fixHighCpuUsage()}}
+{\footnotesize\ttfamily void fix\+High\+Cpu\+Usage (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Fixea consumo elevado de cpu en el while loop principal. 
+
+Not the best solucion, but sirve...
+
+\href{https://softwareengineering.stackexchange.com/questions/256524/infinite-while-loop-cpu-usage}{\texttt{ https\+://softwareengineering.\+stackexchange.\+com/questions/256524/infinite-\/while-\/loop-\/cpu-\/usage}} \mbox{\Hypertarget{fsm_8h_ab5967802af47fb701d690f801f2f81f2}\label{fsm_8h_ab5967802af47fb701d690f801f2f81f2}} 
+\index{fsm.h@{fsm.h}!fsm@{fsm}}
+\index{fsm@{fsm}!fsm.h@{fsm.h}}
+\doxysubsubsection{\texorpdfstring{fsm()}{fsm()}}
+{\footnotesize\ttfamily void fsm (\begin{DoxyParamCaption}\item[{event\+\_\+t}]{evento\+\_\+actual }\end{DoxyParamCaption})}
+
+
+
+Intérprete de la FSM. Se encarga de hacer correr la FSM a partir de un estado y evento dados. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+tabla\+\_\+estado} & Estado actual. \\
+\hline
+{\em evento\+\_\+actual} & Evento recibido. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fsm_8h_ab28bf0307c4cbce988898bc0c9ac3f36}\label{fsm_8h_ab28bf0307c4cbce988898bc0c9ac3f36}} 
+\index{fsm.h@{fsm.h}!inicializarFsm@{inicializarFsm}}
+\index{inicializarFsm@{inicializarFsm}!fsm.h@{fsm.h}}
+\doxysubsubsection{\texorpdfstring{inicializarFsm()}{inicializarFsm()}}
+{\footnotesize\ttfamily bool inicializar\+Fsm (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Inicializa la FSM, notificando si tuvo exito. 
+
+\begin{DoxyReturn}{Returns}
+true Exito 
+
+false Error 
+\end{DoxyReturn}

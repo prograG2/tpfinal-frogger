@@ -1,0 +1,231 @@
+\hypertarget{rpi_2game_8c}{}\doxysection{src/platform/rpi/game.c File Reference}
+\label{rpi_2game_8c}\index{src/platform/rpi/game.c@{src/platform/rpi/game.c}}
+
+
+Archivo para manejar la información del juego.  
+
+
+{\ttfamily \#include \char`\"{}../../game.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}bitmap.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../display.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../sound.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../queue.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_a4aab17273506792ecbdfe53559f7a0e3}\label{rpi_2game_8c_a4aab17273506792ecbdfe53559f7a0e3}} 
+\#define {\bfseries POS\+\_\+\+AUTOS\+\_\+\+INICIO}~4
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_a880c8f8f2df7182180779563fcda1927}\label{rpi_2game_8c_a880c8f8f2df7182180779563fcda1927}} 
+\#define {\bfseries POS\+\_\+\+AUTOS\+\_\+\+FIN}~13
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_a01847719a7332b136d7fbe7994f6b824}\label{rpi_2game_8c_a01847719a7332b136d7fbe7994f6b824}} 
+\#define {\bfseries CANT\+\_\+\+CARRILES}~5
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_ad0dec0ae332d6eaac4b48b3caec998c0}\label{rpi_2game_8c_ad0dec0ae332d6eaac4b48b3caec998c0}} 
+\#define {\bfseries L\+\_\+\+MAX}~64
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rpi_2game_8c_a75aa47fac1447fe8deb230d2cbfe18f7}{set\+Nombre}} (char $\ast$nombre)
+\begin{DoxyCompactList}\small\item\em Confirma el nombre del jugador. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{rpi_2game_8c_ad3d942b9b39f8908b9c716fee6160d75}{set\+Max\+Puntos}} (unsigned long long max)
+\begin{DoxyCompactList}\small\item\em Setea los puntos maximos del jugador. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a7600f76196053f7280a2d971330b9fa8}\label{rpi_2game_8c_a7600f76196053f7280a2d971330b9fa8}} 
+void {\bfseries limpiar\+Mapa} ()
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_a2cfa05f2a07d6beb8b34d45210da1be9}\label{rpi_2game_8c_a2cfa05f2a07d6beb8b34d45210da1be9}} 
+void {\bfseries mover\+Carrriles} (int x)
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_a6285f9b713a460bc63245b7e48f01b2d}\label{rpi_2game_8c_a6285f9b713a460bc63245b7e48f01b2d}} 
+void {\bfseries spawnear\+Autos} ()
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_aa78b78e2cc324ceb9c8c3711b1935ba3}\label{rpi_2game_8c_aa78b78e2cc324ceb9c8c3711b1935ba3}} 
+void {\bfseries actualizar\+Mapa} ()
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_a7db12c6fe97af734054cfca4cb19ecbd}\label{rpi_2game_8c_a7db12c6fe97af734054cfca4cb19ecbd}} 
+void {\bfseries refrescar} ()
+\begin{DoxyCompactList}\small\item\em Actualizaciones relativas a actualizar las entidades. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{rpi_2game_8c_ade342ea5c0d3d98f0bb31cc1279e5345}{tiempo\+Refresco\+Entidades}} (void)
+\begin{DoxyCompactList}\small\item\em Chequea si es tiempo de refrescar entidades según la plataforma. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{rpi_2game_8c_a4852e15c44228a2f2e6b55ab3e01524a}{set\+Dificultad}} (int dificultad)
+\begin{DoxyCompactList}\small\item\em Setea la dificultad a usar. \end{DoxyCompactList}\item 
+char $\ast$ \mbox{\hyperlink{rpi_2game_8c_abc571c1e362b4f6746952e4540854787}{get\+Nombre}} ()
+\begin{DoxyCompactList}\small\item\em Devuelve el nombre del jugador. \end{DoxyCompactList}\item 
+unsigned long long \mbox{\hyperlink{rpi_2game_8c_a445dfa06c9ff8e8c273bbb9ef5b74274}{get\+Puntos}} ()
+\begin{DoxyCompactList}\small\item\em Devuelve el puntaje del jugador. \end{DoxyCompactList}\item 
+unsigned long long \mbox{\hyperlink{rpi_2game_8c_a446d2b4cbe9850c787a89901e477d7bc}{get\+Max\+Puntos}} ()
+\begin{DoxyCompactList}\small\item\em Devuelve el puntaje máximo del jugador. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{rpi_2game_8c_aa26c8289236ecc790af0e13487ac8acf}{get\+Nivel}} ()
+\begin{DoxyCompactList}\small\item\em Devuelve el nivel//run del jugador. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a3447ebca7c4042acb4ef9af8446f1b80}\label{rpi_2game_8c_a3447ebca7c4042acb4ef9af8446f1b80}} 
+void {\bfseries reiniciar\+Nivel} ()
+\begin{DoxyCompactList}\small\item\em Configuraciones para reiniciar el nivel. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_ac578ca44493fe34e6cb1b2093cf79341}\label{rpi_2game_8c_ac578ca44493fe34e6cb1b2093cf79341}} 
+void {\bfseries respawn} ()
+\begin{DoxyCompactList}\small\item\em Respawnea el jugador. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a96b729224041ea4106bb445db009335a}\label{rpi_2game_8c_a96b729224041ea4106bb445db009335a}} 
+void {\bfseries mover\+Adelante} ()
+\begin{DoxyCompactList}\small\item\em Avanza el jugador. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_ac41871ac5f7358e8a5d6a8f4c552445c}\label{rpi_2game_8c_ac41871ac5f7358e8a5d6a8f4c552445c}} 
+void {\bfseries mover\+Atras} ()
+\begin{DoxyCompactList}\small\item\em Retrocede el jugador. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_acda5bb4b2affa7bce1fa3750dc170380}\label{rpi_2game_8c_acda5bb4b2affa7bce1fa3750dc170380}} 
+void {\bfseries mover\+Izda} ()
+\begin{DoxyCompactList}\small\item\em Mueve el jugador a la izquierda. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_adb6e0f15f9bad4ee8059b3adb9f9cad4}\label{rpi_2game_8c_adb6e0f15f9bad4ee8059b3adb9f9cad4}} 
+void {\bfseries mover\+Dcha} ()
+\begin{DoxyCompactList}\small\item\em Mueve el jugador a la derecha. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a3d6a6c97d491a3d9d8f404126013c778}\label{rpi_2game_8c_a3d6a6c97d491a3d9d8f404126013c778}} 
+void {\bfseries perder\+Vida} ()
+\begin{DoxyCompactList}\small\item\em Resta una vida. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a0c2637ac158f917d4b3d3844f7c0a4f8}\label{rpi_2game_8c_a0c2637ac158f917d4b3d3844f7c0a4f8}} 
+void {\bfseries inicializar\+Juego} ()
+\begin{DoxyCompactList}\small\item\em Rutina que se ejecuta al comenzar a jugar, luego de ingresar el nombre. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a215f2123206a9717e8a88ff8b31cb53b}\label{rpi_2game_8c_a215f2123206a9717e8a88ff8b31cb53b}} 
+void {\bfseries pausar\+Juego} ()
+\begin{DoxyCompactList}\small\item\em Pausa el juego. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a8d88fdcb67c69cced8338c494fd3b66e}\label{rpi_2game_8c_a8d88fdcb67c69cced8338c494fd3b66e}} 
+void {\bfseries actualizar\+Interfaz} ()
+\begin{DoxyCompactList}\small\item\em Actualizaciones relativas a lo visual. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{rpi_2game_8c_a194669122fe9edc8705ae4a9d0f44dbd}\label{rpi_2game_8c_a194669122fe9edc8705ae4a9d0f44dbd}} 
+void {\bfseries reanudar\+Juego} (void)
+\begin{DoxyCompactList}\small\item\em Saca el juego de pausa. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{rpi_2game_8c_ab53dfdef2a47688362fc715b4e3e23e6}\label{rpi_2game_8c_ab53dfdef2a47688362fc715b4e3e23e6}} 
+matriz\+\_\+t {\bfseries disp\+\_\+matriz}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Archivo para manejar la información del juego. 
+
+\begin{DoxyAuthor}{Authors}
+AGRIPPINO, ALVAREZ, CASTRO, HEIR 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 $\sim$ Ingeniería Electrónica $\sim$ ITBA 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{rpi_2game_8c_a446d2b4cbe9850c787a89901e477d7bc}\label{rpi_2game_8c_a446d2b4cbe9850c787a89901e477d7bc}} 
+\index{game.c@{game.c}!getMaxPuntos@{getMaxPuntos}}
+\index{getMaxPuntos@{getMaxPuntos}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{getMaxPuntos()}{getMaxPuntos()}}
+{\footnotesize\ttfamily unsigned long long get\+Max\+Puntos (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve el puntaje máximo del jugador. 
+
+\begin{DoxyReturn}{Returns}
+unsigned long long 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rpi_2game_8c_aa26c8289236ecc790af0e13487ac8acf}\label{rpi_2game_8c_aa26c8289236ecc790af0e13487ac8acf}} 
+\index{game.c@{game.c}!getNivel@{getNivel}}
+\index{getNivel@{getNivel}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{getNivel()}{getNivel()}}
+{\footnotesize\ttfamily int get\+Nivel (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve el nivel//run del jugador. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rpi_2game_8c_abc571c1e362b4f6746952e4540854787}\label{rpi_2game_8c_abc571c1e362b4f6746952e4540854787}} 
+\index{game.c@{game.c}!getNombre@{getNombre}}
+\index{getNombre@{getNombre}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{getNombre()}{getNombre()}}
+{\footnotesize\ttfamily char $\ast$ get\+Nombre (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve el nombre del jugador. 
+
+\begin{DoxyReturn}{Returns}
+char$\ast$ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rpi_2game_8c_a445dfa06c9ff8e8c273bbb9ef5b74274}\label{rpi_2game_8c_a445dfa06c9ff8e8c273bbb9ef5b74274}} 
+\index{game.c@{game.c}!getPuntos@{getPuntos}}
+\index{getPuntos@{getPuntos}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{getPuntos()}{getPuntos()}}
+{\footnotesize\ttfamily unsigned long long get\+Puntos (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve el puntaje del jugador. 
+
+\begin{DoxyReturn}{Returns}
+unsigned long long 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rpi_2game_8c_a4852e15c44228a2f2e6b55ab3e01524a}\label{rpi_2game_8c_a4852e15c44228a2f2e6b55ab3e01524a}} 
+\index{game.c@{game.c}!setDificultad@{setDificultad}}
+\index{setDificultad@{setDificultad}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{setDificultad()}{setDificultad()}}
+{\footnotesize\ttfamily void set\+Dificultad (\begin{DoxyParamCaption}\item[{int}]{dif }\end{DoxyParamCaption})}
+
+
+
+Setea la dificultad a usar. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dif} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{rpi_2game_8c_ad3d942b9b39f8908b9c716fee6160d75}\label{rpi_2game_8c_ad3d942b9b39f8908b9c716fee6160d75}} 
+\index{game.c@{game.c}!setMaxPuntos@{setMaxPuntos}}
+\index{setMaxPuntos@{setMaxPuntos}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{setMaxPuntos()}{setMaxPuntos()}}
+{\footnotesize\ttfamily void set\+Max\+Puntos (\begin{DoxyParamCaption}\item[{unsigned long long}]{max }\end{DoxyParamCaption})}
+
+
+
+Setea los puntos maximos del jugador. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{rpi_2game_8c_a75aa47fac1447fe8deb230d2cbfe18f7}\label{rpi_2game_8c_a75aa47fac1447fe8deb230d2cbfe18f7}} 
+\index{game.c@{game.c}!setNombre@{setNombre}}
+\index{setNombre@{setNombre}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{setNombre()}{setNombre()}}
+{\footnotesize\ttfamily void set\+Nombre (\begin{DoxyParamCaption}\item[{char $\ast$}]{nombre }\end{DoxyParamCaption})}
+
+
+
+Confirma el nombre del jugador. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nombre} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{rpi_2game_8c_ade342ea5c0d3d98f0bb31cc1279e5345}\label{rpi_2game_8c_ade342ea5c0d3d98f0bb31cc1279e5345}} 
+\index{game.c@{game.c}!tiempoRefrescoEntidades@{tiempoRefrescoEntidades}}
+\index{tiempoRefrescoEntidades@{tiempoRefrescoEntidades}!game.c@{game.c}}
+\doxysubsubsection{\texorpdfstring{tiempoRefrescoEntidades()}{tiempoRefrescoEntidades()}}
+{\footnotesize\ttfamily bool tiempo\+Refresco\+Entidades (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Chequea si es tiempo de refrescar entidades según la plataforma. 
+
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}

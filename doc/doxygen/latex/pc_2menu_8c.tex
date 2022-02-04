@@ -1,0 +1,110 @@
+\hypertarget{pc_2menu_8c}{}\doxysection{src/platform/pc/menu.c File Reference}
+\label{pc_2menu_8c}\index{src/platform/pc/menu.c@{src/platform/pc/menu.c}}
+{\ttfamily \#include \char`\"{}../../menu.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../sound.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}allegro\+\_\+stuff.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}geometry.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}game\+\_\+data.\+h\char`\"{}}\newline
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structwindow__t}{window\+\_\+t}}
+\item 
+struct \mbox{\hyperlink{structmenu__t}{menu\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{pc_2menu_8c_acb349192a04b5a8e9a77acd6965f37dd}\label{pc_2menu_8c_acb349192a04b5a8e9a77acd6965f37dd}} 
+\#define {\bfseries STATS\+\_\+\+X\+\_\+\+COORD}~20
+\item 
+\mbox{\Hypertarget{pc_2menu_8c_a89d1d0156f36699b4338b32abe1cab8b}\label{pc_2menu_8c_a89d1d0156f36699b4338b32abe1cab8b}} 
+\#define {\bfseries STATS\+\_\+\+Y\+\_\+\+COORD\+\_\+\+START}~(DISPLAY\+\_\+H / 2 + 50)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{pc_2menu_8c_a2299188d9586c2212e26239c11cd786d}\label{pc_2menu_8c_a2299188d9586c2212e26239c11cd786d}} 
+void {\bfseries iniciar\+Menu} (void)
+\begin{DoxyCompactList}\small\item\em Inicia el menu. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{pc_2menu_8c_ae89045681f278a072eab2f9eeba8064c}\label{pc_2menu_8c_ae89045681f278a072eab2f9eeba8064c}} 
+void {\bfseries destruir\+Menu} (void)
+\begin{DoxyCompactList}\small\item\em Destruye del menu. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{pc_2menu_8c_a77e4a9608f1bac62690d0c018d17a484}{set\+Menu}} (int $\ast$a, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Selecciona un menu. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{pc_2menu_8c_a8123dad63d0c67cc9de3c9a13b4437c4}{set\+Opcion}} (int opc)
+\begin{DoxyCompactList}\small\item\em Selecciona una opcion del menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{pc_2menu_8c_a42416cfb9bede7897a03c3a5c1144004}{get\+Opcion}} (void)
+\begin{DoxyCompactList}\small\item\em Devuelve la opcion actual del menu. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{pc_2menu_8c_a3c7b73685e1bb6dc373ef2db9bd4aad5}\label{pc_2menu_8c_a3c7b73685e1bb6dc373ef2db9bd4aad5}} 
+void {\bfseries subir\+Opcion} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona la opcion superior a la actual. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{pc_2menu_8c_a566e141e73d7257e44562ae7862361c6}\label{pc_2menu_8c_a566e141e73d7257e44562ae7862361c6}} 
+void {\bfseries bajar\+Opcion} (void)
+\begin{DoxyCompactList}\small\item\em Selecciona la opcion inferior a la actual. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{pc_2menu_8c_a0b89bdd4461c86b31f9eb6ac3e19b417}\label{pc_2menu_8c_a0b89bdd4461c86b31f9eb6ac3e19b417}} 
+void {\bfseries mover\+Opcion\+Actual} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+your name (\href{mailto:you@domain.com}{\texttt{ you@domain.\+com}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2022-\/01-\/22
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{pc_2menu_8c_a42416cfb9bede7897a03c3a5c1144004}\label{pc_2menu_8c_a42416cfb9bede7897a03c3a5c1144004}} 
+\index{menu.c@{menu.c}!getOpcion@{getOpcion}}
+\index{getOpcion@{getOpcion}!menu.c@{menu.c}}
+\doxysubsubsection{\texorpdfstring{getOpcion()}{getOpcion()}}
+{\footnotesize\ttfamily int get\+Opcion (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Devuelve la opcion actual del menu. 
+
+\begin{DoxyReturn}{Returns}
+int Opcion seleccionada actualmente 
+\end{DoxyReturn}
+\mbox{\Hypertarget{pc_2menu_8c_a77e4a9608f1bac62690d0c018d17a484}\label{pc_2menu_8c_a77e4a9608f1bac62690d0c018d17a484}} 
+\index{menu.c@{menu.c}!setMenu@{setMenu}}
+\index{setMenu@{setMenu}!menu.c@{menu.c}}
+\doxysubsubsection{\texorpdfstring{setMenu()}{setMenu()}}
+{\footnotesize\ttfamily void set\+Menu (\begin{DoxyParamCaption}\item[{int $\ast$}]{a,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Selecciona un menu. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Puntero a textos del menu \\
+\hline
+{\em size} & Opciones del menu \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{pc_2menu_8c_a8123dad63d0c67cc9de3c9a13b4437c4}\label{pc_2menu_8c_a8123dad63d0c67cc9de3c9a13b4437c4}} 
+\index{menu.c@{menu.c}!setOpcion@{setOpcion}}
+\index{setOpcion@{setOpcion}!menu.c@{menu.c}}
+\doxysubsubsection{\texorpdfstring{setOpcion()}{setOpcion()}}
+{\footnotesize\ttfamily void set\+Opcion (\begin{DoxyParamCaption}\item[{int}]{opc }\end{DoxyParamCaption})}
+
+
+
+Selecciona una opcion del menu. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em opc} & Opcion a seleccionar \\
+\hline
+\end{DoxyParams}
