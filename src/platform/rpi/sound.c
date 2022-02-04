@@ -48,6 +48,8 @@ static char *archivos_efectos[] =
 
 static Audio *musica;
 
+static int actual;
+
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
@@ -62,15 +64,7 @@ bool iniciarSonido(void)
 	}
 
 	initAudio();
-
-	/*
-  if (initAudio() == NO_INIT)
-  {
-    printf("Audio not initilized.\n");
-    endAudio();
-    return false;
-  }
-	*/
+  actual = -1;
   return true;
 }
 
@@ -84,15 +78,20 @@ void destruirSonido(void)
 void pausarMusica(void)
 {
   pauseAudio();
+  actual = -1;
 }
 
 void reproducirMusica(int m)
 {
-  pauseAudio();
-  freeAudio(musica);
-  musica = createAudio(archivos_musica[m], 1, SDL_MIX_MAXVOLUME);
-  unpauseAudio();
-  playMusicFromMemory(musica, SDL_MIX_MAXVOLUME);
+  if(m != actual)
+  {
+    endAudio();
+    freeAudio(musica);
+    initAudio();
+    musica = createAudio(archivos_musica[m], 1, SDL_MIX_MAXVOLUME);
+    playMusicFromMemory(musica, SDL_MIX_MAXVOLUME);
+    actual = m;
+  }
 }
 
 void reproducirEfecto(int e)

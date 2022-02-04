@@ -330,8 +330,6 @@ bool inicializarFsm(void)
 
 	pthread_create(&tinput, NULL, threadInput, NULL);
 
-	reproducirMusica(MUSICA_MENU_PPAL);
-
 	return true;
 }
 
@@ -441,7 +439,6 @@ static void do_nothing(void)
 
 static void procesar_enter_menu(void)
 {
-	limpiarDisplay();
 	reproducirEfecto(EFECTO_MENU_ENTER);
 	queueInsertar(CTE_OPCION + getOpcion());
 }
@@ -526,8 +523,8 @@ static void iniciar_juego(void)
 static void ir_a_poniendo_nombre()
 {
 	limpiarDisplay();
-	nuevoNombre();
 	dejarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE, true);
+	nuevoNombre();
 }
 
 static void ir_a_seleccionando_dificultad()

@@ -214,9 +214,9 @@ int getNivel()
 void reiniciarNivel()
 {
   juego.ranas = 0b1001001001001001;
-  reiniciarTimer();
   juego.agua = false;
   respawn();
+  reiniciarTimer();
   reanudarJuego();
 }
 
@@ -227,7 +227,7 @@ void respawn()
   {
     juego.jugador_1 = 0b0000000100000000;
     juego.jugador_2 = 0b0000000010000000;
-    juego.jugador_posicion_sur = 7;
+    juego.jugador_posicion_oeste = 7;
   }
 
   for (int i = 0; i < CANT_CARRILES; i++)
@@ -247,7 +247,7 @@ void moverAdelante()
 {
   if (juego.jugador_posicion_sur > 3)
     juego.jugador_posicion_sur--;
-  if (juego.jugador_posicion_sur == 3)
+  else
   {
     if (!juego.agua)
     {
@@ -259,7 +259,7 @@ void moverAdelante()
       juego.ranas |= juego.jugador_1 | juego.jugador_2;
       if (juego.ranas == 0b1111111111111111)
       {
-        juego.timeout = true;
+        pausarJuego();
         juego.niv_actual++;
         reproducirEfecto(EFECTO_NIVEL_COMPLETO);
         reiniciarNivel();
@@ -344,14 +344,22 @@ void actualizarInterfaz()
   actualizarMapa();
   copiarMatriz(disp_matriz, juego.mapa);
   disp_matriz[0] = juego.vidas;
-  clock_t frac = juego.tiempo_inicio >> 4, aux = juego.tiempo;
-  disp_matriz[1] = 0;
-  while (aux > 0)
+
+  clock_t acc = 0, frac = juego.tiempo_inicio >> 1;
+  uint16_t tiempo_bits = 0;
+  int j, x = 0; //  x representa cuanto debo correrme hacia la izquierda en bits
+
+  for (j = 8; j; j >>= 1, frac >>= 1)
   {
-    disp_matriz[1] <<= 1;
-    disp_matriz[1] |= 1;
-    aux -= frac;
+    if (juego.tiempo > (acc + frac))
+    {
+      acc += frac;
+      x += j;
+      tiempo_bits |= (1 << x) - 1; // hago 1 todos los bits menos significativos que x
+    }
   }
+
+  disp_matriz[1] = tiempo_bits;
 
   disp_matriz[(juego.jugador_posicion_sur) - 1] |= juego.jugador_1;
   disp_matriz[juego.jugador_posicion_sur] |= juego.jugador_2;

@@ -35,8 +35,8 @@ static char last;
 void nuevoNombre()
 {
   nombre = mensaje("A", POS_MSJ2, false);
+  nombre.j = 0;
   last = 'A';
-  printRenglon(nombre.renglon);
   copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
   actualizarDisplay();
 }
@@ -62,7 +62,6 @@ void bajarLetra()
 void siguienteLetra()
 {
   concatenarLetraMensaje(last, &nombre);
-
   last = 'A';
   copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
   actualizarDisplay();
