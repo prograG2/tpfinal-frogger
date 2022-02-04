@@ -21,11 +21,10 @@
 
 void printMatriz(matriz_t a)
 {
+  putchar('\n');
   for (int i = 0; i < CANT_FILAS; i++, putchar('\n'))
     for (int j = 0; j < CANT_FILAS; j++)
-      putchar((a[i] & (0b1000000000000000 >> j)) ? '1' : '.');
-
-  putchar('\n');
+      putchar((a[i] & (0b1000000000000000 >> j)) ? '#' : '-');
 }
 
 void limpiarMatriz(matriz_t a)

@@ -58,12 +58,12 @@ static int actual;
 
 bool iniciarSonido(void)
 {
-	if(SDL_Init(SDL_INIT_AUDIO) < 0)
-	{
-		return 1; 
-	}
+  if (SDL_Init(SDL_INIT_AUDIO) < 0)
+  {
+    return 1;
+  }
 
-	initAudio();
+  initAudio();
   actual = -1;
   return true;
 }
@@ -72,7 +72,7 @@ void destruirSonido(void)
 {
   endAudio();
   freeAudio(musica);
-	SDL_Quit();
+  SDL_Quit();
 }
 
 void pausarMusica(void)
@@ -83,7 +83,7 @@ void pausarMusica(void)
 
 void reproducirMusica(int m)
 {
-  if(m != actual)
+  if (m != actual)
   {
     endAudio();
     freeAudio(musica);

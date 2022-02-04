@@ -25,6 +25,7 @@
 #define CANT_SIMBOLOS 38
 
 #define PEDIR_FULL -1
+#define ANCHO_MAXIMO 5
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -104,11 +105,12 @@ static uint16_t char_index[][TAM_RENGLON] = {{0x4000, 0xA000, 0xE000, 0xA000, 0x
  ******************************************************************************/
 void printRenglon(renglon_t r)
 {
+  putchar('\n');
   for (int i = 0; i < TAM_RENGLON; i++, putchar('\n'))
   {
     for (int j = 0; j < 2 * CANT_FILAS; j++)
     {
-      putchar((r[i].completo & (0x80000000 >> j)) ? 'x' : '.');
+      putchar((r[i].completo & (0x80000000 >> j)) ? '#' : '-');
       if (j == CANT_FILAS - 1)
         putchar('|');
     }
@@ -154,9 +156,7 @@ void renglonNot(renglon_t r)
 void copiarRenglon(renglon_t r1, const renglon_t r2)
 {
   for (int i = 0; i < TAM_RENGLON; i++)
-  {
     r1[i].completo = r2[i].completo;
-  }
 }
 
 void copiarMatrizRenglon(matriz_t m, const renglon_t r, int pos)
@@ -207,8 +207,10 @@ void uintARenglon(uint16_t n, renglon_t r)
   renglon_t renglon_aux;
   int j = 0, resto = CANT_COLUMNAS;
   uint16_t div = 10000;
+
   while (n % div == n)
     div /= 10;
+
   while (n)
   {
     uint16_t aux = n % div;
@@ -315,17 +317,13 @@ void concatenarLetraMensaje(char c, mensaje_t *msj)
     return;
 
   (msj->msj)[msj->index++] = c;
-  (msj->msj)[msj->index] = '\0';
+  (msj->msj)[msj->index] = 'A';
+  (msj->msj)[msj->index + 1] = '\0';
   msj->longitud++;
+
   msj->j += getLongitud(c) + 1;
-
-  int ancho = 5; // debo considerar el peor caso por si después se va a reemplazar la letra
-
-  while (CANT_COLUMNAS - msj->j - ancho < 0) // el margen estará antes
-  {
+  while (CANT_COLUMNAS - msj->j-- - ANCHO_MAXIMO < 0) // corro a la izquierda hasta asegurarme que va a entrar cualquier letra
     renglonShiftIzq(msj->renglon, 1);
-    msj->j--;
-  }
 
   renglon_t letra;
   charARenglon('A', letra);
@@ -335,12 +333,17 @@ void concatenarLetraMensaje(char c, mensaje_t *msj)
 
 void reemplazarUltLetraMensaje(char c, mensaje_t *msj)
 {
-  (msj->msj)[msj->index - 1] = c;
-
+  (msj->msj)[msj->index] = c;
   reemplazarLetra(msj->renglon, c, msj->j);
 }
 
-int getLongitud(char c)
+/*******************************************************************************
+ *******************************************************************************
+						LOCAL FUNCTION DEFINITIONS
+ *******************************************************************************
+ ******************************************************************************/
+
+static int getLongitud(char c)
 {
   if (c == ' ' || !c)
     return longitudes[INDEX_ESPACIO];
@@ -351,9 +354,3 @@ int getLongitud(char c)
   else
     return longitudes[INDEX_FULL];
 }
-
-/*******************************************************************************
- *******************************************************************************
-                        LOCAL FUNCTION DEFINITIONS
- *******************************************************************************
- ******************************************************************************/

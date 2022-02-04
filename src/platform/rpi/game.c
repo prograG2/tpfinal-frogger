@@ -345,17 +345,18 @@ void actualizarInterfaz()
   copiarMatriz(disp_matriz, juego.mapa);
   disp_matriz[0] = juego.vidas;
 
+  //algoritmo para convertir el tiempo al indicador de 16 bits por aproximaciones sucesivas
   clock_t acc = 0, frac = juego.tiempo_inicio >> 1;
   uint16_t tiempo_bits = 0;
-  int j, x = 0; //  x representa cuanto debo correrme hacia la izquierda en bits
-
+  int bit_de_referencia = 0b0000000000000001;
+  int j;
   for (j = 8; j; j >>= 1, frac >>= 1)
   {
     if (juego.tiempo > (acc + frac))
     {
       acc += frac;
-      x += j;
-      tiempo_bits |= (1 << x) - 1; // hago 1 todos los bits menos significativos que x
+      bit_de_referencia <<= j;
+      tiempo_bits |= bit_de_referencia - 1; // hago 1 todos los bits menos significativos que el de referencia
     }
   }
 

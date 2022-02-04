@@ -51,7 +51,6 @@ event_t leerEntradas(void)
     {
     case ALLEGRO_EVENT_TIMER:
       allegro_set_var_redraw(true);
-
       break;
 
     case ALLEGRO_EVENT_KEY_DOWN:

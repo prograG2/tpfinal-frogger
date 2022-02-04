@@ -120,14 +120,7 @@ int get_rand_between(int low, int high)
 
 bool collide(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
 {
-  if (ax1 < bx2 &&
-      ax2 > bx1 &&
-      ay1 < by2 &&
-      ay2 > by1)
-
-    return true;
-
-  return false;
+  return ax1 < bx2 && ax2 > bx1 && ay1 < by2 && ay2 > by1;
 }
 
 bool collideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
@@ -137,14 +130,7 @@ bool collideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh
 
 bool inside(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
 {
-  if (bx1 > ax1 &&
-      by1 > ay1 &&
-      bx2 < ax2 &&
-      by2 < ay2)
-
-    return true;
-
-  return false;
+  return bx1 > ax1 && by1 > ay1 && bx2 < ax2 && by2 < ay2;
 }
 
 bool insideShort(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh)
@@ -211,7 +197,6 @@ bool matchUint(unsigned int val, const unsigned int *array)
   {
     if (val == array[i])
       return true;
-    ;
   }
 
   return false;
