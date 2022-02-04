@@ -46,7 +46,7 @@ OBJS_PC_ALGIF	= $(patsubst %.o,$(OBJ_DIR)/%_PC_ALGIF.o,$(_OBJS_PC_ALGIF))
 _OBJS_RPI		= bitmap.o mensajes.o
 _OBJS_RPI		+= $(_OBJS_GENERIC)
 OBJS_RPI		= $(patsubst %.o,$(OBJ_DIR)/%_RPI.o,$(_OBJS_RPI))
-_OBJS_RPI_SDL2	= audio.c
+_OBJS_RPI_SDL2	= audio.o
 OBJS_RPI_SDL2	= $(patsubst %.o,$(OBJ_DIR)/%_RPI_SDL2.o,$(_OBJS_RPI_SDL2))
 
 # Objetos a usar. Se preinicializa con los principales.
@@ -275,7 +275,7 @@ $(LIB_DIR)/libsimpleSDL2audio.a: $(OBJS_RPI_SDL2)
 	ar -rc $@ $(OBJS_RPI_SDL2)
 	ranlib $@
 
-$(OBJ_DIR)/audio_RPI_SDL2.o: $(patsubst %,$(SRC_RPI_DIR)/%,simpleSDL2audio5/audio.c simpleSDL2audio5/audio.h)
+$(OBJ_DIR)/audio_RPI_SDL2.o: $(patsubst %,$(SRC_RPI_DIR)/%,simpleSDL2audio/audio.c simpleSDL2audio/audio.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Compilacion de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~

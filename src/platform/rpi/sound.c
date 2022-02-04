@@ -46,7 +46,7 @@ static char *archivos_efectos[] =
      EFECTOS_DIR "/saliendo.wav",
      EFECTOS_DIR "/no_time.wav"};
 
-static Audio *musica[SIZEOF_MUSICA], *efectos[SIZEOF_EFECTOS];
+static Audio *musica;
 
 /*******************************************************************************
  *******************************************************************************
@@ -71,23 +71,13 @@ bool iniciarSonido(void)
     return false;
   }
 	*/
-  int i;
-  for (i = 0; i < SIZEOF_MUSICA; i++)
-    musica[i] = createAudio(archivos_musica[i], 1, SDL_MIX_MAXVOLUME);
-  for (i = 0; i < SIZEOF_EFECTOS; i++)
-    efectos[i] = createAudio(archivos_efectos[i], 0, SDL_MIX_MAXVOLUME);
   return true;
 }
 
 void destruirSonido(void)
 {
   endAudio();
-  int i;
-  for (i = 0; i < SIZEOF_MUSICA; i++)
-    freeAudio(musica[i]);
-  for (i = 0; i < SIZEOF_EFECTOS; i++)
-    freeAudio(efectos[i]);
-
+  freeAudio(musica);
 	SDL_Quit();
 }
 
@@ -98,10 +88,14 @@ void pausarMusica(void)
 
 void reproducirMusica(int m)
 {
-  playMusicFromMemory(musica[m], SDL_MIX_MAXVOLUME);
+  pauseAudio();
+  freeAudio(musica);
+  musica = createAudio(archivos_musica[m], 1, SDL_MIX_MAXVOLUME);
+  unpauseAudio();
+  playMusicFromMemory(musica, SDL_MIX_MAXVOLUME);
 }
 
 void reproducirEfecto(int e)
 {
-  playSoundFromMemory(efectos[e], SDL_MIX_MAXVOLUME);
+  playSound(archivos_efectos[e], SDL_MIX_MAXVOLUME);
 }
