@@ -22,10 +22,12 @@
 
 <!-- PROJECT LOGO -->
 <br />
+<!--
 <div align="center">
   <a href="https://github.com/prograG2/tpfinal-frogger">
-	<img src="images/logo.jpeg" alt="Logo" width="120" height="120">
+	<img src="doc/logo.jpeg" alt="Logo" width="120" height="120">
   </a>
+-->
 
 <h3 align="center">Frogger</h3>
 
@@ -80,7 +82,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/prograG2/tpfinal-frogger">
-	<img src="images/collage.jpg" alt="Screenshot" width="600" height="500">
+	<img src="doc/collage.jpg" alt="Screenshot" width="600" height="500">
   </a>
 </div>
 <br />
