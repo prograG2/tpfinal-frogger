@@ -1,7 +1,7 @@
 /**
  * @file 	main.c
  * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
- * 			
+ *
  * @brief 	Archivo principal.
  * 			Inicia y pone a correr la maquian de estados (fsm).
  *
@@ -19,46 +19,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-
 /*******************************************************************************
  *******************************************************************************
-                        			MAIN
+                                    MAIN
  *******************************************************************************
  ******************************************************************************/
 
-int main (void)
+int main(void)
 {
     event_t evento;
 
-	if(!inicializarFsm())
-		return 1;
+    if (!inicializarFsm())
+        return 1;
 
-	while((evento = queueSiguienteEvento()))
-	{
-		if(evento != NADA)
-		{
-			fsm(evento);
-		}
+    while ((evento = queueSiguienteEvento()))
+    {
+        if (evento != NADA)
+        {
+            fsm(evento);
+        }
 
-		fixHighCpuUsage();
-	}
+        fixHighCpuUsage();
+    }
 
-	destruirQueue();
+    destruirQueue();
 
-	printf("\nSaliendo...\n");
+    printf("\nSaliendo...\n");
 
-	return 0;
+    return 0;
 }
-
 
 /*******************************************************************************
  *******************************************************************************
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-

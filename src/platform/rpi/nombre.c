@@ -34,42 +34,38 @@ static char last;
 
 void nuevoNombre()
 {
-  nombre = mensaje("A", POS_MSJ2, false);
-  nombre.index = 1;
-  nombre.j = 0;
-  last = 'A';
-  copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
-  actualizarDisplay();
-  printf("%s\n", nombre.msj);
+    nombre = mensaje("A", POS_MSJ2, false);
+    nombre.index = 0;
+    nombre.j = 0;
+    last = 'A';
+    copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+    actualizarDisplay();
 }
 
 void subirLetra()
 {
-  if (--last < 'A')
-    last = 'Z';
-  reemplazarUltLetraMensaje(last, &nombre);
-  copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
-  actualizarDisplay();
-  printf("%s\n", nombre.msj);
+    if (--last < 'A')
+        last = 'Z';
+    reemplazarUltLetraMensaje(last, &nombre);
+    copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+    actualizarDisplay();
 }
 
 void bajarLetra()
 {
-  if (++last > 'Z')
-    last = 'A';
-  reemplazarUltLetraMensaje(last, &nombre);
-  copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
-  actualizarDisplay();
-  printf("%s\n", nombre.msj);
+    if (++last > 'Z')
+        last = 'A';
+    reemplazarUltLetraMensaje(last, &nombre);
+    copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+    actualizarDisplay();
 }
 
 void siguienteLetra()
 {
-  concatenarLetraMensaje(last, &nombre);
-  last = 'A';
-  copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
-  actualizarDisplay();
-  printf("%s\n", nombre.msj);
+    concatenarLetraMensaje(last, &nombre);
+    last = 'A';
+    copiarMatrizRenglon(disp_matriz, nombre.renglon, POS_MSJ2);
+    actualizarDisplay();
 }
 
 void agregarLetra(void)
@@ -78,6 +74,5 @@ void agregarLetra(void)
 
 char *devolverNombre(void)
 {
-  printf("%s\n", nombre.msj);
-  return nombre.msj;
+    return nombre.msj;
 }

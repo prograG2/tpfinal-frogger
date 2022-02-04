@@ -58,43 +58,43 @@ static int actual;
 
 bool iniciarSonido(void)
 {
-  if (SDL_Init(SDL_INIT_AUDIO) < 0)
-  {
-    return 1;
-  }
+    if (SDL_Init(SDL_INIT_AUDIO) < 0)
+    {
+        return 1;
+    }
 
-  initAudio();
-  actual = -1;
-  return true;
+    initAudio();
+    actual = -1;
+    return true;
 }
 
 void destruirSonido(void)
 {
-  endAudio();
-  freeAudio(musica);
-  SDL_Quit();
+    endAudio();
+    freeAudio(musica);
+    SDL_Quit();
 }
 
 void pausarMusica(void)
 {
-  pauseAudio();
-  actual = -1;
+    pauseAudio();
+    actual = -1;
 }
 
 void reproducirMusica(int m)
 {
-  if (m != actual)
-  {
-    endAudio();
-    freeAudio(musica);
-    initAudio();
-    musica = createAudio(archivos_musica[m], 1, SDL_MIX_MAXVOLUME);
-    playMusicFromMemory(musica, SDL_MIX_MAXVOLUME);
-    actual = m;
-  }
+    if (m != actual)
+    {
+        endAudio();
+        freeAudio(musica);
+        initAudio();
+        musica = createAudio(archivos_musica[m], 1, SDL_MIX_MAXVOLUME >> 1);
+        playMusicFromMemory(musica, SDL_MIX_MAXVOLUME >> 1);
+        actual = m;
+    }
 }
 
 void reproducirEfecto(int e)
 {
-  playSound(archivos_efectos[e], SDL_MIX_MAXVOLUME);
+    playSound(archivos_efectos[e], SDL_MIX_MAXVOLUME);
 }

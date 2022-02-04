@@ -35,14 +35,14 @@
 
 typedef struct
 {
-  uint8_t x; // coordenada x del display
-  uint8_t y; // coordenada y del display
+    uint8_t x; // coordenada x del display
+    uint8_t y; // coordenada y del display
 } dcoord_t;
 
 typedef enum
 {
-  D_OFF,
-  D_ON
+    D_OFF,
+    D_ON
 } dlevel_t; // Valores posibles para cada LED
 
 /*******************************************************************************

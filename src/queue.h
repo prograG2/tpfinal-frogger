@@ -30,23 +30,23 @@ typedef int event_t;
 // Eventos posibles principales
 enum eventos
 {
-  NADA = -1,
-  SALIR = 0,
-  GAME_OVER,
-  FORCE_SALIR
+    NADA = -1,
+    SALIR = 0,
+    GAME_OVER,
+    FORCE_SALIR
 };
 
 // Eventos posibles de interacción en el juego
 enum eventos_tecla
 {
-  NO_MOVER = -1,
-  ESC = 59,
-  BORRAR = 63,
-  ENTER = 67,
-  IZDA = 82,
-  DCHA,
-  ARRIBA,
-  ABAJO
+    NO_MOVER = -1,
+    ESC = 59,
+    BORRAR = 63,
+    ENTER = 67,
+    IZDA = 82,
+    DCHA,
+    ARRIBA,
+    ABAJO
 };
 
 /*******************************************************************************

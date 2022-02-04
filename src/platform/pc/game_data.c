@@ -42,52 +42,52 @@
 
 typedef struct
 {
-  int lives;
-  unsigned long long score;
-  unsigned long long score_max;
+    int lives;
+    unsigned long long score;
+    unsigned long long score_max;
 
-  struct
-  {
-    int number;    // numero de run actual
-    int time_left; // tiempo restante en la run
-    int time;      // tiempo de la run actual
-    long time_ref; // referencia de tiempo global de la run
-  } run;
+    struct
+    {
+        int number;    // numero de run actual
+        int time_left; // tiempo restante en la run
+        int time;      // tiempo de la run actual
+        long time_ref; // referencia de tiempo global de la run
+    } run;
 
-  unsigned long frames;
-  int timer_in_sec;
+    unsigned long frames;
+    int timer_in_sec;
 
-  int difficulty;
+    int difficulty;
 
-  char name[MAX_NAME_CHAR];
+    char name[MAX_NAME_CHAR];
 
-  unsigned char flag;
+    unsigned char flag;
 
-  bool goals[MAX_GOALS];
+    bool goals[MAX_GOALS];
 
 } data_t;
 
 enum DATA_FLAGS
 {
-  DATA_FLAG_STARTING,
-  DATA_FLAG_NEXT_RUN,
-  DATA_FLAG_TIME_EXCEEDED,
-  DATA_FLAG_GAME_OVER
+    DATA_FLAG_STARTING,
+    DATA_FLAG_NEXT_RUN,
+    DATA_FLAG_TIME_EXCEEDED,
+    DATA_FLAG_GAME_OVER
 };
 
 enum HUD_EXTRAS
 {
-  HUD_EXTRA_TIME,
-  HUD_EXTRA_SCORE,
-  HUD_EXTRA_LIFE,
-  HUD_EXTRAS_MAX
+    HUD_EXTRA_TIME,
+    HUD_EXTRA_SCORE,
+    HUD_EXTRA_LIFE,
+    HUD_EXTRAS_MAX
 };
 
 static struct
 {
-  bool flag;
-  int value;
-  int timer;
+    bool flag;
+    int value;
+    int timer;
 } hud_extra_stuff[HUD_EXTRAS_MAX];
 
 /*******************************************************************************
@@ -169,246 +169,246 @@ static unsigned long long max_score_no_updated;
 
 void game_data_init(void)
 {
-  time_ref = time(NULL);
+    time_ref = time(NULL);
 
-  char_h = allegro_get_var_font_h();
-  char_w = allegro_get_var_font_w();
+    char_h = allegro_get_var_font_h();
+    char_w = allegro_get_var_font_w();
 
-  text_color = al_map_rgb(255, 255, 255);
+    text_color = al_map_rgb(255, 255, 255);
 
-  flag_low_time_warning = false;
+    flag_low_time_warning = false;
 
-  new_run_time_left = INITIAL_RUN_TIME_LEFT;
+    new_run_time_left = INITIAL_RUN_TIME_LEFT;
 
-  score_display = 0;
+    score_display = 0;
 
-  data_init();
+    data_init();
 }
 
 void game_data_update(void)
 {
-  data_update();
+    data_update();
 
-  if (data.flag == DATA_FLAG_NEXT_RUN)
-  {
-    next_run();
-    data.flag = DATA_FLAG_STARTING;
-  }
+    if (data.flag == DATA_FLAG_NEXT_RUN)
+    {
+        next_run();
+        data.flag = DATA_FLAG_STARTING;
+    }
 
-  if (data.run.time_left == TIME_LEFT_WARNING && !flag_low_time_warning)
-  {
-    allegro_sound_play_effect_low_time();
+    if (data.run.time_left == TIME_LEFT_WARNING && !flag_low_time_warning)
+    {
+        allegro_sound_play_effect_low_time();
 
-    flag_low_time_warning = true;
-  }
-  else if (data.run.time_left < TIME_LEFT_WARNING)
-    flag_low_time_warning = false;
+        flag_low_time_warning = true;
+    }
+    else if (data.run.time_left < TIME_LEFT_WARNING)
+        flag_low_time_warning = false;
 
-  if (max_score_no_updated != data.score_max)
-    max_score_no_updated = data.score_max;
+    if (max_score_no_updated != data.score_max)
+        max_score_no_updated = data.score_max;
 
-  if (data.run.time_left == 0)
-  {
-    // data.flag = DATA_FLAG_TIME_EXCEEDED;
-    game_data_subtract_live();
-    allegro_sound_play_effect_no_time();
-    data.flag = DATA_FLAG_GAME_OVER;
-  }
+    if (data.run.time_left == 0)
+    {
+        // data.flag = DATA_FLAG_TIME_EXCEEDED;
+        game_data_subtract_live();
+        allegro_sound_play_effect_no_time();
+        data.flag = DATA_FLAG_GAME_OVER;
+    }
 
-  if (data.lives == 0)
-  {
-    data.flag = DATA_FLAG_GAME_OVER;
-  }
+    if (data.lives == 0)
+    {
+        data.flag = DATA_FLAG_GAME_OVER;
+    }
 
-  // Las primeras 2 runs se reduce el timer en 5 segundos.
-  if (data.run.number <= 1)
-    new_run_time_left = INITIAL_RUN_TIME_LEFT - (5 * (data.run.number + 1));
+    // Las primeras 2 runs se reduce el timer en 5 segundos.
+    if (data.run.number <= 1)
+        new_run_time_left = INITIAL_RUN_TIME_LEFT - (5 * (data.run.number + 1));
 
-  // Despues se reduce de a 2 segundos por run hasta llegar a 10 segundos.
-  else if (data.run.number <= 6)
-    new_run_time_left = INITIAL_RUN_TIME_LEFT - (2 * (data.run.number + 1));
+    // Despues se reduce de a 2 segundos por run hasta llegar a 10 segundos.
+    else if (data.run.number <= 6)
+        new_run_time_left = INITIAL_RUN_TIME_LEFT - (2 * (data.run.number + 1));
 }
 
 void game_data_draw(void)
 {
-  hud_draw();
-  draw_reached_goals();
+    hud_draw();
+    draw_reached_goals();
 }
 
 int game_data_get_lives(void)
 {
-  return (data.lives);
+    return (data.lives);
 }
 
 void game_data_subtract_live(void)
 {
-  data.lives--;
+    data.lives--;
 }
 
 unsigned long long game_data_get_score(void)
 {
-  return (data.score);
+    return (data.score);
 }
 
 void game_data_add_score(void)
 {
 
-  data.score += SCORE_PER_GOAL;
+    data.score += SCORE_PER_GOAL;
 }
 
 void game_data_add_score_bonus(void)
 {
 
-  data.score += SCORE_PER_GOAL_COIN;
+    data.score += SCORE_PER_GOAL_COIN;
 }
 
 void game_data_set_score_max(unsigned long long score)
 {
-  data.score_max = score;
+    data.score_max = score;
 }
 
 unsigned long long game_data_get_score_max(void)
 {
-  return data.score_max;
+    return data.score_max;
 }
 
 int game_data_get_run_number(void)
 {
-  return (data.run.number);
+    return (data.run.number);
 }
 
 void game_data_next_run(void)
 {
-  data.flag = DATA_FLAG_NEXT_RUN;
+    data.flag = DATA_FLAG_NEXT_RUN;
 }
 
 int game_data_get_run_time_left(void)
 {
-  return (data.run.time_left);
+    return (data.run.time_left);
 }
 
 void game_data_add_run_time_goal(void)
 {
-  data.run.time_left += EXTRA_TIME_PER_GOAL;
-  trigger_show_adding_time(EXTRA_TIME_PER_GOAL);
+    data.run.time_left += EXTRA_TIME_PER_GOAL;
+    trigger_show_adding_time(EXTRA_TIME_PER_GOAL);
 }
 
 void game_data_add_run_time_goal_bonus(void)
 {
-  data.run.time_left += EXTRA_TIME_PER_BONUS_GOAL;
-  trigger_show_adding_time(EXTRA_TIME_PER_BONUS_GOAL);
+    data.run.time_left += EXTRA_TIME_PER_BONUS_GOAL;
+    trigger_show_adding_time(EXTRA_TIME_PER_BONUS_GOAL);
 }
 
 unsigned long game_data_get_frames(void)
 {
-  return (data.frames);
+    return (data.frames);
 }
 
 int game_data_get_timer_in_sec(void)
 {
-  return (data.timer_in_sec);
+    return (data.timer_in_sec);
 }
 
 void game_data_set_diff(int diff)
 {
-  data.difficulty = diff;
+    data.difficulty = diff;
 }
 
 int game_data_get_diff(void)
 {
-  return (data.difficulty);
+    return (data.difficulty);
 }
 
 void game_data_clear_name(void)
 {
-  memset(data.name, 0, MAX_NAME_CHAR);
+    memset(data.name, 0, MAX_NAME_CHAR);
 }
 
 void game_data_overwrite_name(char *name)
 {
-  strcpy(data.name, name);
+    strcpy(data.name, name);
 }
 
 void game_data_add_name_letter(char letter)
 {
-  int length = strlen(data.name);
+    int length = strlen(data.name);
 
-  if ((letter == ALLEGRO_KEY_BACKSPACE) && (length > 0))
-  {
-    data.name[length - 1] = 0;
-  }
+    if ((letter == ALLEGRO_KEY_BACKSPACE) && (length > 0))
+    {
+        data.name[length - 1] = 0;
+    }
 
-  else if (letter >= ALLEGRO_KEY_A && letter <= ALLEGRO_KEY_Z && length < MAX_NAME_CHAR)
-  {
-    letter += '@';
-    data.name[length] = letter;
-    data.name[length + 1] = 0;
-  }
+    else if (letter >= ALLEGRO_KEY_A && letter <= ALLEGRO_KEY_Z && length < MAX_NAME_CHAR)
+    {
+        letter += '@';
+        data.name[length] = letter;
+        data.name[length + 1] = 0;
+    }
 }
 
 char *game_data_get_name(void)
 {
-  return (data.name);
+    return (data.name);
 }
 
 bool game_data_get_goal_state(unsigned int goal)
 {
-  return data.goals[goal];
+    return data.goals[goal];
 }
 
 void game_data_set_goal(unsigned int goal)
 {
-  data.goals[goal] = true;
+    data.goals[goal] = true;
 }
 
 void game_data_reset_goals(void)
 {
-  int i;
-  for (i = 0; i < MAX_GOALS; i++)
-    data.goals[i] = false;
+    int i;
+    for (i = 0; i < MAX_GOALS; i++)
+        data.goals[i] = false;
 }
 
 bool game_data_get_time_left_flag(void)
 {
-  if (data.flag == DATA_FLAG_TIME_EXCEEDED)
-  {
-    data.flag = DATA_FLAG_STARTING;
-    return true;
-  }
+    if (data.flag == DATA_FLAG_TIME_EXCEEDED)
+    {
+        data.flag = DATA_FLAG_STARTING;
+        return true;
+    }
 
-  else
-    return false;
+    else
+        return false;
 }
 
 bool game_data_get_game_over_flag(void)
 {
-  if (data.flag == DATA_FLAG_GAME_OVER)
-    return true;
-  else
-    return false;
+    if (data.flag == DATA_FLAG_GAME_OVER)
+        return true;
+    else
+        return false;
 }
 
 bool game_data_are_goals_full(void)
 {
-  bool state = true;
+    bool state = true;
 
-  int i;
-  for (i = 0; i < MAX_GOALS; i++)
-  {
-    // si alguno esa vacio...
-    if (!data.goals[i])
+    int i;
+    for (i = 0; i < MAX_GOALS; i++)
     {
-      state = false;
-      break;
+        // si alguno esa vacio...
+        if (!data.goals[i])
+        {
+            state = false;
+            break;
+        }
     }
-  }
 
-  return state;
+    return state;
 }
 
 unsigned long long game_data_get_old_max_score(void)
 {
-  return max_score_no_updated;
+    return max_score_no_updated;
 }
 
 /*******************************************************************************
@@ -419,146 +419,146 @@ unsigned long long game_data_get_old_max_score(void)
 
 static void data_init(void)
 {
-  data.frames = 0;
-  data.lives = MAX_LIVES;
-  data.run.number = 0;
-  data.run.time_left = new_run_time_left;
-  data.run.time = 0;
-  data.run.time_ref = time(NULL);
-  data.score = 0;
-  data.timer_in_sec = 0;
+    data.frames = 0;
+    data.lives = MAX_LIVES;
+    data.run.number = 0;
+    data.run.time_left = new_run_time_left;
+    data.run.time = 0;
+    data.run.time_ref = time(NULL);
+    data.score = 0;
+    data.timer_in_sec = 0;
 
-  data.flag = DATA_FLAG_STARTING;
+    data.flag = DATA_FLAG_STARTING;
 
-  last_loop_time = 0;
+    last_loop_time = 0;
 
-  game_data_reset_goals();
+    game_data_reset_goals();
 }
 
 static void data_update(void)
 {
 
-  // diferencia entre el tiempo actual y el de referencia
-  data.timer_in_sec = time(NULL) - time_ref;
-  data.frames++;
+    // diferencia entre el tiempo actual y el de referencia
+    data.timer_in_sec = time(NULL) - time_ref;
+    data.frames++;
 
-  data.run.time = time(NULL) - data.run.time_ref;
+    data.run.time = time(NULL) - data.run.time_ref;
 
-  if (data.run.time > last_loop_time)
-  {
-    data.run.time_left--;
-    last_loop_time++;
-  }
-  last_loop_time = data.run.time;
+    if (data.run.time > last_loop_time)
+    {
+        data.run.time_left--;
+        last_loop_time++;
+    }
+    last_loop_time = data.run.time;
 }
 
 static void hud_draw(void)
 {
-  // Dibuja la puntuacion en pantalla.
+    // Dibuja la puntuacion en pantalla.
 
-  int i;
+    int i;
 
-  // Graduacion del score a mostrar para que vaya incrementando de apoco
-  if (score_display != data.score)
-  {
-    int shifter;
-
-    for (i = 2, shifter = 0; i > 0; i--)
+    // Graduacion del score a mostrar para que vaya incrementando de apoco
+    if (score_display != data.score)
     {
-      shifter = 1 << i;
-      if (score_display <= (data.score - shifter))
-        score_display += shifter;
+        int shifter;
+
+        for (i = 2, shifter = 0; i > 0; i--)
+        {
+            shifter = 1 << i;
+            if (score_display <= (data.score - shifter))
+                score_display += shifter;
+        }
     }
-  }
 
-  al_draw_textf(
-      allegro_get_var_font(),
-      text_color, // Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
-      1, 1,       // Arriba a la izquierda.
-      0,
-      "Score: %06lld", // 6 cifras (por ahi es mucho).
-      score_display);
+    al_draw_textf(
+        allegro_get_var_font(),
+        text_color, // Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
+        1, 1,       // Arriba a la izquierda.
+        0,
+        "Score: %06lld", // 6 cifras (por ahi es mucho).
+        score_display);
 
-  // Dibuja el numero de vuelta.
-  al_draw_textf(
-      allegro_get_var_font(),
-      text_color,
-      1, CELL_H - char_h - 5, // Para que quede abaj de la puntuacion en pantalla.
-      0,
-      "Run: %02d", // 2 cifras. No me acuerdo si esta bien asi.
-      data.run.number);
+    // Dibuja el numero de vuelta.
+    al_draw_textf(
+        allegro_get_var_font(),
+        text_color,
+        1, CELL_H - char_h - 5, // Para que quede abaj de la puntuacion en pantalla.
+        0,
+        "Run: %02d", // 2 cifras. No me acuerdo si esta bien asi.
+        data.run.number);
 
-  // Segundos.
-  al_draw_textf(
-      allegro_get_var_font(),
-      text_color,
-      al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3 * char_w, 1,
-      0,
-      "Played Time: %04d",
-      data.timer_in_sec);
+    // Segundos.
+    al_draw_textf(
+        allegro_get_var_font(),
+        text_color,
+        al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3 * char_w, 1,
+        0,
+        "Played Time: %04d",
+        data.timer_in_sec);
 
-  // Tiempo restante
-  al_draw_textf(
-      allegro_get_var_font(),
-      text_color,
-      al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3 * char_w,
-      CELL_H - char_h - 5,
-      0,
-      "Time Left: %03d",
-      data.run.time_left);
+    // Tiempo restante
+    al_draw_textf(
+        allegro_get_var_font(),
+        text_color,
+        al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3 * char_w,
+        CELL_H - char_h - 5,
+        0,
+        "Time Left: %03d",
+        data.run.time_left);
 
-  if (hud_extra_stuff[HUD_EXTRA_TIME].flag)
-  {
-  }
+    if (hud_extra_stuff[HUD_EXTRA_TIME].flag)
+    {
+    }
 
-  // Dibuja vidas.
-  for (int i = 0; i < data.lives; i++) // No se si la rana tiene 'frog.lives' pero aca va el equivalente.
-    al_draw_bitmap(
-        sprites.heart,
-        // DISPLAY_W - SPRITE_SIZE_HEART * (data.lives - i), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
-        DISPLAY_W - 100 + SPRITE_SIZE_HEART * (data.lives - i - 1),
-        (CELL_H - char_h - 5) / 2,
-        0);
+    // Dibuja vidas.
+    for (int i = 0; i < data.lives; i++) // No se si la rana tiene 'frog.lives' pero aca va el equivalente.
+        al_draw_bitmap(
+            sprites.heart,
+            // DISPLAY_W - SPRITE_SIZE_HEART * (data.lives - i), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
+            DISPLAY_W - 100 + SPRITE_SIZE_HEART * (data.lives - i - 1),
+            (CELL_H - char_h - 5) / 2,
+            0);
 
-  /*
-  if(!data.lives)
-    al_draw_text(
-      allegro_get_var_font(),
-      al_map_rgb(255, 255, 51),       //Amarillo, es el color que mas se ditingue en general.
-      DISPLAY_W / 2, DISPLAY_H / 2,
-      ALLEGRO_ALIGN_CENTER,           //Para que se dibuje en el medio.
-      "G A M E  O V E R");
-  */
+    /*
+    if(!data.lives)
+      al_draw_text(
+        allegro_get_var_font(),
+        al_map_rgb(255, 255, 51),       //Amarillo, es el color que mas se ditingue en general.
+        DISPLAY_W / 2, DISPLAY_H / 2,
+        ALLEGRO_ALIGN_CENTER,           //Para que se dibuje en el medio.
+        "G A M E  O V E R");
+    */
 }
 
 static void draw_reached_goals(void)
 {
-  int i;
-  for (i = 0; i < MAX_GOALS; i++)
-  {
-    // si algun goal fue alcanzado...
-    if (data.goals[i])
-      al_draw_bitmap(sprites.frog[6],
-                     goal_cols[i] * CELL_W + FROG_OFFSET_X - 1,
-                     CELL_H + FROG_OFFSET_Y + GOAL_ROW_OFFSET_Y_FIX,
-                     0);
-  }
+    int i;
+    for (i = 0; i < MAX_GOALS; i++)
+    {
+        // si algun goal fue alcanzado...
+        if (data.goals[i])
+            al_draw_bitmap(sprites.frog[6],
+                           goal_cols[i] * CELL_W + FROG_OFFSET_X - 1,
+                           CELL_H + FROG_OFFSET_Y + GOAL_ROW_OFFSET_Y_FIX,
+                           0);
+    }
 }
 
 static void next_run(void)
 {
-  data.run.number++;
-  data.run.time_left = new_run_time_left;
-  data.run.time = 0;
-  data.run.time_ref = time(NULL);
+    data.run.number++;
+    data.run.time_left = new_run_time_left;
+    data.run.time = 0;
+    data.run.time_ref = time(NULL);
 
-  data.score += SCORE_PER_RUN;
+    data.score += SCORE_PER_RUN;
 
-  last_loop_time = 0;
+    last_loop_time = 0;
 
-  flag_low_time_warning = false;
+    flag_low_time_warning = false;
 
-  game_data_reset_goals();
+    game_data_reset_goals();
 }
 
 static void trigger_show_adding_time(int extra)

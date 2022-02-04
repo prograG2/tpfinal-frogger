@@ -25,7 +25,7 @@
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
 
-typedef uint16_t matriz_t[CANT_FILAS]; //se define el tipo de dato para trabajar en el display, cada elemento del array es una fila
+typedef uint16_t matriz_t[CANT_FILAS]; // se define el tipo de dato para trabajar en el display, cada elemento del array es una fila
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
@@ -78,9 +78,9 @@ void matrizNot(matriz_t A);
 
 /**
  * @brief Dadas dos matrices A y B, se hará la operación "A ^= B"
- * 
- * @param A 
- * @param B 
+ *
+ * @param A
+ * @param B
  */
 void matrizXor(matriz_t A, matriz_t B);
 
