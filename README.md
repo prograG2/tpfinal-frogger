@@ -56,10 +56,6 @@
 	  <ul>
 		<li>
 			<a href="#prerequisites">Prerequisites</a>
-			<ul>
-				<li><a href="#pc">PC</a></li>
-				<li><a href="#rpi">RPi</a></li>
-			</ul>
 		</li>
 		<li><a href="#installation">Installation</a></li>
 	  </ul>
@@ -76,6 +72,7 @@
 </details>
 
 
+<br />
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -93,8 +90,8 @@ Este proyecto se corresponde con el trabajo práctico final del curso 22.07 - Pr
 * Fecha de cursada: 2021 Q1
 * Fecha de presentación: febrero de 2022
 
-La consigna fue implementar el clásico juego *Frogger* en lenguaje C para ejecutarse tanto en una
-PC con interfaz gráfica como en una Raspberry Pi con interfaz de display matricial y joystick.
+La consigna fue implementar el clásico juego *Frogger* en lenguaje `C` para ejecutarse tanto en una
+**PC** con interfaz gráfica como en una **Raspberry Pi** con interfaz de display matricial y joystick.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -102,8 +99,27 @@ PC con interfaz gráfica como en una Raspberry Pi con interfaz de display matric
 <!-- Features -->
 ## Features
 
+A continuación se mencionan algunas de las característimas destacables de la implementación, tanto las comunes para ambas plataformas como las específicas de cada una.
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email`, `email_client`, `project_title`, `project_description`
+### Generales
+* **Menú**: el juego cuenta con un sistema de menú, caracterizable en 3 partes:
+  * *Menú principal*: al que se llega al inicar ejecutar el juego. Desde el mismo, se puede:
+    * Pasar al ingreso de nombre del jugador para posteriormente iniciar la partida
+    * Seleccionar entre tres dificultades: fácil, normal, difícil
+    * Ver el ranking de jugadores
+    * Ver los créditos
+    * Salir del juego
+  * *Menú de pausa*: permite reiniciar la partida, continuarla, o volver al menú principal. Muestra el nombre del jugador, su puntaje actual, y su puntaje máximo si le corresponde
+  * *Menú de game over*: permite reiniciar la partida o volver al menú principal. Muestra el nombre del jugador, el puntaje que obtuvo, y si logró batir su récord
+
+* **Audio**: se cuenta con cinco músicas según la ubicación en la que uno esté dentro del juego, además de diversos efectos de sonidos, tanto en el menú como en la partida en sí
+* **Ranking**: cada jugador se irá registrando en el mismo cada vez que pierda una partida y haya logrado un puntaje mayor a 0. Si el jugador ya estaba en el ranking, solo se actualizará en él si lo superara. De no ingresar un nombre, se le asignará el de `PLAYER`. Se lo puede visualizar desde el menú principal
+* **Créditos**: dentro del menú principal, se puede acceder a la sección de cŕeditos
+
+### PC
+
+### RPi
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -117,7 +133,8 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Para ambas plataformas, será necesario contar con las herramientas `gcc` y `make`, además de estar corriendo un Unix-like OS.
+
 #### PC
 * <a href="https://github.com/liballeg/allegro_wiki/wiki">allegro5</a>
   * Arch Linux
@@ -133,6 +150,7 @@ This is an example of how to list things you need to use the software and how to
 	```
 
 #### RPi
+<br />
 
 ### Installation
 
@@ -162,7 +180,11 @@ El ejecutable del juego se encuentra en `/bin`, el mismo directorio donde se enc
 Para ejecutarlo:
 * Desde `/bin`
 	```sh
-	./<nombre-del-ejecutable>
+	./frogger_PC
+	```
+	ó
+	```sh
+	./frogger_RPI
 	```
 * Desde directorio root
 	```sh
@@ -197,19 +219,22 @@ Project Link: [https://github.com/prograG2/tpfinal-frogger](https://github.com/p
 ## Acknowledgments
 
 * Cátedra de 22.07 - Programación I
-  * JACOBY, Daniel Andreś
+  * JACOBY, Daniel Andrés
   * MAGLIOLA, Nicolás
   * VACATELLO, Pablo Daniel
+  * *Ayudantes*
 * [Allegro](https://github.com/liballeg/allegro_wiki/wiki)
 * [Sprites de tortugas, autos, muerte, y follaje](https://www.pinclipart.com/pindetail/hhxmRb_frogger-arcade-graphic-frogger-sprite-sheet-clipart/)
 * [Sprite de coin](https://www.pinclipart.com/pindetail/ibiTJwi_coin-sprite-sheet-png-clipart/)
 * Música
-  * [VipeorofVic](https://www.youtube.com/watch?v=iXHix_kdJWI&t=101s), Dark Souls III - Main Theme - 8 Bit Revision *(menú principal)*
-  * [Jaxxtir](https://www.youtube.com/watch?v=ykt-5q13GGs), GTA San Andreas Theme - 8 Bit Remix *(ranking)*
-  * [8 Bit Universe](https://www.youtube.com/watch?v=kRkBnSbwvk8), Curb Your Enthusiasm Theme - 8 Bit *(créditos)*
-  * [Super Jumbo Trainer 98](https://www.youtube.com/watch?v=t4xAVyQ3LpY&t=107s), Frogger (Arcade) Stage Theme Extended *(jugando)*
-  * [Retro Game Audio](https://soundcloud.com/retrogameaudio/firelink-shrine-nes-famicom), Dark Souls - Firelink Shrine (NES/ Famicom + VRC6 audio) *(menú de pausa)*
-  * [MB Music](https://www.youtube.com/watch?v=br3OzOrARh4), Game Over (8-Bit Music) *(menú de game over)*
+  * Menú principal: [VipeorofVic](https://www.youtube.com/watch?v=iXHix_kdJWI&t=101s), Dark Souls III - Main Theme - 8 Bit Revision
+  * Ranking: [Jaxxtir](https://www.youtube.com/watch?v=ykt-5q13GGs), GTA San Andreas Theme - 8 Bit Remix
+  * Créditos: [8 Bit Universe](https://www.youtube.com/watch?v=kRkBnSbwvk8), Curb Your Enthusiasm Theme - 8 Bit
+  * Partida: [Super Jumbo Trainer 98](https://www.youtube.com/watch?v=t4xAVyQ3LpY&t=107s), Frogger (Arcade) Stage Theme Extended
+  * Menú de pausa: [Retro Game Audio](https://soundcloud.com/retrogameaudio/firelink-shrine-nes-famicom), Dark Souls - Firelink Shrine (NES/ Famicom + VRC6 audio)
+  * Menú de game over: [MB Music](https://www.youtube.com/watch?v=br3OzOrARh4), Game Over (8-Bit Music)
+* [Simple SDL2 Audio](https://github.com/jakebesworth/Simple-SDL2-Audio)
+* [algif5](https://github.com/allefant/algif5)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

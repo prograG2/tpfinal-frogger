@@ -469,8 +469,8 @@ static void salir_del_juego()
 {
 	pthread_join(tinput, NULL);
 	pausarMusica();
-	// reproducirEfecto(EFECTO_SALIENDO);
-	// sleep(2);
+	reproducirEfecto(EFECTO_SALIENDO);
+	sleep(2);
 	destruirMenu();
 	destruirSonido();
 	desiniciarRanking();
