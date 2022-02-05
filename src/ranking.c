@@ -131,7 +131,7 @@ void actualizarRanking(char *name, unsigned long long score)
 	if (!player_exists)
 	{
 		names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));
-		names[lineNumber] = (char *)realocar(NULL, strlen(name) * sizeof(char));
+		names[lineNumber] = (char *)realocar(NULL, strlen(name) * sizeof(char) + 1);
 		strcpy(names[lineNumber], name);
 
 		scores = (unsigned long long *)realocar(scores, sizeof(unsigned long long) * (lineNumber + 1));
@@ -226,7 +226,7 @@ static void recargarRanking(void)
 
 		char *tempPtr = strtok(tempStr, " ");										// Apunto al nombre
 		names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));		// Reservo memoria para un puntero
-		names[lineNumber] = (char *)realocar(NULL, strlen(tempPtr) * sizeof(char)); // Reservo memoria para el nombre
+		names[lineNumber] = (char *)realocar(NULL, strlen(tempPtr) * sizeof(char) + 1); // Reservo memoria para el nombre
 		strcpy(names[lineNumber], tempPtr);
 
 		tempPtr = strtok(NULL, " ");																	// Apunto a los puntos

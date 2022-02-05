@@ -266,6 +266,8 @@ static ALLEGRO_MONITOR_INFO monitor_info;
 
 static double stream_gain = GLOBAL_STREAM_VOLUME;
 
+static bool display_state = false;
+
 /*******************************************************************************
  *******************************************************************************
             GLOBAL FUNCTION DEFINITIONS
@@ -338,10 +340,13 @@ void allegro_deinits(void)
 	rick_deinit();
 	sprites_deinit();
 	audio_deinit();
-	al_destroy_font(allegro_vars.font);
-
-	// al_destroy_display(allegro_vars.disp);
-
+	
+	if(display_state)
+	{	
+		al_destroy_font(allegro_vars.font);
+		al_destroy_display(allegro_vars.disp);
+	}
+	
 	al_destroy_timer(allegro_vars.timer);
 	al_destroy_event_queue(allegro_vars.queue);
 }
@@ -377,14 +382,21 @@ void allegro_reinit_display(void)
 	must_init(allegro_vars.font, "font");
 	allegro_vars.font_h = al_get_font_line_height(allegro_vars.font);
 	allegro_vars.font_w = al_get_text_width(allegro_vars.font, "a");
+
+
+	display_state = true;
 }
 
 void allegro_deinit_display(void)
 {
-	if (allegro_vars.disp != NULL)
+	if (display_state)
 	{
+		al_destroy_font(allegro_vars.font);
+
 		al_unregister_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
 		al_destroy_display(allegro_vars.disp);
+
+		display_state = false;
 	}
 }
 
@@ -1186,11 +1198,11 @@ static bool init_sample(ALLEGRO_SAMPLE **sample, const char *file)
 
 static void rick_init(void)
 {
-	rick = algif_load_animation("../res/gifs/rick.gif");
+	//rick = algif_load_animation("../res/gifs/rick.gif");
 	allegro_set_rick_flag(false);
 }
 
 static void rick_deinit()
 {
-	algif_destroy_animation(rick);
+	//algif_destroy_animation(rick);
 }

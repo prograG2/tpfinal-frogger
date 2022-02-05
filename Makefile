@@ -82,9 +82,11 @@ CC 			= gcc
 DEBUGGER	= gdb
 
 # Flags de compilacion
-CFLAGS 		= -Wall -Wno-unknown-pragmas -O2
+CFLAGS 		= -Wall -Wno-unknown-pragmas
 ifdef DEBUG
 CFLAGS		+= -g
+else
+CFLAGS		+= -O2
 endif
 
 # Compilator stuff ~~~~~~~~~~~~~~~~~~~~~~~~~

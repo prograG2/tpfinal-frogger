@@ -365,7 +365,11 @@ void game_data_clear_name(void)
 
 void game_data_overwrite_name(char *name)
 {
-	strcpy(data.name, name);
+	int i;
+	for(i = 0; name[i] != '\0'; i++)
+		data.name[i] = name[i];
+
+	//strcpy(data.name, name);
 }
 
 void game_data_add_name_letter(char letter)
