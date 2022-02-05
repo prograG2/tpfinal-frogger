@@ -94,7 +94,7 @@
 #define TURTLE_FRAME_OFFSET_XY (CELL_W / 2 - TURTLE_SIDE / 2)
 
 // Corazon (vidas)
-#define SPRITE_SIZE_HEART 20 // cuadrado
+#define SPRITE_SIZE_HEART 25 // cuadrado
 
 #define SPRITE_DEAD_SIZE 35 // cuadrado
 #define SPRITE_DEAD_OFFSET (CELL_W / 2 - SPRITE_DEAD_SIZE / 2)

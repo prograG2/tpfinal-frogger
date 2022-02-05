@@ -96,6 +96,10 @@ event_t leerEntradas(void)
 					game_data_reset_goals();
 					break;
 
+				case ALLEGRO_KEY_5:
+					game_data_add_run_time_goal();
+					break;
+
 				default:
 					break;
 				}
