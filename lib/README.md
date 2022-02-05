@@ -1,4 +1,4 @@
-# Directorio `/lib` (libraries)
+## Directorio `/lib` (libraries)
 
 Contiene dos **bibliotecas** creadas a partir de códigos objeto, que se linkean en el Makefile de ser necesarias. Dichas bibliotecas son:
 
