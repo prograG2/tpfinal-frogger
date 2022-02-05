@@ -36,7 +36,7 @@ static char *archivos_efectos[] =
      EFECTOS_DIR "/jump_original.wav",
      EFECTOS_DIR "/crash.wav",
      EFECTOS_DIR "/fall_in_water.wav",
-     EFECTOS_DIR "/low_time.wav",
+     EFECTOS_DIR "/low_time_RPI.wav",
      EFECTOS_DIR "/goal_reached.wav",
      EFECTOS_DIR "/run_completed.wav",
      EFECTOS_DIR "/new_max_score.wav",

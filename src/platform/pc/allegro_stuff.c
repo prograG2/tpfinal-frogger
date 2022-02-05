@@ -1052,7 +1052,7 @@ static void audio_init(void)
     must_init(init_sample(&sounds.samples.jump, "jump_original"),
               "effect_jump sample");
 
-    must_init(init_sample(&sounds.samples.low_time, "low_time"),
+    must_init(init_sample(&sounds.samples.low_time, "low_time_PC"),
               "effect_low_time sample");
 
     must_init(init_sample(&sounds.samples.run_completed, "run_completed"),
