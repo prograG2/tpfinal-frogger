@@ -35,15 +35,15 @@
 
 void nuevoNombre(void)
 {
-    allegro_clear_display();
+	allegro_clear_display();
 
-    game_data_clear_name();
-    game_data_set_score_max(0);
+	game_data_clear_name();
+	game_data_set_score_max(0);
 
-    /*cambiar por background correspondiente*/
-    al_draw_bitmap(sprites.name, 0, 0, 0);
+	/*cambiar por background correspondiente*/
+	al_draw_bitmap(sprites.name, 0, 0, 0);
 
-    al_flip_display();
+	al_flip_display();
 }
 
 void subirLetra(void)
@@ -60,19 +60,19 @@ void siguienteLetra(void)
 
 void agregarLetra(void)
 {
-    game_data_add_name_letter(allegro_get_last_key());
+	game_data_add_name_letter(allegro_get_last_key());
 
-    char *name = game_data_get_name();
+	char *name = game_data_get_name();
 
-    allegro_clear_display();
+	allegro_clear_display();
 
-    /*cambiar por background correspondiente*/
-    al_draw_bitmap(sprites.name, 0, 0, 0);
+	/*cambiar por background correspondiente*/
+	al_draw_bitmap(sprites.name, 0, 0, 0);
 
-    al_draw_textf(allegro_get_var_font(), al_map_rgb(100, 200, 200), NAME_TOPLEFT_X, NAME_TOPLEFT_Y, 0,
-                  "%s", name);
+	al_draw_textf(allegro_get_var_font(), al_map_rgb(100, 200, 200), NAME_TOPLEFT_X, NAME_TOPLEFT_Y, 0,
+				  "%s", name);
 
-    al_flip_display();
+	al_flip_display();
 }
 
 void subirNombre(void)
@@ -81,5 +81,5 @@ void subirNombre(void)
 
 char *devolverNombre(void)
 {
-    return game_data_get_name();
+	return game_data_get_name();
 }

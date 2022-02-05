@@ -125,7 +125,7 @@
 // Factor que determina cuando considerar que un bloque esta dentro de otro (ver 'inside_short_scaled')
 #define INSERTION_FACTOR (double)0.5
 
-#define GOAL_ROW_OFFSET_Y_FIX 5    // baja un poco mas en Y
+#define GOAL_ROW_OFFSET_Y_FIX 5	   // baja un poco mas en Y
 #define GOAL_ROW_MARGIN_TO_REACH 5 // holgura para meterse a uno de los goals
 
 /*******************************************************************************
@@ -134,57 +134,57 @@
 
 typedef struct
 {
-    int x;
-    int y;
+	int x;
+	int y;
 
 } pair_xy_t;
 
 enum GOALS
 {
-    GOAL_LEFT,
-    GOAL_LEFT_MID,
-    GOAL_MID,
-    GOAL_RIGHT_MID,
-    GOAL_RIGHT,
-    MAX_GOALS
+	GOAL_LEFT,
+	GOAL_LEFT_MID,
+	GOAL_MID,
+	GOAL_RIGHT_MID,
+	GOAL_RIGHT,
+	MAX_GOALS
 };
 
 enum DIRECTIONS
 {
-    DIRECTION_NONE,
-    DIRECTION_UP,
-    DIRECTION_RIGHT,
-    DIRECTION_LEFT,
-    DIRECTION_DOWN
+	DIRECTION_NONE,
+	DIRECTION_UP,
+	DIRECTION_RIGHT,
+	DIRECTION_LEFT,
+	DIRECTION_DOWN
 };
 
 enum MENU_STATES
 {
-    MENU_STATE_OPCION_0,
-    MENU_STATE_OPCION_1,
-    MENU_STATE_OPCION_2,
-    MENU_STATE_OPCION_3,
-    MENU_STATE_OPCION_4,
-    MENU_STATE_MAX
+	MENU_STATE_OPCION_0,
+	MENU_STATE_OPCION_1,
+	MENU_STATE_OPCION_2,
+	MENU_STATE_OPCION_3,
+	MENU_STATE_OPCION_4,
+	MENU_STATE_MAX
 };
 
 enum MENU_WINDOWS
 {
-    MENU_WINDOW_HOME,
-    MENU_WINDOW_DIFFICULTY,
-    MENU_WINDOW_PAUSE,
-    MENU_WINDOW_GAME_OVER,
-    MENU_WINDOW_MAX
+	MENU_WINDOW_HOME,
+	MENU_WINDOW_DIFFICULTY,
+	MENU_WINDOW_PAUSE,
+	MENU_WINDOW_GAME_OVER,
+	MENU_WINDOW_MAX
 };
 
 typedef enum CAR_TYPE
 {
-    CAR_BLUE = 0,
-    CAR_POLICE,
-    CAR_YELLOW,
-    TRUCK_FIRE,
-    TRUCK,
-    CAR_TYPE_N
+	CAR_BLUE = 0,
+	CAR_POLICE,
+	CAR_YELLOW,
+	TRUCK_FIRE,
+	TRUCK,
+	CAR_TYPE_N
 } CAR_TYPE;
 
 /*******************************************************************************

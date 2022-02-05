@@ -33,25 +33,25 @@
  ******************************************************************************/
 typedef union
 {
-    uint32_t completo;
-    struct
-    {
-        uint16_t mitad_der;
-        uint16_t mitad_izq;
-    };
+	uint32_t completo;
+	struct
+	{
+		uint16_t mitad_der;
+		uint16_t mitad_izq;
+	};
 } renglon_t[5];
 
 typedef struct Mensaje
 {
-    char msj[L_MAX];
-    int posicion;
-    int index;
-    int longitud;
-    int j;
-    bool habilitacion;
-    bool mover_texto;
-    bool repetir_msj;
-    renglon_t renglon;
+	char msj[L_MAX];
+	int posicion;
+	int index;
+	int longitud;
+	int j;
+	bool habilitacion;
+	bool mover_texto;
+	bool repetir_msj;
+	renglon_t renglon;
 } mensaje_t;
 
 /*******************************************************************************

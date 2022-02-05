@@ -31,26 +31,26 @@
 
 int main(void)
 {
-    event_t evento;
+	event_t evento;
 
-    if (!inicializarFsm())
-        return 1;
+	if (!inicializarFsm())
+		return 1;
 
-    while ((evento = queueSiguienteEvento()))
-    {
-        if (evento != NADA)
-        {
-            fsm(evento);
-        }
+	while ((evento = queueSiguienteEvento()))
+	{
+		if (evento != NADA)
+		{
+			fsm(evento);
+		}
 
-        fixHighCpuUsage();
-    }
+		fixHighCpuUsage();
+	}
 
-    destruirQueue();
+	destruirQueue();
 
-    printf("\nSaliendo...\n");
+	printf("\nSaliendo...\n");
 
-    return 0;
+	return 0;
 }
 
 /*******************************************************************************

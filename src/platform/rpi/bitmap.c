@@ -21,44 +21,44 @@
 
 void printMatriz(matriz_t a)
 {
-    putchar('\n');
-    for (int i = 0; i < CANT_FILAS; i++, putchar('\n'))
-        for (int j = 0; j < CANT_FILAS; j++)
-            putchar((a[i] & (0b1000000000000000 >> j)) ? '#' : '-');
+	putchar('\n');
+	for (int i = 0; i < CANT_FILAS; i++, putchar('\n'))
+		for (int j = 0; j < CANT_FILAS; j++)
+			putchar((a[i] & (0b1000000000000000 >> j)) ? '#' : '-');
 }
 
 void limpiarMatriz(matriz_t a)
 {
-    for (int i = 0; i < CANT_FILAS; i++)
-        a[i] = 0;
+	for (int i = 0; i < CANT_FILAS; i++)
+		a[i] = 0;
 }
 
 void copiarMatriz(matriz_t destino, const matriz_t desde)
 {
-    for (int i = 0; i < CANT_FILAS; i++)
-        destino[i] = desde[i];
+	for (int i = 0; i < CANT_FILAS; i++)
+		destino[i] = desde[i];
 }
 
 void matrizAnd(matriz_t a, matriz_t b)
 {
-    for (int i = 0; i < CANT_FILAS; i++)
-        a[i] &= b[i];
+	for (int i = 0; i < CANT_FILAS; i++)
+		a[i] &= b[i];
 }
 
 void matrizOr(matriz_t a, matriz_t b)
 {
-    for (int i = 0; i < CANT_FILAS; i++)
-        a[i] |= b[i];
+	for (int i = 0; i < CANT_FILAS; i++)
+		a[i] |= b[i];
 }
 
 void matrizXor(matriz_t a, matriz_t b)
 {
-    for (int i = 0; i < CANT_FILAS; i++)
-        a[i] ^= b[i];
+	for (int i = 0; i < CANT_FILAS; i++)
+		a[i] ^= b[i];
 }
 
 void matrizNot(matriz_t a)
 {
-    for (int i = 0; i < CANT_FILAS; i++)
-        a[i] = ~a[i];
+	for (int i = 0; i < CANT_FILAS; i++)
+		a[i] = ~a[i];
 }

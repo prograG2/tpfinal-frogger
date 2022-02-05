@@ -42,9 +42,9 @@
 
 enum KEY_STATES
 {
-    KEY_RELEASED,
-    KEY_JUST_PRESSED,
-    KEY_PRESSED
+	KEY_RELEASED,
+	KEY_JUST_PRESSED,
+	KEY_PRESSED
 };
 
 typedef struct
@@ -58,49 +58,49 @@ typedef struct
  */
 typedef struct
 {
-    ALLEGRO_BITMAP *frog_uncut;
-    ALLEGRO_BITMAP *frog[8];
+	ALLEGRO_BITMAP *frog_uncut;
+	ALLEGRO_BITMAP *frog[8];
 
-    ALLEGRO_BITMAP *background;
+	ALLEGRO_BITMAP *background;
 
-    ALLEGRO_BITMAP *log;
+	ALLEGRO_BITMAP *log;
 
-    ALLEGRO_BITMAP *cars_uncut;
-    ALLEGRO_BITMAP *car[CAR_TYPE_N];
+	ALLEGRO_BITMAP *cars_uncut;
+	ALLEGRO_BITMAP *car[CAR_TYPE_N];
 
-    ALLEGRO_BITMAP *turtle_uncut;
-    ALLEGRO_BITMAP *turtle[TURTLE_FRAMES];
+	ALLEGRO_BITMAP *turtle_uncut;
+	ALLEGRO_BITMAP *turtle[TURTLE_FRAMES];
 
-    ALLEGRO_BITMAP *heart;
+	ALLEGRO_BITMAP *heart;
 
-    struct
-    {
-        ALLEGRO_BITMAP *uncut;
-        ALLEGRO_BITMAP *option[MENU_STATE_MAX];
-        ALLEGRO_BITMAP *background;
-    } menu[MENU_WINDOW_MAX];
+	struct
+	{
+		ALLEGRO_BITMAP *uncut;
+		ALLEGRO_BITMAP *option[MENU_STATE_MAX];
+		ALLEGRO_BITMAP *background;
+	} menu[MENU_WINDOW_MAX];
 
-    ALLEGRO_BITMAP *credits;
+	ALLEGRO_BITMAP *credits;
 
-    ALLEGRO_BITMAP *name;
+	ALLEGRO_BITMAP *name;
 
-    ALLEGRO_BITMAP *icon;
+	ALLEGRO_BITMAP *icon;
 
-    ALLEGRO_BITMAP *dead;
+	ALLEGRO_BITMAP *dead;
 
-    struct
-    {
-        ALLEGRO_BITMAP *uncut;
-        ALLEGRO_BITMAP *frame[SPRITE_COIN_FRAMES];
-    } coin;
+	struct
+	{
+		ALLEGRO_BITMAP *uncut;
+		ALLEGRO_BITMAP *frame[SPRITE_COIN_FRAMES];
+	} coin;
 
-    struct
-    {
-        ALLEGRO_BITMAP *uncut;
-        ALLEGRO_BITMAP *frame[SPRITE_SPLASH_FRAMES];
-    } splash;
+	struct
+	{
+		ALLEGRO_BITMAP *uncut;
+		ALLEGRO_BITMAP *frame[SPRITE_SPLASH_FRAMES];
+	} splash;
 
-    ALLEGRO_BITMAP *border;
+	ALLEGRO_BITMAP *border;
 
 } sprites_t;
 

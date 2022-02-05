@@ -21,9 +21,9 @@
 
 static struct
 {
-    int *menu_actual; // arreglo con los índices de textos ordenados para mostrar como menú
-    int opcion_actual;
-    int max_opciones;
+	int *menu_actual; // arreglo con los índices de textos ordenados para mostrar como menú
+	int opcion_actual;
+	int max_opciones;
 } menu;
 
 /*******************************************************************************
@@ -40,48 +40,49 @@ static char *menu_textos[] = {"JUGAR", "DIFICULTAD", "RANKING", "CREDITOS", "SAL
 
 void setMenu(int *a, unsigned int size)
 {
-    int *aux = realloc(menu.menu_actual, size * sizeof(int));
-    if(aux == NULL){
-        free(menu.menu_actual);
-        queueInsertar(FORCE_SALIR);
-    }
+	int *aux = realloc(menu.menu_actual, size * sizeof(int));
+	if (aux == NULL)
+	{
+		free(menu.menu_actual);
+		queueInsertar(FORCE_SALIR);
+	}
 
-    menu.menu_actual = aux;
-    int i;
-    for (i = 0; i < size; i++)
-    {
-        menu.menu_actual[i] = a[i];
-    }
-    menu.max_opciones = size;
+	menu.menu_actual = aux;
+	int i;
+	for (i = 0; i < size; i++)
+	{
+		menu.menu_actual[i] = a[i];
+	}
+	menu.max_opciones = size;
 }
 
 void setOpcion(int opc)
 {
-    menu.opcion_actual = opc;
-    dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
+	menu.opcion_actual = opc;
+	dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
 }
 
 int getOpcion()
 {
-    return menu.opcion_actual;
+	return menu.opcion_actual;
 }
 
 void subirOpcion()
 {
-    if (--menu.opcion_actual < 0)
-        menu.opcion_actual = menu.max_opciones - 1;
-    dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
+	if (--menu.opcion_actual < 0)
+		menu.opcion_actual = menu.max_opciones - 1;
+	dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
 
-    reproducirEfecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void bajarOpcion()
 {
-    if (++menu.opcion_actual >= menu.max_opciones)
-        menu.opcion_actual = 0;
-    dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
+	if (++menu.opcion_actual >= menu.max_opciones)
+		menu.opcion_actual = 0;
+	dejarTexto(menu_textos[menu.menu_actual[menu.opcion_actual]], POS_OPCION, true);
 
-    reproducirEfecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void iniciarMenu()
@@ -90,5 +91,5 @@ void iniciarMenu()
 
 void destruirMenu()
 {
-    free(menu.menu_actual);
+	free(menu.menu_actual);
 }

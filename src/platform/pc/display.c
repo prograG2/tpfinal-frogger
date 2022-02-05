@@ -47,12 +47,12 @@ static int credits_scroll_cont;
 
 bool iniciarDisplay()
 {
-    if (pthread_mutex_init(&lock, NULL) != 0)
-        return 1;
+	if (pthread_mutex_init(&lock, NULL) != 0)
+		return 1;
 
-    allegro_inits();
+	allegro_inits();
 
-    return 0;
+	return 0;
 }
 
 void actualizarDisplay()
@@ -73,59 +73,59 @@ void dejarTexto(char *txt, int pos, bool repetir)
 
 void cargarRanking(void)
 {
-    int i = 0;
+	int i = 0;
 
-    int lines = getRankingLineas();
-    char **names = getRankingNombres();
-    unsigned long long *scores = getRankingPuntos();
+	int lines = getRankingLineas();
+	char **names = getRankingNombres();
+	unsigned long long *scores = getRankingPuntos();
 
-    allegro_clear_display();
+	allegro_clear_display();
 
-    al_draw_text(allegro_get_var_font(),
-                 al_map_rgb(10, 180, 10),
-                 RANKING_PLAYER_X,
-                 60,
-                 0,
-                 "Jugador");
+	al_draw_text(allegro_get_var_font(),
+				 al_map_rgb(10, 180, 10),
+				 RANKING_PLAYER_X,
+				 60,
+				 0,
+				 "Jugador");
 
-    al_draw_text(allegro_get_var_font(),
-                 al_map_rgb(10, 180, 10),
-                 RANKING_SCORE_X,
-                 60,
-                 0,
-                 "Puntaje");
+	al_draw_text(allegro_get_var_font(),
+				 al_map_rgb(10, 180, 10),
+				 RANKING_SCORE_X,
+				 60,
+				 0,
+				 "Puntaje");
 
-    if (lines)
-    {
-        for (i = 0; i < lines; i++)
-        {
-            al_draw_textf(allegro_get_var_font(),
-                          al_map_rgb(255, 255, 255),
-                          RANKING_PLAYER_X,
-                          RANKING_START_Y + i * 20,
-                          0,
-                          "%s", names[i]);
+	if (lines)
+	{
+		for (i = 0; i < lines; i++)
+		{
+			al_draw_textf(allegro_get_var_font(),
+						  al_map_rgb(255, 255, 255),
+						  RANKING_PLAYER_X,
+						  RANKING_START_Y + i * 20,
+						  0,
+						  "%s", names[i]);
 
-            al_draw_textf(allegro_get_var_font(),
-                          al_map_rgb(255, 255, 255),
-                          RANKING_SCORE_X,
-                          RANKING_START_Y + i * 20,
-                          0,
-                          "%lld", scores[i]);
-        }
-    }
+			al_draw_textf(allegro_get_var_font(),
+						  al_map_rgb(255, 255, 255),
+						  RANKING_SCORE_X,
+						  RANKING_START_Y + i * 20,
+						  0,
+						  "%lld", scores[i]);
+		}
+	}
 
-    else
-    {
-        al_draw_text(allegro_get_var_font(),
-                     al_map_rgb(255, 255, 255),
-                     DISPLAY_W / 2 - al_get_text_width(allegro_get_var_font(), "Ningún jugador registrado") / 2,
-                     RANKING_START_Y,
-                     0,
-                     "Ningún jugador registrado");
-    }
+	else
+	{
+		al_draw_text(allegro_get_var_font(),
+					 al_map_rgb(255, 255, 255),
+					 DISPLAY_W / 2 - al_get_text_width(allegro_get_var_font(), "Ningún jugador registrado") / 2,
+					 RANKING_START_Y,
+					 0,
+					 "Ningún jugador registrado");
+	}
 
-    al_flip_display();
+	al_flip_display();
 }
 
 void mostrarRanking(void)
@@ -134,32 +134,32 @@ void mostrarRanking(void)
 
 void cargarCreditos(void)
 {
-    credits_scroll_cont = 0;
+	credits_scroll_cont = 0;
 }
 
 void mostrarCreditos(void)
 {
-    if (allegro_get_var_redraw())
-    {
+	if (allegro_get_var_redraw())
+	{
 
-        credits_scroll_cont -= CREDITS_SCROLL_SPEED;
-        if (credits_scroll_cont == -CREDITS_SCREEN_FINAL)
-            credits_scroll_cont = CREDITS_SCREEN_START;
+		credits_scroll_cont -= CREDITS_SCROLL_SPEED;
+		if (credits_scroll_cont == -CREDITS_SCREEN_FINAL)
+			credits_scroll_cont = CREDITS_SCREEN_START;
 
-        allegro_clear_display();
-        al_draw_bitmap(sprites.credits, 0, credits_scroll_cont, 0);
-        al_flip_display();
+		allegro_clear_display();
+		al_draw_bitmap(sprites.credits, 0, credits_scroll_cont, 0);
+		al_flip_display();
 
-        allegro_set_var_redraw(false);
-    }
+		allegro_set_var_redraw(false);
+	}
 }
 
 void reconfigurarDisplayON(void)
 {
-    allegro_reinit_display();
+	allegro_reinit_display();
 }
 
 void reconfigurarDisplayOFF(void)
 {
-    allegro_deinit_display();
+	allegro_deinit_display();
 }

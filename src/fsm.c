@@ -52,9 +52,9 @@ typedef struct state_diagram_edge STATE;
 // Estructura genérica de un estado de la FSM.
 struct state_diagram_edge
 {
-    event_t evento;
-    STATE *proximo_estado;
-    void (*p_rut_accion)(void);
+	event_t evento;
+	STATE *proximo_estado;
+	void (*p_rut_accion)(void);
 };
 
 #pragma region privatePrototypes
@@ -217,94 +217,94 @@ extern STATE en_game_over_esperando_opcion[];
 // Forward declarations de los estados
 
 STATE en_menu_ppal[] =
-    {
-        {ENTER, menu_ppal_esperando_opcion, procesar_enter_menu},
-        {ARRIBA, en_menu_ppal, subirOpcion},
-        {ABAJO, en_menu_ppal, bajarOpcion},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, en_menu_ppal, do_nothing}};
+	{
+		{ENTER, menu_ppal_esperando_opcion, procesar_enter_menu},
+		{ARRIBA, en_menu_ppal, subirOpcion},
+		{ABAJO, en_menu_ppal, bajarOpcion},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, en_menu_ppal, do_nothing}};
 
 STATE menu_ppal_esperando_opcion[] =
-    {
-        {CTE_OPCION, poniendo_nombre, ir_a_poniendo_nombre},
-        {CTE_OPCION + 1, seleccionando_dificultad, ir_a_seleccionando_dificultad},
-        {CTE_OPCION + 2, viendo_ranking, ir_a_viendo_ranking},
-        {CTE_OPCION + 3, viendo_creditos, ir_a_viendo_creditos},
-        {CTE_OPCION + 4, NULL, salir_del_juego},
-        {FIN_TABLA, menu_ppal_esperando_opcion, do_nothing}
+	{
+		{CTE_OPCION, poniendo_nombre, ir_a_poniendo_nombre},
+		{CTE_OPCION + 1, seleccionando_dificultad, ir_a_seleccionando_dificultad},
+		{CTE_OPCION + 2, viendo_ranking, ir_a_viendo_ranking},
+		{CTE_OPCION + 3, viendo_creditos, ir_a_viendo_creditos},
+		{CTE_OPCION + 4, NULL, salir_del_juego},
+		{FIN_TABLA, menu_ppal_esperando_opcion, do_nothing}
 
 };
 
 STATE seleccionando_dificultad[] =
-    {
-        {ENTER, en_menu_ppal, procesar_enter_dificultad},
-        {ARRIBA, seleccionando_dificultad, subirOpcion},
-        {ABAJO, seleccionando_dificultad, bajarOpcion},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, seleccionando_dificultad, do_nothing}};
+	{
+		{ENTER, en_menu_ppal, procesar_enter_dificultad},
+		{ARRIBA, seleccionando_dificultad, subirOpcion},
+		{ABAJO, seleccionando_dificultad, bajarOpcion},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, seleccionando_dificultad, do_nothing}};
 
 STATE viendo_ranking[] =
-    {
-        {ENTER, en_menu_ppal, procesar_enter_ranking},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, viendo_ranking, do_nothing}};
+	{
+		{ENTER, en_menu_ppal, procesar_enter_ranking},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, viendo_ranking, do_nothing}};
 
 STATE viendo_creditos[] =
-    {
-        {ENTER, en_menu_ppal, procesar_enter_creditos},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, viendo_creditos, do_nothing}};
+	{
+		{ENTER, en_menu_ppal, procesar_enter_creditos},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, viendo_creditos, do_nothing}};
 
 STATE poniendo_nombre[] =
-    {
-        {ESC, en_menu_ppal, ir_a_menu_ppal},
-        {ENTER, jugando, iniciar_juego},
-        {ARRIBA, poniendo_nombre, subirLetra},
-        {ABAJO, poniendo_nombre, bajarLetra},
-        {DCHA, poniendo_nombre, siguienteLetra},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, poniendo_nombre, agregarLetra} // Si no coincide el evento con ninguna de las teclas previas, se toam como si se apretase una letra
+	{
+		{ESC, en_menu_ppal, ir_a_menu_ppal},
+		{ENTER, jugando, iniciar_juego},
+		{ARRIBA, poniendo_nombre, subirLetra},
+		{ABAJO, poniendo_nombre, bajarLetra},
+		{DCHA, poniendo_nombre, siguienteLetra},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, poniendo_nombre, agregarLetra} // Si no coincide el evento con ninguna de las teclas previas, se toam como si se apretase una letra
 };
 
 STATE jugando[] =
-    {
-        {ENTER, en_pausa, pausar},
-        {GAME_OVER, en_game_over, procesar_game_over},
-        {ARRIBA, jugando, moverAdelante},
-        {ABAJO, jugando, moverAtras},
-        {IZDA, jugando, moverIzda},
-        {DCHA, jugando, moverDcha},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, jugando, do_nothing}};
+	{
+		{ENTER, en_pausa, pausar},
+		{GAME_OVER, en_game_over, procesar_game_over},
+		{ARRIBA, jugando, moverAdelante},
+		{ABAJO, jugando, moverAtras},
+		{IZDA, jugando, moverIzda},
+		{DCHA, jugando, moverDcha},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, jugando, do_nothing}};
 
 STATE en_pausa[] =
-    {
-        {ENTER, en_pausa_esperando_opcion, procesar_enter_menu},
-        {ARRIBA, en_pausa, subirOpcion},
-        {ABAJO, en_pausa, bajarOpcion},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, en_pausa, do_nothing}};
+	{
+		{ENTER, en_pausa_esperando_opcion, procesar_enter_menu},
+		{ARRIBA, en_pausa, subirOpcion},
+		{ABAJO, en_pausa, bajarOpcion},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, en_pausa, do_nothing}};
 
 STATE en_pausa_esperando_opcion[] =
-    {
-        {CTE_OPCION, jugando, continuar},
-        {CTE_OPCION + 1, jugando, iniciar_juego},
-        {CTE_OPCION + 2, en_menu_ppal, ir_a_menu_ppal},
-        {FIN_TABLA, en_pausa_esperando_opcion, do_nothing}};
+	{
+		{CTE_OPCION, jugando, continuar},
+		{CTE_OPCION + 1, jugando, iniciar_juego},
+		{CTE_OPCION + 2, en_menu_ppal, ir_a_menu_ppal},
+		{FIN_TABLA, en_pausa_esperando_opcion, do_nothing}};
 
 STATE en_game_over[] =
-    {
-        {ENTER, en_game_over_esperando_opcion, procesar_enter_menu},
-        {ARRIBA, en_game_over, subirOpcion},
-        {ABAJO, en_game_over, bajarOpcion},
-        {FORCE_SALIR, NULL, salir_del_juego},
-        {FIN_TABLA, en_game_over, do_nothing}};
+	{
+		{ENTER, en_game_over_esperando_opcion, procesar_enter_menu},
+		{ARRIBA, en_game_over, subirOpcion},
+		{ABAJO, en_game_over, bajarOpcion},
+		{FORCE_SALIR, NULL, salir_del_juego},
+		{FIN_TABLA, en_game_over, do_nothing}};
 
 STATE en_game_over_esperando_opcion[] =
-    {
-        {CTE_OPCION, jugando, iniciar_juego},
-        {CTE_OPCION + 1, en_menu_ppal, ir_a_menu_ppal},
-        {FIN_TABLA, en_game_over_esperando_opcion, do_nothing}};
+	{
+		{CTE_OPCION, jugando, iniciar_juego},
+		{CTE_OPCION + 1, en_menu_ppal, ir_a_menu_ppal},
+		{FIN_TABLA, en_game_over_esperando_opcion, do_nothing}};
 #pragma endregion FSM STATES
 
 /*******************************************************************************
@@ -315,45 +315,45 @@ STATE en_game_over_esperando_opcion[] =
 
 bool inicializarFsm(void)
 {
-    p2CurrentState = en_menu_ppal;
+	p2CurrentState = en_menu_ppal;
 
-    srand(time(NULL));
+	srand(time(NULL));
 
-    iniciarDisplay();
-    iniciarMenu();
-    iniciarEntradas();
-    iniciarSonido();
+	iniciarDisplay();
+	iniciarMenu();
+	iniciarEntradas();
+	iniciarSonido();
 
-    iniciarRanking();
+	iniciarRanking();
 
-    ir_a_menu_ppal();
+	ir_a_menu_ppal();
 
-    pthread_create(&tinput, NULL, threadInput, NULL);
+	pthread_create(&tinput, NULL, threadInput, NULL);
 
-    return true;
+	return true;
 }
 
 void fsm(event_t evento_actual)
 {
-    STATE *aux = p2CurrentState;
-    /*
+	STATE *aux = p2CurrentState;
+	/*
     Mientras el evento actual no coincida con uno "interesante", y mientras no se haya recorrido
     todo el estado...
     */
-    while ((aux->evento != evento_actual) && (aux->evento != FIN_TABLA))
-        // Verifico con la siguiente posibilidad dentro del mismo estado.
-        ++aux;
+	while ((aux->evento != evento_actual) && (aux->evento != FIN_TABLA))
+		// Verifico con la siguiente posibilidad dentro del mismo estado.
+		++aux;
 
-    // Pasa al siguiente estado
-    p2CurrentState = aux->proximo_estado;
+	// Pasa al siguiente estado
+	p2CurrentState = aux->proximo_estado;
 
-    // Ejecuta la rutina correspondiente
-    (*aux->p_rut_accion)();
+	// Ejecuta la rutina correspondiente
+	(*aux->p_rut_accion)();
 }
 
 void fixHighCpuUsage(void)
 {
-    usleep(FIX_CPU_USAGE_SLEEP_US);
+	usleep(FIX_CPU_USAGE_SLEEP_US);
 }
 
 /*******************************************************************************
@@ -364,73 +364,73 @@ void fixHighCpuUsage(void)
 
 static void *threadInput(void *ptr)
 {
-    while (p2CurrentState)
-    {
-        event_t entrada = leerEntradas();
-        if (entrada != NADA)
-            queueInsertar(entrada);
+	while (p2CurrentState)
+	{
+		event_t entrada = leerEntradas();
+		if (entrada != NADA)
+			queueInsertar(entrada);
 
-        fixHighCpuUsage();
-    }
+		fixHighCpuUsage();
+	}
 
-    return NULL;
+	return NULL;
 }
 
 static void *threadJuego(void *ptr)
 {
 
-    reconfigurarDisplayON();
+	reconfigurarDisplayON();
 
-    srand(time(NULL));
+	srand(time(NULL));
 
-    while (p2CurrentState == jugando)
-    {
-        if (tiempoRefrescoEntidades())
-            refrescar();
+	while (p2CurrentState == jugando)
+	{
+		if (tiempoRefrescoEntidades())
+			refrescar();
 
-        actualizarInterfaz();
+		actualizarInterfaz();
 
-        fixHighCpuUsage();
-    }
+		fixHighCpuUsage();
+	}
 
-    pausarJuego();
+	pausarJuego();
 
-    reconfigurarDisplayOFF();
+	reconfigurarDisplayOFF();
 
-    return NULL;
+	return NULL;
 }
 
 static void *threadDisplayRanking(void *ptr)
 {
-    reconfigurarDisplayON();
+	reconfigurarDisplayON();
 
-    cargarRanking();
+	cargarRanking();
 
-    while (p2CurrentState == viendo_ranking)
-        mostrarRanking();
+	while (p2CurrentState == viendo_ranking)
+		mostrarRanking();
 
-    limpiarDisplay();
+	limpiarDisplay();
 
-    reconfigurarDisplayOFF();
+	reconfigurarDisplayOFF();
 
-    return NULL;
+	return NULL;
 }
 
 static void *threadDisplayCreditos(void *ptr)
 {
-    reconfigurarDisplayON();
+	reconfigurarDisplayON();
 
-    cargarCreditos();
+	cargarCreditos();
 
-    while (p2CurrentState == viendo_creditos)
-    {
-        mostrarCreditos();
-        fixHighCpuUsage();
-    }
+	while (p2CurrentState == viendo_creditos)
+	{
+		mostrarCreditos();
+		fixHighCpuUsage();
+	}
 
-    reconfigurarDisplayOFF();
+	reconfigurarDisplayOFF();
 
-    return NULL;
+	return NULL;
 }
 
 static void do_nothing(void)
@@ -439,154 +439,154 @@ static void do_nothing(void)
 
 static void procesar_enter_menu(void)
 {
-    reproducirEfecto(EFECTO_MENU_ENTER);
-    queueInsertar(CTE_OPCION + getOpcion());
+	reproducirEfecto(EFECTO_MENU_ENTER);
+	queueInsertar(CTE_OPCION + getOpcion());
 }
 
 static void ir_a_menu_ppal()
 {
-    limpiarDisplay();
-    dejarTexto("MENU", POS_MSJ_MENU, true);
-    reproducirMusica(MUSICA_MENU_PPAL);
-    int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
-    setMenu(menu, 5);
-    setOpcion(0);
+	limpiarDisplay();
+	dejarTexto("MENU", POS_MSJ_MENU, true);
+	reproducirMusica(MUSICA_MENU_PPAL);
+	int menu[5] = {JUGAR, DIFICULTAD, RANKING, CREDITOS, SALIRTXT};
+	setMenu(menu, 5);
+	setOpcion(0);
 }
 
 static void ir_a_viendo_ranking()
 {
-    limpiarDisplay();
-    reconfigurarDisplayOFF();
-    reproducirMusica(MUSICA_RANKING);
-    pthread_create(&tdisplayranking, NULL, threadDisplayRanking, NULL);
+	limpiarDisplay();
+	reconfigurarDisplayOFF();
+	reproducirMusica(MUSICA_RANKING);
+	pthread_create(&tdisplayranking, NULL, threadDisplayRanking, NULL);
 }
 
 static void ir_a_viendo_creditos(void)
 {
-    limpiarDisplay();
-    reconfigurarDisplayOFF();
-    reproducirMusica(MUSICA_CREDITOS);
-    pthread_create(&tdisplaycreditos, NULL, threadDisplayCreditos, NULL);
+	limpiarDisplay();
+	reconfigurarDisplayOFF();
+	reproducirMusica(MUSICA_CREDITOS);
+	pthread_create(&tdisplaycreditos, NULL, threadDisplayCreditos, NULL);
 }
 
 static void salir_del_juego()
 {
-    pthread_join(tinput, NULL);
-    pausarMusica();
-    reproducirEfecto(EFECTO_SALIENDO);
-    sleep(2);
-    destruirMenu();
-    destruirSonido();
-    desiniciarRanking();
-    limpiarDisplay();
-    queueInsertar(SALIR);
+	pthread_join(tinput, NULL);
+	pausarMusica();
+	reproducirEfecto(EFECTO_SALIENDO);
+	sleep(2);
+	destruirMenu();
+	destruirSonido();
+	desiniciarRanking();
+	limpiarDisplay();
+	queueInsertar(SALIR);
 }
 
 static void procesar_enter_ranking(void)
 {
-    pthread_join(tdisplayranking, NULL);
-    reconfigurarDisplayON();
-    ir_a_menu_ppal();
+	pthread_join(tdisplayranking, NULL);
+	reconfigurarDisplayON();
+	ir_a_menu_ppal();
 }
 
 static void procesar_enter_creditos(void)
 {
-    pthread_join(tdisplaycreditos, NULL);
-    reconfigurarDisplayON();
-    ir_a_menu_ppal();
+	pthread_join(tdisplaycreditos, NULL);
+	reconfigurarDisplayON();
+	ir_a_menu_ppal();
 }
 
 static void iniciar_juego(void)
 {
-    limpiarDisplay();
-    char *nombreJugador = devolverNombre();
-    if (nombreJugador == NULL)
-        setNombre(DEFAULT_PLAYER_NAME);
-    else if (nombreJugador[0] == 0)
-        setNombre(DEFAULT_PLAYER_NAME);
-    else
-        setNombre(nombreJugador);
+	limpiarDisplay();
+	char *nombreJugador = devolverNombre();
+	if (nombreJugador == NULL)
+		setNombre(DEFAULT_PLAYER_NAME);
+	else if (nombreJugador[0] == 0)
+		setNombre(DEFAULT_PLAYER_NAME);
+	else
+		setNombre(nombreJugador);
 
-    if (verificarJugadorRanking(getNombre()))
-        setMaxPuntos(getJugadorRankingPuntos(getNombre()));
+	if (verificarJugadorRanking(getNombre()))
+		setMaxPuntos(getJugadorRankingPuntos(getNombre()));
 
-    inicializarJuego();
-    reconfigurarDisplayOFF();
+	inicializarJuego();
+	reconfigurarDisplayOFF();
 
-    reproducirMusica(MUSICA_JUGANDO);
+	reproducirMusica(MUSICA_JUGANDO);
 
-    reiniciarNivel();
-    pthread_create(&tjuego, NULL, threadJuego, NULL);
+	reiniciarNivel();
+	pthread_create(&tjuego, NULL, threadJuego, NULL);
 }
 
 static void ir_a_poniendo_nombre()
 {
-    limpiarDisplay();
-    dejarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE, true);
-    nuevoNombre();
+	limpiarDisplay();
+	dejarTexto("INGRESE NOMBRE", POS_MSJ_NOMBRE, true);
+	nuevoNombre();
 }
 
 static void ir_a_seleccionando_dificultad()
 {
-    limpiarDisplay();
-    dejarTexto("DIFICULTAD", POS_MSJ_DIFICULTAD, true);
-    int menu[3] = {FACIL, NORMAL, DIFICIL};
-    setMenu(menu, 3);
-    setOpcion(0);
+	limpiarDisplay();
+	dejarTexto("DIFICULTAD", POS_MSJ_DIFICULTAD, true);
+	int menu[3] = {FACIL, NORMAL, DIFICIL};
+	setMenu(menu, 3);
+	setOpcion(0);
 }
 
 static void procesar_enter_dificultad(void)
 {
-    setDificultad(getOpcion());
-    reproducirEfecto(EFECTO_MENU_ENTER);
-    ir_a_menu_ppal();
+	setDificultad(getOpcion());
+	reproducirEfecto(EFECTO_MENU_ENTER);
+	ir_a_menu_ppal();
 }
 
 static void pausar(void)
 {
-    limpiarDisplay();
-    pthread_join(tjuego, NULL);
-    reproducirMusica(MUSICA_MENU_PAUSA);
-    reconfigurarDisplayON();
-    dejarTexto("PAUSA", POS_MSJ_PAUSA, true);
-    int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
-    setMenu(menu, 3);
-    setOpcion(0);
+	limpiarDisplay();
+	pthread_join(tjuego, NULL);
+	reproducirMusica(MUSICA_MENU_PAUSA);
+	reconfigurarDisplayON();
+	dejarTexto("PAUSA", POS_MSJ_PAUSA, true);
+	int menu[3] = {CONTINUAR, REINICIAR, SALIRTXT};
+	setMenu(menu, 3);
+	setOpcion(0);
 }
 
 static void continuar(void)
 {
-    limpiarDisplay();
-    reconfigurarDisplayOFF();
-    reproducirMusica(MUSICA_JUGANDO);
-    reanudarJuego();
-    pthread_create(&tjuego, NULL, threadJuego, NULL);
+	limpiarDisplay();
+	reconfigurarDisplayOFF();
+	reproducirMusica(MUSICA_JUGANDO);
+	reanudarJuego();
+	pthread_create(&tjuego, NULL, threadJuego, NULL);
 }
 
 static void procesar_game_over(void)
 {
-    pthread_join(tjuego, NULL);
+	pthread_join(tjuego, NULL);
 
-    limpiarDisplay();
+	limpiarDisplay();
 
-    reproducirMusica(MUSICA_GAME_OVER);
-    reconfigurarDisplayON();
+	reproducirMusica(MUSICA_GAME_OVER);
+	reconfigurarDisplayON();
 
-    unsigned long long jugador_puntos = getPuntos();
+	unsigned long long jugador_puntos = getPuntos();
 
-    if (jugador_puntos > getMaxPuntos())
-    {
-        reproducirEfecto(EFECTO_NUEVO_MAX_SCORE);
+	if (jugador_puntos > getMaxPuntos())
+	{
+		reproducirEfecto(EFECTO_NUEVO_MAX_SCORE);
 
-        mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ_NEW_HI_SCORE);
-        setMaxPuntos(jugador_puntos);
+		mostrarTexto("NUEVA PUNTUACION ALTA", POS_MSJ_NEW_HI_SCORE);
+		setMaxPuntos(jugador_puntos);
 
-        actualizarRanking(getNombre(), getMaxPuntos());
-    }
+		actualizarRanking(getNombre(), getMaxPuntos());
+	}
 
-    mostrarTexto("FIN DEL JUEGO", POS_MSJ_GAME_OVER);
-    int menu[2] = {REINICIAR, SALIRTXT};
-    limpiarDisplay();
-    setMenu(menu, 2);
-    setOpcion(0);
+	mostrarTexto("FIN DEL JUEGO", POS_MSJ_GAME_OVER);
+	int menu[2] = {REINICIAR, SALIRTXT};
+	limpiarDisplay();
+	setMenu(menu, 2);
+	setOpcion(0);
 }

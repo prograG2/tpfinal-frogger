@@ -33,15 +33,15 @@
 
 typedef struct
 {
-    int actual_state;
-    int max_states;
+	int actual_state;
+	int max_states;
 } window_t;
 
 typedef struct
 {
-    window_t window[MENU_WINDOW_MAX];
+	window_t window[MENU_WINDOW_MAX];
 
-    int actual_window;
+	int actual_window;
 
 } menu_t;
 
@@ -81,89 +81,89 @@ static menu_t menu;
 
 void iniciarMenu(void)
 {
-    inicializarMenu();
+	inicializarMenu();
 }
 
 void destruirMenu(void)
 {
-    allegro_deinits();
+	allegro_deinits();
 }
 
 void setMenu(int *a, unsigned int size)
 {
-    switch (a[0])
-    {
-    // menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
-    case JUGAR:
-        menu.actual_window = MENU_WINDOW_HOME;
+	switch (a[0])
+	{
+	// menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
+	case JUGAR:
+		menu.actual_window = MENU_WINDOW_HOME;
 
-        break;
+		break;
 
-    // menu dificultades (FACIL, NORMAL, DIFICIL)
-    case FACIL:
-        menu.actual_window = MENU_WINDOW_DIFFICULTY;
+	// menu dificultades (FACIL, NORMAL, DIFICIL)
+	case FACIL:
+		menu.actual_window = MENU_WINDOW_DIFFICULTY;
 
-        break;
+		break;
 
-    // menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
-    case CONTINUAR:
-        menu.actual_window = MENU_WINDOW_PAUSE;
-        allegro_set_rick_flag(false);
+	// menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
+	case CONTINUAR:
+		menu.actual_window = MENU_WINDOW_PAUSE;
+		allegro_set_rick_flag(false);
 
-        break;
+		break;
 
-    // menu game over (REINICIAR, SALIRTXT)
-    case REINICIAR:
-        menu.actual_window = MENU_WINDOW_GAME_OVER;
+	// menu game over (REINICIAR, SALIRTXT)
+	case REINICIAR:
+		menu.actual_window = MENU_WINDOW_GAME_OVER;
 
-        break;
+		break;
 
-    default:
-        break;
-    }
+	default:
+		break;
+	}
 }
 
 void setOpcion(int opc)
 {
-    // Seleccina uno de los botones del menu actual
-    menu.window[menu.actual_window].actual_state = opc;
+	// Seleccina uno de los botones del menu actual
+	menu.window[menu.actual_window].actual_state = opc;
 
-    renderizarMenu();
+	renderizarMenu();
 }
 
 int getOpcion(void)
 {
-    return (menu.window[menu.actual_window].actual_state);
+	return (menu.window[menu.actual_window].actual_state);
 }
 
 void subirOpcion(void)
 {
-    int *actual_option = &menu.window[menu.actual_window].actual_state;
-    int *max_option = &menu.window[menu.actual_window].max_states;
+	int *actual_option = &menu.window[menu.actual_window].actual_state;
+	int *max_option = &menu.window[menu.actual_window].max_states;
 
-    (*actual_option)--;
+	(*actual_option)--;
 
-    if (*actual_option < 0)
-        setOpcion(*max_option - 1);
-    else
-        renderizarMenu();
+	if (*actual_option < 0)
+		setOpcion(*max_option - 1);
+	else
+		renderizarMenu();
 
-    reproducirEfecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void bajarOpcion(void)
 {
-    int *actual_option = &menu.window[menu.actual_window].actual_state;
-    int *max_option = &menu.window[menu.actual_window].max_states;
+	int *actual_option = &menu.window[menu.actual_window].actual_state;
+	int *max_option = &menu.window[menu.actual_window].max_states;
 
-    (*actual_option)++;
+	(*actual_option)++;
 
-    if (*actual_option == *max_option)
-        setOpcion(0);
-    else
-        renderizarMenu();
+	if (*actual_option == *max_option)
+		setOpcion(0);
+	else
+		renderizarMenu();
 
-    reproducirEfecto(EFECTO_SELECCION);
+	reproducirEfecto(EFECTO_SELECCION);
 }
 
 void moverOpcionActual(void)
@@ -178,118 +178,118 @@ void moverOpcionActual(void)
 
 static void inicializarMenu(void)
 {
-    // menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
-    menu.window[MENU_WINDOW_HOME].max_states = 5;
+	// menu principal (JUGAR, DIFICULTAD, RANKING, SALIRTXT)
+	menu.window[MENU_WINDOW_HOME].max_states = 5;
 
-    // menu dificultades (FACIL, NORMAL, DIFICIL)
-    menu.window[MENU_WINDOW_DIFFICULTY].max_states = 3;
+	// menu dificultades (FACIL, NORMAL, DIFICIL)
+	menu.window[MENU_WINDOW_DIFFICULTY].max_states = 3;
 
-    // menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
-    menu.window[MENU_WINDOW_PAUSE].max_states = 3;
+	// menu pausa (CONTINUAR, REINICIAR, SALIRTXT)
+	menu.window[MENU_WINDOW_PAUSE].max_states = 3;
 
-    // menu game over (REINICIAR, SALIRTXT)
-    menu.window[MENU_WINDOW_GAME_OVER].max_states = 2;
+	// menu game over (REINICIAR, SALIRTXT)
+	menu.window[MENU_WINDOW_GAME_OVER].max_states = 2;
 }
 
 static void renderizarMenu()
 {
-    allegro_clear_display();
+	allegro_clear_display();
 
-    ALLEGRO_BITMAP *background = NULL;
-    ALLEGRO_BITMAP *option = NULL;
+	ALLEGRO_BITMAP *background = NULL;
+	ALLEGRO_BITMAP *option = NULL;
 
-    background = sprites.menu[menu.actual_window].background;
-    option = sprites.menu[menu.actual_window].option[menu.window[menu.actual_window].actual_state];
+	background = sprites.menu[menu.actual_window].background;
+	option = sprites.menu[menu.actual_window].option[menu.window[menu.actual_window].actual_state];
 
-    al_draw_bitmap(background, 0, 0, 0);
+	al_draw_bitmap(background, 0, 0, 0);
 
-    al_draw_bitmap(option, MENU_OPTION_TOPLEFT_X,
-                   MENU_OPTION_TOPLEFT_Y + (menu.window[menu.actual_window].actual_state * MENU_OPTION_DELTA_Y),
-                   0);
+	al_draw_bitmap(option, MENU_OPTION_TOPLEFT_X,
+				   MENU_OPTION_TOPLEFT_Y + (menu.window[menu.actual_window].actual_state * MENU_OPTION_DELTA_Y),
+				   0);
 
-    if (menu.actual_window == MENU_WINDOW_PAUSE || menu.actual_window == MENU_WINDOW_GAME_OVER)
-        show_stats();
+	if (menu.actual_window == MENU_WINDOW_PAUSE || menu.actual_window == MENU_WINDOW_GAME_OVER)
+		show_stats();
 
-    al_flip_display();
+	al_flip_display();
 }
 
 static void show_stats(void)
 {
-    char *name = game_data_get_name();
-    int score = game_data_get_score();
-    int max_score = game_data_get_old_max_score();
-    ALLEGRO_COLOR color = al_map_rgb(255, 255, 255);
-    ALLEGRO_FONT *font = allegro_get_var_font();
+	char *name = game_data_get_name();
+	int score = game_data_get_score();
+	int max_score = game_data_get_old_max_score();
+	ALLEGRO_COLOR color = al_map_rgb(255, 255, 255);
+	ALLEGRO_FONT *font = allegro_get_var_font();
 
-    int x = STATS_X_COORD;
-    int y = STATS_Y_COORD_START;
+	int x = STATS_X_COORD;
+	int y = STATS_Y_COORD_START;
 
-    al_draw_textf(font, color,
-                  x,
-                  y,
-                  0,
-                  "Jugador: %s", name);
+	al_draw_textf(font, color,
+				  x,
+				  y,
+				  0,
+				  "Jugador: %s", name);
 
-    y += 20;
+	y += 20;
 
-    if (menu.actual_window == MENU_WINDOW_PAUSE)
-    {
-        al_draw_textf(font, color,
-                      x,
-                      y,
-                      0,
-                      "Score:   %d", score);
+	if (menu.actual_window == MENU_WINDOW_PAUSE)
+	{
+		al_draw_textf(font, color,
+					  x,
+					  y,
+					  0,
+					  "Score:   %d", score);
 
-        y += 20;
+		y += 20;
 
-        al_draw_textf(font, color,
-                      x,
-                      y,
-                      0,
-                      "Max score:   %d", max_score);
-    }
-    else if (menu.actual_window == MENU_WINDOW_GAME_OVER)
-    {
-        if (score > max_score)
-        {
-            al_draw_textf(font, color,
-                          x,
-                          y + 10,
-                          0,
-                          "NUEVA PUNTUACION MAXIMA!");
+		al_draw_textf(font, color,
+					  x,
+					  y,
+					  0,
+					  "Max score:   %d", max_score);
+	}
+	else if (menu.actual_window == MENU_WINDOW_GAME_OVER)
+	{
+		if (score > max_score)
+		{
+			al_draw_textf(font, color,
+						  x,
+						  y + 10,
+						  0,
+						  "NUEVA PUNTUACION MAXIMA!");
 
-            y += 40;
+			y += 40;
 
-            al_draw_textf(font, color,
-                          x,
-                          y,
-                          0,
-                          "Anterior: %d", max_score);
+			al_draw_textf(font, color,
+						  x,
+						  y,
+						  0,
+						  "Anterior: %d", max_score);
 
-            y += 20;
+			y += 20;
 
-            al_draw_textf(font, color,
-                          x,
-                          y,
-                          0,
-                          "Nueva: %d", score);
-        }
+			al_draw_textf(font, color,
+						  x,
+						  y,
+						  0,
+						  "Nueva: %d", score);
+		}
 
-        else
-        {
-            al_draw_textf(font, color,
-                          x,
-                          y,
-                          0,
-                          "Score:   %d", score);
+		else
+		{
+			al_draw_textf(font, color,
+						  x,
+						  y,
+						  0,
+						  "Score:   %d", score);
 
-            y += 20;
+			y += 20;
 
-            al_draw_textf(font, color,
-                          x,
-                          y,
-                          0,
-                          "Max score:   %d", max_score);
-        }
-    }
+			al_draw_textf(font, color,
+						  x,
+						  y,
+						  0,
+						  "Max score:   %d", max_score);
+		}
+	}
 }

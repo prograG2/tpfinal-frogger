@@ -24,16 +24,16 @@
 
 enum textos_menu
 {
-    JUGAR = 0,
-    DIFICULTAD,
-    RANKING,
-    CREDITOS,
-    SALIRTXT,
-    CONTINUAR,
-    REINICIAR,
-    FACIL,
-    NORMAL,
-    DIFICIL
+	JUGAR = 0,
+	DIFICULTAD,
+	RANKING,
+	CREDITOS,
+	SALIRTXT,
+	CONTINUAR,
+	REINICIAR,
+	FACIL,
+	NORMAL,
+	DIFICIL
 };
 
 /*******************************************************************************

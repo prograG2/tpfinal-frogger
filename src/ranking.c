@@ -94,115 +94,115 @@ static uint lineNumber = 0;
 
 void iniciarRanking(void)
 {
-    lineNumber = 0;
+	lineNumber = 0;
 
-    createRankingFile();
+	createRankingFile();
 
-    if ((handlerRanking = fopen(strRanking, "r")) == NULL)
-        printf("Error opening ranking.txt");
+	if ((handlerRanking = fopen(strRanking, "r")) == NULL)
+		printf("Error opening ranking.txt");
 
-    recargarRanking();
+	recargarRanking();
 
-    fclose(handlerRanking);
+	fclose(handlerRanking);
 }
 
 void actualizarRanking(char *name, unsigned long long score)
 {
-    int i;
-    bool player_exists = false;
+	int i;
+	bool player_exists = false;
 
-    if (lineNumber)
-    {
-        // Veo si el jugador esta en el ranking
-        for (i = 0; i < lineNumber && !player_exists; i++)
-        {
+	if (lineNumber)
+	{
+		// Veo si el jugador esta en el ranking
+		for (i = 0; i < lineNumber && !player_exists; i++)
+		{
 
-            // Si el nombre coincide...
-            if (strcmp(names[i], name) == 0)
-            {
-                // Actualiza el score
-                scores[i] = score;
-                player_exists = true;
-            }
-        }
-    }
+			// Si el nombre coincide...
+			if (strcmp(names[i], name) == 0)
+			{
+				// Actualiza el score
+				scores[i] = score;
+				player_exists = true;
+			}
+		}
+	}
 
-    // Si el jugador no existe en el ranking, lo agrego al final
-    if (!player_exists)
-    {
-        names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));
-        names[lineNumber] = (char *)realocar(NULL, strlen(name) * sizeof(char));
-        strcpy(names[lineNumber], name);
+	// Si el jugador no existe en el ranking, lo agrego al final
+	if (!player_exists)
+	{
+		names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));
+		names[lineNumber] = (char *)realocar(NULL, strlen(name) * sizeof(char));
+		strcpy(names[lineNumber], name);
 
-        scores = (unsigned long long *)realocar(scores, sizeof(unsigned long long) * (lineNumber + 1));
-        scores[lineNumber] = score;
+		scores = (unsigned long long *)realocar(scores, sizeof(unsigned long long) * (lineNumber + 1));
+		scores[lineNumber] = score;
 
-        lineNumber++;
-    }
+		lineNumber++;
+	}
 
-    ordenarRanking();
+	ordenarRanking();
 }
 
 void desiniciarRanking(void)
 {
-    // Escribe al archivo
-    writeRanking();
+	// Escribe al archivo
+	writeRanking();
 
-    // Liberacion de memoria
-    int i;
-    for (i = 0; i < lineNumber; i++)
-        free(names[i]);
+	// Liberacion de memoria
+	int i;
+	for (i = 0; i < lineNumber; i++)
+		free(names[i]);
 
-    free(names);
+	free(names);
 }
 
 bool verificarJugadorRanking(char *name)
 {
-    // Ranking vacio
-    if (!lineNumber)
-        return false;
+	// Ranking vacio
+	if (!lineNumber)
+		return false;
 
-    int i;
-    bool exists;
-    for (i = 0, exists = false; i < lineNumber && !exists; i++)
-        exists = strcmp(names[i], name) == 0;
+	int i;
+	bool exists;
+	for (i = 0, exists = false; i < lineNumber && !exists; i++)
+		exists = strcmp(names[i], name) == 0;
 
-    return exists;
+	return exists;
 }
 
 unsigned long long getJugadorRankingPuntos(char *name)
 {
-    int i;
-    bool exists;
-    unsigned long long score = 0;
+	int i;
+	bool exists;
+	unsigned long long score = 0;
 
-    for (i = 0, exists = false; i < lineNumber && !exists; i++)
-    {
-        // Si el nombre coincide...
-        if (strcmp(names[i], name) == 0)
-        {
-            // Carga el score
-            score = scores[i];
-            exists = true;
-        }
-    }
+	for (i = 0, exists = false; i < lineNumber && !exists; i++)
+	{
+		// Si el nombre coincide...
+		if (strcmp(names[i], name) == 0)
+		{
+			// Carga el score
+			score = scores[i];
+			exists = true;
+		}
+	}
 
-    return score;
+	return score;
 }
 
 uint getRankingLineas(void)
 {
-    return lineNumber;
+	return lineNumber;
 }
 
 char **getRankingNombres(void)
 {
-    return names;
+	return names;
 }
 
 unsigned long long *getRankingPuntos(void)
 {
-    return scores;
+	return scores;
 }
 
 /*******************************************************************************
@@ -213,98 +213,98 @@ unsigned long long *getRankingPuntos(void)
 
 static void recargarRanking(void)
 {
-    lineNumber = 0;
+	lineNumber = 0;
 
-    while (fgets(tempStr, MAX_LEN, handlerRanking) != NULL)
-    {
-        char *p = strchr(tempStr, '\n');
-        while (p != NULL)
-        {
-            *p = '\0'; // Saco todos los saltos de linea
-            p = strchr(tempStr, '\n');
-        }
+	while (fgets(tempStr, MAX_LEN, handlerRanking) != NULL)
+	{
+		char *p = strchr(tempStr, '\n');
+		while (p != NULL)
+		{
+			*p = '\0'; // Saco todos los saltos de linea
+			p = strchr(tempStr, '\n');
+		}
 
-        char *tempPtr = strtok(tempStr, " ");                                       // Apunto al nombre
-        names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));        // Reservo memoria para un puntero
-        names[lineNumber] = (char *)realocar(NULL, strlen(tempPtr) * sizeof(char)); // Reservo memoria para el nombre
-        strcpy(names[lineNumber], tempPtr);
+		char *tempPtr = strtok(tempStr, " ");										// Apunto al nombre
+		names = (char **)realocar(names, sizeof(char *) * (lineNumber + 1));		// Reservo memoria para un puntero
+		names[lineNumber] = (char *)realocar(NULL, strlen(tempPtr) * sizeof(char)); // Reservo memoria para el nombre
+		strcpy(names[lineNumber], tempPtr);
 
-        tempPtr = strtok(NULL, " ");                                                                    // Apunto a los puntos
-        scores = (unsigned long long *)realocar(scores, sizeof(unsigned long long) * (lineNumber + 1)); // Reservo memoria para un score
-        scores[lineNumber] = strtoul(tempPtr, NULL, 10);
+		tempPtr = strtok(NULL, " ");																	// Apunto a los puntos
+		scores = (unsigned long long *)realocar(scores, sizeof(unsigned long long) * (lineNumber + 1)); // Reservo memoria para un score
+		scores[lineNumber] = strtoul(tempPtr, NULL, 10);
 
-        lineNumber++;
-    }
+		lineNumber++;
+	}
 }
 
 static void ordenarRanking(void)
 {
-    int i, j;
-    unsigned long long tempScore;
+	int i, j;
+	unsigned long long tempScore;
 
-    for (i = 0; i < (lineNumber - 1); i++)
-    {
-        for (j = 0; j < (lineNumber - i - 1); j++)
-        {
-            // Si el primer score es menor, o si es igual al siguiente pero predomina orden alfabetico...
-            if ((scores[j] < scores[j + 1]) || ((scores[j] == scores[j + 1]) && (strcmp(names[j], names[j + 1]) > 0)))
-            {
-                // Backup del menor
-                strcpy(tempStr, names[j]);
-                tempScore = scores[j];
+	for (i = 0; i < (lineNumber - 1); i++)
+	{
+		for (j = 0; j < (lineNumber - i - 1); j++)
+		{
+			// Si el primer score es menor, o si es igual al siguiente pero predomina orden alfabetico...
+			if ((scores[j] < scores[j + 1]) || ((scores[j] == scores[j + 1]) && (strcmp(names[j], names[j + 1]) > 0)))
+			{
+				// Backup del menor
+				strcpy(tempStr, names[j]);
+				tempScore = scores[j];
 
-                // El mayor se pone en la posicion del menor
-                strcpy(names[j], names[j + 1]);
-                scores[j] = scores[j + 1];
+				// El mayor se pone en la posicion del menor
+				strcpy(names[j], names[j + 1]);
+				scores[j] = scores[j + 1];
 
-                // El backup se pone en la posicion del mayor
-                strcpy(names[j + 1], tempStr);
-                scores[j + 1] = tempScore;
-            }
-        }
-    }
+				// El backup se pone en la posicion del mayor
+				strcpy(names[j + 1], tempStr);
+				scores[j + 1] = tempScore;
+			}
+		}
+	}
 }
 
 static void writeRanking(void)
 {
-    int i;
+	int i;
 
-    // Crea archivo temporal
-    if ((handlerTemp = fopen(strTemp, "w")) == NULL)
-        printf("Error opening temp.txt");
+	// Crea archivo temporal
+	if ((handlerTemp = fopen(strTemp, "w")) == NULL)
+		printf("Error opening temp.txt");
 
-    if (lineNumber)
-    {
-        // Copia lo nuevo en temp.txt
-        for (i = 0; i < lineNumber; i++)
-            fprintf(handlerTemp, "%s %lld\n", names[i], scores[i]);
-    }
+	if (lineNumber)
+	{
+		// Copia lo nuevo en temp.txt
+		for (i = 0; i < lineNumber; i++)
+			fprintf(handlerTemp, "%s %lld\n", names[i], scores[i]);
+	}
 
-    remove(strRanking);
-    rename(strTemp, strRanking);
+	remove(strRanking);
+	rename(strTemp, strRanking);
 
-    fclose(handlerTemp);
+	fclose(handlerTemp);
 }
 
 static void createRankingFile(void)
 {
-    // crea el archivo, si no lo estaba
-    FILE *pFile;
-    if ((pFile = fopen(strRanking, "a")) == NULL)
-    {
-        printf("Error creando %s", strRanking);
-    }
-    fclose(pFile);
+	// crea el archivo, si no lo estaba
+	FILE *pFile;
+	if ((pFile = fopen(strRanking, "a")) == NULL)
+	{
+		printf("Error creando %s", strRanking);
+	}
+	fclose(pFile);
 }
 
 static void *realocar(void *p, size_t n)
 {
-    void *aux = realloc(p, n);
-    if (aux == NULL)
-    {
-        perror("Error en ranking.c al realocar memoria\n");
-        free(p);
-        queueInsertar(FORCE_SALIR);
-    }
-    return aux;
+	void *aux = realloc(p, n);
+	if (aux == NULL)
+	{
+		perror("Error en ranking.c al realocar memoria\n");
+		free(p);
+		queueInsertar(FORCE_SALIR);
+	}
+	return aux;
 }

@@ -26,17 +26,17 @@
 // Posiciones de mensajes
 enum posiciones_mensajes
 {
-    POS_MSJ_MENU,
-    POS_MSJ_DIFICULTAD,
-    POS_MSJ_RANKING,
-    POS_MSJ_NOMBRE,
-    POS_MSJ_PASAR,
-    POS_MSJ_PAUSA,
-    POS_MSJ_NEW_HI_SCORE,
-    POS_MSJ_GAME_OVER,
-    POS_OPCION,
-    POS_RANKING_2,
-    POS_CREDITOS
+	POS_MSJ_MENU,
+	POS_MSJ_DIFICULTAD,
+	POS_MSJ_RANKING,
+	POS_MSJ_NOMBRE,
+	POS_MSJ_PASAR,
+	POS_MSJ_PAUSA,
+	POS_MSJ_NEW_HI_SCORE,
+	POS_MSJ_GAME_OVER,
+	POS_OPCION,
+	POS_RANKING_2,
+	POS_CREDITOS
 };
 
 /*******************************************************************************

@@ -24,8 +24,8 @@
 // Estructura del nodo
 typedef struct nodeT
 {
-    event_t data;
-    struct nodeT *next;
+	event_t data;
+	struct nodeT *next;
 } node_t;
 
 /*******************************************************************************
@@ -52,53 +52,53 @@ static node_t *front = NULL, *back = NULL;
 
 void queueInsertar(event_t nuevo)
 {
-    node_t *temp = (node_t *)malloc(sizeof(node_t));
+	node_t *temp = (node_t *)malloc(sizeof(node_t));
 
-    temp->data = nuevo;
+	temp->data = nuevo;
 
-    if (front == NULL)
-    {
-        front = temp;
-        front->next = NULL;
-    }
-    else if (back == NULL)
-    {
-        back = temp;
-        front->next = back;
-        back->next = NULL;
-    }
-    else
-    {
-        back->next = temp;
-        back = back->next;
-    }
+	if (front == NULL)
+	{
+		front = temp;
+		front->next = NULL;
+	}
+	else if (back == NULL)
+	{
+		back = temp;
+		front->next = back;
+		back->next = NULL;
+	}
+	else
+	{
+		back->next = temp;
+		back = back->next;
+	}
 }
 
 bool queueVacia(void)
 {
-    return front == NULL;
+	return front == NULL;
 }
 
 event_t queueSiguienteEvento(void)
 {
-    if (front == NULL)
-    {
-        return NADA;
-    }
-    else
-    {
-        event_t r = front->data;
-        borrarElemento();
-        return r;
-    }
+	if (front == NULL)
+	{
+		return NADA;
+	}
+	else
+	{
+		event_t r = front->data;
+		borrarElemento();
+		return r;
+	}
 }
 
 void destruirQueue(void)
 {
-    while (front != NULL)
-    {
-        queueSiguienteEvento();
-    }
+	while (front != NULL)
+	{
+		queueSiguienteEvento();
+	}
 }
 
 /*******************************************************************************
@@ -109,14 +109,14 @@ void destruirQueue(void)
 
 static void borrarElemento(void)
 {
-    if (front != NULL)
-    {
-        node_t *temp = front;
-        front = front->next;
-        free(temp);
-        if (front == NULL)
-        {
-            back = NULL;
-        }
-    }
+	if (front != NULL)
+	{
+		node_t *temp = front;
+		front = front->next;
+		free(temp);
+		if (front == NULL)
+		{
+			back = NULL;
+		}
+	}
 }

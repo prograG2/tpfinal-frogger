@@ -24,9 +24,9 @@
 
 enum DIFFICULTIES
 {
-    DIFFICULTIES_EASY = 1,
-    DIFFICULTIES_NORMAL,
-    DIFFICULTIES_HARD
+	DIFFICULTIES_EASY = 1,
+	DIFFICULTIES_NORMAL,
+	DIFFICULTIES_HARD
 };
 
 /*******************************************************************************

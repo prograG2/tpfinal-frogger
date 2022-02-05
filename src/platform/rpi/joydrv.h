@@ -32,14 +32,14 @@
 
 typedef struct
 {
-    int8_t x;
-    int8_t y;
+	int8_t x;
+	int8_t y;
 } jcoord_t;
 
 typedef enum
 {
-    J_NOPRESS,
-    J_PRESS
+	J_NOPRESS,
+	J_PRESS
 } jswitch_t;
 
 /*******************************************************************************
