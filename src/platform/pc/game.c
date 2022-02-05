@@ -1,11 +1,11 @@
 /**
- * @file game.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-22
+ * @file 	game.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo game, orientado a PC. Vincula la FSM con lo
+ * 			específico de PC en lo relacionado a la interacción con el juego.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

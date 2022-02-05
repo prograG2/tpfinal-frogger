@@ -1,11 +1,12 @@
 /**
- * @file menu.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-22
+ * @file 	menu.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo menu, orientado a PC. Se encarga de la
+ * 			inicialización, actualización y muestreo de lo relacionado al menú
+ * 			en PC. Funciones llamadas por la FSM.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

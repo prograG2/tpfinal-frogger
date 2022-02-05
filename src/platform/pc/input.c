@@ -1,11 +1,12 @@
 /**
- * @file input.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-22
+ * @file 	input.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo input, orientado a PC. Se encarga de procesar
+ * 			las entradas en la implementación de PC, y devolverlas adecuadamente
+ * 			a la FSM.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

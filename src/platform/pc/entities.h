@@ -1,7 +1,9 @@
 /**
- * @file entities.h
- * @author AGRIPPINO, ALVAREZ, CASTRO, HEIR
- * @brief
+ * @file 	entities.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ *
+ * @brief 	Header del modulo entities. Prototipos de funciones globales
+ * 			para el manejo de entidades.
  *
  * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *

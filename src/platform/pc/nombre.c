@@ -1,11 +1,11 @@
 /**
- * @file nombre.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-22
+ * @file 	nombre.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo nombre, orientado a PC. Se encarga del manejo del
+ * 			nombre del jugador, teniendo funciones que llama la FSM.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

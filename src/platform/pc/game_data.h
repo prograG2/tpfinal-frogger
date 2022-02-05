@@ -1,11 +1,11 @@
 /**
- * @file game_data.h
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-17
+ * @file 	game_data.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Header del modulo game_data. Prototipos de funciones globales
+ * 			que hacen al manejo de los datos del juego en PC:
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

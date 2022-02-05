@@ -1,11 +1,11 @@
 /**
- * @file display.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-22
+ * @file 	display.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo display, orientado a PC. Rutinas relativas a la
+ * 			visualización del juego en pantalla, llamadas por la FSM.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

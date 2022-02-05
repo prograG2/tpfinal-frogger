@@ -1,11 +1,12 @@
 /**
- * @file sound.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-27
+ * @file 	sound.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo sound. orientado a PC. Se encarga iniciar y 
+ * 			reproducir efectos y musicas en la implementación de PC, cuando
+ * 			la FSM lo indique.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

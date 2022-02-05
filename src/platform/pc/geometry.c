@@ -1,11 +1,11 @@
 /**
- * @file geometry.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-10
+ * @file 	geometry.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo geometry. Look-up tables con medidas, funciones
+ * 			orientadas a temas geométricos dentro del juego en PC.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

@@ -1,11 +1,11 @@
 /**
- * @file allegro_stuff.h
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-10
+ * @file 	allegro_stuff.h
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Header del modulo allegro_stuff. Estructuras, prototipos de funciones
+ * 			globales.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 

@@ -1,3 +1,14 @@
+/**
+ * @file 	entities.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ *
+ * @brief 	Source del modulo entities. Se encarga de la creacion, actualización
+ * 			y muestreo de las entitades implementadas en PC.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
+ *
+ */
+
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/

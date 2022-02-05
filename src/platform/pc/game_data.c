@@ -1,7 +1,9 @@
 /**
- * @file game_data.c
- * @author AGRIPPINO, ALVAREZ, CASTRO, HEIR
- * @brief
+ * @file 	game_data.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
+ *
+ * @brief 	Source del modulo game_data. Inicializa, actualiza y muestra los datos
+ * 			del juego en PC.
  *
  * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *

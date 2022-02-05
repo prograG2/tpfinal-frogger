@@ -1,11 +1,12 @@
 /**
- * @file allegro_stuff.c
- * @author your name (you@domain.com)
- * @brief
- * @version 0.1
- * @date 2022-01-10
+ * @file 	allegro_stuff.c
+ * @authors	AGRIPPINO, ALVAREZ, CASTRO, HEIR
  *
- * @copyright Copyright (c) 2022
+ * @brief 	Source del modulo allegro_stuff. Se encarga de todas las 
+ * 			inicializaciones y desinicializaciones relativas a allegro5 y
+ * 			sus addons.
+ *
+ * @copyright Copyright (c) 2022 ~ Ingeniería Electrónica ~ ITBA
  *
  */
 
