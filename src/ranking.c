@@ -15,6 +15,7 @@
  ******************************************************************************/
 
 #include "ranking.h"
+#include "queue.h"
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -303,7 +304,7 @@ static void *realocar(void *p, size_t n)
     {
         perror("Error en ranking.c al realocar memoria\n");
         free(p);
-        exit(2);
+        queueInsertar(FORCE_SALIR);
     }
     return aux;
 }

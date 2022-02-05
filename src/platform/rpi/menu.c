@@ -43,7 +43,7 @@ void setMenu(int *a, unsigned int size)
     int *aux = realloc(menu.menu_actual, size * sizeof(int));
     if(aux == NULL){
         free(menu.menu_actual);
-        exit(1);
+        queueInsertar(FORCE_SALIR);
     }
 
     menu.menu_actual = aux;

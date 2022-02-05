@@ -363,16 +363,6 @@ pair_xy_t getXYFromCoinFrame(int frame);
  */
 pair_xy_t getXYFromSplashFrame(int frame);
 
-/**
- * @brief Verifica si un numero coincide con alguno de un array dado (uints)
- *
- * @param val Numero a verificar
- * @param array Array de numeros
- * @return true Existe
- * @return false No existe
- */
-bool matchUint(unsigned int val, const unsigned int *array);
-
 /*******************************************************************************
  ******************************************************************************/
 

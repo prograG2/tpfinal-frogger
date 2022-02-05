@@ -276,7 +276,7 @@ void must_init(bool test, const char *description)
     if (!test)
     {
         printf("~no se pudo inicializar %s~\n", description);
-        exit(EXIT_FAILURE);
+        while(true);
     }
 }
 

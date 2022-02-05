@@ -183,21 +183,3 @@ pair_xy_t getXYFromSplashFrame(int frame)
 {
     return (pair_xy_splash_sprites_frames[frame]);
 }
-
-bool matchUint(unsigned int val, const unsigned int *array)
-{
-    if (array == NULL)
-    {
-        printf("PUNTERO INVALIDO ~ funcion: matchUint ~ val=%d", val);
-        exit(EXIT_FAILURE);
-    }
-
-    int i;
-    for (i = 0; array[i] != '\0'; i++)
-    {
-        if (val == array[i])
-            return true;
-    }
-
-    return false;
-}
