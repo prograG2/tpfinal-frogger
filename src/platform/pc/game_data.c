@@ -31,12 +31,15 @@
 #define SCORE_PER_GOAL_COIN 750 // puntaje por llegar a la meta con coin
 #define SCORE_PER_RUN 1000		// puntaje por completar una run
 
-#define INITIAL_RUN_TIME_LEFT 30
+#define INITIAL_RUN_TIME_LEFT 30 //tiempo inicial de una partida
 
 #define EXTRA_TIME_PER_GOAL 10		 // 10s extras por llegar a una meta
 #define EXTRA_TIME_PER_BONUS_GOAL 15 // 15s extras por llegar a una meta con coin
 
 #define TIME_LEFT_WARNING 10 // warning 10s antes del timeout
+
+#define HUD_EXTRA_INFO_TIMING 120 // frames que duran los mensajes emergentes
+#define HUD_EXTRA_INFO_RATE 1	  // "velocidad" de desplazamiento de mensajes
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -77,19 +80,22 @@ enum DATA_FLAGS
 	DATA_FLAG_GAME_OVER
 };
 
+// Tipos de mensajes emergentes en el HUD
 enum HUD_EXTRAS
 {
 	HUD_EXTRA_TIME,
 	HUD_EXTRA_SCORE,
-	HUD_EXTRA_LIFE,
+	HUD_EXTRA_RUN,
 	HUD_EXTRAS_MAX
 };
 
+// Estructura para el manejo de mensajes emergentes en el HUD
 static struct
 {
-	bool flag;
-	int value;
-	int timer;
+	bool flag;	 // Activado ó no
+	int value;	 // Valor extra a mostrar
+	int timer;	 // Contador interno para dejar de mostrar
+	int shifter; // Contador interno para desplazar el mensaje verticalmente
 } hud_extra_stuff[HUD_EXTRAS_MAX];
 
 /*******************************************************************************
@@ -132,6 +138,37 @@ static void next_run(void);
  * @param extra Tiempo extra
  */
 static void trigger_show_adding_time(int extra);
+
+/**
+ * @brief Configura el HUD para mostrar mensaje emergente de score ganado
+ * 
+ * @param extra Score extra
+ */
+static void trigger_show_adding_score(int extra);
+
+/**
+ * @brief Configura el HUD para mostrar mensaje emergente de run incrementada
+ * 
+ */
+static void trigger_show_adding_run(void);
+
+/**
+ * @brief Muestra tiempo extra en el HUD
+ * 
+ */
+static void draw_extra_time(void);
+
+/**
+ * @brief Muestra score extra en el HUD
+ * 
+ */
+static void draw_extra_score(void);
+
+/**
+ * @brief Muestra run ganada en el HUD
+ * 
+ */
+static void draw_extra_run(void);
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -254,14 +291,14 @@ unsigned long long game_data_get_score(void)
 
 void game_data_add_score(void)
 {
-
 	data.score += SCORE_PER_GOAL;
+	trigger_show_adding_score(SCORE_PER_GOAL);
 }
 
 void game_data_add_score_bonus(void)
 {
-
 	data.score += SCORE_PER_GOAL_COIN;
+	trigger_show_adding_score(SCORE_PER_GOAL_COIN);
 }
 
 void game_data_set_score_max(unsigned long long score)
@@ -370,18 +407,6 @@ void game_data_reset_goals(void)
 		data.goals[i] = false;
 }
 
-bool game_data_get_time_left_flag(void)
-{
-	if (data.flag == DATA_FLAG_TIME_EXCEEDED)
-	{
-		data.flag = DATA_FLAG_STARTING;
-		return true;
-	}
-
-	else
-		return false;
-}
-
 bool game_data_get_game_over_flag(void)
 {
 	if (data.flag == DATA_FLAG_GAME_OVER)
@@ -475,11 +500,13 @@ static void hud_draw(void)
 
 	al_draw_textf(
 		allegro_get_var_font(),
-		text_color, // Negro porque por ahora sigue el fondo blanco, sino recomiendo amarillo (255, 255, 51).
-		1, 1,		// Arriba a la izquierda.
+		text_color,
+		1, 1, // Arriba a la izquierda.
 		0,
 		"Score: %06lld", // 6 cifras (por ahi es mucho).
 		score_display);
+
+	draw_extra_score();
 
 	// Dibuja el numero de vuelta.
 	al_draw_textf(
@@ -489,6 +516,8 @@ static void hud_draw(void)
 		0,
 		"Run: %02d", // 2 cifras. No me acuerdo si esta bien asi.
 		data.run.number);
+
+	draw_extra_run();
 
 	// Segundos.
 	al_draw_textf(
@@ -509,28 +538,15 @@ static void hud_draw(void)
 		"Time Left: %03d",
 		data.run.time_left);
 
-	if (hud_extra_stuff[HUD_EXTRA_TIME].flag)
-	{
-	}
+	draw_extra_time();
 
 	// Dibuja vidas.
 	for (int i = 0; i < data.lives; i++) // No se si la rana tiene 'frog.lives' pero aca va el equivalente.
 		al_draw_bitmap(
 			sprites.heart,
-			// DISPLAY_W - SPRITE_SIZE_HEART * (data.lives - i), 1,         //Arriba a la derecha. 'LIFE_W' depende de la imagen que usemos.
 			DISPLAY_W - 100 + SPRITE_SIZE_HEART * (data.lives - i - 1),
 			(CELL_H - char_h - 5) / 2,
 			0);
-
-	/*
-    if(!data.lives)
-      al_draw_text(
-        allegro_get_var_font(),
-        al_map_rgb(255, 255, 51),       //Amarillo, es el color que mas se ditingue en general.
-        DISPLAY_W / 2, DISPLAY_H / 2,
-        ALLEGRO_ALIGN_CENTER,           //Para que se dibuje en el medio.
-        "G A M E  O V E R");
-    */
 }
 
 static void draw_reached_goals(void)
@@ -555,14 +571,98 @@ static void next_run(void)
 	data.run.time_ref = time(NULL);
 
 	data.score += SCORE_PER_RUN;
+	trigger_show_adding_score(SCORE_PER_RUN);
 
 	last_loop_time = 0;
 
 	flag_low_time_warning = false;
+
+	trigger_show_adding_run();
 
 	game_data_reset_goals();
 }
 
 static void trigger_show_adding_time(int extra)
 {
+	hud_extra_stuff[HUD_EXTRA_TIME].flag = true;
+	hud_extra_stuff[HUD_EXTRA_TIME].value = extra;
+	hud_extra_stuff[HUD_EXTRA_TIME].timer = 1;
+	hud_extra_stuff[HUD_EXTRA_TIME].shifter = 0;
+}
+
+static void trigger_show_adding_score(int extra)
+{
+	hud_extra_stuff[HUD_EXTRA_SCORE].flag = true;
+	hud_extra_stuff[HUD_EXTRA_SCORE].value = extra;
+	hud_extra_stuff[HUD_EXTRA_SCORE].timer = 1;
+	hud_extra_stuff[HUD_EXTRA_SCORE].shifter = 0;
+}
+
+static void trigger_show_adding_run()
+{
+	hud_extra_stuff[HUD_EXTRA_RUN].flag = true;
+	hud_extra_stuff[HUD_EXTRA_RUN].value = 1;
+	hud_extra_stuff[HUD_EXTRA_RUN].timer = 1;
+	hud_extra_stuff[HUD_EXTRA_RUN].shifter = 0;
+}
+
+static void draw_extra_time(void)
+{
+	if (hud_extra_stuff[HUD_EXTRA_TIME].flag)
+	{
+		al_draw_textf(
+			allegro_get_var_font(),
+			text_color,
+			al_get_text_width(allegro_get_var_font(), "Score: xxxxxx") + 3 * char_w +
+				al_get_text_width(allegro_get_var_font(), "Time left: "),
+			CELL_H - char_h - 5 + hud_extra_stuff[HUD_EXTRA_TIME].shifter,
+			0,
+			"%+3d",
+			hud_extra_stuff[HUD_EXTRA_TIME].value);
+
+		hud_extra_stuff[HUD_EXTRA_TIME].shifter += HUD_EXTRA_INFO_RATE;
+
+		if (!(hud_extra_stuff[HUD_EXTRA_TIME].timer++ % HUD_EXTRA_INFO_TIMING))
+			hud_extra_stuff[HUD_EXTRA_TIME].flag = false;
+	}
+}
+
+static void draw_extra_score(void)
+{
+	if (hud_extra_stuff[HUD_EXTRA_SCORE].flag)
+	{
+		al_draw_textf(
+			allegro_get_var_font(),
+			text_color,
+			1 + al_get_text_width(allegro_get_var_font(), "Score: "),
+			1 + hud_extra_stuff[HUD_EXTRA_SCORE].shifter,
+			0,
+			"%+6d",
+			hud_extra_stuff[HUD_EXTRA_SCORE].value);
+
+		hud_extra_stuff[HUD_EXTRA_SCORE].shifter += HUD_EXTRA_INFO_RATE;
+
+		if (!(hud_extra_stuff[HUD_EXTRA_SCORE].timer++ % HUD_EXTRA_INFO_TIMING))
+			hud_extra_stuff[HUD_EXTRA_SCORE].flag = false;
+	}
+}
+
+static void draw_extra_run(void)
+{
+	if (hud_extra_stuff[HUD_EXTRA_RUN].flag)
+	{
+		al_draw_textf(
+			allegro_get_var_font(),
+			text_color,
+			1 + al_get_text_width(allegro_get_var_font(), "Run: "),
+			CELL_H - char_h - 5 + hud_extra_stuff[HUD_EXTRA_RUN].shifter,
+			0,
+			"%+2d",
+			hud_extra_stuff[HUD_EXTRA_RUN].value);
+
+		hud_extra_stuff[HUD_EXTRA_RUN].shifter += HUD_EXTRA_INFO_RATE;
+
+		if (!(hud_extra_stuff[HUD_EXTRA_RUN].timer++ % HUD_EXTRA_INFO_TIMING))
+			hud_extra_stuff[HUD_EXTRA_RUN].flag = false;
+	}
 }

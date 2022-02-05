@@ -44,7 +44,7 @@ int main(void)
 
 	destruirQueue();
 
-	printf("\nSaliendo...\n");
+	printf("\nGracias por jugar <3\n");
 
 	return 0;
 }

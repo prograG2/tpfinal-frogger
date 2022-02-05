@@ -206,14 +206,6 @@ void game_data_set_goal(unsigned int goal);
 void game_data_reset_goals(void);
 
 /**
- * @brief Avisa si se excedio el tiempo de juego
- *
- * @return true Excedido
- * @return false No excedido
- */
-bool game_data_get_time_left_flag(void);
-
-/**
  * @brief Devuelve flag de game over
  *
  * @return true Game over
