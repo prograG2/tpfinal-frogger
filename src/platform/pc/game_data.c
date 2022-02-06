@@ -31,7 +31,11 @@
 #define SCORE_PER_GOAL_COIN 750 // puntaje por llegar a la meta con coin
 #define SCORE_PER_RUN 1000		// puntaje por completar una run
 
-#define INITIAL_RUN_TIME_LEFT 30 //tiempo inicial de una partida
+#define INITIAL_RUN_TIME_LEFT 60 //tiempo inicial de una partida
+#define RUN_TIME_LEFT_REDUCE_FACTOR_A 2 //reduccion A
+#define RUN_TIME_LEFT_REDUCE_LIMIT_A 5 //por cuantas runs usar la reduccion A
+#define RUN_TIME_LEFT_REDUCE_FACTOR_B 5 //reduccion B
+#define RUN_TIME_LEFT_REDUCE_UNTIL 10 //tiempo mínimo a tener
 
 #define EXTRA_TIME_PER_GOAL 10		 // 10s extras por llegar a una meta
 #define EXTRA_TIME_PER_BONUS_GOAL 15 // 15s extras por llegar a una meta con coin
@@ -170,6 +174,20 @@ static void draw_extra_score(void);
  */
 static void draw_extra_run(void);
 
+/**
+ * @brief Reduce el nuevo tiempo inicial de un run al superar una
+ * 
+ */
+static void progress_run_time_left(void);
+
+/**
+ * @brief Checkea si queda un solo goal por completar
+ * 
+ * @return true Si
+ * @return false No
+ */
+static bool is_last_goal(void);
+
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -221,6 +239,10 @@ void game_data_init(void)
 
 	score_display = 0;
 
+	int i;
+	for(i = 0; i < HUD_EXTRAS_MAX; i++)
+		hud_extra_stuff[i].flag = false;
+
 	data_init();
 }
 
@@ -258,14 +280,7 @@ void game_data_update(void)
 	{
 		data.flag = DATA_FLAG_GAME_OVER;
 	}
-
-	// Las primeras 2 runs se reduce el timer en 5 segundos.
-	if (data.run.number <= 1)
-		new_run_time_left = INITIAL_RUN_TIME_LEFT - (5 * (data.run.number + 1));
-
-	// Despues se reduce de a 2 segundos por run hasta llegar a 10 segundos.
-	else if (data.run.number <= 6)
-		new_run_time_left = INITIAL_RUN_TIME_LEFT - (2 * (data.run.number + 1));
+	
 }
 
 void game_data_draw(void)
@@ -292,13 +307,15 @@ unsigned long long game_data_get_score(void)
 void game_data_add_score(void)
 {
 	data.score += SCORE_PER_GOAL;
-	trigger_show_adding_score(SCORE_PER_GOAL);
+	if(!is_last_goal())
+		trigger_show_adding_score(SCORE_PER_GOAL);
 }
 
 void game_data_add_score_bonus(void)
 {
 	data.score += SCORE_PER_GOAL_COIN;
-	trigger_show_adding_score(SCORE_PER_GOAL_COIN);
+	if(!is_last_goal())
+		trigger_show_adding_score(SCORE_PER_GOAL_COIN);
 }
 
 void game_data_set_score_max(unsigned long long score)
@@ -329,13 +346,17 @@ int game_data_get_run_time_left(void)
 void game_data_add_run_time_goal(void)
 {
 	data.run.time_left += EXTRA_TIME_PER_GOAL;
-	trigger_show_adding_time(EXTRA_TIME_PER_GOAL);
+	
+	if(!is_last_goal())
+		trigger_show_adding_time(EXTRA_TIME_PER_GOAL);
 }
 
 void game_data_add_run_time_goal_bonus(void)
 {
 	data.run.time_left += EXTRA_TIME_PER_BONUS_GOAL;
-	trigger_show_adding_time(EXTRA_TIME_PER_BONUS_GOAL);
+
+	if(!is_last_goal())
+		trigger_show_adding_time(EXTRA_TIME_PER_BONUS_GOAL);
 }
 
 unsigned long game_data_get_frames(void)
@@ -570,7 +591,10 @@ static void draw_reached_goals(void)
 static void next_run(void)
 {
 	data.run.number++;
+
+	progress_run_time_left();
 	data.run.time_left = new_run_time_left;
+
 	data.run.time = 0;
 	data.run.time_ref = time(NULL);
 
@@ -669,4 +693,38 @@ static void draw_extra_run(void)
 		if (!(hud_extra_stuff[HUD_EXTRA_RUN].timer++ % HUD_EXTRA_INFO_TIMING))
 			hud_extra_stuff[HUD_EXTRA_RUN].flag = false;
 	}
+}
+
+static void progress_run_time_left(void)
+{
+
+	//Si la run es menor a la evaluada...
+	if(data.run.number <= RUN_TIME_LEFT_REDUCE_LIMIT_A)
+	{
+		new_run_time_left -= RUN_TIME_LEFT_REDUCE_FACTOR_A;
+		trigger_show_adding_time(-RUN_TIME_LEFT_REDUCE_FACTOR_A);
+	}
+
+	//Si el tiempo restante actual es mayor al mínimo establecido...
+	else if(new_run_time_left > RUN_TIME_LEFT_REDUCE_UNTIL)
+	{
+		new_run_time_left -= RUN_TIME_LEFT_REDUCE_FACTOR_B;
+		trigger_show_adding_time(-RUN_TIME_LEFT_REDUCE_FACTOR_B);
+	}
+	
+}
+
+static bool is_last_goal(void)
+{
+	int i, j;
+	for(i = 0, j = 0; i < MAX_GOALS; i++)
+	{
+		if(data.goals[i])
+			j++;
+	}
+	//Si es el ultimo goal...
+	if(j == MAX_GOALS)
+		return true;
+	else
+		return false;
 }

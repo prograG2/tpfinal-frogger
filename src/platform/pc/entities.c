@@ -28,7 +28,7 @@
 #define LOGS_SPAWN_MAX 3
 #define LOGS_SPAWN_FRAMES 60
 #define LOGS_BASE_SPEED 1
-#define LOGS_MAX_USED 7
+#define LOGS_MAX_USED 8
 #define LOGS_EXTRA_SEPARATOR LOG_W / 2
 
 #define CARS_SPAWN_MIN 2
@@ -43,17 +43,17 @@
 #define TURTLES_MAX_PER_PACK 3
 #define TURTLES_SPAWN_FRAMES 60 // cada cuantos frames spawnean
 #define TURTLES_SPAWN_MIN 1		// minimas a spawnear de una
-#define TURTLES_SPAWN_MAX 2		// maximas a spawnear de una
-#define TURTLES_MAX_USED 7		// maximas en pantalla
+#define TURTLES_SPAWN_MAX 3		// maximas a spawnear de una
+#define TURTLES_MAX_USED 8		// maximas en pantalla
 #define TURTLES_BASE_SPEED 2
 #define TURTLES_FRAME_TIMEOUT_SURFACE 10	// cuanto "tiempo" dura un frame dibujado antes de pasar al siguiente
 #define TURTLES_FRAME_TIMEOUT_GOING_DOWN 50 // tiempo por frame al sumergirse
 #define TURTLES_FRAME_TIMEOUT_WATER 20		// tiempo por frame para mostrarse bajo el agua
 #define TURTLES_FRAME_TIMEOUT_GOING_UP 10	// tiempo por frame para mostrarse saliendo del agua
-#define TURTLES_SURFACE_FRAMES_MIN 80		// minimo "tiempo" en superficie
-#define TURTLES_SURFACE_FRAMES_MAX 500		// maximo "tiempo" en superficie
+#define TURTLES_SURFACE_FRAMES_MIN 60		// minimo "tiempo" en superficie
+#define TURTLES_SURFACE_FRAMES_MAX 600		// maximo "tiempo" en superficie
 #define TURTLES_WATER_FRAMES_MIN 60			// minimo "tiempo" bajo el agua
-#define TURTLES_WATER_FRAMES_MAX 100		// maximo "tiempo" bajo el agua
+#define TURTLES_WATER_FRAMES_MAX 200		// maximo "tiempo" bajo el agua
 #define TURTLES_EXTRA_SEPARATOR TURTLE_SIDE * 2
 
 #define COIN_SPAWN_FRAMES_MIN 300	// mínimo tiempo para respawnear coin
