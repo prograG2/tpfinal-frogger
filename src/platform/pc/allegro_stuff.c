@@ -1198,11 +1198,11 @@ static bool init_sample(ALLEGRO_SAMPLE **sample, const char *file)
 
 static void rick_init(void)
 {
-	//rick = algif_load_animation("../res/gifs/rick.gif");
+	rick = algif_load_animation("../res/gifs/rick.gif");
 	allegro_set_rick_flag(false);
 }
 
 static void rick_deinit()
 {
-	//algif_destroy_animation(rick);
+	algif_destroy_animation(rick);
 }

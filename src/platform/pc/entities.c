@@ -40,7 +40,7 @@
 #define CARS_EXTRA_SEPARATOR CAR_W * 2
 
 #define TURTLES_MIN_PER_PACK 1
-#define TURTLES_MAX_PER_PACK 2
+#define TURTLES_MAX_PER_PACK 3
 #define TURTLES_SPAWN_FRAMES 60 // cada cuantos frames spawnean
 #define TURTLES_SPAWN_MIN 1		// minimas a spawnear de una
 #define TURTLES_SPAWN_MAX 2		// maximas a spawnear de una

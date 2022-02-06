@@ -47,27 +47,10 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-	<li>
-	  <a href="#about-the-project">About The Project</a>
-	</li>
-	<li>
-	  <a href="#features">Features</a>
-	</li>
-	<li>
-	  <a href="#getting-started">Getting Started</a>
-	  <ul>
-		<li>
-			<a href="#prerequisites">Prerequisites</a>
-		</li>
-		<li><a href="#installation">Installation</a></li>
-	  </ul>
-	</li>
-	<li>
-	  <a href="#usage">Usage</a>
-	  <ul>
-	    <li><a href="#corriendo-el-juego">Corriendo el juego</a></li>
-	  </ul>
-	</li>
+	<li><a href="#about-the-project">About The Project</a></li>
+	<li><a href="#features">Features</a></li>
+	<li><a href="#getting-started">Getting Started</a></li>
+	<li><a href="#usage">Usage</a></li>
 	<li><a href="#contact">Contact</a></li>
 	<li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -139,7 +122,7 @@ Para ambas plataformas, será necesario contar con las herramientas `gcc` y `mak
 
 #### PC
 * <a href="https://github.com/liballeg/allegro_wiki/wiki">allegro5</a>
-  * Arch Linux
+  * Arch
 	```sh
 	sudo pacman -Syu
 	sudo pacman -S allegro
@@ -194,6 +177,34 @@ Para ejecutarlo:
 	```
 	> Correr `make run` en el ítem 3 de la instalacion compila, crea el ejecutable y lo ejecuta
 
+<br />
+
+### Controles
+
+#### PC
+* Siempre:
+  * F1: bajar volumen música (hasta 0%)
+  * F2: subir volumen música (hasta 100%)
+  * X button (ventana): cerrar
+* En menús:
+  * Flecha arriba: subir opción
+  * Flecha abajo: bajar opción
+  * Enter: seleccionar opción
+* En ranking y créditos:
+  * Enter: volver al menú principal
+* Poniendo nombre:
+  * Letras A-Z: ingresar letra
+  * Backspace: borrar letra
+  * Escape: volver al menú principal
+  * Enter: confirmar el nombre y pasa al juego
+* Partida:
+  * Flechas: movimientos correspondientes para la rana
+  * Enter: menu de pausa
+  * 8: easter egg on
+  * 9: easter egg off
+
+#### RPi
+
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -226,8 +237,9 @@ Project Link: [https://github.com/prograG2/tpfinal-frogger](https://github.com/p
   * VACATELLO, Pablo Daniel
   * *Ayudantes*
 * [Allegro](https://github.com/liballeg/allegro_wiki/wiki)
-* [Sprites de tortugas, autos, muerte, y follaje](https://www.pinclipart.com/pindetail/hhxmRb_frogger-arcade-graphic-frogger-sprite-sheet-clipart/)
-* [Sprite de coin](https://www.pinclipart.com/pindetail/ibiTJwi_coin-sprite-sheet-png-clipart/)
+* [algif5](https://github.com/allefant/algif5)
+* [Simple SDL2 Audio](https://github.com/jakebesworth/Simple-SDL2-Audio)
+* [Valgrind](https://valgrind.org/)
 * Música
   * Menú principal: [VipeorofVic](https://www.youtube.com/watch?v=iXHix_kdJWI&t=101s), Dark Souls III - Main Theme - 8 Bit Revision
   * Ranking: [Jaxxtir](https://www.youtube.com/watch?v=ykt-5q13GGs), GTA San Andreas Theme - 8 Bit Remix
@@ -237,8 +249,7 @@ Project Link: [https://github.com/prograG2/tpfinal-frogger](https://github.com/p
     * RPi: Venetian Snares, Sajtban
   * Menú de pausa: [Retro Game Audio](https://soundcloud.com/retrogameaudio/firelink-shrine-nes-famicom), Dark Souls - Firelink Shrine (NES/ Famicom + VRC6 audio)
   * Menú de game over: [MB Music](https://www.youtube.com/watch?v=br3OzOrARh4), Game Over (8-Bit Music)
-* [Simple SDL2 Audio](https://github.com/jakebesworth/Simple-SDL2-Audio)
-* [algif5](https://github.com/allefant/algif5)
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
