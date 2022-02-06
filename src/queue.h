@@ -33,7 +33,7 @@ enum eventos
 	NADA = -1,
 	SALIR = 0,
 	GAME_OVER,
-	FORCE_SALIR
+	FORCE_SALIR = -2
 };
 
 // Eventos posibles de interacción en el juego
