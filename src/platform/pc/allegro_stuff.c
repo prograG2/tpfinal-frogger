@@ -268,6 +268,9 @@ static double stream_gain = GLOBAL_STREAM_VOLUME;
 
 static bool display_state = false;
 
+//Para retener ultima posicion de ventana antes de recrearla
+static int window_x, window_y;
+
 /*******************************************************************************
  *******************************************************************************
             GLOBAL FUNCTION DEFINITIONS
@@ -353,6 +356,7 @@ void allegro_deinits(void)
 
 void allegro_reinit_display(void)
 {
+	
 
 	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 	// Para tener aceleracion por HW desde la GPU (hace que no explote con los draw_text)
@@ -361,8 +365,12 @@ void allegro_reinit_display(void)
 
 	// Titulo de la ventana
 	al_set_new_window_title("~ Programación I ~ TP Final ~ Frogger ~");
-	// Centrado en pantalla, según el monitor
-	al_set_new_window_position(monitor_info.x2 / 2 - DISPLAY_W / 2, monitor_info.y2 / 2 - DISPLAY_H / 2 - 50);
+
+	if(!window_x && !window_y)
+		// Centrado en pantalla, según el monitor
+		al_set_new_window_position(monitor_info.x2 / 2 - DISPLAY_W / 2, monitor_info.y2 / 2 - DISPLAY_H / 2 - 50);
+	else
+		al_set_new_window_position(window_x, window_y);
 
 	// opciones para el display (antialiasing)
 	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
@@ -391,6 +399,8 @@ void allegro_deinit_display(void)
 {
 	if (display_state)
 	{
+		al_get_window_position(allegro_vars.disp, &window_x, &window_y);
+
 		al_destroy_font(allegro_vars.font);
 
 		al_unregister_event_source(allegro_vars.queue, al_get_display_event_source(allegro_vars.disp));
