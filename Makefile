@@ -2,6 +2,7 @@
 	Correr "make help" para obtener ayuda			\
 
 
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,8 +97,8 @@ endif
 # Deteccion de plataforma ~~~~~~~~~~~~~~~~~~~~~~~~~
 # https://westermarck.com/thoughts/raspberry-pi-linux-32-64/
 
-arch		= $(shell uname -m)
-ifeq ($(arch), armv7l)
+ARCH		= $(shell uname -m)
+ifeq ($(ARCH), armv7l)
 PLATFORM	= RPI
 EXTRA_DEPS	= 
 else
@@ -120,7 +121,7 @@ LIBS		+= $(LIBS_$(PLATFORM))
 
 # Other stuff ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Crea directorio de objetos, ejecutable y bibliotecas, si no están creados.
+# Crea directorio de objetos y ejecutable, si no están creados.
 dummy_obj_folder = $(shell mkdir -p $(OBJ_DIR))
 dummy_bin_folder = $(shell mkdir -p $(BIN_DIR))
 
@@ -185,7 +186,7 @@ $(OBJ_DIR)/queue.o: $(patsubst %,$(SRC_DIR)/%,queue.c queue.h)
 $(OBJ_DIR)/fsm.o: $(patsubst %,$(SRC_DIR)/%,fsm.c fsm.h queue.h) $(patsubst %.o,$(SRC_DIR)/%.h,$(_OBJS_GENERIC))
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/ranking.o: $(patsubst %,$(SRC_DIR)/%,ranking.c ranking.h)
+$(OBJ_DIR)/ranking.o: $(patsubst %,$(SRC_DIR)/%,ranking.c ranking.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Compilacion generica ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -248,19 +249,19 @@ $(OBJ_DIR)/lzw_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/lzw.c)
 
 # Compilacion de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(OBJ_DIR)/display_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,display.c) $(patsubst %,$(SRC_DIR)/%,display.h ranking.h)
+$(OBJ_DIR)/display_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,display.c mensajes.h bitmap.h disdrv.h) $(patsubst %,$(SRC_DIR)/%,display.h ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/game_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,game.c) $(patsubst %,$(SRC_DIR)/%,game.h)
+$(OBJ_DIR)/game_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,game.c bitmap.h) $(patsubst %,$(SRC_DIR)/%,game.h display.h sound.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/input_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,input.c) $(patsubst %,$(SRC_DIR)/%,input.h)
+$(OBJ_DIR)/input_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,input.c joydrv.h) $(patsubst %,$(SRC_DIR)/%,input.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/menu_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,menu.c) $(patsubst %,$(SRC_DIR)/%,menu.h)
+$(OBJ_DIR)/menu_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,menu.c) $(patsubst %,$(SRC_DIR)/%,menu.h display.h sound.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/nombre_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,nombre.c) $(patsubst %,$(SRC_DIR)/%,nombre.h)
+$(OBJ_DIR)/nombre_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,nombre.c mensajes.h) $(patsubst %,$(SRC_DIR)/%,nombre.h display.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/sound_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,sound.c simpleSDL2audio/audio.h) $(patsubst %,$(SRC_DIR)/%,sound.h)
@@ -270,7 +271,7 @@ $(OBJ_DIR)/sound_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,sound.c simpleSDL2audio/au
 $(OBJ_DIR)/bitmap_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,bitmap.c bitmap.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/mensajes_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,mensajes.c mensajes.h)
+$(OBJ_DIR)/mensajes_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,mensajes.c mensajes.h bitmap.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
