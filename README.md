@@ -94,15 +94,44 @@ A continuación se mencionan algunas de las característimas destacables de la i
     * Ver el ranking de jugadores
     * Ver los créditos
     * Salir del juego
-  * *Menú de pausa*: permite reiniciar la partida, continuarla, o volver al menú principal. Muestra el nombre del jugador, su puntaje actual, y su puntaje máximo si le corresponde
-  * *Menú de game over*: permite reiniciar la partida o volver al menú principal. Muestra el nombre del jugador, el puntaje que obtuvo, y si logró batir su récord
+  * *Menú de pausa*: permite reiniciar la partida, continuarla, o volver al menú principal.
+  * *Menú de game over*: permite reiniciar la partida o volver al menú principal.
 
 * **Audio**: se cuenta con cinco músicas según la ubicación en la que uno esté dentro del juego, además de diversos efectos de sonidos, tanto en el menú como en la partida en sí
 * **Ranking**: cada jugador se irá registrando en el mismo cada vez que pierda una partida y haya logrado un puntaje mayor a 0. Si el jugador ya estaba en el ranking, solo se actualizará en él si lo superara. De no ingresar un nombre, se le asignará el de `PLAYER`. Se lo puede visualizar desde el menú principal
 * **Créditos**: dentro del menú principal, se puede acceder a la sección de cŕeditos
 
 ### PC
-
+* Menú:
+  * *Menú de pausa*: muestra el nombre del jugador, su puntaje actual, y su puntaje máximo si le corresponde.
+  * *Menú de game over*: muestra el nombre del jugador, el puntaje que obtuvo, y si logró batir su récord.
+* Entidades en la partida:
+  * **Autos**:
+    * 3 tipos de autos
+    * 2 tipos de camiones
+	* Diferentes sentidos de circulación con distinta velocidad.
+	* En función de la dificultad *flat*, algunos carriles tendrán *velocidad variable* en el tiempo.
+  * **Tortugas**:
+    * 2 carriles dedicados
+    * Se pueden presentar en paquetes de 1 hasta 3 tortugas juntas.
+    * Timing aleatorio (dentro de un margen) para sumergir y emerger.
+    * Animación de movimiento
+    * Animación que anticipa el *sumergimiento*
+  * **Troncos**:
+    * 3 carriles dedicados
+    * Distintas velocidades
+  * **Coin**: spawnea en alguna de las metas libres. Da mayor puntaje y tiempo extra.
+    * Timing aleatorio (dentro de un margen) para spawnear y despawnear
+    * Animación de rotación
+    * Animación que anticipa despawneo
+* Dificultad incremental al avanzar en el juego
+  * Se reduce el tiempo del nivel
+  * ???
+* Otros:
+  * Animación de caída al agua
+  * Sprite de muerte (atropellado o choque contra un muro de la zona de llegada)
+  * *Easter egg* en la partida
+  
 ### RPi
 
 
@@ -182,26 +211,25 @@ Para ejecutarlo:
 ### Controles
 
 #### PC
-* Siempre:
-  * F1: bajar volumen música (hasta 0%)
-  * F2: subir volumen música (hasta 100%)
-  * X button (ventana): cerrar
+* **F1**: bajar volumen música (hasta 0%)
+* **F2**: subir volumen música (hasta 100%)
+* **X button** (ventana): cerrar
 * En menús:
-  * Flecha arriba: subir opción
-  * Flecha abajo: bajar opción
-  * Enter: seleccionar opción
+  * **Flecha arriba**: subir opción
+  * **Flecha abajo**: bajar opción
+  * **Enter**: seleccionar opción
 * En ranking y créditos:
-  * Enter: volver al menú principal
+  * **Enter**: volver al menú principal
 * Poniendo nombre:
-  * Letras A-Z: ingresar letra
-  * Backspace: borrar letra
-  * Escape: volver al menú principal
-  * Enter: confirmar el nombre y pasa al juego
+  * **Letras A-Z**: ingresar letra
+  * **Backspace**: borrar letra
+  * **Escape**: volver al menú principal
+  * **Enter**: confirmar el nombre y pasa al juego
 * Partida:
-  * Flechas: movimientos correspondientes para la rana
-  * Enter: menu de pausa
-  * 8: easter egg on
-  * 9: easter egg off
+  * **Flechas**: movimientos correspondientes para la rana
+  * **Enter**: menu de pausa
+  * **8**: easter egg on
+  * **9**: easter egg off
 
 #### RPi
 
