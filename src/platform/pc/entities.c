@@ -373,6 +373,9 @@ static unsigned char hard_diff_lane_2;
 
 static unsigned char cars_spawn_max;
 
+// Flag muestra tutorial
+
+static bool tutorial_flag;
 /*******************************************************************************
  *******************************************************************************
             GLOBAL FUNCTION DEFINITIONS
@@ -381,6 +384,7 @@ static unsigned char cars_spawn_max;
 
 void entities_init(void)
 {
+	tutorial_flag = false;
 	frog_init();
 	logs_init();
 	cars_init();
@@ -397,7 +401,7 @@ void entities_init(void)
 void entities_update()
 {
 	game_frames = game_data_get_frames();
-
+	
 	frog_update();
 	logs_update();
 	cars_update();
@@ -424,12 +428,23 @@ void entities_draw()
 
 void entities_move_frog(unsigned char direction)
 {
-	if (direction == DIRECTION_DOWN || direction == DIRECTION_LEFT ||
-		direction == DIRECTION_UP || direction == DIRECTION_RIGHT)
-	{
-		frog.next_action = direction;
+	if(tutorial_flag){
+		if (direction == DIRECTION_DOWN || direction == DIRECTION_LEFT ||
+			direction == DIRECTION_UP || direction == DIRECTION_RIGHT)
+		{
+			frog.next_action = direction;
+		}
 	}
 }
+
+void entities_set_tutorial(void){
+	tutorial_flag = true;
+}
+
+bool entities_get_tutorial(void){
+	return tutorial_flag;
+}
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -487,51 +502,49 @@ static void frog_update(void)
 		}
 	}
 
-	// donde esta parada
-	if (!frog.moving)
+
+unsigned int y_no_offset = frog.y - FROG_OFFSET_Y;
+
+// en alguna fila de descanso o de autos
+if (y_no_offset >= CELL_H * (lanes_cars[0] - 1) && y_no_offset <= DISPLAY_H - CELL_H)
+	frog.state = FROG_STATE_ROAD;
+
+// en alguna fila de agua. Luego se actualiza si es sobre tronco o turtle
+else if (y_no_offset >= CELL_H * 2 && y_no_offset <= CELL_H * (lanes_cars[0] - 1))
+	frog.state = FROG_STATE_WATER;
+
+// choque contra alguno de los muros superiores, o llegada bien a un goal
+else if (y_no_offset < CELL_H * 2)
+{
+	if (!is_frog_in_goal())
 	{
-		unsigned int y_no_offset = frog.y - FROG_OFFSET_Y;
+		frog.state = FROG_STATE_CRASH_WALL;
+	}
 
-		// en alguna fila de descanso o de autos
-		if (y_no_offset >= CELL_H * (lanes_cars[0] - 1) && y_no_offset <= DISPLAY_H - CELL_H)
-			frog.state = FROG_STATE_ROAD;
+	else
+	{
+		frog.state = FROG_STATE_GOAL;
 
-		// en alguna fila de agua. Luego se actualiza si es sobre tronco o turtle
-		else if (y_no_offset >= CELL_H * 2 && y_no_offset <= CELL_H * (lanes_cars[0] - 1))
-			frog.state = FROG_STATE_WATER;
-
-		// choque contra alguno de los muros superiores, o llegada bien a un goal
-		else if (y_no_offset < CELL_H * 2)
+		// colision con coin
+		if (coin.used)
 		{
-			if (!is_frog_in_goal())
+			if (collideShort(coin.x,
+								coin.y,
+								SPRITE_COIN_SIDE,
+								SPRITE_COIN_SIDE,
+								frog.x,
+								frog.y,
+								FROG_W,
+								FROG_H))
 			{
-				frog.state = FROG_STATE_CRASH_WALL;
+				frog.state = FROG_STATE_GOAL_COIN;
+				coin.used = false;
 			}
-
-			else
-			{
-				frog.state = FROG_STATE_GOAL;
-
-				// colision con coin
-				if (coin.used)
-				{
-					if (collideShort(coin.x,
-									 coin.y,
-									 SPRITE_COIN_SIDE,
-									 SPRITE_COIN_SIDE,
-									 frog.x,
-									 frog.y,
-									 FROG_W,
-									 FROG_H))
-					{
-						frog.state = FROG_STATE_GOAL_COIN;
-						coin.used = false;
-					}
-				}
-			}
-
-			interaction_flag = true;
 		}
+	}
+
+	interaction_flag = true;
+}
 
 		/*---*/
 
@@ -558,7 +571,7 @@ static void frog_update(void)
 				}
 			}
 		}
-	}
+	
 
 	if (!interaction_flag)
 	{

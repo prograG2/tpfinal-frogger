@@ -47,6 +47,20 @@ void entities_draw(void);
  */
 void entities_move_frog(unsigned char direction);
 
+/**
+ * @brief Setea el estado del flag tutorial
+ * 
+ */
+void entities_set_tutorial(void);
+
+/**
+ * @brief Indica el estado del flag tutorial
+ * 
+ * @return true Tutorial done
+ * @return false Playing tutorial
+ */
+bool entities_get_tutorial(void);
+
 /*******************************************************************************
  ******************************************************************************/
 
