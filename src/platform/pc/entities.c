@@ -469,9 +469,9 @@ static void frog_update(void)
 
 	bool interaction_flag = false;
 
-	if (!frog.moving)
+	if(!frog.moving)
 	{
-		if (frog.next_action == DIRECTION_DOWN || frog.next_action == DIRECTION_LEFT ||
+		if(frog.next_action == DIRECTION_DOWN || frog.next_action == DIRECTION_LEFT ||
 			frog.next_action == DIRECTION_UP || frog.next_action == DIRECTION_RIGHT)
 		{
 			frog.facing = frog.next_action;
@@ -479,21 +479,22 @@ static void frog_update(void)
 			frog.next_action = DIRECTION_NONE;
 			allegro_sound_play_effect_jump();
 		}
+
 	}
 
 	else if (frog.moving)
 	{
 
-		if (frog.facing == DIRECTION_LEFT)
+		if(frog.facing == DIRECTION_LEFT)
 			frog.x -= STEP_FRACTION_SIZE;
-		else if (frog.facing == DIRECTION_RIGHT)
+		else if(frog.facing == DIRECTION_RIGHT)
 			frog.x += STEP_FRACTION_SIZE;
-		else if (frog.facing == DIRECTION_UP)
+		else if(frog.facing == DIRECTION_UP)
 			frog.y -= STEP_FRACTION_SIZE;
-		else if (frog.facing == DIRECTION_DOWN)
+		else if(frog.facing == DIRECTION_DOWN)
 			frog.y += STEP_FRACTION_SIZE;
 
-		if (++frog.steps >= STEP_RATIO)
+		if(++frog.steps >= STEP_RATIO)
 		{
 			frog.steps = 0;
 			frog.moving = false;
@@ -503,197 +504,204 @@ static void frog_update(void)
 	}
 
 
-unsigned int y_no_offset = frog.y - FROG_OFFSET_Y;
-
-// en alguna fila de descanso o de autos
-if (y_no_offset >= CELL_H * (lanes_cars[0] - 1) && y_no_offset <= DISPLAY_H - CELL_H)
-	frog.state = FROG_STATE_ROAD;
-
-// en alguna fila de agua. Luego se actualiza si es sobre tronco o turtle
-else if (y_no_offset >= CELL_H * 2 && y_no_offset <= CELL_H * (lanes_cars[0] - 1))
-	frog.state = FROG_STATE_WATER;
-
-// choque contra alguno de los muros superiores, o llegada bien a un goal
-else if (y_no_offset < CELL_H * 2)
-{
-	if (!is_frog_in_goal())
+	//donde esta parada
+	if(!frog.moving)
 	{
-		frog.state = FROG_STATE_CRASH_WALL;
+		unsigned int y_no_offset = frog.y - FROG_OFFSET_Y;
+
+		//en alguna fila de descanso o de autos
+		if(y_no_offset >= CELL_H * (lanes_cars[0] - 1) && y_no_offset <= DISPLAY_H - CELL_H)
+			frog.state = FROG_STATE_ROAD;
+
+		//en alguna fila de agua. Luego se actualiza si es sobre tronco o turtle
+		else if(y_no_offset >= CELL_H * 2 && y_no_offset <= CELL_H * (lanes_cars[0] - 1))
+			frog.state = FROG_STATE_WATER;
+
+		//choque contra alguno de los muros superiores, o llegada bien a un goal
+		else if (y_no_offset < CELL_H * 2)
+		{
+			if(!is_frog_in_goal())
+			{
+				frog.state = FROG_STATE_CRASH_WALL;
+			}
+
+			else
+			{
+				frog.state = FROG_STATE_GOAL;
+
+				//colision con coin
+				if(coin.used)
+				{
+					if(collideShort(	coin.x,
+										coin.y,
+										SPRITE_COIN_SIDE,
+										SPRITE_COIN_SIDE,
+										frog.x,
+										frog.y,
+										FROG_W,
+										FROG_H))
+					{
+						frog.state = FROG_STATE_GOAL_COIN;
+						coin.used = false;
+					}
+				}
+
+				
+			}
+
+			interaction_flag = true;
+		}
+			
 	}
 
-	else
+	if(!interaction_flag)
 	{
-		frog.state = FROG_STATE_GOAL;
-
-		// colision con coin
-		if (coin.used)
+		//colision con autos
+		for(i = 0; i < CARS_MAX_USED; i++)
 		{
-			if (collideShort(coin.x,
-								coin.y,
-								SPRITE_COIN_SIDE,
-								SPRITE_COIN_SIDE,
+			if(!car[i].used)
+				continue;
+			
+			if(collideShort(	car[i].x,
+								car[i].y,
+								car[i].length,
+								CAR_H,
 								frog.x,
 								frog.y,
 								FROG_W,
 								FROG_H))
 			{
-				frog.state = FROG_STATE_GOAL_COIN;
-				coin.used = false;
+				frog.state = FROG_STATE_CRASH_CAR;
+				interaction_flag = true;
+				break;	//no puede chocar con 2 autos a la vez
 			}
 		}
 	}
 
-	interaction_flag = true;
-}
-
-		/*---*/
-
-		if (!interaction_flag)
-		{
-			// colision con autos
-			for (i = 0; i < CARS_MAX_USED; i++)
-			{
-				if (!car[i].used)
-					continue;
-
-				if (collideShort(car[i].x,
-								 car[i].y,
-								 car[i].length,
-								 CAR_H,
-								 frog.x,
-								 frog.y,
-								 FROG_W,
-								 FROG_H))
-				{
-					frog.state = FROG_STATE_CRASH_CAR;
-					interaction_flag = true;
-					break; // no puede chocar con 2 autos a la vez
-				}
-			}
-		}
-	
-
-	if (!interaction_flag)
+	if(!interaction_flag)
 	{
-		// esta en algun tronco?
-		for (i = 0; i < LOGS_MAX_USED; i++)
+		//esta en algun tronco?
+		for(i = 0; i < LOGS_MAX_USED; i++)
 		{
-			if (!log[i].used)
+			if(!log[i].used)
 				continue;
 
-			if (insideShortScaled(log[i].x,
-								  log[i].y,
-								  LOG_W,
-								  LOG_H,
-								  frog.x,
-								  frog.y,
-								  FROG_W,
-								  FROG_H,
-								  INSERTION_FACTOR))
+			if(insideShortScaled(	log[i].x,
+									log[i].y,
+									LOG_W,
+									LOG_H,
+									frog.x,
+									frog.y,
+									FROG_W,
+									FROG_H,
+									INSERTION_FACTOR))
 			{
 				frog.x += log[i].dx;
 				frog.state = FROG_STATE_LOG;
 				interaction_flag = true;
-				break; // no puede estar en 2 troncos a la vez
+				break;		//no puede estar en 2 troncos a la vez
 			}
 		}
 	}
-
-	if (!interaction_flag)
+	
+	if(!interaction_flag)
 	{
-		// esta en algun turtle_pack?
-		for (i = 0; i < TURTLES_MAX_USED; i++)
+		//esta en algun turtle_pack?
+		for(i = 0; i < TURTLES_MAX_USED; i++)
 		{
-			// Omite si el pack no esta usado o si esta bajo agua
-			if (!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
+			//Omite si el pack no esta usado o si esta bajo agua
+			if(!turtle_pack[i].used || turtle_pack[i].state == TURTLE_STATE_WATER)
 				continue;
 
-			if (insideShortScaled(turtle_pack[i].x,
-								  turtle_pack[i].y,
-								  turtle_pack[i].wide,
-								  TURTLE_SIDE,
-								  frog.x,
-								  frog.y,
-								  FROG_W,
-								  FROG_H,
-								  INSERTION_FACTOR))
+			if(insideShortScaled(	turtle_pack[i].x,
+									turtle_pack[i].y,
+									turtle_pack[i].wide,
+									TURTLE_SIDE,
+									frog.x,
+									frog.y,
+									FROG_W,
+									FROG_H,
+									INSERTION_FACTOR))
 			{
 				frog.x += turtle_pack[i].dx;
 				frog.state = FROG_STATE_TURTLE;
 				interaction_flag = true;
-				break; // no puede estar en 2 packs a la vez
+				break;		//no puede estar en 2 packs a la vez
 			}
 		}
 	}
+	
 
-	// revision de limites
-	if (frog.x < FROG_MIN_X)
+	//revision de limites
+	if(frog.x < FROG_MIN_X)
 		frog.x = FROG_MIN_X;
-	else if (frog.x > FROG_MAX_X)
+	else if(frog.x > FROG_MAX_X)
 		frog.x = FROG_MAX_X;
-	else if (frog.y < FROG_MIN_Y)
+	else if(frog.y < FROG_MIN_Y)
 		frog.y = FROG_MIN_Y;
-	else if (frog.y > FROG_MAX_Y)
+	else if(frog.y > FROG_MAX_Y)
 		frog.y = FROG_MAX_Y;
 
 	switch (frog.state)
 	{
-	case FROG_STATE_WATER:
-		game_data_subtract_live();
-		allegro_sound_play_effect_drowned();
+		case FROG_STATE_WATER:
+			game_data_subtract_live();
+			allegro_sound_play_effect_drowned();
 
-		splash_init(frog.x, frog.y);
+			splash_init(frog.x, frog.y);
 
-		frog_init();
+			frog_init();
+			
+			
+			break;
+		
+		case FROG_STATE_CRASH_CAR:
+			game_data_subtract_live();
+			allegro_sound_play_effect_crash();
 
-		break;
+			corpse_init(frog.x, frog.y);
 
-	case FROG_STATE_CRASH_CAR:
-		game_data_subtract_live();
-		allegro_sound_play_effect_crash();
+			frog_init();
 
-		corpse_init(frog.x, frog.y);
+			break;
+		
+		case FROG_STATE_CRASH_WALL:
+			game_data_subtract_live();
+			allegro_sound_play_effect_crash();
 
-		frog_init();
+			corpse_init(frog.x, frog.y);
 
-		break;
+			frog_init();
 
-	case FROG_STATE_CRASH_WALL:
-		game_data_subtract_live();
-		allegro_sound_play_effect_crash();
+			break;
+		
+		case FROG_STATE_GOAL:
+			game_data_add_run_time_goal();
+			game_data_add_score();
+			allegro_sound_play_effect_goal();
+			
+			frog_init();
+			
+			break;
+			
+		case FROG_STATE_GOAL_COIN:
+			game_data_add_run_time_goal_bonus();
+			game_data_add_score_bonus();
+			allegro_sound_play_effect_bonus();
 
-		corpse_init(frog.x, frog.y);
+			frog_init();
 
-		frog_init();
-
-		break;
-
-	case FROG_STATE_GOAL:
-		game_data_add_run_time_goal();
-		game_data_add_score();
-		allegro_sound_play_effect_goal();
-
-		frog_init();
-
-		break;
-
-	case FROG_STATE_GOAL_COIN:
-		game_data_add_run_time_goal_bonus();
-		game_data_add_score_bonus();
-		allegro_sound_play_effect_bonus();
-
-		frog_init();
-
-		break;
-
-	default:
-		break;
+			break;
+		
+		default:
+			break;
 	}
 
 #ifdef DEBUG_ENTITIES_TEXT
-	if (!(game_frames % 10))
+	if(!(game_frames % 10))
 		printf("state: %d ~~ y_no_offset: %d\n", frog.state, frog.y - FROG_OFFSET_Y);
 #endif
+
 }
 
 static void frog_draw(void)
