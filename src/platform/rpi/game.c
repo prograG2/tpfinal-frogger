@@ -121,7 +121,9 @@ void limpiarMapa()
 void moverCarrriles(int x)
 {
   for (int i = 0; i < 5; i++)
-    juego.carril[i].completo <<= x;
+    juego.carril[i].completo <<= x; // movimiento de autos/troncos
+  if(juego.agua && juego.jugador_posicion_sur < CANT_FILAS - 2 && juego.jugador_posicion_sur > 4)
+    moverIzda(); //animación de movimiento de jugador con los troncos
 }
 
 void spawnearAutos()
@@ -131,9 +133,9 @@ void spawnearAutos()
   {
     if (juego.agua)
     {
-      if (!(juego.carril[i].completo & 0b1111111111) && !(rand() % 30))
+      if (!(juego.carril[i].completo & 0b1111111111) && !(rand() % 15))
         juego.carril[i].completo |= 0b111111;
-      else if (!(juego.carril[i].completo & 0b111111111111) && !(rand() % 45))
+      else if (!(juego.carril[i].completo & 0b111111111111) && !(rand() % 30))
         juego.carril[i].completo |= 0b11111111;
     }
     else

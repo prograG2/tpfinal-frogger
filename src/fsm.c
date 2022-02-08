@@ -565,10 +565,9 @@ static void procesar_game_over(void)
 
     actualizarRanking(getNombre(), getMaxPuntos());
   }
-
-  mostrarTexto("FIN DEL JUEGO", POS_MSJ_GAME_OVER);
-  int menu[2] = {REINICIAR, SALIRTXT};
   limpiarDisplay();
+  dejarTexto("FIN DEL JUEGO", POS_MSJ_GAME_OVER, true);
+  int menu[2] = {REINICIAR, SALIRTXT};
   setMenu(menu, 2);
   setOpcion(0);
 }
