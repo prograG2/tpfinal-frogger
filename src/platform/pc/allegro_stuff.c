@@ -266,7 +266,7 @@ static bool rick_flag;
 static ALLEGRO_MONITOR_INFO monitor_info;
 
 static double stream_gain = GLOBAL_STREAM_VOLUME; //ganancia para musica y efectos
-static double last_stream_gain; //ultima ganancia antes del mute
+static double last_stream_gain = GLOBAL_STREAM_VOLUME; //ultima ganancia antes del mute
 
 static bool display_state = false;
 

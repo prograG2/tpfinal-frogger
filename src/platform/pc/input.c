@@ -44,7 +44,6 @@ event_t leerEntradas(void)
 	// bool queue_no_empty;
 
 	event = allegro_get_next_event();
-	int i;
 
 	if (event != NULL)
 	{
@@ -72,40 +71,24 @@ event_t leerEntradas(void)
 					allegro_sound_set_stream_gain_down();
 					break;
 
-				case ALLEGRO_KEY_M:
-					allegro_sound_mute();
-					break;
-
-				case ALLEGRO_KEY_U:
+				case ALLEGRO_KEY_2:
 					allegro_sound_unmute();
 					break;
 
-				case ALLEGRO_KEY_8:
-					break;
-
-				case ALLEGRO_KEY_9:
-					break;
-
 				case ALLEGRO_KEY_1:
-					game_data_add_score();
-					break;
-
-				case ALLEGRO_KEY_2:
-					retorno = GAME_OVER;
-					break;
-
-				case ALLEGRO_KEY_3:
-					// int i;
-					for (i = 0; i < MAX_GOALS; i++)
-						game_data_set_goal(i);
+					allegro_sound_mute();
 					break;
 
 				case ALLEGRO_KEY_4:
-					game_data_reset_goals();
+					game_data_add_score();
 					break;
 
 				case ALLEGRO_KEY_5:
 					game_data_add_run_time_goal();
+					break;
+
+				case ALLEGRO_KEY_6:
+					retorno = GAME_OVER;
 					break;
 
 				default:
