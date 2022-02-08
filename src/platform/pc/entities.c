@@ -38,6 +38,7 @@
 #define CAR_SPEED_INCREASE 2
 #define CAR_WAIT_INCREASE 1
 #define CARS_EXTRA_SEPARATOR CAR_W * 2
+#define CAR_SP_CH_WAIT FPS // frames para cambiar dfe velocidad
 
 #define TURTLES_MIN_PER_PACK 1
 #define TURTLES_MAX_PER_PACK 3
@@ -551,31 +552,31 @@ static void frog_update(void)
 
 			interaction_flag = true;
 		}
-			
-	}
 
-	if(!interaction_flag)
-	{
-		//colision con autos
-		for(i = 0; i < CARS_MAX_USED; i++)
+		if(!interaction_flag)
 		{
-			if(!car[i].used)
-				continue;
-			
-			if(collideShort(	car[i].x,
-								car[i].y,
-								car[i].length,
-								CAR_H,
-								frog.x,
-								frog.y,
-								FROG_W,
-								FROG_H))
+			//colision con autos
+			for(i = 0; i < CARS_MAX_USED; i++)
 			{
-				frog.state = FROG_STATE_CRASH_CAR;
-				interaction_flag = true;
-				break;	//no puede chocar con 2 autos a la vez
+				if(!car[i].used)
+					continue;
+				
+				if(collideShort(	car[i].x,
+									car[i].y,
+									car[i].length,
+									CAR_H,
+									frog.x,
+									frog.y,
+									FROG_W,
+									FROG_H))
+				{
+					frog.state = FROG_STATE_CRASH_CAR;
+					interaction_flag = true;
+					break;	//no puede chocar con 2 autos a la vez
+				}
 			}
 		}
+			
 	}
 
 	if(!interaction_flag)
@@ -1031,7 +1032,7 @@ static void cars_update(void)
 				case DIFFICULTIES_NORMAL:
 					if (car[i].lane == normal_diff_lane)
 					{
-						if (!(game_frames % FPS))
+						if (!(game_frames % CAR_SP_CH_WAIT))
 						{
 							if (car[i].fast == 0)
 							{
@@ -1053,7 +1054,7 @@ static void cars_update(void)
 				case DIFFICULTIES_HARD:
 					if ((car[i].lane == hard_diff_lane_1) || (car[i].lane == hard_diff_lane_2))
 					{
-						if (!(game_frames % FPS))
+						if (!(game_frames % CAR_SP_CH_WAIT))
 						{
 							if (car[i].fast == 0)
 							{

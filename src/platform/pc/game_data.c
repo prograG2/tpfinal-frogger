@@ -493,19 +493,22 @@ static void data_init(void)
 
 static void data_update(void)
 {
-
-	// diferencia entre el tiempo actual y el de referencia
-	data.timer_in_sec = time(NULL) - time_ref;
 	data.frames++;
 
-	data.run.time = time(NULL) - data.run.time_ref;
-
-	if (data.run.time > last_loop_time)
+	if(entities_get_tutorial())
 	{
-		data.run.time_left--;
-		last_loop_time++;
+		// diferencia entre el tiempo actual y el de referencia
+		data.timer_in_sec = time(NULL) - time_ref;
+		data.run.time = time(NULL) - data.run.time_ref;
+
+		if (data.run.time > last_loop_time)
+		{
+			data.run.time_left--;
+			last_loop_time++;
+		}
+		last_loop_time = data.run.time;
 	}
-	last_loop_time = data.run.time;
+	
 }
 
 static void hud_draw(void)

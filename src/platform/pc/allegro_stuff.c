@@ -265,7 +265,8 @@ static bool rick_flag;
 
 static ALLEGRO_MONITOR_INFO monitor_info;
 
-static double stream_gain = GLOBAL_STREAM_VOLUME;
+static double stream_gain = GLOBAL_STREAM_VOLUME; //ganancia para musica y efectos
+static double last_stream_gain; //ultima ganancia antes del mute
 
 static bool display_state = false;
 
@@ -673,6 +674,7 @@ void allegro_sound_set_stream_gain_up(void)
 	if (stream_gain <= 0.9)
 	{
 		stream_gain += 0.1;
+		last_stream_gain = stream_gain;
 		al_set_audio_stream_gain(sounds.stream, stream_gain);
 	}
 }
@@ -682,8 +684,22 @@ void allegro_sound_set_stream_gain_down(void)
 	if (stream_gain >= 0.1)
 	{
 		stream_gain -= 0.1;
+		last_stream_gain = stream_gain;
 		al_set_audio_stream_gain(sounds.stream, stream_gain);
 	}
+}
+
+void allegro_sound_mute(void)
+{
+	last_stream_gain = stream_gain;
+	stream_gain = 0;
+	al_set_audio_stream_gain(sounds.stream, stream_gain);
+}
+
+void allegro_sound_unmute(void)
+{
+	stream_gain = last_stream_gain;
+	al_set_audio_stream_gain(sounds.stream, stream_gain);
 }
 
 #pragma endregion allegro_sound_control
@@ -691,67 +707,67 @@ void allegro_sound_set_stream_gain_down(void)
 #pragma region allegro_sound_play_sample
 void allegro_sound_play_effect_bonus(void)
 {
-	al_play_sample(sounds.samples.bonus, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.bonus, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_click(void)
 {
-	al_play_sample(sounds.samples.click, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.click, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_crash(void)
 {
-	al_play_sample(sounds.samples.crash, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.crash, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_drowned(void)
 {
-	al_play_sample(sounds.samples.drowned, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.drowned, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_goal(void)
 {
-	al_play_sample(sounds.samples.goal, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.goal, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_jump(void)
 {
-	al_play_sample(sounds.samples.jump, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.jump, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_low_time(void)
 {
-	al_play_sample(sounds.samples.low_time, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.low_time, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_run_completed(void)
 {
-	al_play_sample(sounds.samples.run_completed, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.run_completed, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_menu_enter(void)
 {
-	al_play_sample(sounds.samples.menu_enter, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.menu_enter, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_new_max_score(void)
 {
-	al_play_sample(sounds.samples.new_max_score, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.new_max_score, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_exiting(void)
 {
-	al_play_sample(sounds.samples.exiting, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.exiting, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_no_time(void)
 {
-	al_play_sample(sounds.samples.no_time, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.no_time, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 void allegro_sound_play_effect_coin_drop(void)
 {
-	al_play_sample(sounds.samples.coin_drop, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+	al_play_sample(sounds.samples.coin_drop, stream_gain, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
 }
 
 #pragma endregion allegro_sound_play_sample

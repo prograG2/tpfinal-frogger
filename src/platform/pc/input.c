@@ -72,6 +72,14 @@ event_t leerEntradas(void)
 					allegro_sound_set_stream_gain_down();
 					break;
 
+				case ALLEGRO_KEY_M:
+					allegro_sound_mute();
+					break;
+
+				case ALLEGRO_KEY_U:
+					allegro_sound_unmute();
+					break;
+
 				case ALLEGRO_KEY_8:
 					break;
 

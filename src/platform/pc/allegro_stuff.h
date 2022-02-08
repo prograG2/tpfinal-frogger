@@ -359,6 +359,18 @@ void allegro_sound_set_stream_gain_up(void);
  */
 void allegro_sound_set_stream_gain_down(void);
 
+/**
+ * @brief Mutea completamente el sonido de allegro
+ * 
+ */
+void allegro_sound_mute(void);
+
+/**
+ * @brief Desmutea el sonido de allegro
+ * 
+ */
+void allegro_sound_unmute(void);
+
 #pragma endregion allegro_sound_control
 
 #pragma region allegro_sound_play_sample
