@@ -66,6 +66,7 @@
 <div align="center">
   <a href="https://github.com/prograG2/tpfinal-frogger">
 	<img src="doc/collage.jpg" alt="Screenshot" width="600" height="500">
+	<img src="doc/juego_rpi_imagen.jpg" alt="Screenshot" width="600" height="500">
   </a>
 </div>
 <br />
@@ -126,14 +127,26 @@ A continuación se mencionan algunas de las característimas destacables de la i
     * Animación que anticipa despawneo
 * Dificultad incremental al avanzar en el juego
   * Se reduce el tiempo del nivel
-  * ???
+  * Aumenta velocidad de movimiento de entidades
 * Otros:
   * Animación de caída al agua
   * Sprite de muerte (atropellado o choque contra un muro de la zona de llegada)
   * *Easter egg* en la partida
   
 ### RPi
-
+* Entidades en la partida:
+  * **Autos**:
+    * 2 tipos de autos
+	* 5 carriles dedicados
+	* Único sentido de circulación. La velocidad es constante en todos los vehículos, pero aumenta con la dificultad y el nivel.
+  * **Troncos**:
+    * 5 carriles dedicados
+    * La velocidad es constante en todos los troncos, pero aumenta con la dificultad y el nivel.
+* Dificultad incremental al avanzar en el juego
+  * Se reduce el tiempo del nivel
+  * Aumenta la velocidad de entidades
+* Otros:
+  * Sonidos de efectos
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -164,7 +177,10 @@ Para ambas plataformas, será necesario contar con las herramientas `gcc` y `mak
 	```
 
 #### RPi
-<br />
+* Hardware
+	Se requiere una Raspberry Pi 3, un display matricial de 16x16 y joystick.
+* Software
+	Se requiere contar con todas las bibliotecas para el display, sonido y joystick. En caso de que aquellas que se presentan en el repositorio no funcionen, estas deberán ser reemplazadas por las que correspondan.
 
 ### Installation
 
