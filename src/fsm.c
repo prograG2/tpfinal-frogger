@@ -49,7 +49,7 @@
 
 typedef struct state_diagram_edge STATE;
 
-// Estructura genérica de un estado de la FSM.
+// Estructura genérica de una arista
 struct state_diagram_edge
 {
   event_t evento;
