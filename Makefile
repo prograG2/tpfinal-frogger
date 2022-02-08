@@ -33,17 +33,18 @@ SRC_RPI_DIR			= $(SRC_DIR)/platform/rpi
 _OBJS_MAIN 		= main.o queue.o fsm.o ranking.o
 OBJS_MAIN 		= $(patsubst %, $(OBJ_DIR)/%, $(_OBJS_MAIN))
 
-# Objetos genericos de plataforma
+# Objetos genéricos de plataforma
 _OBJS_GENERIC = display.o game.o input.o menu.o nombre.o sound.o
 
-# Objetos especificos PC
+# Objetos específicos PC
 _OBJS_PC 		= allegro_stuff.o entities.o game_data.o geometry.o
 _OBJS_PC		+= $(_OBJS_GENERIC)
 OBJS_PC			= $(patsubst %.o,$(OBJ_DIR)/%_PC.o,$(_OBJS_PC))
 _OBJS_PC_ALGIF 	= algif.o bitmap.o gif.o lzw.o
 OBJS_PC_ALGIF	= $(patsubst %.o,$(OBJ_DIR)/%_PC_ALGIF.o,$(_OBJS_PC_ALGIF))
+OBJS_PC			+= $(OBJS_PC_ALGIF)
 
-# Objetos especificos RPI
+# Objetos específicos RPI
 _OBJS_RPI		= bitmap.o mensajes.o
 _OBJS_RPI		+= $(_OBJS_GENERIC)
 OBJS_RPI		= $(patsubst %.o,$(OBJ_DIR)/%_RPI.o,$(_OBJS_RPI))
@@ -65,7 +66,6 @@ LIBS		= -lpthread
 
 # PC
 LIBS_PC		= `pkg-config allegro-5 allegro_font-5 allegro_ttf-5 allegro_primitives-5 allegro_image-5 allegro_audio-5 allegro_acodec-5 --libs --cflags`
-LIBS_PC 	+= -L$(LIB_DIR) -lalgif
 
 # RPI
 LIBS_RPI	=  -L$(LIB_DIR) -lrpiutils -lSDL2
@@ -82,7 +82,7 @@ CC 			= gcc
 # Debugger
 DEBUGGER	= gdb
 
-# Flags de compilacion
+# Flags de compilación
 CFLAGS 		= -Wall -Wno-unknown-pragmas
 ifdef DEBUG
 CFLAGS		+= -g
@@ -94,16 +94,14 @@ endif
 
 
 
-# Deteccion de plataforma ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Detección de plataforma ~~~~~~~~~~~~~~~~~~~~~~~~~
 # https://westermarck.com/thoughts/raspberry-pi-linux-32-64/
 
 ARCH		= $(shell uname -m)
 ifeq ($(ARCH), armv7l)
 PLATFORM	= RPI
-EXTRA_DEPS	= 
 else
 PLATFORM 	= PC
-EXTRA_DEPS	= $(LIB_DIR)/libalgif.a
 endif
 
 # Nombre del ejecutable
@@ -115,7 +113,7 @@ OBJS		+= $(OBJS_$(PLATFORM))
 # Bibliotecas a usar
 LIBS		+= $(LIBS_$(PLATFORM))
 
-# Deteccion de plataforma ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Detección de plataforma ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
@@ -155,7 +153,6 @@ run: all
 .PHONY: clean
 clean:
 	$(RM) $(OBJ_DIR)/*.o
-	$(RM) $(EXTRA_DEPS)
 
 ## Borra todos los objetos, el ejecutable y el ranking.
 .PHONY: cleaner
@@ -166,16 +163,16 @@ cleaner: clean
 
 
 
-# Linkeo de objetos y creacion del ejecutable ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Linkeo de objetos y creación del ejecutable ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$(TARGET): $(OBJS) $(EXTRA_DEPS)
+$(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $@ -lm
 
-# Linkeo de objetos y creacion del ejecutable ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Linkeo de objetos y creación del ejecutable ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-# Compilacion generica ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilación genérica ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $(OBJ_DIR)/main.o: $(patsubst %,$(SRC_DIR)/%,main.c fsm.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -189,11 +186,11 @@ $(OBJ_DIR)/fsm.o: $(patsubst %,$(SRC_DIR)/%,fsm.c fsm.h queue.h) $(patsubst %.o,
 $(OBJ_DIR)/ranking.o: $(patsubst %,$(SRC_DIR)/%,ranking.c ranking.h queue.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Compilacion generica ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilación genérica ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-# Compilacion de PC ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilación de PC ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $(OBJ_DIR)/display_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,display.c allegro_stuff.h game_data.h) $(patsubst %,$(SRC_DIR)/%,display.h queue.h ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -227,10 +224,6 @@ $(OBJ_DIR)/geometry_PC.o: $(patsubst %,$(SRC_PC_DIR)/%,geometry.c geometry.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
-$(LIB_DIR)/libalgif.a: $(OBJS_PC_ALGIF)
-	ar -rc $@ $(OBJS_PC_ALGIF)
-	ranlib $@
-
 $(OBJ_DIR)/algif_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/algif.c)
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -243,11 +236,11 @@ $(OBJ_DIR)/gif_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/gif.c)
 $(OBJ_DIR)/lzw_PC_ALGIF.o: $(patsubst %,$(SRC_PC_DIR)/%,algif5/lzw.c)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Compilacion de PC ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilación de PC ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-# Compilacion de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilación de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $(OBJ_DIR)/display_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,display.c mensajes.h bitmap.h disdrv.h) $(patsubst %,$(SRC_DIR)/%,display.h ranking.h)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -278,7 +271,7 @@ $(OBJ_DIR)/mensajes_RPI.o: $(patsubst %,$(SRC_RPI_DIR)/%,mensajes.c mensajes.h b
 $(OBJ_DIR)/audio_RPI_SDL2.o: $(patsubst %,$(SRC_RPI_DIR)/%,simpleSDL2audio/audio.c simpleSDL2audio/audio.h)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Compilacion de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
+# Compilación de RPI ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
@@ -288,7 +281,7 @@ $(OBJ_DIR)/audio_RPI_SDL2.o: $(patsubst %,$(SRC_RPI_DIR)/%,simpleSDL2audio/audio
 
 ## Compila (sin linkear) todos los objetos de PC
 .PHONY: compile-pc
-compile-pc: $(OBJS_PC) $(OBJS_PC_ALGIF)
+compile-pc: $(OBJS_PC)
 
 ## Compila (sin linkear) todos los objetos de RPI
 .PHONY: compile-rpi

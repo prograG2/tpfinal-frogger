@@ -154,6 +154,7 @@ void desiniciarRanking(void)
 		free(names[i]);
 
 	free(names);
+	free(scores);
 }
 
 bool verificarJugadorRanking(char *name)
