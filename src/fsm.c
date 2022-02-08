@@ -207,7 +207,6 @@ extern STATE seleccionando_dificultad[];
 extern STATE viendo_ranking[];
 extern STATE viendo_creditos[];
 extern STATE poniendo_nombre[];
-
 extern STATE jugando[];
 extern STATE en_pausa[];
 extern STATE en_game_over[];
