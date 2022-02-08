@@ -372,7 +372,7 @@ void allegro_reinit_display(void)
 		// Centrado en pantalla, según el monitor
 		al_set_new_window_position(monitor_info.x2 / 2 - DISPLAY_W / 2, monitor_info.y2 / 2 - DISPLAY_H / 2 - 50);
 	else
-		al_set_new_window_position(window_x, window_y);
+		al_set_new_window_position(window_x - 5, window_y - 29);
 
 	// opciones para el display (antialiasing)
 	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
