@@ -61,7 +61,7 @@
 #define SPRITE_MENU_GAME_OVER "sprite_menu_gameover"
 #define SPRITE_CREDITS "sprite_credits"
 #define SPRITE_NAME "sprite_name"
-#define SPRITE_TUTORIAL "sprite_tutorial"
+#define SPRITE_TUTORIAL "sprite_tutorial2"
 #define SPRITE_ICON "icon"
 #define SPRITE_DEAD "sprite_dead"
 #define SPRITE_BORDER "sprite_border"
