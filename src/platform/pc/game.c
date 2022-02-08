@@ -182,7 +182,7 @@ void actualizarInterfaz(void)
 		al_draw_bitmap(sprites.border, SPRITE_BORDER_START_X, SPRITE_BORDER_START_Y, 0);
 
 		if(!entities_get_tutorial()){
-				//tutorial_draw();
+				al_draw_bitmap(sprites.tutorial, 0, 0, 0);
 			}
 		if(!entities_get_tutorial() && allegro_get_last_key() == ALLEGRO_KEY_SPACE){
 				entities_set_tutorial();

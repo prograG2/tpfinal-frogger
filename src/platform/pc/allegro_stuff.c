@@ -61,6 +61,7 @@
 #define SPRITE_MENU_GAME_OVER "sprite_menu_gameover"
 #define SPRITE_CREDITS "sprite_credits"
 #define SPRITE_NAME "sprite_name"
+#define SPRITE_TUTORIAL "sprite_tutorial"
 #define SPRITE_ICON "icon"
 #define SPRITE_DEAD "sprite_dead"
 #define SPRITE_BORDER "sprite_border"
@@ -950,6 +951,9 @@ static void sprites_init(void)
 	path = make_sprite_path(SPRITE_NAME, path);
 	sprites.name = al_load_bitmap(path);
 
+	path = make_sprite_path(SPRITE_TUTORIAL, path);
+	sprites.tutorial = al_load_bitmap(path);
+
 	path = make_sprite_path(SPRITE_ICON, path);
 	sprites.icon = al_load_bitmap(path);
 
@@ -1036,6 +1040,8 @@ static void sprites_deinit(void)
 	al_destroy_bitmap(sprites.credits);
 
 	al_destroy_bitmap(sprites.name);
+
+	al_destroy_bitmap(sprites.tutorial);
 
 	al_destroy_bitmap(sprites.icon);
 

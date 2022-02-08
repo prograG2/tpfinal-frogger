@@ -84,6 +84,8 @@ typedef struct
 
 	ALLEGRO_BITMAP *name;
 
+	ALLEGRO_BITMAP *tutorial;
+
 	ALLEGRO_BITMAP *icon;
 
 	ALLEGRO_BITMAP *dead;
