@@ -34,10 +34,6 @@
   <p align="center">
 	Trabajo Práctico Final de 22.07 - Programación I, curso de 1er año de Ingeniería Electrónica del Instituto Tecnológico Buenos Aires (<a href="https://www.itba.edu.ar/">ITBA</a>).
 	<br />
-	<a href="https://github.com/prograG2/tpfinal-frogger"><strong>Explore the docs »</strong></a>
-	<br />
-	<br />
-	<a href="https://drive.google.com/file/d/1EKTfY6lPXKl7aFBDEpkf0zVYqBhvdM_r/view?usp=sharing">View Demo</a>
   </p>
 </div>
 
@@ -99,13 +95,16 @@ A continuación se mencionan algunas de las característimas destacables de la i
   * *Menú de game over*: permite reiniciar la partida o volver al menú principal.
 
 * **Audio**: se cuenta con cinco músicas según la ubicación en la que uno esté dentro del juego, además de diversos efectos de sonidos, tanto en el menú como en la partida en sí
+  
 * **Ranking**: cada jugador se irá registrando en el mismo cada vez que pierda una partida y haya logrado un puntaje mayor a 0. Si el jugador ya estaba en el ranking, solo se actualizará en él si lo superara. De no ingresar un nombre, se le asignará el de `PLAYER`. Se lo puede visualizar desde el menú principal
+  
 * **Créditos**: dentro del menú principal, se puede acceder a la sección de cŕeditos
 
 ### PC
 * Menú:
   * *Menú de pausa*: muestra el nombre del jugador, su puntaje actual, y su puntaje máximo si le corresponde.
   * *Menú de game over*: muestra el nombre del jugador, el puntaje que obtuvo, y si logró batir su récord.
+  
 * Entidades en la partida:
   * **Autos**:
     * 3 tipos de autos
@@ -125,9 +124,11 @@ A continuación se mencionan algunas de las característimas destacables de la i
     * Timing aleatorio (dentro de un margen) para spawnear y despawnear
     * Animación de rotación
     * Animación que anticipa despawneo
+  
 * Dificultad incremental al avanzar en el juego
   * Se reduce el tiempo del nivel
   * Aumenta velocidad de movimiento de entidades
+  
 * Otros:
   * Animación de caída al agua
   * Sprite de muerte (atropellado o choque contra un muro de la zona de llegada)
@@ -142,9 +143,11 @@ A continuación se mencionan algunas de las característimas destacables de la i
   * **Troncos**:
     * 5 carriles dedicados
     * La velocidad es constante en todos los troncos, pero aumenta con la dificultad y el nivel.
+  
 * Dificultad incremental al avanzar en el juego
   * Se reduce el tiempo del nivel
   * Aumenta la velocidad de entidades
+  
 * Otros:
   * Sonidos de efectos
 
@@ -177,9 +180,9 @@ Para ambas plataformas, será necesario contar con las herramientas `gcc` y `mak
 	```
 
 #### RPi
-* Hardware
+* **Hardware**  
 	Se requiere una Raspberry Pi 3, un display matricial de 16x16 y joystick.
-* Software
+* **Software**  
 	Se requiere contar con todas las bibliotecas para el display, sonido y joystick. En caso de que aquellas que se presentan en el repositorio no funcionen, estas deberán ser reemplazadas por las que correspondan.
 
 ### Installation
@@ -227,20 +230,26 @@ Para ejecutarlo:
 ### Controles
 
 #### PC
-* **F1**: bajar volumen música (hasta 0%)
-* **F2**: subir volumen música (hasta 100%)
+* **F1**: bajar volumen (hasta 0%)
+* **F2**: subir volumen (hasta 100%)
+* **1**: mutear volumen
+* **2**: desmutear volumen
 * **X button** (ventana): cerrar
+
 * En menús:
   * **Flecha arriba**: subir opción
   * **Flecha abajo**: bajar opción
   * **Enter**: seleccionar opción
+  
 * En ranking y créditos:
   * **Enter**: volver al menú principal
+  
 * Poniendo nombre:
   * **Letras A-Z**: ingresar letra
   * **Backspace**: borrar letra
   * **Escape**: volver al menú principal
   * **Enter**: confirmar el nombre y pasa al juego
+  
 * Partida:
   * **Flechas**: movimientos correspondientes para la rana
   * **Enter**: menu de pausa
@@ -248,6 +257,25 @@ Para ejecutarlo:
   * **9**: easter egg off
 
 #### RPi
+
+* En menús:
+  * **UP**: subir
+  * **DOWN**: bajar
+  * **Enter**: confirmar
+  
+* En ranking y créditos:
+  * **Enter**: ir a menú principal
+
+* Ingresando nombre:
+  * **UP**: siguiente letra
+  * **DOWN**: letra anterior
+  * **RIGHT**: confirmar letra
+  * **Enter**: confirmar nombre (jugar)
+
+* Partida:
+  * **Flechas**: movimiento de la rana
+  * **Enter**: pausa
+
 
 
 
