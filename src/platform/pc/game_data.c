@@ -306,16 +306,20 @@ unsigned long long game_data_get_score(void)
 
 void game_data_add_score(void)
 {
-	data.score += SCORE_PER_GOAL;
+	unsigned long long adder = SCORE_PER_GOAL + 250*(game_data_get_diff() - 1);
+
+	data.score += adder;
 	if(!is_last_goal())
-		trigger_show_adding_score(SCORE_PER_GOAL);
+		trigger_show_adding_score(adder);
 }
 
 void game_data_add_score_bonus(void)
 {
-	data.score += SCORE_PER_GOAL_COIN;
+	unsigned long long adder = SCORE_PER_GOAL_COIN + 250*(game_data_get_diff() - 1);
+
+	data.score += adder;
 	if(!is_last_goal())
-		trigger_show_adding_score(SCORE_PER_GOAL_COIN);
+		trigger_show_adding_score(adder);
 }
 
 void game_data_set_score_max(unsigned long long score)
@@ -598,8 +602,10 @@ static void next_run(void)
 	data.run.time = 0;
 	data.run.time_ref = time(NULL);
 
-	data.score += SCORE_PER_RUN;
-	trigger_show_adding_score(SCORE_PER_RUN);
+	unsigned long long adder = SCORE_PER_RUN + 250*(game_data_get_diff() - 1);
+
+	data.score += adder;
+	trigger_show_adding_score(adder);
 
 	last_loop_time = 0;
 
