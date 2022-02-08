@@ -28,6 +28,7 @@
 #define POS_AUTOS_INICIO 4
 #define POS_AUTOS_FIN 13
 #define CANT_CARRILES 5
+#define SPAWN_MOVIMIENTOS 64
 #define L_MAX 64
 
 /*******************************************************************************
@@ -130,16 +131,16 @@ void spawnearAutos()
   {
     if (juego.agua)
     {
-      if (!(juego.carril[i].completo & 0b1111111111) && !(rand() % 10))
+      if (!(juego.carril[i].completo & 0b1111111111) && !(rand() % 30))
         juego.carril[i].completo |= 0b111111;
-      else if (!(juego.carril[i].completo & 0b111111111111) && !(rand() % 20))
+      else if (!(juego.carril[i].completo & 0b111111111111) && !(rand() % 45))
         juego.carril[i].completo |= 0b11111111;
     }
     else
     {
-      if (!(juego.carril[i].completo & 0b111111) && !(rand() % 10))
+      if (!(juego.carril[i].completo & 0b111111) && !(rand() % 15))
         juego.carril[i].completo |= 0b11;
-      else if (!(juego.carril[i].completo & 0b11111111) && !(rand() % 20))
+      else if (!(juego.carril[i].completo & 0b11111111) && !(rand() % 30))
         juego.carril[i].completo |= 0b1111;
     }
   }
@@ -233,7 +234,7 @@ void respawn()
     juego.carril[i].completo = 0;
   limpiarMatriz(juego.mapa);
 
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < SPAWN_MOVIMIENTOS; i++)
   {
     moverCarrriles(1);
     spawnearAutos();
@@ -255,11 +256,11 @@ void moverAdelante()
     }
     else
     {
-      juego.puntos += 500;
+      juego.puntos += 500 + 250*(juego.dificultad);
       juego.ranas |= juego.jugador_1 | juego.jugador_2;
       if (juego.ranas == 0b1111111111111111) //si completé el nivel
       {
-        juego.puntos += 1000;
+        juego.puntos += 1000 + 250*(juego.dificultad);
         pausarJuego();
         juego.niv_actual++;
         reproducirEfecto(EFECTO_NIVEL_COMPLETO);
@@ -322,10 +323,10 @@ void inicializarJuego()
 
 void reiniciarTimer()
 {
-  juego.tiempo_inicio = CLOCKS_PER_SEC * (100 - (2 * (juego.dificultad + juego.niv_actual)));
+  juego.tiempo_inicio = CLOCKS_PER_SEC * (150 - (2 * (juego.dificultad + juego.niv_actual)));
   juego.tiempo = juego.tiempo_inicio;
   juego.tiempo_referencia = juego.tiempo_inicio;
-  juego.tiempo_refresco_autos = CLOCKS_PER_SEC * (1 - 0.125 * (2 * (juego.dificultad + juego.niv_actual - 1)));
+  juego.tiempo_refresco_autos = CLOCKS_PER_SEC * (1 - 0.05 * (2 * (juego.dificultad + juego.niv_actual - 1)));
   juego.tiempo_refresco_jugador = CLOCKS_PER_SEC >> 1;
   juego.tiempo_alerta = CLOCKS_PER_SEC * 15;
   juego.refresco_autos = false;

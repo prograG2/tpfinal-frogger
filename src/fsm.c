@@ -455,7 +455,6 @@ static void ir_a_viendo_creditos(void)
 static void salir_del_juego()
 {
   pthread_join(tinput, NULL);
-  pausarMusica();
   reproducirEfecto(EFECTO_SALIENDO);
   sleep(2);
   destruirMenu();
