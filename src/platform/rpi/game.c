@@ -85,12 +85,6 @@ extern matriz_t disp_matriz;
 static void reiniciarTimer();
 
 /*******************************************************************************
- * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
- ******************************************************************************/
-
-// +ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};+
-
-/*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 

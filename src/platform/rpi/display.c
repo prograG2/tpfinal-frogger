@@ -21,16 +21,6 @@
 #include <string.h>
 
 /*******************************************************************************
- * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
- ******************************************************************************/
-
-#define CASTEAR_POSICION(pos) ((pos) == POS_CREDITOS ? POS_MSJ3 : (((pos) == POS_OPCION) || ((pos) == POS_RANKING_2) ? POS_MSJ2 : POS_MSJ1))
-
-/*******************************************************************************
- * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
- ******************************************************************************/
-
-/*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
@@ -40,15 +30,10 @@ matriz_t disp_matriz;
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-/**
- * @brief
- *
- * @param ptr
- * @return void*
- */
 static void *threadTextoDisplay(void *ptr);
 static void *threadPresentacion(void *ptr);
 static void ulltoa(unsigned long long num, char *str);
+static int castear_posicion(int pos);
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -69,7 +54,7 @@ static int lines, i;
 static char **names;
 static unsigned long long *scores;
 
-static char *creditos_cadenas[] = {"PROGRAMACION TPF 2021 1C", "FROGGER", "AUTORES", "ALEJANDRO HEIR", "FRANCO AGGRIPINO", "MATIAS ALVAREZ", "TOMAS CASTRO"};
+static char *autores[] = {"ALEJANDRO HEIR", "FRANCO AGGRIPINO", "MATIAS ALVAREZ", "TOMAS CASTRO"};
 
 /*******************************************************************************
  *******************************************************************************
@@ -124,7 +109,7 @@ void limpiarDisplay()
 
 void mostrarTexto(char *txt, int pos)
 {
-	int posicion = CASTEAR_POSICION(pos);
+	int posicion = castear_posicion(pos);
 	mensaje_t msj = mensaje(txt, posicion, false);
 	while (!renglonIzquierdoLibre(&msj))
 	{
@@ -137,7 +122,7 @@ void mostrarTexto(char *txt, int pos)
 
 void dejarTexto(char *txt, int pos, bool repetir)
 {
-	int posicion = CASTEAR_POSICION(pos);
+	int posicion = castear_posicion(pos);
 
 	switch (posicion)
 	{
@@ -164,7 +149,7 @@ void cargarRanking(void)
 	borrarRenglon(texto2.renglon);
 	lines = getRankingLineas();
 	if (lines <= 0)
-		dejarTexto("NINGUNA PARTIDA COMPLETADA AUN", POS_MSJ2, true);
+		dejarTexto("NINGUNA PARTIDA COMPLETADA AUN", POS_OPCION, true);
 	else
 	{
 		names = getRankingNombres();
@@ -188,7 +173,7 @@ void mostrarRanking(void)
 		strcat(puesto_msj, " ");
 		ulltoa(scores[i], score_str);
 		strcat(puesto_msj, score_str);			 // se arma un string con el nombre de jugador y la puntuación
-		dejarTexto(puesto_msj, POS_MSJ2, false); // se muestra el string en la posición de abajo hasta que
+		dejarTexto(puesto_msj, POS_OPCION, false); // se muestra el string en la posición de abajo hasta que
 
 		if (++i >= lines) // apunto a la siguiente posición
 			i = 0;
@@ -202,10 +187,13 @@ void cargarCreditos()
 
 void mostrarCreditos(void)
 {
-	if ((renglonIzquierdoLibre(&texto3) && !thread_presentacion_encendido) && i < 7)
+	if (!texto3.habilitacion && !texto2.habilitacion && !thread_presentacion_encendido)
 	{
 		switch (i)
 		{
+    case 0:
+      dejarTexto("PROGRAMACION TPF 2021 1C", POS_CREDITOS_INTRO, false);
+      break;
 		case 1:
 			limpiarDisplay();
 			thread_presentacion_encendido = true;
@@ -213,10 +201,12 @@ void mostrarCreditos(void)
 			break;
 		case 2:
 			pthread_join(tpresentacion, NULL);
+      dejarTexto("AA", POS_MSJ_MENU, true);
 		default:
-			dejarTexto(creditos_cadenas[i], POS_CREDITOS, false);
+			dejarTexto(autores[i-2], POS_OPCION, false);
 		}
-		i++;
+    if(++i > 5)
+      i = 0;
 	}
 }
 
@@ -265,10 +255,11 @@ static void *threadPresentacion(void *ptr)
 {
 	int coordenadas[][2] = {{0, 0}, {4, 1}, {8, 3}, {1, 8}, {5, 9}, {9, 10}, {13, 11}};
 	int j;
+  char str_presentacion[] = "FROGGER";
 	for (j = 0; j < 14 && thread_presentacion_encendido; j++)
 	{
 		matriz_t letra_matriz;
-		charAMatriz(creditos_cadenas[1][j % 7], letra_matriz, coordenadas[j % 7]);
+		charAMatriz(str_presentacion[j % 7], letra_matriz, coordenadas[j % 7]);
 		if (j >= 7)
 			matrizXor(disp_matriz, letra_matriz);
 		else
@@ -303,4 +294,12 @@ static void ulltoa(unsigned long long num, char *str)
 		str[i--] = str[j];
 		str[j++] = ch;
 	}
+}
+
+static int castear_posicion(int pos){
+  if((pos == POS_CREDITOS_INTRO) || (pos == POS_MSJ_NEW_HI_SCORE))
+    return POS_MSJ3;
+  if((pos == POS_OPCION) || (pos == POS_CREDITOS))
+    return POS_MSJ2;
+  return POS_MSJ1;
 }
