@@ -127,7 +127,6 @@ A continuación se mencionan algunas de las característimas destacables de la i
   
 * Dificultad incremental al avanzar en el juego
   * Se reduce el tiempo del nivel
-  * Aumenta velocidad de movimiento de entidades
   
 * Otros:
   * Animación de caída al agua
@@ -157,9 +156,6 @@ A continuación se mencionan algunas de las característimas destacables de la i
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
