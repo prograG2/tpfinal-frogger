@@ -92,6 +92,8 @@ static pthread_t ttiempo;
 
 static void *threadTiempo(void *ptr);
 
+static bool instrucciones_dadas = false;
+
 /*******************************************************************************
  *******************************************************************************
                         GLOBAL FUNCTION DEFINITIONS
@@ -116,8 +118,8 @@ void moverCarrriles(int x)
 {
   for (int i = 0; i < 5; i++)
     juego.carril[i].completo <<= x; // movimiento de autos/troncos
-  if(juego.agua && juego.jugador_posicion_sur < CANT_FILAS - 2 && juego.jugador_posicion_sur > 4)
-    moverIzda(); //animación de movimiento de jugador con los troncos
+  if (juego.agua && juego.jugador_posicion_sur < CANT_FILAS - 2 && juego.jugador_posicion_sur > 4)
+    moverIzda(); // animación de movimiento de jugador con los troncos
 }
 
 void spawnearAutos()
@@ -245,24 +247,24 @@ void moverAdelante()
     juego.jugador_posicion_sur--;
   else
   {
-    if (!juego.agua) //si voy por la mitad de la ronda
+    if (!juego.agua) // si voy por la mitad de la ronda
     {
       juego.agua = true;
       respawn();
     }
     else
     {
-      juego.puntos += 500 + 250*(juego.dificultad);
+      juego.puntos += 500 + 250 * (juego.dificultad);
       juego.ranas |= juego.jugador_1 | juego.jugador_2;
-      if (juego.ranas == 0b1111111111111111) //si completé el nivel
+      if (juego.ranas == 0b1111111111111111) // si completé el nivel
       {
-        juego.puntos += 1000 + 250*(juego.dificultad);
+        juego.puntos += 1000 + 250 * (juego.dificultad);
         pausarJuego();
         juego.niv_actual++;
         reproducirEfecto(EFECTO_NIVEL_COMPLETO);
         reiniciarNivel();
       }
-      else //si completé la ronda pero aún falta completar el nivels
+      else // si completé la ronda pero aún falta completar el nivels
       {
         juego.agua = false;
         reproducirEfecto(EFECTO_META);
@@ -315,6 +317,13 @@ void inicializarJuego()
   juego.puntos = 0;
   juego.niv_actual = 1;
   juego.vidas = 0b1110000000000000;
+  if (!instrucciones_dadas)
+  {
+    reproducirEfecto(EFECTO_INSTRUCCIONES);
+    clock_t meta = clock() + CLOCKS_PER_SEC*20;
+    while(clock() < meta);
+    instrucciones_dadas = true;
+  }
 }
 
 void reiniciarTimer()
